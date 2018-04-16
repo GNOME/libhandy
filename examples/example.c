@@ -10,10 +10,6 @@ show_window (GtkApplication *app)
   ExampleWindow *window;
 
   window = example_window_new (app);
-
-  gtk_window_set_title (GTK_WINDOW (window), "Handy Widget Factory");
-  gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
-
   gtk_widget_show_all (GTK_WIDGET (window));
 }
 
