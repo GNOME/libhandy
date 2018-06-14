@@ -10,6 +10,10 @@ libhandy-0.0.so.0 libhandy-0.0-0 #MINVER#
  hdy_arrows_set_count@LIBHANDY_0_0_0 0.0~git20180517
  hdy_arrows_set_direction@LIBHANDY_0_0_0 0.0~git20180517
  hdy_arrows_set_duration@LIBHANDY_0_0_0 0.0~git20180517
+ hdy_column_get_maximum_width@LIBHANDY_0_0_0 0.0.1
+ hdy_column_get_type@LIBHANDY_0_0_0 0.0.1
+ hdy_column_new@LIBHANDY_0_0_0 0.0.1
+ hdy_column_set_maximum_width@LIBHANDY_0_0_0 0.0.1
  hdy_dialer_button_get_digit@LIBHANDY_0_0_0 0.0~git20180429
  hdy_dialer_button_get_letters@LIBHANDY_0_0_0 0.0~git20180429
  hdy_dialer_button_get_type@LIBHANDY_0_0_0 0.0~git20180429
