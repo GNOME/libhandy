@@ -30,6 +30,6 @@ build-fedora:
   <<: *distro_tags
   before_script:
     - dnf -y update
-    - dnf -y install @development-tools xvfb-run gtk-doc gobject-introspection-devel gnome-desktop-devel gtk3-devel meson pkg-config vala-devel
+    - dnf -y install @development-tools xorg-x11-server-Xvfb gtk-doc gobject-introspection-devel gnome-desktop-devel gtk3-devel meson pkg-config vala-devel
   stage: build
   <<: *distro_test
