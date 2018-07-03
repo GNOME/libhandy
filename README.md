@@ -15,11 +15,7 @@ To build libhandy on Debian you need the following build-deps:
 sudo apt-get -y install gtk-doc-tools libgirepository1.0-dev libgnome-desktop-3-dev libgtk-3-dev meson pkg-config valac
 ```
 
-On Fedora:
-
-```sh
-sudo dnf install gtk-doc gobject-introspection-devel gnome-desktop-devel gtk3-devel meson pkg-config vala-devel
-```
+If you are using another Distribution, take a look at the `.gitlab-ci.yml` file for the necessary build-deps.
 
 ## Building
 
