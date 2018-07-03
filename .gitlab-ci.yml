@@ -19,3 +19,19 @@ build-debian:
     - "! grep -qs 'warning' _build/doc/buildlog"
     - xvfb-run ninja -C _build test
 
+build-fedora:
+  image: fedora:28
+  tags:
+    - librem5
+  before_script:
+    - dnf -y update
+    - dnf -y install gtk-doc gobject-introspection-devel gnome-desktop-devel gtk3-devel meson pkg-config vala-devel
+  stage: build
+  script:
+    - export LC_ALL=C.UTF-8
+    - meson . _build -Dgtk_doc=true
+    - ninja -C _build
+    - ninja -C _build meson-libhandy-doc 2>&1 | tee _build/doc/buildlog
+    # Check gtk-doc did not produce any new warnings
+    - "! grep -qs 'warning' _build/doc/buildlog"
+    - xvfb-run ninja -C _build test
