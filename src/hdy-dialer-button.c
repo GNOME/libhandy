@@ -69,7 +69,7 @@ hdy_dialer_button_set_property (GObject      *object,
     break;
 
   case PROP_LETTERS:
-    g_free (priv->letters);
+    g_clear_pointer (&priv->letters, g_free);
     priv->letters = g_value_dup_string (value);
     format_label(self);
     break;
