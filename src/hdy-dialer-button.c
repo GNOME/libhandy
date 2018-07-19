@@ -105,18 +105,72 @@ hdy_dialer_button_get_property (GObject    *object,
 }
 
 static void
+gtk_widget_class_measure (GtkWidgetClass *widget_class,
+                          GtkWidget      *widget,
+                          GtkOrientation  orientation,
+                          int             for_size,
+                          int            *minimum_size,
+                          int            *natural_size,
+                          int            *minimum_baseline,
+                          int            *natural_baseline)
+{
+  switch (orientation) {
+  case GTK_ORIENTATION_HORIZONTAL:
+    if (for_size < 0)
+      widget_class->get_preferred_width (widget, minimum_size, natural_size);
+    else
+      widget_class->get_preferred_width_for_height (widget, for_size, minimum_size, natural_size);
+
+    break;
+  case GTK_ORIENTATION_VERTICAL:
+    if (for_size < 0)
+      widget_class->get_preferred_height (widget, minimum_size, natural_size);
+    else
+      widget_class->get_preferred_height_for_width (widget, for_size, minimum_size, natural_size);
+
+    break;
+  }
+}
+
+static void
+hdy_dialer_button_measure (GtkWidget      *widget,
+                           GtkOrientation  orientation,
+                           int             for_size,
+                           int            *minimum_size,
+                           int            *natural_size,
+                           int            *minimum_baseline,
+                           int            *natural_baseline)
+{
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (hdy_dialer_button_parent_class);
+  gint minimum_width, natural_width;
+  gint minimum_height, natural_height;
+  gint dummy;
+
+  gtk_widget_class_measure (widget_class,
+                            widget, GTK_ORIENTATION_HORIZONTAL,
+                            orientation == GTK_ORIENTATION_VERTICAL ? for_size : -1,
+                            &minimum_width, &natural_width,
+                            &dummy, &dummy);
+  gtk_widget_class_measure (widget_class,
+                            widget, GTK_ORIENTATION_VERTICAL,
+                            orientation == GTK_ORIENTATION_HORIZONTAL ? for_size : -1,
+                            &minimum_height, &natural_height,
+                            &dummy, &dummy);
+
+  *minimum_size = MAX (minimum_width, minimum_height);
+  *natural_size = MAX (natural_width, natural_height);
+}
+
+static void
 hdy_dialer_button_get_preferred_width (GtkWidget *widget,
                                        gint      *minimum_width,
                                        gint      *natural_width)
 {
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (hdy_dialer_button_parent_class);
-  gint min_width, nat_width, min_height, nat_height;
-
-  widget_class->get_preferred_width (widget, &min_width, &nat_width);
-  widget_class->get_preferred_height (widget, &min_height, &nat_height);
-
-  *minimum_width = MAX (min_width, min_height);
-  *natural_width = MAX (nat_width, nat_height);
+  int dummy;
+  hdy_dialer_button_measure (widget,
+                             GTK_ORIENTATION_HORIZONTAL, -1,
+                             minimum_width, natural_width,
+                             &dummy, &dummy);
 }
 
 static void
@@ -124,14 +178,11 @@ hdy_dialer_button_get_preferred_height (GtkWidget *widget,
                                         gint      *minimum_height,
                                         gint      *natural_height)
 {
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (hdy_dialer_button_parent_class);
-  gint min_width, nat_width, min_height, nat_height;
-
-  widget_class->get_preferred_width (widget, &min_width, &nat_width);
-  widget_class->get_preferred_height (widget, &min_height, &nat_height);
-
-  *minimum_height = MAX (min_width, min_height);
-  *natural_height = MAX (nat_width, nat_height);
+  int dummy;
+  hdy_dialer_button_measure (widget,
+                             GTK_ORIENTATION_VERTICAL, -1,
+                             minimum_height, natural_height,
+                             &dummy, &dummy);
 }
 
 static void
@@ -140,13 +191,11 @@ hdy_dialer_button_get_preferred_width_for_height (GtkWidget *widget,
                                                   gint      *minimum_width,
                                                   gint      *natural_width)
 {
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (hdy_dialer_button_parent_class);
-  gint min_width, nat_width;
-
-  widget_class->get_preferred_width_for_height (widget, height, &min_width, &nat_width);
-
-  *minimum_width = MAX (min_width, height);
-  *natural_width = MAX (nat_width, height);
+  int dummy;
+  hdy_dialer_button_measure (widget,
+                             GTK_ORIENTATION_HORIZONTAL, height,
+                             minimum_width, natural_width,
+                             &dummy, &dummy);
 }
 
 static void
@@ -155,13 +204,11 @@ hdy_dialer_button_get_preferred_height_for_width (GtkWidget *widget,
                                                   gint      *minimum_height,
                                                   gint      *natural_height)
 {
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (hdy_dialer_button_parent_class);
-  gint min_height, nat_height;
-
-  widget_class->get_preferred_width_for_height (widget, width, &min_height, &nat_height);
-
-  *minimum_height = MAX (min_height, width);
-  *natural_height = MAX (nat_height, width);
+  int dummy;
+  hdy_dialer_button_measure (widget,
+                             GTK_ORIENTATION_VERTICAL, width,
+                             minimum_height, natural_height,
+                             &dummy, &dummy);
 }
 
 
