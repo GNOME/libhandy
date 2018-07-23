@@ -7,7 +7,17 @@
 static void
 show_window (GtkApplication *app)
 {
+  GtkCssProvider *css_provider;
+  GdkScreen *screen;
   ExampleWindow *window;
+
+  css_provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_resource (css_provider, "/sm/puri/handy/example/ui/style.css");
+  screen = gdk_screen_get_default ();
+  gtk_style_context_add_provider_for_screen (screen,
+                                             GTK_STYLE_PROVIDER (css_provider),
+                                             GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  g_object_unref (css_provider);
 
   window = example_window_new (app);
 

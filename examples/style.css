@@ -1,0 +1,18 @@
+/* Border splitting the header bars. */
+.hdy-example-start-header-bar:dir(ltr) {
+ border-right-width: 1px;
+}
+
+.hdy-example-start-header-bar:dir(rtl) {
+ border-left-width: 1px;
+}
+
+.hdy-example-start-header-bar:dir(ltr),
+.hdy-example-end-header-bar:dir(rtl) {
+  border-top-right-radius: 0;
+}
+
+.hdy-example-end-header-bar:dir(ltr),
+.hdy-example-start-header-bar:dir(rtl) {
+  border-top-left-radius: 0;
+}
