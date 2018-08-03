@@ -15,6 +15,8 @@ struct _ExampleWindow
   HdyDialer *dialer;
   GtkLabel *display;
   GtkWidget *arrows;
+  HdySearchBar *search_bar;
+  GtkEntry *search_entry;
   GtkListBox *column_listbox;
   HdyHeaderGroup *header_group;
   GtkAdjustment *adj_arrows_count;
@@ -263,6 +265,7 @@ example_window_constructed (GObject *object)
                             hdy_arrows_get_count (HDY_ARROWS (self->arrows)));
   gtk_adjustment_set_value (self->adj_arrows_duration,
                             hdy_arrows_get_duration (HDY_ARROWS (self->arrows)));
+  hdy_search_bar_connect_entry (self->search_bar, self->search_entry);
 }
 
 
@@ -284,6 +287,8 @@ example_window_class_init (ExampleWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, dialer);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, display);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, arrows);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, search_bar);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, search_entry);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, column_listbox);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, header_group);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, adj_arrows_count);
