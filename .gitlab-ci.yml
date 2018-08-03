@@ -19,3 +19,22 @@ build-debian:
     - "! grep -qs 'warning' _build/doc/buildlog"
     - xvfb-run ninja -C _build test
 
+build-flatpak:
+  stage: build
+  tags:
+    - librem5
+  image: debian:buster
+  variables:
+    app_id: "sm.puri.Handy.Example"
+  artifacts:
+    paths:
+      - "${app_id}-dev.flatpak"
+    expire_in: 1 day
+  before_script:
+    - apt-get -y update
+    - apt-get -y install flatpak flatpak-builder
+    - flatpak remote-add --if-not-exists gnome-nightly https://sdk.gnome.org/gnome-nightly.flatpakrepo
+    - flatpak install -y gnome-nightly org.gnome.Sdk master
+    - flatpak install -y gnome-nightly org.gnome.Platform master
+  script:
+    - bash -x .gitlab-ci/flatpak-build.sh "${app_id}"
