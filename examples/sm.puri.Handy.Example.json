@@ -22,7 +22,9 @@
       "name": "libhandy",
       "buildsystem": "meson",
       "builddir": true,
-      "build-options": "examples",
+      "config-opts": [
+          "-Dexamples=true"
+      ],
       "sources": [
         {
           "type": "git",
