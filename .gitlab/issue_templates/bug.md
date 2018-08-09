@@ -1,11 +1,17 @@
 # What problem did you encounter?
 
-## If the problem is specific to a widget, which widget is the issue related to?
+## In what part of libhandy did you experience the problem? Note that multiple boxes may be checked.
 
- - [ ] HdyColumn
- - [ ] HdyLeaflet
- - [ ] HdyDialer
+ - [ ] build system
+ - [ ] documentation
+ - [ ] example application
  - [ ] HdyArrows
+ - [ ] HdyColumn
+ - [ ] HdyDialer
+ - [ ] HdyLeaflet
+ - [ ] somewhere else (please elaborate)
+
+## What is the actual behaviour?
 
 ## What is the expected behaviour?
 
@@ -16,7 +22,7 @@
 
 # Which version did you encounter the bug in?
 
- - [ ] I Compiled it myself. If you compiled libhandy from source please provide the
+ - [ ] I compiled it myself. If you compiled libhandy from source please provide the
    git revision via e.g. by running ``git log -1 --pretty=oneline`` and pasting
    the output below.
 
@@ -40,5 +46,5 @@ $ dpkg -s libhandy-0.0-0
 
 # Releveant logfiles
 
-  Please provide relevant logs. You can list the logs since last boot read
-  with ``journalctl -b 0``.
+  Please provide relevant logs with ``G_MESSAGES_DEBUG=all <yourappliation>``
+
