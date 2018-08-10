@@ -1453,8 +1453,8 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
     /* Compute homogeneous box child size. */
     box_homogeneous = (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_HORIZONTAL] && orientation == GTK_ORIENTATION_HORIZONTAL) ||
                       (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_VERTICAL] && orientation == GTK_ORIENTATION_VERTICAL);
+    max_child_size = 0;
     if (box_homogeneous) {
-      max_child_size = 0;
       for (children = priv->children; children; children = children->next) {
         child_info = children->data;
 
