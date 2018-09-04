@@ -530,7 +530,8 @@ set_visible_child_info (HdyLeaflet                    *self,
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_VISIBLE_CHILD]);
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_VISIBLE_CHILD_NAME]);
 
-  hdy_leaflet_start_child_transition (self, transition_type, transition_duration, transition_direction);
+  if (priv->fold == HDY_FOLD_FOLDED)
+    hdy_leaflet_start_child_transition (self, transition_type, transition_duration, transition_direction);
 }
 
 static void
