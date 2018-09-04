@@ -1,0 +1,13 @@
+stacksidebar * {
+  border-left-width: 0px;
+  border-right-width: 0px;
+}
+
+separator.sidebar {
+  border-style: none;
+  background-color: @borders;
+}
+
+separator.sidebar:backdrop {
+  background-color: @unfocused_borders;
+}
