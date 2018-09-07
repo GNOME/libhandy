@@ -1,0 +1,8 @@
+/* Needed for HdyTitleBar to work. This has been submitted upstream here:
+ * https://gitlab.gnome.org/GNOME/gtk/merge_requests/325
+ */
+headerbar.titlebar headerbar:not(.titlebar) {
+  background-color: rgba (0, 0, 0, 0);
+  background-image: none;
+  box-shadow: none;
+}
