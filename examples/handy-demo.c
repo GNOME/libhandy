@@ -28,6 +28,9 @@ startup (GtkApplication *app)
                                              GTK_STYLE_PROVIDER (css_provider),
                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
+  gtk_icon_theme_add_resource_path (gtk_icon_theme_get_default (),
+                                    "/sm/puri/handy/demo/icons");
+
   g_object_unref (css_provider);
 }
 

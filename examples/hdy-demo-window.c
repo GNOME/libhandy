@@ -11,6 +11,7 @@ struct _HdyDemoWindow
 
   HdyLeaflet *header_box;
   HdyLeaflet *content_box;
+  GtkToggleButton *dark_mode_button;
   GtkButton *back;
   GtkToggleButton *search_button;
   GtkStackSidebar *sidebar;
@@ -363,6 +364,7 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/sm/puri/handy/demo/ui/hdy-demo-window.ui");
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, header_box);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, content_box);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, dark_mode_button);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, back);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, search_button);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, sidebar);
@@ -426,7 +428,13 @@ lists_page_init (HdyDemoWindow *self)
 static void
 hdy_demo_window_init (HdyDemoWindow *self)
 {
+  GtkSettings *settings = gtk_settings_get_default ();
+
   gtk_widget_init_template (GTK_WIDGET (self));
+
+  g_object_bind_property (settings, "gtk-application-prefer-dark-theme",
+                          self->dark_mode_button, "active",
+                          G_BINDING_SYNC_CREATE | G_BINDING_BIDIRECTIONAL);
 
   hdy_combo_row_set_for_enum (self->leaflet_transition_row, HDY_TYPE_LEAFLET_TRANSITION_TYPE, leaflet_transition_name, NULL, NULL);
   hdy_combo_row_set_selected_index (self->leaflet_transition_row, HDY_LEAFLET_TRANSITION_TYPE_OVER);
