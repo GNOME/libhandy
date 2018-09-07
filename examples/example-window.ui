@@ -46,6 +46,7 @@
     <child type="titlebar">
       <object class="HdyTitleBar">
         <property name="visible">True</property>
+        <property name="selection-mode" bind-source="selection_button" bind-property="active" bind-flags="sync-create|bidirectional"/>
         <child>
           <object class="HdyLeaflet" id="header_box">
             <property name="visible">True</property>
@@ -68,6 +69,22 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="icon_name">open-menu-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="pack_type">end</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="selection_button">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">object-select-symbolic</property>
                       </object>
                     </child>
                   </object>
