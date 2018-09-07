@@ -6,6 +6,21 @@
 #include "hdy-demo-window.h"
 
 static void
+set_dark_theme (GSimpleAction *action,
+                GVariant      *state,
+                gpointer       user_data)
+{
+  GtkSettings *settings = gtk_settings_get_default ();
+
+  g_object_set (G_OBJECT (settings),
+                "gtk-application-prefer-dark-theme",
+                g_variant_get_boolean (state),
+                NULL);
+
+  g_simple_action_set_state (action, state);
+}
+
+static void
 show_preferences (GSimpleAction *action,
                   GVariant      *state,
                   gpointer       user_data)
@@ -48,6 +63,7 @@ main (int    argc,
   GtkApplication *app;
   int status;
   static GActionEntry app_entries[] = {
+    { "dark-theme", NULL, NULL, "false", set_dark_theme },
     { "preferences", show_preferences, NULL, NULL, NULL },
   };
 
