@@ -5,6 +5,21 @@
 #include "example-window.h"
 
 static void
+set_dark_theme (GSimpleAction *action,
+                GVariant      *state,
+                gpointer       user_data)
+{
+  GtkSettings *settings = gtk_settings_get_default ();
+
+  g_object_set (G_OBJECT (settings),
+                "gtk-application-prefer-dark-theme",
+                g_variant_get_boolean (state),
+                NULL);
+
+  g_simple_action_set_state (action, state);
+}
+
+static void
 startup (GtkApplication *app)
 {
   GtkCssProvider *css_provider = gtk_css_provider_new ();
@@ -33,8 +48,14 @@ main (int    argc,
 {
   GtkApplication *app;
   int status;
+  static GActionEntry app_entries[] = {
+    { "dark-theme", NULL, NULL, "false", set_dark_theme },
+  };
 
   app = gtk_application_new ("sm.puri.Handy.Example", G_APPLICATION_FLAGS_NONE);
+  g_action_map_add_action_entries (G_ACTION_MAP (app),
+                                   app_entries, G_N_ELEMENTS (app_entries),
+                                   app);
   g_signal_connect (app, "startup", G_CALLBACK (startup), NULL);
   g_signal_connect (app, "activate", G_CALLBACK (show_window), NULL);
   status = g_application_run (G_APPLICATION (app), argc, argv);
