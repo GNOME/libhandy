@@ -5,6 +5,7 @@
   "sdk": "org.gnome.Sdk",
   "command": "example",
   "finish-args": [
+    "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
     "--share=ipc", "--socket=x11",
     "--socket=wayland",
     "--device=all"
@@ -25,7 +26,7 @@
       "sources": [
         {
           "type": "git",
-          "url": "https://code.puri.sm/Librem5/libhandy.git"
+          "url": "https://source.puri.sm/Librem5/libhandy.git"
         }
       ]
     }

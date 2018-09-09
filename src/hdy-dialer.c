@@ -22,6 +22,7 @@
 
 typedef struct
 {
+  GtkGrid *grid;
   HdyDialerButton *number_btns[10];
   HdyDialerCycleButton *btn_hash, *btn_star, *cycle_btn;
   GtkButton *btn_submit, *btn_del;
@@ -35,6 +36,8 @@ enum {
   PROP_0,
   PROP_NUMBER,
   PROP_SHOW_ACTION_BUTTONS,
+  PROP_COLUMN_SPACING,
+  PROP_ROW_SPACING,
   PROP_LAST_PROP,
 };
 static GParamSpec *props[PROP_LAST_PROP];
@@ -235,9 +238,17 @@ hdy_dialer_set_property (GObject      *object,
   HdyDialerPrivate *priv = hdy_dialer_get_instance_private (self);
 
   switch (property_id) {
+  case PROP_COLUMN_SPACING:
+    gtk_grid_set_column_spacing (priv->grid, g_value_get_uint (value));
+    break;
+
   case PROP_NUMBER:
     g_string_assign (priv->number, g_value_get_string (value));
     g_object_notify_by_pspec (object, pspec);
+    break;
+
+  case PROP_ROW_SPACING:
+    gtk_grid_set_row_spacing (priv->grid, g_value_get_uint (value));
     break;
 
   case PROP_SHOW_ACTION_BUTTONS:
@@ -261,8 +272,16 @@ hdy_dialer_get_property (GObject    *object,
   HdyDialerPrivate *priv = hdy_dialer_get_instance_private (self);
 
   switch (property_id) {
+  case PROP_COLUMN_SPACING:
+    g_value_set_uint (value, gtk_grid_get_column_spacing (priv->grid));
+    break;
+
   case PROP_NUMBER:
     g_value_set_string (value, priv->number->str);
+    break;
+
+  case PROP_ROW_SPACING:
+    g_value_set_uint (value, gtk_grid_get_row_spacing (priv->grid));
     break;
 
   case PROP_SHOW_ACTION_BUTTONS:
@@ -319,9 +338,7 @@ hdy_dialer_constructed (GObject *object)
                                         GTK_ICON_SIZE_BUTTON);
   gtk_button_set_image (priv->btn_del, image);
 
-  gtk_icon_theme_add_resource_path (gtk_icon_theme_get_default (),
-                                    "/sm/puri/handy/icons");
-  image = gtk_image_new_from_icon_name ("phone-dial-symbolic",
+  image = gtk_image_new_from_icon_name ("call-start-symbolic",
                                         GTK_ICON_SIZE_BUTTON * 1.3);
   gtk_button_set_image (priv->btn_submit, image);
 
@@ -366,6 +383,20 @@ hdy_dialer_class_init (HdyDialerClass *klass)
                          _("Show action buttons"),
                          _("Whether to show the submit and delete buttons"),
                          TRUE,
+                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_COLUMN_SPACING] =
+    g_param_spec_uint ("column-spacing",
+                       _("Column spacing"),
+                         _("The amount of space between two consecutive columns"),
+                         0, G_MAXUINT, 0,
+                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_ROW_SPACING] =
+    g_param_spec_uint ("row-spacing",
+                       _("Row spacing"),
+                         _("The amount of space between two consecutive rows"),
+                         0, G_MAXUINT, 0,
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, PROP_LAST_PROP, props);
@@ -436,6 +467,7 @@ hdy_dialer_class_init (HdyDialerClass *klass)
                                                FALSE,
                                                G_PRIVATE_OFFSET(HdyDialer, number_btns[i]));
   }
+  gtk_widget_class_bind_template_child_private (widget_class, HdyDialer, grid);
   gtk_widget_class_bind_template_child_private (widget_class, HdyDialer, btn_hash);
   gtk_widget_class_bind_template_child_private (widget_class, HdyDialer, btn_star);
   gtk_widget_class_bind_template_child_private (widget_class, HdyDialer, btn_submit);
