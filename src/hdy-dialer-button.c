@@ -211,6 +211,8 @@ hdy_dialer_button_class_init (HdyDialerButtonClass *klass)
                                                "/sm/puri/handy/dialer/ui/hdy-dialer-button.ui");
   gtk_widget_class_bind_template_child_private (widget_class, HdyDialerButton, label);
   gtk_widget_class_bind_template_child_private (widget_class, HdyDialerButton, secondary_label);
+
+  gtk_widget_class_set_css_name (widget_class, "hdydialerbutton");
 }
 
 /**

@@ -150,6 +150,7 @@ static void
 hdy_dialer_cycle_button_class_init (HdyDialerCycleButtonClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = (GtkWidgetClass*) klass;
 
   object_class->dispose = hdy_dialer_cycle_button_dispose;
 
@@ -198,6 +199,8 @@ hdy_dialer_cycle_button_class_init (HdyDialerCycleButtonClass *klass)
                   NULL, NULL, NULL,
                   G_TYPE_NONE,
                   0);
+
+  gtk_widget_class_set_css_name (widget_class, "hdydialercyclebutton");
 }
 
 /**
