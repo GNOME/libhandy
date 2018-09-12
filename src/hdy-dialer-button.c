@@ -39,13 +39,28 @@ static void
 format_label(HdyDialerButton *self)
 {
   HdyDialerButtonPrivate *priv = hdy_dialer_button_get_instance_private(self);
+  PangoAttribute *scale;
+  PangoAttrList *attr_list;
   GString *str;
   g_autofree gchar *text;
 
   str = g_string_new(NULL);
   if (priv->digit >= 0) {
+    scale = pango_attr_scale_new (0.8);
     g_string_sprintf (str, "%d", priv->digit);
+    gtk_widget_show (GTK_WIDGET (priv->label));
+  } else {
+    scale = pango_attr_scale_new (2.0);
+    gtk_widget_hide (GTK_WIDGET (priv->label));
   }
+
+  /*
+   * If we have some digit, a scale of 0.8 is used.  For
+   * the secondary label.  Otherwise, it's scaled to 2.0,
+   * and the digit label is hidden.
+   */
+  attr_list = gtk_label_get_attributes (priv->secondary_label);
+  pango_attr_list_insert (attr_list, scale);
 
   text = g_string_free (str, FALSE);
 
