@@ -1,4 +1,17 @@
-# Handy
+<div align="center">
+  <a href="https://source.puri.sm/Librem5/libhandy"><b>Handy</b></a>
+  <br>
+  
+  A Library to help with developing UI for mobile devices
+  <br>
+
+  <a href="https://source.puri.sm/Librem5/libhandy/pipelines"><img
+       src="https://source.puri.sm/Librem5/libhandy/badges/master/build.svg" /></a>
+  <a href="https://source.puri.sm/Librem5/libhandy/coverage"><img
+       src="https://source.puri.sm/Librem5/libhandy/badges/master/coverage.svg" /></a>
+</div>
+
+---
 
 The aim of The handy library is to help with developing UI for mobile devices
 using GTK+/GNOME.
