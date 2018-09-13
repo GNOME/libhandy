@@ -75,7 +75,7 @@ button_clicked_cb (HdyDialerCycleButton *self,
   g_return_val_if_fail (HDY_IS_DIALER_CYCLE_BUTTON (self), FALSE);
 
   /* Only cycle if we have more than one symbol */
-  if (strlen (hdy_dialer_button_get_letters (HDY_DIALER_BUTTON (self))) < 2)
+  if (strlen (hdy_dialer_button_get_symbols (HDY_DIALER_BUTTON (self))) < 2)
     return FALSE;
 
   if (hdy_dialer_cycle_button_is_cycling (self)) {
@@ -237,7 +237,7 @@ gunichar
 hdy_dialer_cycle_button_get_current_symbol (HdyDialerCycleButton *self)
 {
   HdyDialerCycleButtonPrivate *priv = hdy_dialer_cycle_button_get_instance_private (self);
-  const gchar *symbols = hdy_dialer_button_get_letters (HDY_DIALER_BUTTON (self));
+  const gchar *symbols = hdy_dialer_button_get_symbols (HDY_DIALER_BUTTON (self));
   gint off = priv->num % g_utf8_strlen (symbols, -1);
 
   return g_utf8_get_char (g_utf8_offset_to_pointer (symbols, off));
