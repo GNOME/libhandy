@@ -135,7 +135,7 @@
         <child>
           <object class="HdyDialerCycleButton" id="btn_star">
             <property name="digit">-1</property>
-            <property name="letters">*+</property>
+            <property name="letters">∗+</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
