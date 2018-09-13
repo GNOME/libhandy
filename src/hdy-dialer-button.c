@@ -39,18 +39,28 @@ static void
 format_label(HdyDialerButton *self)
 {
   HdyDialerButtonPrivate *priv = hdy_dialer_button_get_instance_private(self);
-  GString *str;
-  g_autofree gchar *text;
+  gchar *letters = priv->letters != NULL ? priv->letters : "";
+  g_autofree gchar *text = NULL;
+  gchar *secondary_text = NULL;
 
-  str = g_string_new(NULL);
   if (priv->digit >= 0) {
-    g_string_sprintf (str, "%d", priv->digit);
+    text = g_strdup_printf ("%d", priv->digit);
+    secondary_text = letters;
+    gtk_label_set_label (priv->secondary_label, letters);
+  }
+  else if (*letters != '\0') {
+    secondary_text = g_utf8_find_next_char (letters, NULL);
+    /* Allocate memory for the first character and '\0'. */
+    text = g_malloc0 (secondary_text - letters + 1);
+    g_utf8_strncpy (text, letters, 1);
+  }
+  else {
+    text = g_malloc0 (sizeof (gchar));
+    secondary_text = "";
   }
 
-  text = g_string_free (str, FALSE);
-
   gtk_label_set_label (priv->label, text);
-  gtk_label_set_label (priv->secondary_label, priv->letters);
+  gtk_label_set_label (priv->secondary_label, secondary_text);
 }
 
 static void
