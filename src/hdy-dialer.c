@@ -185,8 +185,11 @@ key_press_event_cb (GtkWidget   *widget,
   gboolean pressed = !!GPOINTER_TO_INT (data);
 
   switch (event->keyval) {
-  case GDK_KEY_0 ... GDK_KEY_9:
+  case GDK_KEY_1 ... GDK_KEY_9:
     press_btn (GTK_BUTTON (priv->number_btns[event->keyval % GDK_KEY_0]), pressed);
+    break;
+  case GDK_KEY_0:
+    press_btn (GTK_BUTTON (priv->number_btns[0]), pressed);
     break;
   case GDK_KEY_numbersign:
     press_btn (GTK_BUTTON (priv->btn_hash), pressed);
@@ -302,13 +305,19 @@ hdy_dialer_constructed (GObject *object)
   HdyDialerPrivate *priv = hdy_dialer_get_instance_private (self);
   GtkWidget *image;
 
-  for (int i = 0; i < 10; i++) {
+  for (int i = 1; i < 10; i++) {
     g_signal_connect_object (priv->number_btns[i],
                              "clicked",
                              G_CALLBACK (digit_button_clicked),
                              self,
                              G_CONNECT_SWAPPED);
   }
+
+  g_object_connect (priv->number_btns[0],
+                    "swapped-signal::clicked", G_CALLBACK (cycle_button_clicked), self,
+                    "swapped-signal::cycle-start", G_CALLBACK (cycle_start), self,
+                    "swapped-signal::cycle-end", G_CALLBACK (cycle_end), self,
+                    NULL);
 
   g_object_connect (priv->btn_star,
                     "swapped-signal::clicked", G_CALLBACK (cycle_button_clicked), self,
