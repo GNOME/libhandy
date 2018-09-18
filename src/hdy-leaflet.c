@@ -209,7 +209,7 @@ find_child_info_for_name (HdyLeaflet  *self,
 }
 
 static gboolean
-get_enable_animations ()
+get_enable_animations (void)
 {
   gboolean enable_animations;
 
@@ -313,7 +313,8 @@ hdy_leaflet_child_progress_updated (HdyLeaflet *self)
     }
 
     if (priv->last_visible_child != NULL) {
-      gtk_widget_set_child_visible (priv->last_visible_child->widget, FALSE);
+      if (hdy_leaflet_get_fold (self) == HDY_FOLD_FOLDED)
+        gtk_widget_set_child_visible (priv->last_visible_child->widget, FALSE);
       priv->last_visible_child = NULL;
     }
   }
@@ -417,7 +418,7 @@ set_visible_child_info (HdyLeaflet                    *self,
   GtkWidget *widget = GTK_WIDGET (self);
   GList *children;
   HdyLeafletChildInfo *child_info;
-  GtkPanDirection transition_direction;
+  GtkPanDirection transition_direction = GTK_PAN_DIRECTION_LEFT;
 
   /* If we are being destroyed, do not bother with transitions and   *
    * notifications.
@@ -524,12 +525,12 @@ set_visible_child_info (HdyLeaflet                    *self,
       gtk_widget_queue_allocate (widget);
     else
       gtk_widget_queue_resize (widget);
+
+    hdy_leaflet_start_child_transition (self, transition_type, transition_duration, transition_direction);
   }
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_VISIBLE_CHILD]);
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_VISIBLE_CHILD_NAME]);
-
-  hdy_leaflet_start_child_transition (self, transition_type, transition_duration, transition_direction);
 }
 
 static void
@@ -1387,7 +1388,7 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
   gint start_size, end_size, visible_size;
   gint remaining_start_size, remaining_end_size, remaining_size;
   gint current_pad;
-  gint max_child_size;
+  gint max_child_size = 0;
   gboolean box_homogeneous;
   HdyLeafletModeTransitionType mode_transition_type;
 
@@ -1454,7 +1455,6 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
     box_homogeneous = (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_HORIZONTAL] && orientation == GTK_ORIENTATION_HORIZONTAL) ||
                       (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_VERTICAL] && orientation == GTK_ORIENTATION_VERTICAL);
     if (box_homogeneous) {
-      max_child_size = 0;
       for (children = priv->children; children; children = children->next) {
         child_info = children->data;
 
@@ -1621,7 +1621,7 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
   GtkAllocation remaining_alloc;
   GList *children;
   HdyLeafletChildInfo *child_info, *visible_child;
-  gint homogeneous_size, min_size, extra_size;
+  gint homogeneous_size = 0, min_size, extra_size;
   gint per_child_extra, n_extra_widgets;
   gint n_visible_children, n_expand_children;
   gint start_pad = 0, end_pad = 0;
@@ -2840,8 +2840,8 @@ hdy_leaflet_init (HdyLeaflet *self)
   priv->mode_transition.duration = 250;
   priv->child_transition.type = HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE;
   priv->child_transition.duration = 200;
-  priv->mode_transition.current_pos = 0.0;
-  priv->mode_transition.target_pos = 0.0;
+  priv->mode_transition.current_pos = 1.0;
+  priv->mode_transition.target_pos = 1.0;
 
   gtk_widget_set_has_window (widget, FALSE);
   gtk_widget_set_can_focus (widget, FALSE);

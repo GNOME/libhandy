@@ -25,64 +25,70 @@
     <property name="default_height">576</property>
     <signal name="key-press-event" handler="key_pressed_cb" after="yes" swapped="no"/>
     <child type="titlebar">
-      <object class="HdyLeaflet" id="header_box">
+      <object class="HdyTitleBar">
         <property name="visible">True</property>
-        <property name="mode-transition-type">slide</property>
-        <property name="child-transition-type">slide</property>
-        <property name="visible-child-name" bind-source="content_box" bind-property="visible-child-name" bind-flags="sync-create"/>
         <child>
-          <object class="GtkHeaderBar" id="header_bar">
+          <object class="HdyLeaflet" id="header_box">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="title">Handy Widget Factory</property>
+            <property name="mode-transition-type">slide</property>
+            <property name="child-transition-type">slide</property>
+            <property name="visible-child-name" bind-source="content_box" bind-property="visible-child-name" bind-flags="sync-create"/>
+            <child>
+              <object class="GtkHeaderBar" id="header_bar">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="title">Handy Widget Factory</property>
+              </object>
+              <packing>
+                <property name="name">sidebar</property>
+              </packing>
+            </child>
             <child>
               <object class="GtkSeparator">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
+                <style>
+                  <class name="sidebar"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkHeaderBar" id="sub_header_bar">
+                <property name="visible">True</property>
+                <property name="expand">True</property>
+                <property name="show_close_button">True</property>
+                <child>
+                  <object class="GtkButton" id="back">
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <property name="valign">center</property>
+                    <property name="use-underline">True</property>
+                    <signal name="clicked" handler="back_clicked_cb"/>
+                    <style>
+                      <class name="image-button"/>
+                    </style>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="a11y-back">
+                        <property name="accessible-name" translatable="yes">Back</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="back_image">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">go-previous-symbolic</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
               <packing>
-                <property name="pack_type">end</property>
+                <property name="name">content</property>
               </packing>
             </child>
           </object>
-          <packing>
-            <property name="name">sidebar</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHeaderBar" id="sub_header_bar">
-            <property name="visible">True</property>
-            <property name="expand">True</property>
-            <child>
-              <object class="GtkButton" id="back">
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <property name="valign">center</property>
-                <property name="use-underline">True</property>
-                <signal name="clicked" handler="back_clicked_cb"/>
-                <style>
-                  <class name="image-button"/>
-                </style>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="a11y-back">
-                    <property name="accessible-name" translatable="yes">Back</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkImage" id="back_image">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">go-previous-symbolic</property>
-                    <property name="icon_size">1</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="name">content</property>
-          </packing>
         </child>
       </object>
     </child>
@@ -103,6 +109,16 @@
           <packing>
             <property name="name">sidebar</property>
           </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <style>
+              <class name="sidebar"/>
+            </style>
+          </object>
         </child>
         <child>
           <object class="GtkStack" id="stack">
@@ -434,6 +450,7 @@
                 <property name="margin-top">32</property>
                 <property name="expand">True</property>
                 <property name="maximum-width" bind-source="column_width_adjustment" bind-property="value" bind-flags="sync-create"/>
+                <property name="linear-growth-width" bind-source="column_linear_width_adjustment" bind-property="value" bind-flags="sync-create"/>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
@@ -579,6 +596,46 @@
                                 </child>
                               </object>
                             </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="expand">True</property>
+                                <property name="orientation">horizontal</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Linear growth width</property>
+                                    <property name="xalign">0</property>
+                                    <property name="margin-bottom">18</property>
+                                    <property name="margin-left">20</property>
+                                    <property name="margin-right">20</property>
+                                    <property name="margin-top">18</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="xalign">1</property>
+                                    <property name="margin-bottom">18</property>
+                                    <property name="margin-left">20</property>
+                                    <property name="margin-right">20</property>
+                                    <property name="margin-top">18</property>
+                                    <property name="adjustment">column_linear_width_adjustment</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                  </packing>
+                                </child>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -617,6 +674,13 @@
     <property name="lower">0</property>
     <property name="upper">10000</property>
     <property name="value">600</property>
+    <property name="page-increment">100</property>
+    <property name="step-increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="column_linear_width_adjustment">
+    <property name="lower">0</property>
+    <property name="upper">10000</property>
+    <property name="value">500</property>
     <property name="page-increment">100</property>
     <property name="step-increment">10</property>
   </object>
