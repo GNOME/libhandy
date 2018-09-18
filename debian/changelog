@@ -1,3 +1,13 @@
+libhandy (0.0.3-1) unstable; urgency=medium
+
+  * Upload to unstable
+  * New upstream version
+    - New widget HdyTitleBar
+    - Lots of fixes
+  * Update symbols file
+
+ -- Guido Günther <agx@sigxcpu.org>  Tue, 18 Sep 2018 09:41:38 +0200
+
 libhandy (0.0.2-1) experimental; urgency=medium
 
   * New upstream version
