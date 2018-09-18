@@ -64,6 +64,7 @@ enum {
   PROP_VISIBLE_CHILD_NAME,
   PROP_MODE_TRANSITION_TYPE,
   PROP_MODE_TRANSITION_DURATION,
+  PROP_MODE_TRANSITION_RUNNING,
   PROP_CHILD_TRANSITION_TYPE,
   PROP_CHILD_TRANSITION_DURATION,
   PROP_CHILD_TRANSITION_RUNNING,
@@ -620,10 +621,36 @@ hdy_leaflet_mode_transition_cb (GtkWidget     *widget,
 
   if (gtk_progress_tracker_get_state (&priv->mode_transition.tracker) == GTK_PROGRESS_STATE_AFTER) {
     priv->mode_transition.tick_id = 0;
+    g_object_notify_by_pspec (G_OBJECT (self), props[PROP_MODE_TRANSITION_RUNNING]);
+
     return FALSE;
   }
 
   return TRUE;
+}
+
+static void
+hdy_leaflet_schedule_mode_ticks (HdyLeaflet *self)
+{
+  HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
+
+  if (priv->mode_transition.tick_id == 0) {
+    priv->mode_transition.tick_id =
+      gtk_widget_add_tick_callback (GTK_WIDGET (self), hdy_leaflet_mode_transition_cb, self, NULL);
+    g_object_notify_by_pspec (G_OBJECT (self), props[PROP_MODE_TRANSITION_RUNNING]);
+  }
+}
+
+static void
+hdy_leaflet_unschedule_mode_ticks (HdyLeaflet *self)
+{
+  HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
+
+  if (priv->mode_transition.tick_id != 0) {
+    gtk_widget_remove_tick_callback (GTK_WIDGET (self), priv->mode_transition.tick_id);
+    priv->mode_transition.tick_id = 0;
+    g_object_notify_by_pspec (G_OBJECT (self), props[PROP_MODE_TRANSITION_RUNNING]);
+  }
 }
 
 static void
@@ -660,8 +687,7 @@ hdy_leaflet_start_mode_transition (HdyLeaflet *self,
       transition != HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE &&
       get_enable_animations ()) {
     priv->mode_transition.source_pos = priv->mode_transition.current_pos;
-    if (priv->mode_transition.tick_id == 0)
-      priv->mode_transition.tick_id = gtk_widget_add_tick_callback (widget, hdy_leaflet_mode_transition_cb, self, NULL);
+    hdy_leaflet_schedule_mode_ticks (self);
     gtk_progress_tracker_start (&priv->mode_transition.tracker,
                                 priv->mode_transition.duration * 1000,
                                 0,
@@ -892,6 +918,27 @@ hdy_leaflet_set_mode_transition_duration (HdyLeaflet *self,
   priv->mode_transition.duration = duration;
   g_object_notify_by_pspec (G_OBJECT (self),
                             props[PROP_MODE_TRANSITION_DURATION]);
+}
+
+/**
+ * hdy_leaflet_get_mode_transition_running:
+ * @self: a #HdyLeaflet
+ *
+ * Returns whether @self is currently in a transition from one fold
+ * state to the other.
+ *
+ * Returns: %TRUE if the transition is currently running, %FALSE otherwise.
+ */
+gboolean
+hdy_leaflet_get_mode_transition_running (HdyLeaflet *self)
+{
+  HdyLeafletPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_LEAFLET (self), FALSE);
+
+  priv = hdy_leaflet_get_instance_private (self);
+
+  return (priv->mode_transition.tick_id != 0);
 }
 
 /**
@@ -2386,6 +2433,9 @@ hdy_leaflet_get_property (GObject    *object,
   case PROP_MODE_TRANSITION_DURATION:
     g_value_set_uint (value, hdy_leaflet_get_mode_transition_duration (self));
     break;
+  case PROP_MODE_TRANSITION_RUNNING:
+    g_value_set_boolean (value, hdy_leaflet_get_mode_transition_running (self));
+    break;
   case PROP_CHILD_TRANSITION_TYPE:
     g_value_set_enum (value, hdy_leaflet_get_child_transition_type (self));
     break;
@@ -2482,6 +2532,7 @@ hdy_leaflet_finalize (GObject *object)
   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
 
   hdy_leaflet_unschedule_child_ticks (self);
+  hdy_leaflet_unschedule_mode_ticks (self);
 
   if (priv->child_transition.last_visible_surface != NULL)
     cairo_surface_destroy (priv->child_transition.last_visible_surface);
@@ -2776,6 +2827,13 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                        _("The mode transition animation duration, in milliseconds"),
                        0, G_MAXUINT, 250,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_MODE_TRANSITION_RUNNING] =
+      g_param_spec_boolean ("mode-transition-running",
+                            _("Mode transition running"),
+                            _("Whether or not the mode transition is currently running"),
+                            FALSE,
+                            G_PARAM_READABLE);
 
   props[PROP_CHILD_TRANSITION_TYPE] =
     g_param_spec_enum ("child-transition-type",
