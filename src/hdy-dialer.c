@@ -198,12 +198,10 @@ key_press_event_cb (GtkWidget   *widget,
     press_btn (GTK_BUTTON (priv->btn_star), pressed);
     break;
   case GDK_KEY_Return:
-    if (pressed)
-      gtk_button_clicked (GTK_BUTTON (priv->btn_submit));
+    press_btn (GTK_BUTTON (priv->btn_submit), pressed);
     break;
   case GDK_KEY_BackSpace:
-    if (pressed)
-      gtk_button_clicked (GTK_BUTTON (priv->btn_del));
+    press_btn (GTK_BUTTON (priv->btn_del), pressed);
     break;
   default:
     return FALSE;
