@@ -142,6 +142,15 @@ hdy_header_group_add_header_bar (HdyHeaderGroup *self,
   update_decoration_layouts (self);
 }
 
+/**
+ * hdy_header_group_get_focus:
+ * @self: a #HdyHeaderGroup
+ * @child: (nullable): a #GtkHeaderBar of %self, or %NULL
+ *
+ * Sets the the currently focused child. If @child is %NULL, the decoration will
+ * be spread as if the header bars of the group were only one, otherwise @child
+ * will be the only one to receive the decoration.
+ */
 void
 hdy_header_group_set_focus (HdyHeaderGroup *self,
                             GtkWidget      *child)
@@ -163,7 +172,7 @@ hdy_header_group_set_focus (HdyHeaderGroup *self,
  * hdy_header_group_get_focus:
  * @self: a #HdyHeaderGroup
  *
- * Returns: (transfer none): The currently focused child
+ * Returns: (nullable) (transfer none): The currently focused child
  */
 GtkWidget *
 hdy_header_group_get_focus (HdyHeaderGroup *self)
@@ -473,14 +482,16 @@ hdy_header_group_class_init (HdyHeaderGroupClass *klass)
   /**
    * HdyHeaderGroup:focus:
    *
-   * %TRUE if the header group is focused on a single headerbar.
+   * The the currently focused child. If %NULL, the decoration will be spread as
+   * if the header bars of the group were only one, otherwise the focused child
+   * will be the only one to receive the decoration.
    */
   props[PROP_FOCUS] =
-    g_param_spec_boolean ("focus",
-                          _("Focus"),
-                          _("The child that should have the focus"),
-                          FALSE,
-                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+    g_param_spec_object ("focus",
+                         _("Focus"),
+                         _("The child that should have the focus"),
+                         GTK_TYPE_WIDGET,
+                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 }
