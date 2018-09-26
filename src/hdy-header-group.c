@@ -480,11 +480,11 @@ hdy_header_group_class_init (HdyHeaderGroupClass *klass)
    * %TRUE if the header group is focused on a single headerbar.
    */
   props[PROP_FOCUS] =
-    g_param_spec_boolean ("focus",
-                          _("Focus"),
-                          _("The child that should have the focus"),
-                          FALSE,
-                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+    g_param_spec_object ("focus",
+                         _("Focus"),
+                         _("The child that should have the focus"),
+                         GTK_TYPE_WIDGET,
+                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 }
