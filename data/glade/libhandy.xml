@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glade-catalog name="libhandy" library="handy-0.0" depends="gtk+" book="libhandy">
+<glade-catalog name="libhandy" library="glade-handy" depends="gtk+" book="libhandy">
   <glade-widget-classes>
     <glade-widget-class name="HdyArrows" generic-name="arrows" title="Arrows"/>
     <glade-widget-class name="HdyColumn" generic-name="column" title="Column"/>
@@ -7,9 +7,9 @@
     <glade-widget-class name="HdyLeaflet" generic-name="leaflet" title="Leaflet"/>
     <glade-widget-class name="HdyTitleBar" generic-name="titlebar" title="Title Bar"/>
     <glade-widget-class name="HdyHeaderGroup" generic-name="headergroup" title="Header Bar Group" toplevel="True">
-      <!-- This needs more work so we can set the headerbars, see e.g.
-          https://gitlab.gnome.org/GNOME/glade/blob/master/plugins/gtk+/gtk+.xml.in#L3679
-      -->
+      <read-widget-function>glade_hdy_header_group_read_widget</read-widget-function>
+      <write-widget-function>glade_hdy_header_group_write_widget</write-widget-function>
+      <set-property-function>glade_hdy_header_group_set_property</set-property-function>
       <properties>
           <property id="headerbars" name="Headerbars" save="False">
             <parameter-spec>
