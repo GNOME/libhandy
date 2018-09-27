@@ -30,8 +30,11 @@ struct _HdyHeaderGroupClass
 
 HdyHeaderGroup *hdy_header_group_new (void);
 
-void hdy_header_group_add_header_bar (HdyHeaderGroup *self,
-                                      GtkHeaderBar   *header_bar);
+void    hdy_header_group_add_header_bar    (HdyHeaderGroup *self,
+                                            GtkHeaderBar   *header_bar);
+void    hdy_header_group_remove_header_bar (HdyHeaderGroup *self,
+                                            GtkHeaderBar   *header_bar);
+GSList *hdy_header_group_get_header_bars   (HdyHeaderGroup *self);
 
 GtkHeaderBar *hdy_header_group_get_focus (HdyHeaderGroup *self);
 void          hdy_header_group_set_focus (HdyHeaderGroup *self,
