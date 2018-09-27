@@ -10,6 +10,15 @@
       <!-- This needs more work so we can set the headerbars, see e.g.
           https://gitlab.gnome.org/GNOME/glade/blob/master/plugins/gtk+/gtk+.xml.in#L3679
       -->
+      <properties>
+          <property id="headerbars" name="Headerbars" save="False">
+            <parameter-spec>
+              <type>GladeParamObjects</type>
+              <value-type>GtkHeaderBar</value-type>
+            </parameter-spec>
+            <_tooltip>List of headerbars in this group</_tooltip>
+          </property>
+      </properties>
     </glade-widget-class>
   </glade-widget-classes>
 
