@@ -6,6 +6,11 @@
     <glade-widget-class name="HdyDialer" generic-name="dialer" title="Dialer"/>
     <glade-widget-class name="HdyLeaflet" generic-name="leaflet" title="Leaflet"/>
     <glade-widget-class name="HdyTitleBar" generic-name="titlebar" title="Title Bar"/>
+    <glade-widget-class name="HdyHeaderGroup" generic-name="headergroup" title="Header Bar Group" toplevel="True">
+      <!-- This needs more work so we can set the headerbars, see e.g.
+          https://gitlab.gnome.org/GNOME/glade/blob/master/plugins/gtk+/gtk+.xml.in#L3679
+      -->
+    </glade-widget-class>
   </glade-widget-classes>
 
   <glade-widget-group name="handy" title="Libhandy Widgets">
