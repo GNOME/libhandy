@@ -26,8 +26,10 @@ typedef struct
   HdyDialerButton *number_btns[10];
   HdyDialerCycleButton *btn_hash, *btn_star, *cycle_btn;
   GtkButton *btn_submit, *btn_del;
+  GtkGesture *long_press_del_gesture;
   GString *number;
   gboolean show_action_buttons;
+  GtkReliefStyle relief;
 } HdyDialerPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (HdyDialer, hdy_dialer, GTK_TYPE_EVENT_BOX)
@@ -38,6 +40,7 @@ enum {
   PROP_SHOW_ACTION_BUTTONS,
   PROP_COLUMN_SPACING,
   PROP_ROW_SPACING,
+  PROP_RELIEF,
   PROP_LAST_PROP,
 };
 static GParamSpec *props[PROP_LAST_PROP];
@@ -104,7 +107,7 @@ cycle_button_clicked (HdyDialer            *self,
   g_signal_emit(self,
                 signals[SIGNAL_SYMBOL_CLICKED],
                 0,
-                hdy_dialer_button_get_letters (HDY_DIALER_BUTTON (btn))[0]);
+                hdy_dialer_button_get_symbols (HDY_DIALER_BUTTON (btn))[0]);
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_NUMBER]);
 }
@@ -168,10 +171,10 @@ press_btn (GtkButton *btn,
            gboolean   pressed)
 {
   if (pressed) {
-    gtk_button_set_relief (btn, GTK_RELIEF_NORMAL);
+    gtk_widget_set_state_flags (GTK_WIDGET (btn), GTK_STATE_FLAG_CHECKED, FALSE);
     gtk_button_clicked (btn);
   } else {
-    gtk_button_set_relief (btn, GTK_RELIEF_NONE);
+    gtk_widget_unset_state_flags (GTK_WIDGET (btn), GTK_STATE_FLAG_CHECKED);
   }
 }
 
@@ -217,6 +220,18 @@ grab_focus_cb (HdyDialer *dialer,
   gtk_widget_grab_focus (GTK_WIDGET (priv->number_btns[0]));
 }
 
+static void
+long_press_del_cb (GtkGestureLongPress *gesture,
+                   gdouble              x,
+                   gdouble              y,
+                   HdyDialer           *self)
+{
+  stop_cycle_mode (self);
+  hdy_dialer_clear_number (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_NUMBER]);
+  g_signal_emit (self, signals[SIGNAL_DELETED], 0);
+}
 
 static void
 hdy_dialer_finalize (GObject *object)
@@ -224,6 +239,7 @@ hdy_dialer_finalize (GObject *object)
   HdyDialerPrivate *priv = hdy_dialer_get_instance_private (HDY_DIALER (object));
 
   g_string_free (priv->number, TRUE);
+  g_object_unref (priv->long_press_del_gesture);
 
   G_OBJECT_CLASS (hdy_dialer_parent_class)->finalize (object);
 }
@@ -254,6 +270,10 @@ hdy_dialer_set_property (GObject      *object,
   case PROP_SHOW_ACTION_BUTTONS:
     hdy_dialer_set_show_action_buttons
       (self, g_value_get_boolean (value));
+    break;
+
+  case PROP_RELIEF:
+    hdy_dialer_set_relief (self, g_value_get_enum (value));
     break;
 
   default:
@@ -288,6 +308,10 @@ hdy_dialer_get_property (GObject    *object,
     g_value_set_boolean (value, priv->show_action_buttons);
     break;
 
+  case PROP_RELIEF:
+    g_value_set_enum (value, hdy_dialer_get_relief (self));
+    break;
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     break;
@@ -310,6 +334,11 @@ hdy_dialer_constructed (GObject *object)
                              G_CONNECT_SWAPPED);
   }
 
+  priv->long_press_del_gesture = gtk_gesture_long_press_new (GTK_WIDGET (priv->btn_del));
+  g_signal_connect (priv->long_press_del_gesture, "pressed",
+                    G_CALLBACK (long_press_del_cb), self);
+  gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (priv->long_press_del_gesture),
+                                              GTK_PHASE_BUBBLE);
   g_object_connect (priv->btn_star,
                     "swapped-signal::clicked", G_CALLBACK (cycle_button_clicked), self,
                     "swapped-signal::cycle-start", G_CALLBACK (cycle_start), self,
@@ -399,6 +428,19 @@ hdy_dialer_class_init (HdyDialerClass *klass)
                          0, G_MAXUINT, 0,
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyDialer:relief:
+   *
+   * The relief style of the edges of the main buttons.
+   */
+  props[PROP_RELIEF] =
+    g_param_spec_enum ("relief",
+                       _("Main buttons' border relief"),
+                       _("The border relief style of the main buttons"),
+                       GTK_TYPE_RELIEF_STYLE,
+                       GTK_RELIEF_NORMAL,
+                       G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
   g_object_class_install_properties (object_class, PROP_LAST_PROP, props);
 
   /**
@@ -472,6 +514,8 @@ hdy_dialer_class_init (HdyDialerClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, HdyDialer, btn_star);
   gtk_widget_class_bind_template_child_private (widget_class, HdyDialer, btn_submit);
   gtk_widget_class_bind_template_child_private (widget_class, HdyDialer, btn_del);
+
+  gtk_widget_class_set_css_name (widget_class, "hdydialer");
 }
 
 /**
@@ -493,6 +537,9 @@ hdy_dialer_init (HdyDialer *self)
   HdyDialerPrivate *priv = hdy_dialer_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
+  g_object_bind_property (self, "relief",
+                          priv->number_btns[0], "relief",
+                          G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
 
   priv->number = g_string_new (NULL);
   priv->cycle_btn = NULL;
@@ -605,4 +652,52 @@ hdy_dialer_set_show_action_buttons (HdyDialer *self,
 
   g_object_notify_by_pspec
     (G_OBJECT (self), props[PROP_SHOW_ACTION_BUTTONS]);
+}
+
+/**
+ * hdy_dialer_set_relief:
+ * @self: The #HdyDialer whose main buttons you want to set relief styles of
+ * @relief: The #GtkReliefStyle as described above
+ *
+ * Sets the relief style of the edges of the main buttons for the given
+ * #HdyDialer widget.
+ * Two styles exist, %GTK_RELIEF_NORMAL and %GTK_RELIEF_NONE.
+ * The default style is, as one can guess, %GTK_RELIEF_NORMAL.
+ */
+void
+hdy_dialer_set_relief (HdyDialer      *self,
+                       GtkReliefStyle  relief)
+{
+  HdyDialerPrivate *priv;
+
+  g_return_if_fail (HDY_IS_DIALER (self));
+
+  priv = hdy_dialer_get_instance_private (self);
+
+  if (priv->relief == relief)
+    return;
+
+  priv->relief = relief;
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_RELIEF]);
+}
+
+/**
+ * hdy_dialer_get_relief:
+ * @self: The #HdyDialer whose main buttons you want the #GtkReliefStyle from
+ *
+ * Returns the current relief style of the main buttons for the given
+ * #HdyDialer.
+ *
+ * Returns: The current #GtkReliefStyle
+ */
+GtkReliefStyle
+hdy_dialer_get_relief (HdyDialer *self)
+{
+  HdyDialerPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DIALER (self), GTK_RELIEF_NORMAL);
+
+  priv = hdy_dialer_get_instance_private (self);
+
+  return priv->relief;
 }

@@ -6,8 +6,8 @@ struct _ExampleWindow
 {
   GtkApplicationWindow parent_instance;
 
+  HdyLeaflet *header_box;
   HdyLeaflet *content_box;
-  GtkHeaderBar *header_bar;
   GtkButton *back;
   GtkStackSidebar *sidebar;
   GtkStack *stack;
@@ -15,11 +15,35 @@ struct _ExampleWindow
   HdyDialer *dialer;
   GtkLabel *display;
   GtkWidget *arrows;
+  GtkListBox *column_listbox;
+  HdyHeaderGroup *header_group;
   GtkAdjustment *adj_arrows_count;
   GtkAdjustment *adj_arrows_duration;
 };
 
 G_DEFINE_TYPE (ExampleWindow, example_window, GTK_TYPE_APPLICATION_WINDOW)
+
+static void
+list_box_separator_header_func (GtkListBoxRow *row,
+                                GtkListBoxRow *before,
+                                gpointer       user_data)
+{
+  GtkWidget *header;
+
+  if (before == NULL) {
+    gtk_list_box_row_set_header (row, NULL);
+
+    return;
+  }
+
+  header = gtk_list_box_row_get_header (row);
+  if (header != NULL)
+    return;
+
+  header = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
+  gtk_widget_show (header);
+  gtk_list_box_row_set_header (row, header);
+}
 
 static gboolean
 example_window_key_pressed_cb (GtkWidget     *sender,
@@ -41,10 +65,20 @@ example_window_key_pressed_cb (GtkWidget     *sender,
 static void
 update (ExampleWindow *self)
 {
-  HdyFold fold = hdy_leaflet_get_fold (self->content_box);
+  GtkWidget *header_child = hdy_leaflet_get_visible_child (self->header_box);
+  HdyFold fold = hdy_leaflet_get_fold (self->header_box);
 
-  gtk_header_bar_set_show_close_button (self->header_bar, fold == HDY_FOLD_FOLDED);
-  gtk_widget_set_visible (GTK_WIDGET (self->back), fold == HDY_FOLD_FOLDED);
+  g_assert (header_child == NULL || GTK_IS_HEADER_BAR (header_child));
+
+  hdy_header_group_set_focus (self->header_group, fold == HDY_FOLD_FOLDED ? GTK_HEADER_BAR (header_child) : NULL);
+}
+
+static void
+example_window_notify_header_visible_child_cb (GObject       *sender,
+                                               GParamSpec    *pspec,
+                                               ExampleWindow *self)
+{
+  update (self);
 }
 
 static void
@@ -236,8 +270,8 @@ example_window_class_init (ExampleWindowClass *klass)
   object_class->constructed = example_window_constructed;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/sm/puri/handy/example/ui/example-window.ui");
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, header_box);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, content_box);
-  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, header_bar);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, back);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, sidebar);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, stack);
@@ -245,9 +279,12 @@ example_window_class_init (ExampleWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, dialer);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, display);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, arrows);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, column_listbox);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, header_group);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, adj_arrows_count);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, adj_arrows_duration);
   gtk_widget_class_bind_template_callback_full (widget_class, "key_pressed_cb", G_CALLBACK(example_window_key_pressed_cb));
+  gtk_widget_class_bind_template_callback_full (widget_class, "notify_header_visible_child_cb", G_CALLBACK(example_window_notify_header_visible_child_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "notify_fold_cb", G_CALLBACK(example_window_notify_fold_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "notify_visible_child_cb", G_CALLBACK(example_window_notify_visible_child_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "back_clicked_cb", G_CALLBACK(example_window_back_clicked_cb));
@@ -266,8 +303,7 @@ static void
 example_window_init (ExampleWindow *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
+  gtk_list_box_set_header_func (self->column_listbox, list_box_separator_header_func, NULL, NULL);
 
   hdy_leaflet_set_visible_child (self->content_box, GTK_WIDGET (self->stack));
-
-  update (self);
 }

@@ -17,11 +17,11 @@
         <property name="visible">True</property>
         <child>
           <object class="HdyDialerButton" id="btn_1">
-            <property name="digit">1</property>
-            <property name="letters"/>
+            <property name="symbols">1</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">0</property>
@@ -30,11 +30,11 @@
         </child>
         <child>
           <object class="HdyDialerButton" id="btn_2">
-            <property name="digit">2</property>
-            <property name="letters">ABC</property>
+            <property name="symbols">2ABC</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">1</property>
@@ -43,11 +43,11 @@
         </child>
         <child>
           <object class="HdyDialerButton" id="btn_3">
-            <property name="digit">3</property>
-            <property name="letters">DEF</property>
+            <property name="symbols">3DEF</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">2</property>
@@ -56,11 +56,11 @@
         </child>
         <child>
           <object class="HdyDialerButton" id="btn_4">
-            <property name="digit">4</property>
-            <property name="letters">GHI</property>
+            <property name="symbols">4GHI</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">0</property>
@@ -69,11 +69,11 @@
         </child>
         <child>
           <object class="HdyDialerButton" id="btn_5">
-            <property name="digit">5</property>
-            <property name="letters">JKL</property>
+            <property name="symbols">5JKL</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">1</property>
@@ -82,11 +82,11 @@
         </child>
         <child>
           <object class="HdyDialerButton" id="btn_6">
-            <property name="digit">6</property>
-            <property name="letters">MNO</property>
+            <property name="symbols">6MNO</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">2</property>
@@ -95,11 +95,11 @@
         </child>
         <child>
           <object class="HdyDialerButton" id="btn_7">
-            <property name="digit">7</property>
-            <property name="letters">PQRS</property>
+            <property name="symbols">7PQRS</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">0</property>
@@ -108,11 +108,11 @@
         </child>
         <child>
           <object class="HdyDialerButton" id="btn_8">
-            <property name="digit">8</property>
-            <property name="letters">TUV</property>
+            <property name="symbols">8TUV</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">1</property>
@@ -121,11 +121,11 @@
         </child>
         <child>
           <object class="HdyDialerButton" id="btn_9">
-            <property name="digit">9</property>
-            <property name="letters">WXYZ</property>
+            <property name="symbols">9WXYZ</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">2</property>
@@ -134,11 +134,11 @@
         </child>
         <child>
           <object class="HdyDialerCycleButton" id="btn_star">
-            <property name="digit">-1</property>
-            <property name="letters">*+</property>
+            <property name="symbols">*+</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">0</property>
@@ -147,8 +147,7 @@
         </child>
         <child>
           <object class="HdyDialerButton" id="btn_0">
-            <property name="digit">0</property>
-            <property name="letters"/>
+            <property name="symbols">0</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -160,11 +159,11 @@
         </child>
         <child>
           <object class="HdyDialerCycleButton" id="btn_hash">
-            <property name="digit">-1</property>
-            <property name="letters">#</property>
+            <property name="symbols">#</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="relief" bind-source="btn_0" bind-property="relief" bind-flags="bidirectional|sync-create"/>
 	  </object>
           <packing>
             <property name="left_attach">2</property>

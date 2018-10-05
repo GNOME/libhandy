@@ -7,7 +7,10 @@ libhandy_resources = gnome.compile_resources(
    c_name: 'hdy',
 )
 
-hdy_enum_headers = ['hdy-arrows.h']
+hdy_enum_headers = ['hdy-arrows.h',
+                    'hdy-fold.h',
+                    'hdy-leaflet.h',
+                   ]
 
 version_data = configuration_data()
 version_data.set('HDY_MAJOR_VERSION', handy_version_major)
@@ -51,6 +54,7 @@ src_headers = [
   'hdy-dialer-cycle-button.h',
   'hdy-dialer.h',
   'hdy-fold.h',
+  'hdy-header-group.h',
   'hdy-leaflet.h',
   'hdy-string-utf8.h',
   'hdy-title-bar.h',
@@ -64,6 +68,7 @@ src_sources = [
   'hdy-dialer-cycle-button.c',
   'hdy-dialer.c',
   'hdy-fold.c',
+  'hdy-header-group.c',
   'hdy-leaflet.c',
   'hdy-string-utf8.c',
   'hdy-title-bar.c',
@@ -85,7 +90,7 @@ libhandy_sources = [
 libhandy_deps = [
   dependency('gio-2.0'),
   dependency('gmodule-2.0'),
-  dependency('gtk+-3.0'),
+  dependency('gtk+-3.0', version: '>= 3.24.1'),
   cc.find_library('m', required: false),
   cc.find_library('rt', required: false),
 ]

@@ -56,6 +56,7 @@
 enum {
   PROP_0,
   PROP_FOLD,
+  PROP_FOLDED,
   PROP_HHOMOGENEOUS_FOLDED,
   PROP_VHOMOGENEOUS_FOLDED,
   PROP_HHOMOGENEOUS_UNFOLDED,
@@ -731,6 +732,8 @@ hdy_leaflet_set_fold (HdyLeaflet *self,
 
   g_object_notify_by_pspec (G_OBJECT (self),
                             props[PROP_FOLD]);
+  g_object_notify_by_pspec (G_OBJECT (self),
+                            props[PROP_FOLDED]);
 }
 
 /**
@@ -2362,6 +2365,9 @@ hdy_leaflet_get_property (GObject    *object,
   case PROP_FOLD:
     g_value_set_enum (value, hdy_leaflet_get_fold (self));
     break;
+  case PROP_FOLDED:
+    g_value_set_boolean (value, hdy_leaflet_get_fold (self) == HDY_FOLD_FOLDED);
+    break;
   case PROP_HHOMOGENEOUS_FOLDED:
     g_value_set_boolean (value, hdy_leaflet_get_homogeneous (self, TRUE, GTK_ORIENTATION_HORIZONTAL));
     break;
@@ -2694,12 +2700,39 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                                     PROP_ORIENTATION,
                                     "orientation");
 
+  /**
+   * HdyLeaflet:fold:
+   *
+   * The fold of the leaflet.
+   *
+   * The leaflet will be folded if the size allocated to it is smaller than the
+   * sum of the natural size of its children, it will be unfolded otherwise.
+   *
+   * See also: #HdyLeaflet:folded.
+   */
   props[PROP_FOLD] =
     g_param_spec_enum ("fold",
                        _("Fold"),
                        _("Whether the widget is folded"),
                        HDY_TYPE_FOLD, HDY_FOLD_UNFOLDED,
                        G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyLeaflet:folded:
+   *
+   * %TRUE if the leaflet is folded.
+   *
+   * This is similar to the #HdyLeaflet:fold property but expressed as a
+   * #gboolean rather than a #GEnum. This makes it convenient to bind the
+   * #HdyLeaflet:fold of a leaflet to any other #gboolean property of other
+   * #GObject's using #g_object_bind_property().
+   */
+  props[PROP_FOLDED] =
+    g_param_spec_boolean ("folded",
+                          _("Folded"),
+                          _("Whether the widget is folded"),
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * HdyLeaflet:hhomogeneous_folded:
@@ -2815,6 +2848,8 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                          G_PARAM_READWRITE);
 
   gtk_container_class_install_child_properties (container_class, LAST_CHILD_PROP, child_props);
+
+  gtk_widget_class_set_css_name (widget_class, "hdyleaflet");
 }
 
 GtkWidget *
@@ -2853,46 +2888,3 @@ hdy_leaflet_buildable_init (GtkBuildableIface *iface)
 {
 }
 
-GType
-hdy_leaflet_mode_transition_type_get_type (void)
-{
-  static volatile gsize hdy_leaflet_mode_transition_type_type = 0;
-
-  if (g_once_init_enter (&hdy_leaflet_mode_transition_type_type)) {
-    static const GEnumValue values[] = {
-      { HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE, "HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE", "none" },
-      { HDY_LEAFLET_MODE_TRANSITION_TYPE_SLIDE, "HDY_LEAFLET_MODE_TRANSITION_TYPE_SLIDE", "slide" },
-      { 0, NULL, NULL },
-    };
-    GType type;
-
-    type = g_enum_register_static ("HdyLeafletModeTransitionType", values);
-
-    g_once_init_leave (&hdy_leaflet_mode_transition_type_type, type);
-  }
-
-  return hdy_leaflet_mode_transition_type_type;
-}
-
-GType
-hdy_leaflet_child_transition_type_get_type (void)
-{
-  static volatile gsize hdy_leaflet_child_transition_type_type = 0;
-
-  if (g_once_init_enter (&hdy_leaflet_child_transition_type_type)) {
-    static const GEnumValue values[] = {
-      { HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE, "HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE", "none" },
-      { HDY_LEAFLET_CHILD_TRANSITION_TYPE_CROSSFADE, "HDY_LEAFLET_CHILD_TRANSITION_TYPE_CROSSFADE", "crossfade" },
-      { HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE, "HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE", "slide" },
-      { HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER, "HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER", "over" },
-      { 0, NULL, NULL },
-    };
-    GType type;
-
-    type = g_enum_register_static ("HdyLeafletChildTransitionType", values);
-
-    g_once_init_leave (&hdy_leaflet_child_transition_type_type, type);
-  }
-
-  return hdy_leaflet_child_transition_type_type;
-}

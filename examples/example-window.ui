@@ -33,11 +33,14 @@
             <property name="mode-transition-type">slide</property>
             <property name="child-transition-type">slide</property>
             <property name="visible-child-name" bind-source="content_box" bind-property="visible-child-name" bind-flags="sync-create"/>
+            <signal name="notify::visible-child" handler="notify_header_visible_child_cb" swapped="no"/>
+            <signal name="notify::fold" handler="notify_fold_cb" after="yes" swapped="no"/>
             <child>
               <object class="GtkHeaderBar" id="header_bar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="title">Handy Widget Factory</property>
+                <property name="show_close_button">True</property>
               </object>
               <packing>
                 <property name="name">sidebar</property>
@@ -64,6 +67,7 @@
                     <property name="receives_default">False</property>
                     <property name="valign">center</property>
                     <property name="use-underline">True</property>
+                    <property name="visible" bind-source="header_box" bind-property="folded" bind-flags="sync-create"/>
                     <signal name="clicked" handler="back_clicked_cb"/>
                     <style>
                       <class name="image-button"/>
@@ -98,7 +102,6 @@
         <property name="can_focus">False</property>
         <property name="mode_transition_type">slide</property>
         <property name="child_transition_type">slide</property>
-        <signal name="notify::fold" handler="notify_fold_cb" after="yes" swapped="no"/>
         <child>
           <object class="GtkStackSidebar" id="sidebar">
             <property name="width_request">270</property>
@@ -156,6 +159,8 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
+                    <property name="margin_start">12</property>
+                    <property name="margin_end">12</property>
                     <child>
                       <object class="GtkLabel" id="label">
                         <property name="visible">True</property>
@@ -164,7 +169,8 @@
                         <property name="halign">center</property>
                         <property name="margin_bottom">12</property>
                         <property name="label" translatable="yes">Welcome to Handy</property>
-                        <property name="xalign">0</property>
+                        <property name="justify">center</property>
+                        <property name="wrap">True</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                           <attribute name="scale" value="2"/>
@@ -182,6 +188,8 @@
                         <property name="can_focus">False</property>
                         <property name="opacity">0.5</property>
                         <property name="label" translatable="yes">This is a tour of the widgets the library has to offer.</property>
+                        <property name="justify">center</property>
+                        <property name="wrap">True</property>
                         <property name="use_markup">True</property>
                       </object>
                       <packing>
@@ -204,42 +212,57 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="box_dialer">
+              <object class="HdyColumn">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="orientation">vertical</property>
+                <property name="maximum-width">300</property>
+                <property name="linear-growth-width">300</property>
+                <property name="margin-top">32</property>
+                <property name="margin-bottom">32</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
                 <child>
-                  <object class="GtkLabel" id="display">
+                  <object class="GtkBox" id="box_dialer">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="single_line_mode">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="HdyDialer" id="dialer">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="column_spacing">10</property>
-                    <property name="halign">center</property>
-                    <property name="row_spacing">8</property>
                     <property name="valign">center</property>
-                    <property name="width_request">300</property>
-                    <signal name="deleted" handler="deleted_cb" after="yes" swapped="no"/>
-                    <signal name="submitted" handler="submitted_cb" after="yes" swapped="no"/>
-                    <signal name="symbol-clicked" handler="symbol_clicked_cb" after="yes" swapped="no"/>
+                    <property name="hexpand">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkLabel" id="display">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="single_line_mode">True</property>
+                        <attributes>
+                          <attribute name="scale" value="1.6"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="HdyDialer" id="dialer">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="column_spacing">10</property>
+                        <property name="hexpand">True</property>
+                        <property name="row_spacing">8</property>
+                        <property name="valign">center</property>
+                        <signal name="deleted" handler="deleted_cb" after="yes" swapped="no"/>
+                        <signal name="submitted" handler="submitted_cb" after="yes" swapped="no"/>
+                        <signal name="symbol-clicked" handler="symbol_clicked_cb" after="yes" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
               <packing>
@@ -445,8 +468,8 @@
                 <property name="halign">fill</property>
                 <property name="valign">fill</property>
                 <property name="margin-bottom">32</property>
-                <property name="margin-left">24</property>
-                <property name="margin-right">24</property>
+                <property name="margin-left">12</property>
+                <property name="margin-right">12</property>
                 <property name="margin-top">32</property>
                 <property name="expand">True</property>
                 <property name="maximum-width" bind-source="column_width_adjustment" bind-property="value" bind-flags="sync-create"/>
@@ -514,8 +537,9 @@
                                 <property name="opacity">0.5</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">This column smoothly grows up to a maximum width.</property>
-                                <property name="justify">left</property>
+                                <property name="justify">center</property>
                                 <property name="use_markup">true</property>
+                                <property name="wrap">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -551,7 +575,7 @@
                         <property name="expand">True</property>
                         <property name="margin-bottom">32</property>
                         <child>
-                          <object class="GtkListBox">
+                          <object class="GtkListBox" id="column_listbox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="expand">True</property>
@@ -570,8 +594,9 @@
                                     <property name="xalign">0</property>
                                     <property name="margin-bottom">18</property>
                                     <property name="margin-left">20</property>
-                                    <property name="margin-right">20</property>
+                                    <property name="margin-right">6</property>
                                     <property name="margin-top">18</property>
+                                    <property name="ellipsize">end</property>
                                   </object>
                                   <packing>
                                     <property name="expand">True</property>
@@ -610,8 +635,9 @@
                                     <property name="xalign">0</property>
                                     <property name="margin-bottom">18</property>
                                     <property name="margin-left">20</property>
-                                    <property name="margin-right">20</property>
+                                    <property name="margin-right">6</property>
                                     <property name="margin-top">18</property>
+                                    <property name="ellipsize">end</property>
                                   </object>
                                   <packing>
                                     <property name="expand">True</property>
@@ -669,6 +695,12 @@
       <widget name="sub_header_bar"/>
       <widget name="stack"/>
     </widgets>
+  </object>
+  <object class="HdyHeaderGroup" id="header_group">
+    <headerbars>
+      <headerbar name="header_bar"/>
+      <headerbar name="sub_header_bar"/>
+    </headerbars>
   </object>
   <object class="GtkAdjustment" id="column_width_adjustment">
     <property name="lower">0</property>

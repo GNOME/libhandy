@@ -21,12 +21,13 @@ test_link_args = [
 test_names = [
   'test-arrows',
   'test-dialer',
-  'test-string-utf8',
   'test-dialer-cycle-button',
+  'test-header-group',
+  'test-string-utf8',
 ]
 
 foreach test_name : test_names
-  t = executable(test_name, test_name + '.c',
+  t = executable(test_name, [test_name + '.c'] + libhandy_generated_headers,
 		 c_args: test_cflags,
 		 link_args: test_link_args,
 		 dependencies: libhandy_deps + [libhandy_dep],
