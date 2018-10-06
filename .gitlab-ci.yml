@@ -25,6 +25,24 @@ build-debian-gcc:
     paths:
       - _build
 
+build-debian-clang:
+  image: debian:buster
+  before_script:
+    - apt-get -y update
+    - apt-get -y install build-essential clang-3.9
+    - apt-get -y build-dep .
+  tags:
+    - librem5
+  stage: build
+  script:
+    - export LC_ALL=C.UTF-8
+    - meson . _build
+    - ninja -C _build scan-build
+  artifacts:
+    when: always
+    paths:
+      - _build/meson-logs/scanbuild
+
 build-debian-package:
   image: debian:buster
   tags:
