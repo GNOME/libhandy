@@ -1,0 +1,28 @@
+From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Date: Fri, 5 Oct 2018 21:02:05 +0200
+Subject: meson: Properly depend on the generated headers
+
+This fixes dependency problems with the generated headers such as
+
+    https://arm01.puri.sm/job/debs/job/deb-libhandy-buster-armhf/263/console
+
+See
+
+    http://mesonbuild.com/Wrap-best-practices-and-tips.html#eclare-generated-headers-explicitly
+---
+ src/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/meson.build b/src/meson.build
+index 25eea68..63fc56c 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -113,7 +113,7 @@ libhandy = shared_library(
+ )
+ 
+ libhandy_dep = declare_dependency(
+-              sources: libhandy_public_headers,
++              sources: libhandy_generated_headers,
+          dependencies: libhandy_deps,
+             link_with: libhandy,
+   include_directories: include_directories('.'),
