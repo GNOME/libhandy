@@ -1,3 +1,17 @@
+libhandy (0.0.4-2) unstable; urgency=medium
+
+  [ Guido Günther ]
+  * [9651d62] meson: Properly depend on the generated headers
+    Fixes FTBFS.
+  * [c48897d] d/control: Mark buil-deps for tests as <!nocheck>
+
+  [ Jeremy Bicha ]
+  * [84d9e5c] Have libhandy-0.0-dev depend on libgtk-3-dev (Closes: #910384)
+  * [b3ea207] Use dh --with gir
+  * [3a82073] Simplify debian/rules
+
+ -- Guido Günther <agx@sigxcpu.org>  Sat, 06 Oct 2018 14:25:32 +0200
+
 libhandy (0.0.4-1) unstable; urgency=medium
 
   * New upstream version
