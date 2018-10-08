@@ -1,50 +1,81 @@
 /*
+ * glade-gtk-size-group.c - GladeWidgetAdaptor for GtkSizeGroup
+ *
+ * Copyright (C) 2013 Tristan Van Berkom
  * Copyright (C) 2018 Purism SPC
  *
- * SPDX-License-Identifier: LGPL-2.1+
+ * Authors:
+ *     Tristan Van Berkom <tristan.van.berkom@gmail.com>
+ *     Adrien Plazas <adrien.plazas@puri.sm>
  *
- * Based on
- * glade-gtk-size-group.c - GladeWidgetAdaptor for GtkSizeGroup
- * Copyright (C) 2013 Tristan Van Berkom
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "glade-hdy-header-group.h"
+/*
+ * This has been copied and modified from glade-gtk-size-group.c from Glade's
+ * GTK+ plugin.
+ */
 
 #include <config.h>
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
+#define HANDY_USE_UNSTABLE_API
+#include <handy.h>
 
-#define GLADE_TAG_HEADERGROUP_WIDGETS "headerbars"
-#define GLADE_TAG_HEADERGROUP_WIDGET  "headerbar"
+#define GLADE_TAG_HEADERGROUP_HEADERBARS "headerbars"
+#define GLADE_TAG_HEADERGROUP_HEADERBAR  "headerbar"
 
+void glade_hdy_header_group_read_widget (GladeWidgetAdaptor *adaptor,
+                                         GladeWidget        *widget,
+                                         GladeXmlNode       *node);
+void glade_hdy_header_group_write_widget (GladeWidgetAdaptor *adaptor,
+                                          GladeWidget        *widget,
+                                          GladeXmlContext    *context,
+                                          GladeXmlNode       *node);
+void glade_hdy_header_group_set_property (GladeWidgetAdaptor *adaptor,
+                                          GObject            *object,
+                                          const gchar        *property_name,
+                                          const GValue       *value);
 
 static void
-glade_hdy_header_group_read_widgets (GladeWidget *widget, GladeXmlNode *node)
+glade_hdy_header_group_read_widgets (GladeWidget  *widget,
+                                     GladeXmlNode *node)
 {
   GladeXmlNode *widgets_node;
   GladeProperty *property;
   gchar *string = NULL;
 
   if ((widgets_node =
-       glade_xml_search_child (node, GLADE_TAG_HEADERGROUP_WIDGETS)) != NULL) {
-    GladeXmlNode *n;
+       glade_xml_search_child (node, GLADE_TAG_HEADERGROUP_HEADERBARS)) != NULL) {
+    GladeXmlNode *node;
 
-    for (n = glade_xml_node_get_children (widgets_node);
-         n; n = glade_xml_node_next (n)) {
+    for (node = glade_xml_node_get_children (widgets_node);
+         node; node = glade_xml_node_next (node)) {
       gchar *widget_name, *tmp;
 
-      if (!glade_xml_node_verify (n, GLADE_TAG_HEADERGROUP_WIDGET))
+      if (!glade_xml_node_verify (node, GLADE_TAG_HEADERGROUP_HEADERBAR))
         continue;
 
       widget_name = glade_xml_get_property_string_required
-        (n, GLADE_TAG_NAME, NULL);
+          (node, GLADE_TAG_NAME, NULL);
 
-      if (string == NULL) {
+      if (string == NULL)
         string = widget_name;
-      } else if (widget_name != NULL) {
-        tmp =
-          g_strdup_printf ("%s%s%s", string, GPC_OBJECT_DELIMITER,
-                           widget_name);
+      else if (widget_name != NULL) {
+        tmp = g_strdup_printf ("%s%s%s", string, GPC_OBJECT_DELIMITER,
+                               widget_name);
         string = (g_free (string), tmp);
         g_free (widget_name);
       }
@@ -66,8 +97,8 @@ glade_hdy_header_group_read_widgets (GladeWidget *widget, GladeXmlNode *node)
 
 void
 glade_hdy_header_group_read_widget (GladeWidgetAdaptor *adaptor,
-                                  GladeWidget        *widget,
-                                  GladeXmlNode       *node)
+                                    GladeWidget        *widget,
+                                    GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
         glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
@@ -82,25 +113,24 @@ glade_hdy_header_group_read_widget (GladeWidgetAdaptor *adaptor,
 
 static void
 glade_hdy_header_group_write_widgets (GladeWidget     *widget,
-                                    GladeXmlContext *context,
-                                    GladeXmlNode    *node)
+                                      GladeXmlContext *context,
+                                      GladeXmlNode    *node)
 {
   GladeXmlNode *widgets_node, *widget_node;
   GList *widgets = NULL, *list;
   GladeWidget *awidget;
 
-  widgets_node = glade_xml_node_new (context, GLADE_TAG_HEADERGROUP_WIDGETS);
+  widgets_node = glade_xml_node_new (context, GLADE_TAG_HEADERGROUP_HEADERBARS);
 
-  if (glade_widget_property_get (widget, "headerbars", &widgets)) {
+  if (glade_widget_property_get (widget, "headerbars", &widgets))
     for (list = widgets; list; list = list->next) {
       awidget = glade_widget_get_from_gobject (list->data);
       widget_node =
-        glade_xml_node_new (context, GLADE_TAG_HEADERGROUP_WIDGET);
+          glade_xml_node_new (context, GLADE_TAG_HEADERGROUP_HEADERBAR);
       glade_xml_node_append_child (widgets_node, widget_node);
       glade_xml_node_set_property_string (widget_node, GLADE_TAG_NAME,
                                           glade_widget_get_name (awidget));
     }
-  }
 
   if (!glade_xml_node_get_children (widgets_node))
     glade_xml_node_delete (widgets_node);
@@ -111,9 +141,9 @@ glade_hdy_header_group_write_widgets (GladeWidget     *widget,
 
 void
 glade_hdy_header_group_write_widget (GladeWidgetAdaptor *adaptor,
-                                   GladeWidget        *widget,
-                                   GladeXmlContext    *context,
-                                   GladeXmlNode       *node)
+                                     GladeWidget        *widget,
+                                     GladeXmlContext    *context,
+                                     GladeXmlNode       *node)
 {
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
         glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
@@ -128,9 +158,9 @@ glade_hdy_header_group_write_widget (GladeWidgetAdaptor *adaptor,
 
 void
 glade_hdy_header_group_set_property (GladeWidgetAdaptor *adaptor,
-                                   GObject            *object,
-                                   const gchar        *property_name,
-                                   const GValue       *value)
+                                     GObject            *object,
+                                     const gchar        *property_name,
+                                     const GValue       *value)
 {
   if (!strcmp (property_name, "headerbars")) {
     GSList *sg_widgets, *slist;
