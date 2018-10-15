@@ -555,6 +555,10 @@ hdy_header_group_dispose (GObject *object)
 
   G_OBJECT_CLASS (hdy_header_group_parent_class)->dispose (object);
 
+  for (GSList *elem = priv->header_bars; elem; elem = elem->next) {
+    GtkHeaderBar *bar = GTK_HEADER_BAR (elem->data);
+    g_signal_handlers_disconnect_by_data (bar, self);
+  }
   g_slist_free_full (priv->header_bars, (GDestroyNotify) g_object_unref);
   priv->header_bars = NULL;
 }
