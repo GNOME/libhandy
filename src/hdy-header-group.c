@@ -159,8 +159,8 @@ hdy_header_group_add_header_bar (HdyHeaderGroup *self,
 
   priv = hdy_header_group_get_instance_private (self);
 
-  g_signal_connect_swapped (header_bar, "map", G_CALLBACK (update_decoration_layouts), self);
-  g_signal_connect_swapped (header_bar, "unmap", G_CALLBACK (update_decoration_layouts), self);
+  g_signal_connect_object (header_bar, "map", G_CALLBACK (update_decoration_layouts), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (header_bar, "unmap", G_CALLBACK (update_decoration_layouts), self, G_CONNECT_SWAPPED);
   priv->header_bars = g_slist_prepend (priv->header_bars, g_object_ref_sink (header_bar));
 
   update_decoration_layouts (self);
