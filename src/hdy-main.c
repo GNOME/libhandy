@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1+
  */
 #include "config.h"
-#include "hdy-main.h"
+#include "hdy-main-private.h"
 #include <glib/gi18n.h>
 
 static gint hdy_initialized = FALSE;
@@ -41,6 +41,10 @@ hdy_init (int *argc, char ***argv)
   textdomain (GETTEXT_PACKAGE);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  /* Initializes the public GObject types, which is needed to ensure they are
+   * discoverable, for example so they can easily be used with GtkBuilder.
+   */
+  hdy_init_public_types ();
 
   hdy_initialized = TRUE;
 
