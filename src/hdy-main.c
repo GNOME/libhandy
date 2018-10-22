@@ -42,6 +42,19 @@ hdy_init (int *argc, char ***argv)
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
 
+  g_type_ensure (HDY_TYPE_ARROWS);
+  g_type_ensure (HDY_TYPE_ARROWS_DIRECTION);
+  g_type_ensure (HDY_TYPE_COLUMN);
+  g_type_ensure (HDY_TYPE_DIALER);
+  g_type_ensure (HDY_TYPE_DIALER_BUTTON);
+  g_type_ensure (HDY_TYPE_DIALER_CYCLE_BUTTON);
+  g_type_ensure (HDY_TYPE_FOLD);
+  g_type_ensure (HDY_TYPE_HEADER_GROUP);
+  g_type_ensure (HDY_TYPE_LEAFLET);
+  g_type_ensure (HDY_TYPE_LEAFLET_CHILD_TRANSITION_TYPE);
+  g_type_ensure (HDY_TYPE_LEAFLET_MODE_TRANSITION_TYPE);
+  g_type_ensure (HDY_TYPE_TITLE_BAR);
+
   hdy_initialized = TRUE;
 
   return TRUE;
