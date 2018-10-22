@@ -61,6 +61,17 @@ src_headers = [
   'hdy-title-bar.h',
 ]
 
+sed = find_program('sed', required: true)
+
+public_types = custom_target('hdy-public-types.c',
+  output : 'hdy-public-types.c',
+  input : [src_headers, libhandy_generated_headers],
+  command : [sed, '-E', '-n', '-e', 's/^#define +(HDY_TYPE_[A-Z0-9_]+) +.*/g_type_ensure (\\1)/p', '@INPUT@'],
+  capture: true,
+  install : true,
+  install_dir : 'subdir',
+)
+
 src_sources = [
   'gtkprogresstracker.c',
   'hdy-arrows.c',
