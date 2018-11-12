@@ -56,9 +56,22 @@ src_headers = [
   'hdy-fold.h',
   'hdy-header-group.h',
   'hdy-leaflet.h',
+  'hdy-main.h',
   'hdy-string-utf8.h',
   'hdy-title-bar.h',
 ]
+
+sed = find_program('sed', required: true)
+gen_public_types = find_program('gen-public-types.sh', required: true)
+
+libhandy_init_public_types = custom_target('hdy-public-types.c',
+  output : 'hdy-public-types.c',
+  input : [src_headers, libhandy_generated_headers],
+  command : [gen_public_types, '@INPUT@'],
+  capture: true,
+  install : true,
+  install_dir : 'subdir',
+)
 
 src_sources = [
   'gtkprogresstracker.c',
@@ -70,6 +83,7 @@ src_sources = [
   'hdy-fold.c',
   'hdy-header-group.c',
   'hdy-leaflet.c',
+  'hdy-main.c',
   'hdy-string-utf8.c',
   'hdy-title-bar.c',
 ]
@@ -85,35 +99,45 @@ libhandy_sources = [
   libhandy_public_sources,
   libhandy_private_sources,
   libhandy_resources,
+  libhandy_init_public_types,
 ]
 
+glib_min_version = '>= 2.44'
+
 libhandy_deps = [
-  dependency('gio-2.0'),
-  dependency('gmodule-2.0'),
+  dependency('glib-2.0', version: glib_min_version),
+  dependency('gio-2.0', version: glib_min_version),
+  dependency('gmodule-2.0', version: glib_min_version),
   dependency('gtk+-3.0', version: '>= 3.24.1'),
   cc.find_library('m', required: false),
   cc.find_library('rt', required: false),
 ]
 
+libhandy_c_args = []
+libhandy_link_args = []
 libhandy_symbols_file = 'libhandy.syms'
-libhandy_symbols_flag = '-Wl,--version-script,@0@/@1@'.format(meson.source_root(),
-                                                              libhandy_symbols_file)
 
-libhandy_args = []
+# Check linker flags
+ld_version_script_arg = '-Wl,--version-script,@0@/@1@'.format(meson.source_root(),
+                                                              libhandy_symbols_file)
+if cc.links('int main() { return 0; }', args : ld_version_script_arg, name : 'ld_supports_version_script')
+  libhandy_link_args += [ld_version_script_arg]
+endif
+
 libhandy = shared_library(
   'handy-' + apiversion,
   libhandy_sources,
 
             soversion: 0,
-               c_args: libhandy_args,
+               c_args: libhandy_c_args,
          dependencies: libhandy_deps,
   include_directories: [ root_inc, src_inc ],
               install: true,
-            link_args: libhandy_symbols_flag,
+            link_args: libhandy_link_args,
 )
 
 libhandy_dep = declare_dependency(
-              sources: libhandy_public_headers,
+              sources: libhandy_generated_headers,
          dependencies: libhandy_deps,
             link_with: libhandy,
   include_directories: include_directories('.'),
