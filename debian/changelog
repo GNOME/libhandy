@@ -1,3 +1,9 @@
+libhandy (0.0.5-1) experimental; urgency=medium
+
+  * New upstream version
+
+ -- Guido Günther <agx@sigxcpu.org>  Mon, 12 Nov 2018 08:51:01 +0100
+
 libhandy (0.0.4-2) unstable; urgency=medium
 
   [ Guido Günther ]
