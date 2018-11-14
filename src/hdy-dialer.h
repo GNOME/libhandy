@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1+
  */
 
-#ifndef HDY_DIALER_H
-#define HDY_DIALER_H
+#pragma once
 
 #if !defined(_HANDY_INSIDE) && !defined(HANDY_COMPILATION)
 #error "Only <handy.h> can be included directly."
@@ -45,5 +44,3 @@ void             hdy_dialer_set_show_action_buttons (HdyDialer  *self,
                                                      gboolean    show);
 
 G_END_DECLS
-
-#endif /* HDY_DIALER_H */
