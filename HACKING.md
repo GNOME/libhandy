@@ -60,6 +60,12 @@ Everything besides functions and structs have the opening curly brace on the sam
     }
 
 
+Header Inclusion Guards
+-----------------------
+Guard header inclusion with `#pragma once` rather than the traditional
+`#ifndef`-`#define`-`#endif` trio.
+
+
 Signals
 -------
 Prefix signal enum names with *SIGNAL_*.
