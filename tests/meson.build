@@ -25,6 +25,7 @@ test_names = [
   'test-dialer',
   'test-dialer-cycle-button',
   'test-expander-row',
+  'test-dialog',
   'test-header-group',
   'test-search-bar',
   'test-string-utf8',
