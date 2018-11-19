@@ -14,9 +14,13 @@
  * @Title: HdyDialog
  */
 
+/* Point at which we switch to mobile view */
+#define SNAP_POINT 500
+
 typedef struct {
   GtkWindow *parent;
   gulong     size_handler;
+  gint       old_width, old_height;
 } HdyDialogPrivate;
 
 static void hdy_dialog_buildable_init (GtkBuildableIface  *iface);
@@ -24,6 +28,25 @@ static void hdy_dialog_buildable_init (GtkBuildableIface  *iface);
 G_DEFINE_TYPE_WITH_CODE (HdyDialog, hdy_dialog, GTK_TYPE_DIALOG,
                          G_ADD_PRIVATE (HdyDialog)
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE, hdy_dialog_buildable_init))
+
+static gboolean
+hdy_dialog_delete_event (GtkWidget   *widget,
+                         GdkEventAny *event)
+{
+  HdyDialog        *self = HDY_DIALOG (widget);
+  HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
+
+  /* If we had a parent disconnect from it */
+  if (priv->parent) {
+    g_signal_handler_disconnect (G_OBJECT (priv->parent), priv->size_handler);
+  }
+
+  if (GTK_WIDGET_CLASS (hdy_dialog_parent_class)->delete_event) {
+    return GTK_WIDGET_CLASS (hdy_dialog_parent_class)->delete_event (widget,
+                                                                     event);
+  }
+  return FALSE;
+}
 
 /* <= 3.24.1 never actually emits notify::transient-for so 
  * we have this hacky workaround */
@@ -74,10 +97,13 @@ hdy_dialog_set_property (GObject      *object,
 static void
 hdy_dialog_class_init (HdyDialogClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->get_property = hdy_dialog_get_property;
   object_class->set_property = hdy_dialog_set_property;
+
+  widget_class->delete_event = hdy_dialog_delete_event;
 
   g_object_class_override_property (object_class,
                                     PROP_TRANSIENT_FOR,
@@ -89,6 +115,9 @@ hdy_dialog_class_init (HdyDialogClass *klass)
 static void
 hdy_dialog_class_init (HdyDialogClass *klass)
 {
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  widget_class->delete_event = hdy_dialog_delete_event;
 }
 
 #endif
@@ -98,25 +127,54 @@ size_cb (GtkWidget    *widget,
          GdkRectangle *allocation,
          gpointer      user_data)
 {
-  g_message ("Size!");
+  HdyDialog        *self = HDY_DIALOG (user_data);
+  HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
+  gint              width, height;
+
+  /* We expect to have two windows */
+  g_return_if_fail (GTK_IS_WINDOW (widget));
+  g_return_if_fail (GTK_IS_WINDOW (self));
+
+  /* Get the size of the parent */
+  gtk_window_get_size (GTK_WINDOW (widget), &width, &height);
+
+  /* When we are below the snap point */
+  if (width < SNAP_POINT) {
+    /* When no size is cached, cache the current size */
+    if (!priv->old_width || !priv->old_height) {
+      gtk_window_get_size (GTK_WINDOW (self), &priv->old_width, &priv->old_height);
+    }
+    /* Resize the dialog to match the parent */
+    gtk_window_resize (GTK_WINDOW (self), width, height);
+  } else if (priv->old_width || priv->old_height) {
+    g_message ("Size!");
+    /* Restore the cached size */
+    gtk_window_resize (GTK_WINDOW (self), priv->old_width, priv->old_height);
+    /* Clear cached size */
+    priv->old_width = 0;
+    priv->old_height = 0;
+  }
 }
 
 static void
-transient_cb (GObject    *self,
+transient_cb (GObject    *object,
               GParamSpec *pspec,
               gpointer    user_data)
 {
-  HdyDialogPrivate *priv = hdy_dialog_get_instance_private (HDY_DIALOG (self));
+  HdyDialog        *self = HDY_DIALOG (object);
+  HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
 
-  g_message ("Set parent");
-
+  /* If we are being reparented disconnect from the old one */
   if (priv->parent) {
     g_signal_handler_disconnect (G_OBJECT (priv->parent), priv->size_handler);
   }
 
+  /* Get the dialogs new parent */
   priv->parent = gtk_window_get_transient_for (GTK_WINDOW (self));
 
+  /* Check we actually have a parent */
   if (priv->parent) {
+    /* Listen for the parent resizing */
     priv->size_handler = g_signal_connect (G_OBJECT (priv->parent),
                                            "size-allocate",
                                            G_CALLBACK (size_cb),
@@ -131,6 +189,9 @@ hdy_dialog_init (HdyDialog *self)
 
   priv->parent = NULL;
   priv->size_handler = 0;
+
+  priv->old_width = 0;
+  priv->old_height = 0;
 
   g_signal_connect (G_OBJECT (self), "notify::transient-for",
                     G_CALLBACK (transient_cb), NULL);
