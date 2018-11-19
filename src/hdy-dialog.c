@@ -29,13 +29,15 @@
  * to ensure they don't overflow the screen
  * 
  * #HdyDialog works best when #GtkDialog:use-header-bar is %TRUE (which is 
- * the case when using #hdy_dialog_new)
+ * the case when using hdy_dialog_new())
  * 
  * Design Information: [GitLab Issue](https://source.puri.sm/Librem5/libhandy/issues/52)
  * 
  * Ideally when using #HdyDialog you shouldn't need to know you are using
  * it rather than #GtkDialog however there are some notable differences:
- * #GtkWindow:modal is %TRUE by default as is #GtkWindow:destroy-with-parent
+ * #GtkWindow:modal is %TRUE by default as is #GtkWindow:destroy-with-parent as
+ * the behaviour demonstrated by #HdyDialog would be a bad user experiance
+ * when not moda
  */
 
 /* Point at which we switch to mobile view */
@@ -50,11 +52,8 @@ typedef struct {
   gboolean   no_actions;
 } HdyDialogPrivate;
 
-static void hdy_dialog_buildable_init (GtkBuildableIface  *iface);
-
 G_DEFINE_TYPE_WITH_CODE (HdyDialog, hdy_dialog, GTK_TYPE_DIALOG,
-                         G_ADD_PRIVATE (HdyDialog)
-                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE, hdy_dialog_buildable_init))
+                         G_ADD_PRIVATE (HdyDialog))
 
 static void
 update_titlebar (HdyDialog *self,
@@ -87,6 +86,50 @@ update_titlebar (HdyDialog *self,
   }
 }
 
+/* Controls the dialog size, called in reposnse to a GtkWidget::size-allocate
+ * on the parent of GtkWidget::realize on the dialog */
+static void
+handle_size (HdyDialog *self, GtkWindow *parent)
+{
+  HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
+  gint              width, height;
+  gboolean          maximized;
+  gboolean          is_small;
+
+  if (parent == NULL) return;
+
+  /* Get the size of the parent */
+  gtk_window_get_size (parent, &width, &height);
+  maximized = gtk_window_is_maximized (parent);
+
+  /* The "Should we use mobile view™" logic
+   * Basically: When tall & narrow (but possibly desktop) or
+   *            when short & long (but only mobile)
+   * Of course we are assuming being short & long &
+   * maximised only happens on mobile
+   */
+  is_small = ((             width <= SNAP_POINT_A && height <= SNAP_POINT_B) ||
+              (maximized && width <= SNAP_POINT_B && height <= SNAP_POINT_A));
+
+  /* When we are below the snap point */
+  if (is_small) {
+    /* When no size is cached, cache the current size */
+    if (!priv->old_width || !priv->old_height) {
+      gtk_window_get_size (GTK_WINDOW (self), &priv->old_width, &priv->old_height);
+      update_titlebar (self, is_small);
+    }
+    /* Resize the dialog to match the parent */
+    gtk_window_resize (GTK_WINDOW (self), width, height);
+  } else if (priv->old_width || priv->old_height) {
+    /* Restore the cached size */
+    gtk_window_resize (GTK_WINDOW (self), priv->old_width, priv->old_height);
+    update_titlebar (self, is_small);
+    /* Clear cached size */
+    priv->old_width = 0;
+    priv->old_height = 0;
+  }
+}
+
 static void
 hdy_dialog_realize (GtkWidget *widget)
 {
@@ -113,6 +156,8 @@ hdy_dialog_realize (GtkWidget *widget)
       gtk_header_bar_pack_start (GTK_HEADER_BAR (titlebar), priv->closebtn);
     }
   }
+
+  handle_size (self, gtk_window_get_transient_for (GTK_WINDOW (self)));
 
   /* If this is null things are very bad, but check anyway */
   if (GTK_WIDGET_CLASS (hdy_dialog_parent_class)->realize) {
@@ -218,42 +263,9 @@ size_cb (GtkWidget    *widget,
          GdkRectangle *allocation,
          gpointer      user_data)
 {
-  HdyDialog        *self = HDY_DIALOG (user_data);
-  HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
-  gint              width, height;
-  gboolean          maximized;
-  gboolean          is_small;
+  HdyDialog *self = HDY_DIALOG (user_data);
 
-  /* Get the size of the parent */
-  gtk_window_get_size (GTK_WINDOW (widget), &width, &height);
-  maximized = gtk_window_is_maximized (GTK_WINDOW (widget));
-
-  /* The "Should we use mobile view™" logic
-   * Basically: When tall & narrow (but possibly desktop) or
-   *            when short & long (but only mobile)
-   * Of course we are assuming being short & long &
-   * maximised only happens on mobile
-   */
-  is_small = ((             width <= SNAP_POINT_A && height <= SNAP_POINT_B) ||
-              (maximized && width <= SNAP_POINT_B && height <= SNAP_POINT_A));
-
-  /* When we are below the snap point */
-  if (is_small) {
-    /* When no size is cached, cache the current size */
-    if (!priv->old_width || !priv->old_height) {
-      gtk_window_get_size (GTK_WINDOW (self), &priv->old_width, &priv->old_height);
-      update_titlebar (self, is_small);
-    }
-    /* Resize the dialog to match the parent */
-    gtk_window_resize (GTK_WINDOW (self), width, height);
-  } else if (priv->old_width || priv->old_height) {
-    /* Restore the cached size */
-    gtk_window_resize (GTK_WINDOW (self), priv->old_width, priv->old_height);
-    update_titlebar (self, is_small);
-    /* Clear cached size */
-    priv->old_width = 0;
-    priv->old_height = 0;
-  }
+  handle_size (self, GTK_WINDOW (widget));
 }
 
 /* Handle (HdyDialog) GObject::notify::transient-for */
@@ -325,12 +337,6 @@ hdy_dialog_init (HdyDialog *self)
                 "modal", TRUE,
                 "destroy-with-parent", TRUE,
                 NULL);
-}
-
-static void
-hdy_dialog_buildable_init (GtkBuildableIface *iface)
-{
-  /* Nothing to do here */
 }
 
 /**
