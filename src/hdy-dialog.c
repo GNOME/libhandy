@@ -11,7 +11,22 @@
 /**
  * SECTION:hdy-dialog
  * @short_description: An adaptive dialog
- * @Title: HdyDialog
+ * @title: HdyDialog
+ * 
+ * A #GtkDialog that adapts to smaller displays (width < 500)
+ * 
+ * In the smaller view a HdyDialog matches it's size to that of it's
+ * parent and for ["Presentation Dialogs"](https://developer.gnome.org/hig/stable/dialogs.html)
+ * uses a back button rather than close button to dismiss.
+ * 
+ * It's recommended that dialog contents are wrapped in a #GtkScrolledWindow
+ * to ensure they don't overflow the screen
+ * 
+ * Design Information: [GitLab Issue](https://source.puri.sm/Librem5/libhandy/issues/52)
+ * 
+ * Ideally when using #HdyDialog you shouldn't need to know you are using
+ * is rather than #GtkDialog however there are some notable differences:
+ * #GtkWindow:modal is %TRUE by default as is #GtkDialog:use-header-bar
  */
 
 /* Point at which we switch to mobile view */
@@ -284,6 +299,29 @@ hdy_dialog_buildable_init (GtkBuildableIface *iface)
 {
 }
 
+/**
+ * hdy_dialog_new:
+ * @parent: #GtkWindow this dialog is a child of
+ *
+ * Create a #HdyDialog with #GtkWindow:transient-for set to parent
+ *
+ * C Usage
+ * |[<!-- language="C" -->
+ * GtkWidget *dlg = hdy_dialog_new (GTK_WINDOW (main_window));
+ * ]|
+ * 
+ * Vala Usage
+ * |[<!-- language="Vala" -->
+ * var dlg = new Hdy.Dialog (main_window);
+ * ]|
+ * 
+ * Python Usage
+ * |[<!-- language="Python" -->
+ * dlg = Handy.Dialog.new (main_window);
+ * ]|
+ * 
+ * Since: 0.0.6
+ */
 GtkWidget *
 hdy_dialog_new (GtkWindow *parent)
 {
