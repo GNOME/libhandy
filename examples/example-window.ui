@@ -707,8 +707,20 @@
                 <child>
                   <object class="GtkButton">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Demo</property>
+                    <property name="label" translatable="yes">Presentation Dialog</property>
                     <signal name="clicked" handler="dialog_clicked_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Action Dialog</property>
+                    <signal name="clicked" handler="dialog_action_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
