@@ -21,6 +21,8 @@ typedef struct {
   GtkWindow *parent;
   gulong     size_handler;
   gint       old_width, old_height;
+  GtkWidget *closebtn;
+  gboolean   no_actions;
 } HdyDialogPrivate;
 
 static void hdy_dialog_buildable_init (GtkBuildableIface  *iface);
@@ -29,11 +31,72 @@ G_DEFINE_TYPE_WITH_CODE (HdyDialog, hdy_dialog, GTK_TYPE_DIALOG,
                          G_ADD_PRIVATE (HdyDialog)
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE, hdy_dialog_buildable_init))
 
-static gboolean
-hdy_dialog_delete_event (GtkWidget   *widget,
-                         GdkEventAny *event)
+static void
+update_titlebar (HdyDialog *self,
+                 gint       width)
+{
+  HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
+  GtkWidget        *titlebar;
+
+  titlebar = gtk_window_get_titlebar (GTK_WINDOW (self));
+
+  if (!GTK_IS_HEADER_BAR (titlebar)) {
+    g_debug ("Unexpected titlebar %s",
+             g_type_name (G_TYPE_FROM_INSTANCE (titlebar)));
+    return;
+  }
+
+  /* Dialog already had close hidden (probably action dialog) */
+  if (!priv->no_actions) {
+    return;
+  }
+
+  if (width < SNAP_POINT) {
+    gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (titlebar), FALSE);
+    gtk_widget_show (priv->closebtn);
+  } else {
+    gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (titlebar), TRUE);
+    gtk_widget_hide (priv->closebtn);
+  }
+}
+
+static void
+hdy_dialog_realize (GtkWidget *widget)
 {
   HdyDialog        *self = HDY_DIALOG (widget);
+  HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
+  GtkWidget        *titlebar;
+
+  titlebar = gtk_window_get_titlebar (GTK_WINDOW (self));
+
+  /* If no titlebar was set, add a headerbar */
+  if (!titlebar) {
+    titlebar = gtk_header_bar_new ();
+    gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (titlebar), TRUE);
+    gtk_header_bar_set_title (GTK_HEADER_BAR (titlebar),
+                              gtk_window_get_title (GTK_WINDOW (self)));
+    gtk_widget_show (titlebar);
+    gtk_window_set_titlebar (GTK_WINDOW (self), titlebar);
+  }
+
+  /* If the titlebar is a headerbar add the back button to it */
+  if (GTK_IS_HEADER_BAR (titlebar)) {
+    priv->no_actions = gtk_header_bar_get_show_close_button (GTK_HEADER_BAR (titlebar));
+    if (priv->no_actions) {
+      gtk_header_bar_pack_start (GTK_HEADER_BAR (titlebar), priv->closebtn);
+    }
+  }
+
+  /* If this is null things are very bad, but check anyway */
+  if (GTK_WIDGET_CLASS (hdy_dialog_parent_class)->realize) {
+    GTK_WIDGET_CLASS (hdy_dialog_parent_class)->realize (widget);
+  }
+}
+
+static void
+hdy_dialog_finalize (GObject *object)
+{
+  HdyDialog        *self = HDY_DIALOG (object);
   HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
 
   /* If we had a parent disconnect from it */
@@ -41,11 +104,7 @@ hdy_dialog_delete_event (GtkWidget   *widget,
     g_signal_handler_disconnect (G_OBJECT (priv->parent), priv->size_handler);
   }
 
-  if (GTK_WIDGET_CLASS (hdy_dialog_parent_class)->delete_event) {
-    return GTK_WIDGET_CLASS (hdy_dialog_parent_class)->delete_event (widget,
-                                                                     event);
-  }
-  return FALSE;
+  G_OBJECT_CLASS (hdy_dialog_parent_class)->finalize (object);
 }
 
 /* <= 3.24.1 never actually emits notify::transient-for so 
@@ -102,8 +161,9 @@ hdy_dialog_class_init (HdyDialogClass *klass)
 
   object_class->get_property = hdy_dialog_get_property;
   object_class->set_property = hdy_dialog_set_property;
+  object_class->finalize = hdy_dialog_finalize;
 
-  widget_class->delete_event = hdy_dialog_delete_event;
+  widget_class->realize = hdy_dialog_realize;
 
   g_object_class_override_property (object_class,
                                     PROP_TRANSIENT_FOR,
@@ -115,9 +175,12 @@ hdy_dialog_class_init (HdyDialogClass *klass)
 static void
 hdy_dialog_class_init (HdyDialogClass *klass)
 {
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  widget_class->delete_event = hdy_dialog_delete_event;
+  object_class->finalize = hdy_dialog_finalize;
+
+  widget_class->realize = hdy_dialog_realize;
 }
 
 #endif
@@ -131,10 +194,6 @@ size_cb (GtkWidget    *widget,
   HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
   gint              width, height;
 
-  /* We expect to have two windows */
-  g_return_if_fail (GTK_IS_WINDOW (widget));
-  g_return_if_fail (GTK_IS_WINDOW (self));
-
   /* Get the size of the parent */
   gtk_window_get_size (GTK_WINDOW (widget), &width, &height);
 
@@ -143,13 +202,14 @@ size_cb (GtkWidget    *widget,
     /* When no size is cached, cache the current size */
     if (!priv->old_width || !priv->old_height) {
       gtk_window_get_size (GTK_WINDOW (self), &priv->old_width, &priv->old_height);
+      update_titlebar (self, width);
     }
     /* Resize the dialog to match the parent */
     gtk_window_resize (GTK_WINDOW (self), width, height);
   } else if (priv->old_width || priv->old_height) {
-    g_message ("Size!");
     /* Restore the cached size */
     gtk_window_resize (GTK_WINDOW (self), priv->old_width, priv->old_height);
+    update_titlebar (self, width);
     /* Clear cached size */
     priv->old_width = 0;
     priv->old_height = 0;
@@ -183,6 +243,15 @@ transient_cb (GObject    *object,
 }
 
 static void
+back_clicked_cb (GtkButton *back,
+                 gpointer   user_data)
+{
+  HdyDialog *self = HDY_DIALOG (user_data);
+
+  gtk_widget_destroy (GTK_WIDGET (self));
+}
+
+static void
 hdy_dialog_init (HdyDialog *self)
 {
   HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
@@ -192,6 +261,15 @@ hdy_dialog_init (HdyDialog *self)
 
   priv->old_width = 0;
   priv->old_height = 0;
+
+  priv->no_actions = TRUE;
+
+  /* Prepare the back button for the mobile view */
+  priv->closebtn = gtk_button_new_from_icon_name ("go-previous-symbolic",
+                                                  GTK_ICON_SIZE_BUTTON);
+  gtk_widget_hide (priv->closebtn);
+  g_signal_connect (G_OBJECT (priv->closebtn), "clicked",
+                    G_CALLBACK (back_clicked_cb), self);
 
   g_signal_connect (G_OBJECT (self), "notify::transient-for",
                     G_CALLBACK (transient_cb), NULL);
@@ -210,7 +288,8 @@ GtkWidget *
 hdy_dialog_new (GtkWindow *parent)
 {
   return g_object_new (HDY_TYPE_DIALOG,
-                       "transient-for", parent,
+                       "use-header-bar", TRUE,
                        "modal", TRUE,
+                       "transient-for", parent,
                        NULL);
 }
