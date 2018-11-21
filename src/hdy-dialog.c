@@ -254,6 +254,7 @@ transient_cb (GObject    *object,
                                            "size-allocate",
                                            G_CALLBACK (size_cb),
                                            self);
+    gtk_widget_queue_allocate (GTK_WIDGET (priv->parent));
   }
 }
 
@@ -290,6 +291,7 @@ hdy_dialog_init (HdyDialog *self)
                     G_CALLBACK (transient_cb), NULL);
 
   g_object_set (G_OBJECT (self),
+                "modal", TRUE,
                 "destroy-with-parent", TRUE,
                 NULL);
 }
@@ -327,7 +329,6 @@ hdy_dialog_new (GtkWindow *parent)
 {
   return g_object_new (HDY_TYPE_DIALOG,
                        "use-header-bar", TRUE,
-                       "modal", TRUE,
                        "transient-for", parent,
                        NULL);
 }
