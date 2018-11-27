@@ -1,3 +1,19 @@
+libhandy (0.0.5-2) unstable; urgency=medium
+
+  [ Jeremy Bicha ]
+  * [8eb01dc] Add Vcs fields
+
+  [ Guido Günther ]
+  * Upload to unstable
+  * [9964c77] Add gitlab-ci.
+    Thanks salsa-ci-team
+  * [37c5b11] hdy-enums: Make build reproducible
+  * [29187af] Add Build-Depends-Package to symbols file.
+    This ensures generated dependencies are at least as strong as the used
+    build-dep.
+
+ -- Guido Günther <agx@sigxcpu.org>  Tue, 27 Nov 2018 12:00:56 +0100
+
 libhandy (0.0.5-1) experimental; urgency=medium
 
   * New upstream version
