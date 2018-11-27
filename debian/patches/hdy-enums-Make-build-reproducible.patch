@@ -1,0 +1,23 @@
+From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Date: Tue, 27 Nov 2018 11:50:58 +0100
+Subject: hdy-enums: Make build reproducible
+
+Use @basename@ instead of @filename@ since the later uses the full
+path which varies across builds.
+---
+ src/hdy-enums.h.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/hdy-enums.h.in b/src/hdy-enums.h.in
+index f30dac8..349f1b0 100644
+--- a/src/hdy-enums.h.in
++++ b/src/hdy-enums.h.in
+@@ -13,7 +13,7 @@ G_BEGIN_DECLS
+ 
+ /*** BEGIN file-production ***/
+ 
+-/* enumerations from "@filename@" */
++/* enumerations from "@basename@" */
+ /*** END file-production ***/
+ 
+ /*** BEGIN value-header ***/
