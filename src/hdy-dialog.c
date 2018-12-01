@@ -13,7 +13,13 @@
  * @short_description: An adaptive dialog
  * @title: HdyDialog
  * 
- * A #GtkDialog that adapts to smaller displays (width < 500)
+ * A #GtkDialog that adapts to smaller displays
+ * 
+ * Small is defined as:
+ * |[<!-- language="C" -->
+ * is_small = ((             width <= 400 && height <= 800) ||
+ *             (maximized && width <= 800 && height <= 400));
+ * ]|
  * 
  * In the smaller view a HdyDialog matches it's size to that of it's
  * parent and for ["Presentation Dialogs"](https://developer.gnome.org/hig/stable/dialogs.html)
@@ -22,15 +28,19 @@
  * It's recommended that dialog contents are wrapped in a #GtkScrolledWindow
  * to ensure they don't overflow the screen
  * 
+ * #HdyDialog works best when #GtkDialog:use-header-bar is %TRUE (which is 
+ * the case when using #hdy_dialog_new)
+ * 
  * Design Information: [GitLab Issue](https://source.puri.sm/Librem5/libhandy/issues/52)
  * 
  * Ideally when using #HdyDialog you shouldn't need to know you are using
- * is rather than #GtkDialog however there are some notable differences:
- * #GtkWindow:modal is %TRUE by default as is #GtkDialog:use-header-bar
+ * it rather than #GtkDialog however there are some notable differences:
+ * #GtkWindow:modal is %TRUE by default as is #GtkWindow:destroy-with-parent
  */
 
 /* Point at which we switch to mobile view */
-#define SNAP_POINT 500
+#define SNAP_POINT_A 400
+#define SNAP_POINT_B 800
 
 typedef struct {
   GtkWindow *parent;
@@ -48,13 +58,14 @@ G_DEFINE_TYPE_WITH_CODE (HdyDialog, hdy_dialog, GTK_TYPE_DIALOG,
 
 static void
 update_titlebar (HdyDialog *self,
-                 gint       width)
+                 gboolean   is_small)
 {
   HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
   GtkWidget        *titlebar;
 
   titlebar = gtk_window_get_titlebar (GTK_WINDOW (self));
 
+  /* We don't know what to do with thins that aren't headerbars */
   if (!GTK_IS_HEADER_BAR (titlebar)) {
     g_debug ("Unexpected titlebar %s",
              g_type_name (G_TYPE_FROM_INSTANCE (titlebar)));
@@ -66,7 +77,8 @@ update_titlebar (HdyDialog *self,
     return;
   }
 
-  if (width < SNAP_POINT) {
+  /* When small show our custom button */
+  if (is_small) {
     gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (titlebar), FALSE);
     gtk_widget_show (priv->closebtn);
   } else {
@@ -200,6 +212,7 @@ hdy_dialog_class_init (HdyDialogClass *klass)
 
 #endif
 
+/* Handle GtkWidget::size-allocate on (HdyDialog) GtkWindow:transient-for */
 static void
 size_cb (GtkWidget    *widget,
          GdkRectangle *allocation,
@@ -208,29 +221,42 @@ size_cb (GtkWidget    *widget,
   HdyDialog        *self = HDY_DIALOG (user_data);
   HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
   gint              width, height;
+  gboolean          maximized;
+  gboolean          is_small;
 
   /* Get the size of the parent */
   gtk_window_get_size (GTK_WINDOW (widget), &width, &height);
+  maximized = gtk_window_is_maximized (GTK_WINDOW (widget));
+
+  /* The "Should we use mobile view™" logic
+   * Basically: When tall & narrow (but possibly desktop) or
+   *            when short & long (but only mobile)
+   * Of course we are assuming being short & long &
+   * maximised only happens on mobile
+   */
+  is_small = ((             width <= SNAP_POINT_A && height <= SNAP_POINT_B) ||
+              (maximized && width <= SNAP_POINT_B && height <= SNAP_POINT_A));
 
   /* When we are below the snap point */
-  if (width < SNAP_POINT) {
+  if (is_small) {
     /* When no size is cached, cache the current size */
     if (!priv->old_width || !priv->old_height) {
       gtk_window_get_size (GTK_WINDOW (self), &priv->old_width, &priv->old_height);
-      update_titlebar (self, width);
+      update_titlebar (self, is_small);
     }
     /* Resize the dialog to match the parent */
     gtk_window_resize (GTK_WINDOW (self), width, height);
   } else if (priv->old_width || priv->old_height) {
     /* Restore the cached size */
     gtk_window_resize (GTK_WINDOW (self), priv->old_width, priv->old_height);
-    update_titlebar (self, width);
+    update_titlebar (self, is_small);
     /* Clear cached size */
     priv->old_width = 0;
     priv->old_height = 0;
   }
 }
 
+/* Handle (HdyDialog) GObject::notify::transient-for */
 static void
 transient_cb (GObject    *object,
               GParamSpec *pspec,
@@ -254,15 +280,18 @@ transient_cb (GObject    *object,
                                            "size-allocate",
                                            G_CALLBACK (size_cb),
                                            self);
+    gtk_widget_queue_allocate (GTK_WIDGET (priv->parent));
   }
 }
 
+/* Handle GtkButton::clicked on our custom back button */
 static void
 back_clicked_cb (GtkButton *back,
                  gpointer   user_data)
 {
   HdyDialog *self = HDY_DIALOG (user_data);
 
+  /* Close ourself */
   gtk_widget_destroy (GTK_WIDGET (self));
 }
 
@@ -271,6 +300,7 @@ hdy_dialog_init (HdyDialog *self)
 {
   HdyDialogPrivate *priv = hdy_dialog_get_instance_private (self);
 
+  /* Set the inital values of our private data */
   priv->parent = NULL;
   priv->size_handler = 0;
 
@@ -286,10 +316,13 @@ hdy_dialog_init (HdyDialog *self)
   g_signal_connect (G_OBJECT (priv->closebtn), "clicked",
                     G_CALLBACK (back_clicked_cb), self);
 
+  /* Listen to changes in our parent */
   g_signal_connect (G_OBJECT (self), "notify::transient-for",
                     G_CALLBACK (transient_cb), NULL);
 
+  /* Change some properties default values */
   g_object_set (G_OBJECT (self),
+                "modal", TRUE,
                 "destroy-with-parent", TRUE,
                 NULL);
 }
@@ -297,6 +330,7 @@ hdy_dialog_init (HdyDialog *self)
 static void
 hdy_dialog_buildable_init (GtkBuildableIface *iface)
 {
+  /* Nothing to do here */
 }
 
 /**
@@ -327,7 +361,6 @@ hdy_dialog_new (GtkWindow *parent)
 {
   return g_object_new (HDY_TYPE_DIALOG,
                        "use-header-bar", TRUE,
-                       "modal", TRUE,
                        "transient-for", parent,
                        NULL);
 }
