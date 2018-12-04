@@ -127,6 +127,19 @@ update_decoration_layouts (HdyHeaderGroup *self)
   gtk_header_bar_set_decoration_layout (end_headerbar, end_layout);
 }
 
+static void
+header_bar_destroyed (HdyHeaderGroup *self, GtkHeaderBar *header_bar)
+{
+  HdyHeaderGroupPrivate *priv;
+
+  g_return_if_fail (HDY_IS_HEADER_GROUP (self));
+
+  priv = hdy_header_group_get_instance_private (self);
+  priv->header_bars = g_slist_remove (priv->header_bars, header_bar);
+
+  g_object_unref (self);
+}
+
 HdyHeaderGroup *
 hdy_header_group_new (void)
 {
@@ -161,7 +174,11 @@ hdy_header_group_add_header_bar (HdyHeaderGroup *self,
 
   g_signal_connect_swapped (header_bar, "map", G_CALLBACK (update_decoration_layouts), self);
   g_signal_connect_swapped (header_bar, "unmap", G_CALLBACK (update_decoration_layouts), self);
-  priv->header_bars = g_slist_prepend (priv->header_bars, g_object_ref_sink (header_bar));
+  priv->header_bars = g_slist_prepend (priv->header_bars, header_bar);
+
+  g_object_ref (self);
+
+  g_signal_connect_swapped (header_bar, "destroy", G_CALLBACK (header_bar_destroyed), self);
 
   update_decoration_layouts (self);
 }
@@ -190,7 +207,9 @@ hdy_header_group_remove_header_bar (HdyHeaderGroup *self,
   if (priv->focus == header_bar)
     hdy_header_group_set_focus (self, NULL);
 
-  g_object_unref (header_bar);
+  g_signal_handlers_disconnect_by_data (header_bar, self);
+
+  g_object_unref (self);
 }
 
 
@@ -283,7 +302,7 @@ typedef struct {
 } GSListSubParserData;
 
 static void
-hdy_header_group_finalize (GObject *object)
+hdy_header_group_dispose (GObject *object)
 {
   HdyHeaderGroup *self = (HdyHeaderGroup *)object;
   HdyHeaderGroupPrivate *priv = hdy_header_group_get_instance_private (self);
@@ -292,7 +311,7 @@ hdy_header_group_finalize (GObject *object)
   priv->header_bars = NULL;
   priv->focus = NULL;
 
-  G_OBJECT_CLASS (hdy_header_group_parent_class)->finalize (object);
+  G_OBJECT_CLASS (hdy_header_group_parent_class)->dispose (object);
 }
 
 static void
@@ -554,7 +573,7 @@ hdy_header_group_class_init (HdyHeaderGroupClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->finalize = hdy_header_group_finalize;
+  object_class->dispose = hdy_header_group_dispose;
   object_class->get_property = hdy_header_group_get_property;
   object_class->set_property = hdy_header_group_set_property;
 
