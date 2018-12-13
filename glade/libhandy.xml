@@ -29,6 +29,7 @@
     <glade-widget-class-ref name="HdyDialer"/>
     <glade-widget-class-ref name="HdyHeaderGroup"/>
     <glade-widget-class-ref name="HdyLeaflet"/>
+    <glade-widget-class-ref name="HdyRow"/>
     <glade-widget-class-ref name="HdySearchBar"/>
     <glade-widget-class-ref name="HdyTitleBar"/>
   </glade-widget-group>
