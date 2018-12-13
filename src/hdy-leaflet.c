@@ -2401,6 +2401,9 @@ hdy_leaflet_dispose (GObject *object)
 
   priv->visible_child = NULL;
 
+  g_list_free_full (priv->children, (GDestroyNotify) free_child_info);
+  priv->children = NULL;
+
   G_OBJECT_CLASS (hdy_leaflet_parent_class)->dispose (object);
 }
 
