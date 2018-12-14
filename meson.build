@@ -86,8 +86,11 @@ test_c_args = [
 
 host_system = host_machine.system()
 
-if get_option('buildtype') != 'plain' and host_system != 'windows'
-  test_c_args += '-fstack-protector-strong'
+if get_option('buildtype') != 'plain'
+  if host_system == 'windows'
+    test_c_args += '-fstack-protector'
+  else
+    test_c_args += '-fstack-protector-strong'
 endif
 if get_option('profiling')
   test_c_args += '-pg'
