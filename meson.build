@@ -91,6 +91,7 @@ if get_option('buildtype') != 'plain'
     test_c_args += '-fstack-protector'
   else
     test_c_args += '-fstack-protector-strong'
+  endif
 endif
 if get_option('profiling')
   test_c_args += '-pg'
