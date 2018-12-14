@@ -83,7 +83,10 @@ test_c_args = [
   '-Wundef',
   '-Wunused-function',
 ]
-if get_option('buildtype') != 'plain'
+
+host_system = host_machine.system()
+
+if get_option('buildtype') != 'plain' and host_system != 'windows'
   test_c_args += '-fstack-protector-strong'
 endif
 if get_option('profiling')
