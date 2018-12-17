@@ -9,41 +9,25 @@ struct _ExampleWindow
   HdyLeaflet *header_box;
   HdyLeaflet *content_box;
   GtkButton *back;
+  GtkToggleButton *search_button;
   GtkStackSidebar *sidebar;
   GtkStack *stack;
   GtkWidget *box_dialer;
   HdyDialer *dialer;
   GtkLabel *display;
   GtkWidget *arrows;
+  HdySearchBar *search_bar;
+  GtkEntry *search_entry;
   GtkListBox *column_listbox;
+  GtkListBox *lists_listbox;
+  HdyComboRow *combo_row;
+  HdyComboRow *enum_combo_row;
   HdyHeaderGroup *header_group;
   GtkAdjustment *adj_arrows_count;
   GtkAdjustment *adj_arrows_duration;
 };
 
 G_DEFINE_TYPE (ExampleWindow, example_window, GTK_TYPE_APPLICATION_WINDOW)
-
-static void
-list_box_separator_header_func (GtkListBoxRow *row,
-                                GtkListBoxRow *before,
-                                gpointer       user_data)
-{
-  GtkWidget *header;
-
-  if (before == NULL) {
-    gtk_list_box_row_set_header (row, NULL);
-
-    return;
-  }
-
-  header = gtk_list_box_row_get_header (row);
-  if (header != NULL)
-    return;
-
-  header = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
-  gtk_widget_show (header);
-  gtk_list_box_row_set_header (row, header);
-}
 
 static gboolean
 example_window_key_pressed_cb (GtkWidget     *sender,
@@ -79,6 +63,16 @@ update (ExampleWindow *self)
 }
 
 static void
+update_header_bar (ExampleWindow *self)
+{
+  const gchar *visible_child_name;
+
+  visible_child_name = gtk_stack_get_visible_child_name (GTK_STACK (self->stack));
+  gtk_widget_set_visible (GTK_WIDGET (self->search_button),
+                          g_str_equal (visible_child_name, "search-bar"));
+}
+
+static void
 example_window_notify_header_visible_child_cb (GObject       *sender,
                                                GParamSpec    *pspec,
                                                ExampleWindow *self)
@@ -99,14 +93,15 @@ example_window_notify_visible_child_cb (GObject       *sender,
                                         GParamSpec    *pspec,
                                         ExampleWindow *self)
 {
-  hdy_leaflet_set_visible_child (self->content_box, GTK_WIDGET (self->stack));
+  hdy_leaflet_set_visible_child_name (self->content_box, "content");
+  update_header_bar (self);
 }
 
 static void
 example_window_back_clicked_cb (GtkWidget     *sender,
                                 ExampleWindow *self)
 {
-  hdy_leaflet_set_visible_child (self->content_box, GTK_WIDGET (self->sidebar));
+  hdy_leaflet_set_visible_child_name (self->content_box, "sidebar");
 }
 
 static void
@@ -263,6 +258,7 @@ example_window_constructed (GObject *object)
                             hdy_arrows_get_count (HDY_ARROWS (self->arrows)));
   gtk_adjustment_set_value (self->adj_arrows_duration,
                             hdy_arrows_get_duration (HDY_ARROWS (self->arrows)));
+  hdy_search_bar_connect_entry (self->search_bar, self->search_entry);
 }
 
 
@@ -278,13 +274,19 @@ example_window_class_init (ExampleWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, header_box);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, content_box);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, back);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, search_button);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, sidebar);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, stack);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, box_dialer);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, dialer);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, display);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, arrows);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, search_bar);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, search_entry);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, column_listbox);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, lists_listbox);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, combo_row);
+  gtk_widget_class_bind_template_child (widget_class, ExampleWindow, enum_combo_row);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, header_group);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, adj_arrows_count);
   gtk_widget_class_bind_template_child (widget_class, ExampleWindow, adj_arrows_duration);
@@ -304,11 +306,68 @@ example_window_class_init (ExampleWindowClass *klass)
   gtk_widget_class_bind_template_callback_full (widget_class, "adj_arrows_duration_value_changed_cb", G_CALLBACK(adj_arrows_duration_value_changed_cb));
 }
 
+static gchar *
+combo_get_name (gpointer item,
+                gpointer user_data)
+{
+  return g_strdup (gtk_label_get_text (GTK_LABEL (item)));
+}
+
+static void
+lists_page_init (ExampleWindow *self)
+{
+  GListStore *list_store;
+
+  gtk_list_box_set_header_func (self->lists_listbox, hdy_list_box_separator_header, NULL, NULL);
+
+  list_store = g_list_store_new (GTK_TYPE_LABEL);
+
+  g_list_store_insert (list_store, 0,
+                       g_object_new (GTK_TYPE_LABEL,
+                                     "ellipsize", PANGO_ELLIPSIZE_END,
+                                     "label", "Foo",
+                                     "margin", 12,
+                                     "max-width-chars", 20,
+                                     "visible", TRUE,
+                                     "width-chars", 20,
+                                     "xalign", 0.0,
+                                      NULL));
+
+  g_list_store_insert (list_store, 1,
+                       g_object_new (GTK_TYPE_LABEL,
+                                     "ellipsize", PANGO_ELLIPSIZE_END,
+                                     "label", "Bar",
+                                     "margin", 12,
+                                     "max-width-chars", 20,
+                                     "visible", TRUE,
+                                     "width-chars", 20,
+                                     "xalign", 0.0,
+                                      NULL));
+
+  g_list_store_insert (list_store, 2,
+                       g_object_new (GTK_TYPE_LABEL,
+                                     "ellipsize", PANGO_ELLIPSIZE_END,
+                                     "label", "Baz",
+                                     "margin", 12,
+                                     "max-width-chars", 20,
+                                     "visible", TRUE,
+                                     "width-chars", 20,
+                                     "xalign", 0.0,
+                                      NULL));
+
+  hdy_combo_row_bind_name_model (self->combo_row, G_LIST_MODEL (list_store), combo_get_name, NULL, NULL);
+
+  hdy_combo_row_set_for_enum (self->enum_combo_row, GTK_TYPE_LICENSE, hdy_enum_value_row_name, NULL, NULL);
+}
+
 static void
 example_window_init (ExampleWindow *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
-  gtk_list_box_set_header_func (self->column_listbox, list_box_separator_header_func, NULL, NULL);
+  gtk_list_box_set_header_func (self->column_listbox, hdy_list_box_separator_header, NULL, NULL);
 
-  hdy_leaflet_set_visible_child (self->content_box, GTK_WIDGET (self->stack));
+  lists_page_init (self);
+
+  hdy_leaflet_set_visible_child_name (self->content_box, "content");
+  update_header_bar (self);
 }

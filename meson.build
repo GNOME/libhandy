@@ -1,5 +1,5 @@
 project('libhandy', 'c',
-          version: '0.0.5',
+          version: '0.0.6',
           license: 'LGPL-2.1+',
     meson_version: '>= 0.40.1',
   default_options: [ 'warning_level=1', 'buildtype=debugoptimized', 'c_std=gnu11' ],
@@ -83,8 +83,15 @@ test_c_args = [
   '-Wundef',
   '-Wunused-function',
 ]
+
+target_system = target_machine.system()
+
 if get_option('buildtype') != 'plain'
-  test_c_args += '-fstack-protector-strong'
+  if target_system == 'windows'
+    test_c_args += '-fstack-protector'
+  else
+    test_c_args += '-fstack-protector-strong'
+  endif
 endif
 if get_option('profiling')
   test_c_args += '-pg'

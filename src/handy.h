@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1+
  */
 
-#ifndef HANDY_H
-#define HANDY_H
+#pragma once
 
 #include <gtk/gtk.h>
 
@@ -26,20 +25,24 @@ G_BEGIN_DECLS
 #endif
 
 #include "hdy-version.h"
+#include "hdy-action-row.h"
 #include "hdy-arrows.h"
 #include "hdy-column.h"
+#include "hdy-combo-row.h"
 #include "hdy-dialer-button.h"
 #include "hdy-dialer-cycle-button.h"
 #include "hdy-dialer.h"
+#include "hdy-enum-value-object.h"
+#include "hdy-expander-row.h"
 #include "hdy-fold.h"
 #include "hdy-header-group.h"
 #include "hdy-leaflet.h"
+#include "hdy-list-box.h"
 #include "hdy-main.h"
+#include "hdy-search-bar.h"
 #include "hdy-string-utf8.h"
 #include "hdy-title-bar.h"
 
 #undef _HANDY_INSIDE
 
 G_END_DECLS
-
-#endif /* HANDY_H */

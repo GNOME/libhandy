@@ -10,14 +10,13 @@
 #error "Only <handy.h> can be included directly."
 #endif
 
-#include <glib-object.h>
-#include "hdy-enums.h"
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-typedef enum {
-  HDY_FOLD_UNFOLDED,
-  HDY_FOLD_FOLDED,
-} HdyFold;
+void
+hdy_list_box_separator_header (GtkListBoxRow *row,
+                               GtkListBoxRow *before,
+                               gpointer       unused_user_data);
 
 G_END_DECLS

@@ -6,10 +6,13 @@ before_script:
   - apt-get -y install build-essential libgtk-3-doc lcov
   - apt-get -y build-dep .
 
-build-debian-gcc:
-  image: debian:buster
+.tags: &tags
   tags:
     - librem5
+
+build-debian-gcc:
+  image: debian:buster
+  <<: *tags
   stage: build
   script:
     - export LC_ALL=C.UTF-8
@@ -29,10 +32,9 @@ build-debian-clang:
   image: debian:buster
   before_script:
     - apt-get -y update
-    - apt-get -y install build-essential clang-3.9
+    - apt-get -y install build-essential clang-tools
     - apt-get -y build-dep .
-  tags:
-    - librem5
+  <<: *tags
   stage: build
   script:
     - export LC_ALL=C.UTF-8
@@ -46,10 +48,22 @@ build-debian-clang:
     paths:
       - _build/meson-logs/scanbuild
 
+build-fedora-gcc:
+  image: fedora:29
+  <<: *tags
+  stage: build
+  before_script:
+    - dnf -y update
+    - dnf -y install @development-tools redhat-rpm-config dnf-plugins-core
+    - dnf -y builddep data/packaging/rpm/libhandy.spec
+  script:
+    - export LC_ALL=C.UTF-8
+    - meson . _build -Dgtk_doc=true -Db_coverage=true --werror
+    - ninja -C _build
+
 build-debian-package:
   image: debian:buster
-  tags:
-    - librem5
+  <<: *tags
   stage: build
   script:
     - dpkg-buildpackage -uc -us

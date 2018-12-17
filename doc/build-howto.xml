@@ -55,10 +55,15 @@
   </refsect2>
 
   <refsect2>
-    <title>Headers</title>
+    <title>Acknowledge the Unstability</title>
 
     <para>
-      Code using <application>&package_string;</application> should do:
+      Since the library is young and is still changing a lot, in order to use it you are required to acknowledge that your are using an unstable API.
+      To do so, <literal>HANDY_USE_UNSTABLE_API</literal> must be defined for compilation to succeed.
+    </para>
+
+    <para>
+      From C code or any compatible language, you can prefix your inclusioin of the libhandy header like so:
     </para>
 
     <informalexample><programlisting>
@@ -71,10 +76,14 @@
       recommended.
     </para>
     <para>
-      Since the library has not stable API yet <literal>HANDY_USE_UNSTABLE_API</literal> must
-      be defined for compilation to succeed.
+      You can also acknoledge this with the definition option of your C compiler, like <literal>-DHANDY_USE_UNSTABLE_API</literal>.
+      This is required from Vala.
     </para>
 
+    <para>
+      To use libhandy from Vala, you must define the acknowledgment in C via <literal>-X -DHANDY_USE_UNSTABLE_API</literal>.
+      If your build system uses a two pass compilation and hence your Vala compiler outputs C (Meson, Automake, or using the <literal>--ccode</literal> Vala compiler option trigger that) then you must add <literal>-DHANDY_USE_UNSTABLE_API</literal> to your C compiler argments instead.
+    </para>
   </refsect2>
 
 </refentry>

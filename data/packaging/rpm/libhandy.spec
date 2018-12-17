@@ -1,7 +1,7 @@
 %global _vpath_srcdir %{name}
 
 Name:    libhandy
-Version: 0.0.5
+Version: 0.0.6
 Release: 1%{?dist}
 Summary: A library full of GTK+ widgets for mobile phones
 
@@ -10,15 +10,16 @@ Url:     https://source.puri.sm/Librem5/libhandy
 Source0: https://source.puri.sm/Librem5/libhandy/archive/master.tar.gz
 
 BuildRequires: gcc
+BuildRequires: gobject-introspection
+BuildRequires: gtk-doc
 BuildRequires: meson >= 0.40.1
+BuildRequires: pkgconfig(gio-2.0)
+BuildRequires: pkgconfig(gladeui-2.0)
+BuildRequires: pkgconfig(glib-2.0)
+BuildRequires: pkgconfig(gmodule-2.0)
+BuildRequires: pkgconfig(gtk+-3.0)
 BuildRequires: pkgconf-pkg-config
 BuildRequires: vala
-BuildRequires: gtk-doc
-BuildRequires: gobject-introspection
-BuildRequires: pkgconfig(glib-2.0)
-BuildRequires: pkgconfig(gio-2.0)
-BuildRequires: pkgconfig(gtk+-3.0)
-BuildRequires: pkgconfig(gmodule-2.0)
 
 %description
 %{summary}.

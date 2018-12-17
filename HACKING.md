@@ -69,6 +69,79 @@ if (i < 0)
 }
 ```
 
+Single line `if` or `else` statements don't need braces but if either `if` or
+`else` have braces both get them:
+
+*Good*:
+
+```c
+if (i < 0)
+  i++;
+else
+  i--;
+```
+
+```c
+if (i < 0) {
+  i++;
+  j++;
+} else {
+  i--;
+}
+```
+
+```c
+if (i < 0) {
+  i++;
+} else {
+  i--;
+  j--;
+}
+```
+
+*Bad*:
+
+```c
+if (i < 0) {
+  i++;
+} else {
+  i--;
+}
+```
+
+```c
+if (i < 0) {
+  i++;
+  j++;
+} else
+  i--;
+```
+
+```c
+if (i < 0)
+  i++;
+else {
+  i--;
+  j--;
+}
+```
+
+Header Inclusion Guards
+-----------------------
+Guard header inclusion with `#pragma once` rather than the traditional
+`#ifndef`-`#define`-`#endif` trio.
+
+Internal headers (for consistency, whether they need to be installed or not)
+should contain the following guard to prevent users from directly including
+them:
+```c
+#if !defined(_HANDY_INSIDE) && !defined(HANDY_COMPILATION)
+#error "Only <handy.h> can be included directly."
+#endif
+```
+
+Only after these should you include headers.
+
 
 Signals
 -------

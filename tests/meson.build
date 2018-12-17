@@ -19,10 +19,14 @@ test_link_args = [
 ]
 
 test_names = [
+  'test-action-row',
   'test-arrows',
+  'test-combo-row',
   'test-dialer',
   'test-dialer-cycle-button',
+  'test-expander-row',
   'test-header-group',
+  'test-search-bar',
   'test-string-utf8',
 ]
 

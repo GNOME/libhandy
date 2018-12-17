@@ -48,15 +48,21 @@ libhandy_public_sources += [hdy_enums[0]]
 libhandy_generated_headers += [hdy_enums[1]]
 
 src_headers = [
+  'hdy-action-row.h',
   'hdy-arrows.h',
   'hdy-column.h',
+  'hdy-combo-row.h',
   'hdy-dialer-button.h',
   'hdy-dialer-cycle-button.h',
   'hdy-dialer.h',
+  'hdy-enum-value-object.h',
+  'hdy-expander-row.h',
   'hdy-fold.h',
   'hdy-header-group.h',
   'hdy-leaflet.h',
+  'hdy-list-box.h',
   'hdy-main.h',
+  'hdy-search-bar.h',
   'hdy-string-utf8.h',
   'hdy-title-bar.h',
 ]
@@ -69,21 +75,25 @@ libhandy_init_public_types = custom_target('hdy-public-types.c',
   input : [src_headers, libhandy_generated_headers],
   command : [gen_public_types, '@INPUT@'],
   capture: true,
-  install : true,
-  install_dir : 'subdir',
 )
 
 src_sources = [
   'gtkprogresstracker.c',
+  'hdy-action-row.c',
   'hdy-arrows.c',
   'hdy-column.c',
+  'hdy-combo-row.c',
   'hdy-dialer-button.c',
   'hdy-dialer-cycle-button.c',
   'hdy-dialer.c',
+  'hdy-enum-value-object.c',
+  'hdy-expander-row.c',
   'hdy-fold.c',
   'hdy-header-group.c',
   'hdy-leaflet.c',
+  'hdy-list-box.c',
   'hdy-main.c',
+  'hdy-search-bar.c',
   'hdy-string-utf8.c',
   'hdy-title-bar.c',
 ]
@@ -134,6 +144,7 @@ libhandy = shared_library(
   include_directories: [ root_inc, src_inc ],
               install: true,
             link_args: libhandy_link_args,
+          install_dir: libdir,
 )
 
 libhandy_dep = declare_dependency(
