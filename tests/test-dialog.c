@@ -49,7 +49,7 @@ test_hdy_dialog_is_small (void)
   gtk_widget_show (dialog);
 
   g_assert_cmpint (win_height, ==, dlg_height);
-  g_assert_cmpint (win_height, ==, dlg_width);
+  g_assert_cmpint (win_width, ==, dlg_width);
 }
 
 static void
@@ -73,7 +73,7 @@ test_hdy_dialog_normal (void)
   gtk_widget_show (dialog);
 
   g_assert_cmpint (win_height, !=, dlg_height);
-  g_assert_cmpint (win_height, !=, dlg_width);
+  g_assert_cmpint (win_width, !=, dlg_width);
 }
 
 gint

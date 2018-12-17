@@ -29,13 +29,15 @@
  * to ensure they don't overflow the screen
  * 
  * #HdyDialog works best when #GtkDialog:use-header-bar is %TRUE (which is 
- * the case when using #hdy_dialog_new)
+ * the case when using hdy_dialog_new())
  * 
  * Design Information: [GitLab Issue](https://source.puri.sm/Librem5/libhandy/issues/52)
  * 
  * Ideally when using #HdyDialog you shouldn't need to know you are using
  * it rather than #GtkDialog however there are some notable differences:
- * #GtkWindow:modal is %TRUE by default as is #GtkWindow:destroy-with-parent
+ * #GtkWindow:modal is %TRUE by default as is #GtkWindow:destroy-with-parent as
+ * the behaviour demonstrated by #HdyDialog would be a bad user experiance
+ * when not moda
  */
 
 /* Point at which we switch to mobile view */
@@ -50,11 +52,8 @@ typedef struct {
   gboolean   no_actions;
 } HdyDialogPrivate;
 
-static void hdy_dialog_buildable_init (GtkBuildableIface  *iface);
-
 G_DEFINE_TYPE_WITH_CODE (HdyDialog, hdy_dialog, GTK_TYPE_DIALOG,
-                         G_ADD_PRIVATE (HdyDialog)
-                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE, hdy_dialog_buildable_init))
+                         G_ADD_PRIVATE (HdyDialog))
 
 static void
 update_titlebar (HdyDialog *self,
@@ -325,12 +324,6 @@ hdy_dialog_init (HdyDialog *self)
                 "modal", TRUE,
                 "destroy-with-parent", TRUE,
                 NULL);
-}
-
-static void
-hdy_dialog_buildable_init (GtkBuildableIface *iface)
-{
-  /* Nothing to do here */
 }
 
 /**
