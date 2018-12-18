@@ -167,6 +167,8 @@ hdy_action_row_dispose (GObject *object)
 
   g_signal_handlers_disconnect_by_func (priv->previous_parent, G_CALLBACK (row_activated_cb), self);
   priv->previous_parent = NULL;
+
+  G_OBJECT_CLASS (hdy_action_row_parent_class)->dispose (object);
 }
 
 static void
