@@ -78,3 +78,4 @@ to the widgets in you favorite programming language can be found here:
 
 ### Vala
 - [GNOME Games](https://gitlab.gnome.org/GNOME/gnome-games) (HdyColumn, HdyTitleBar)
+- [GNOME Contacts](https://gitlab.gnome.org/GNOME/gnome-contacts) (HdyHeaderGroup, HdyTitleBar)
