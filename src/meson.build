@@ -209,13 +209,15 @@ endif
 
 pkgg = import('pkgconfig')
 
-pkgg.generate(
-    libraries: [libhandy],
-      subdirs: libhandy_header_subdir,
-      version: meson.project_version(),
-         name: 'Handy',
-     filebase: 'libhandy-@0@'.format(apiversion),
-  description: 'Handy Mobile widgets',
-     requires: 'gtk+-3.0',
-  install_dir: join_paths(libdir, 'pkgconfig'),
-)
+if not static
+  pkgg.generate(
+      libraries: [libhandy],
+        subdirs: libhandy_header_subdir,
+        version: meson.project_version(),
+           name: 'Handy',
+       filebase: 'libhandy-@0@'.format(apiversion),
+    description: 'Handy Mobile widgets',
+       requires: 'gtk+-3.0',
+    install_dir: join_paths(libdir, 'pkgconfig'),
+  )
+endif
