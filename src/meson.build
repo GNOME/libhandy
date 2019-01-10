@@ -134,18 +134,34 @@ if cc.links('int main() { return 0; }', args : ld_version_script_arg, name : 'ld
   libhandy_link_args += [ld_version_script_arg]
 endif
 
-libhandy = shared_library(
-  'handy-' + apiversion,
-  libhandy_sources,
+static = get_option('static')
 
-            soversion: 0,
-               c_args: libhandy_c_args,
-         dependencies: libhandy_deps,
-  include_directories: [ root_inc, src_inc ],
-              install: true,
-            link_args: libhandy_link_args,
-          install_dir: libdir,
-)
+if static
+  libhandy = static_library(
+    'handy-' + apiversion,
+    libhandy_sources,
+
+              soversion: 0,
+                 c_args: libhandy_c_args,
+           dependencies: libhandy_deps,
+    include_directories: [ root_inc, src_inc ],
+              link_args: libhandy_link_args,
+  )
+else
+  libhandy = shared_library(
+    'handy-' + apiversion,
+    libhandy_sources,
+
+              soversion: 0,
+                 c_args: libhandy_c_args,
+           dependencies: libhandy_deps,
+    include_directories: [ root_inc, src_inc ],
+                install: true,
+              link_args: libhandy_link_args,
+            install_dir: libdir,
+  )
+  shared_libhandy = libhandy
+endif
 
 libhandy_dep = declare_dependency(
               sources: libhandy_generated_headers,
@@ -156,7 +172,7 @@ libhandy_dep = declare_dependency(
 
 if get_option('introspection')
 
-   libhandy_gir = gnome.generate_gir(libhandy,
+   libhandy_gir = gnome.generate_gir(shared_libhandy,
                  sources: libhandy_generated_headers + libhandy_public_headers + libhandy_public_sources,
                nsversion: apiversion,
                namespace: 'Handy',
