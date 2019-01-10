@@ -13,11 +13,10 @@ libhandy is licensed under the LGPL-2.1+.
 
 To build libhandy you need to first install the build-deps defined by [the debian/control file](https://source.puri.sm/Librem5/libhandy/blob/master/debian/control#L6)
 
-If you are running a Debian based distribution, you can easily install all those the dependencies making use of the tool `mk-build-deps` of the package `devsscript`.
+If you are running a Debian based distribution, you can easily install all those the dependencies making use of the following command
 
 ```sh
-sudo apt-get install devscripts
-mk-build-deps --install -r -s sudo
+sudo apt-get build-dep .
 ```
 
 ## Building
