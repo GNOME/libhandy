@@ -1,4 +1,6 @@
-if get_option('glade_catalog')
+if get_option('glade_catalog') and get_option('static')
+  warning('Glade catalogs don’t work with static libraries, skipping.')
+elif get_option('glade_catalog')
 
 glade_xml = 'libhandy.xml'
 gladeui_dep = dependency('gladeui-2.0')
