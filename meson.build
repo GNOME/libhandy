@@ -118,9 +118,15 @@ else
   vapidir = join_paths(get_option('datadir'), 'vala', 'vapi')
 endif
 
+if get_option('static') and get_option('glade_catalog').enabled()
+  error('The Glade Catalog isn’t available for static libhandy.')
+endif
 gladeui_dep = dependency('gladeui-2.0', required : get_option('glade_catalog'))
 glade_feature = gladeui_dep.found()
 
+if get_option('static') and get_option('introspection').enabled()
+  error('Introspection isn’t available for static libhandy.')
+endif
 introspection_feature = get_option('introspection').enabled() or get_option('introspection').auto()
 
 gnome = import('gnome')
@@ -148,6 +154,7 @@ summary = [
   '             Tests: @0@'.format(get_option('tests')),
   '          Examples: @0@'.format(get_option('examples')),
   '     Documentation: @0@'.format(get_option('gtk_doc')),
+  '            Static: @0@'.format(get_option('static')),
   '     Introspection: @0@'.format(introspection_feature),
   '              Vapi: @0@'.format(get_option('vapi')),
   '     Glade Catalog: @0@'.format(glade_feature),
