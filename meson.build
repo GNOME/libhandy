@@ -143,6 +143,7 @@ summary = [
   '             Tests: @0@'.format(get_option('tests')),
   '          Examples: @0@'.format(get_option('examples')),
   '     Documentation: @0@'.format(get_option('gtk_doc')),
+  '            Static: @0@'.format(get_option('static')),
   '     Introspection: @0@'.format(get_option('introspection')),
   '              Vapi: @0@'.format(get_option('vapi')),
   '     Glade Catalog: @0@'.format(get_option('glade_catalog')),
