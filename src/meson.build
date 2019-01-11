@@ -134,6 +134,12 @@ if cc.links('int main() { return 0; }', args : ld_version_script_arg, name : 'ld
   libhandy_link_args += [ld_version_script_arg]
 endif
 
+if target_system == 'windows'
+  libhandy_dir = [true]
+else
+  libhandy_dir = libdir
+endif
+
 libhandy = shared_library(
   'handy-' + apiversion,
   libhandy_sources,
@@ -144,7 +150,7 @@ libhandy = shared_library(
   include_directories: [ root_inc, src_inc ],
               install: true,
             link_args: libhandy_link_args,
-          install_dir: libdir,
+          install_dir: libhandy_dir,
 )
 
 libhandy_dep = declare_dependency(
