@@ -135,40 +135,25 @@ if cc.links('int main() { return 0; }', args : ld_version_script_arg, name : 'ld
 endif
 
 static = get_option('static')
-introspection = get_option('introspection')
-
 if static
-  libhandy = static_library(
-    'handy-' + apiversion,
-    libhandy_sources,
-
-              soversion: 0,
-                 c_args: libhandy_c_args,
-           dependencies: libhandy_deps,
-    include_directories: [ root_inc, src_inc ],
-              link_args: libhandy_link_args,
-  )
+  libtype = 'static_library'
+else
+  libtype = 'shared_library'
 endif
 
-# Currently in Meson building gir requires a shared library
-if not static or introspection
-  shared_libhandy = shared_library(
-    'handy-' + apiversion,
-    libhandy_sources,
+libhandy = build_target(
+  'handy-' + apiversion,
+  libhandy_sources,
 
-              soversion: 0,
-                 c_args: libhandy_c_args,
-           dependencies: libhandy_deps,
-    include_directories: [ root_inc, src_inc ],
-                install: true,
-              link_args: libhandy_link_args,
-            install_dir: libdir,
-  )
-
-  if not static
-    libhandy = shared_libhandy
-  endif
-endif
+            soversion: 0,
+               c_args: libhandy_c_args,
+         dependencies: libhandy_deps,
+  include_directories: [ root_inc, src_inc ],
+              install: not static,
+            link_args: libhandy_link_args,
+          install_dir: libdir,
+         target_type : libtype,
+)
 
 libhandy_dep = declare_dependency(
               sources: libhandy_generated_headers,
@@ -177,9 +162,9 @@ libhandy_dep = declare_dependency(
   include_directories: include_directories('.'),
 )
 
-if introspection
+if get_option('introspection')
 
-   libhandy_gir = gnome.generate_gir(shared_libhandy,
+   libhandy_gir = gnome.generate_gir(libhandy,
                  sources: libhandy_generated_headers + libhandy_public_headers + libhandy_public_sources,
                nsversion: apiversion,
                namespace: 'Handy',
