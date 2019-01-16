@@ -1547,7 +1547,7 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
   GtkAllocation remaining_alloc;
   GList *children;
   HdyLeafletChildInfo *child_info, *visible_child;
-  gint homogeneous_size = 0, min_size, extra_size;
+  gint homogeneous_size = 0, min_size, extra_size, space;
   gint per_child_extra, n_extra_widgets;
   gint n_visible_children = 0, n_expand_children = 0;
   gint start_pad = 0, end_pad = 0;
@@ -1577,16 +1577,10 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
   /* Compute repartition of extra space. */
 
   if (box_homogeneous) {
-    if (orientation == GTK_ORIENTATION_HORIZONTAL) {
-      homogeneous_size = allocation->width / n_visible_children;
-      n_expand_children = allocation->width % n_visible_children;
-      min_size = allocation->width - n_expand_children;
-    }
-    else {
-      homogeneous_size = allocation->height / n_visible_children;
-      n_expand_children = allocation->height % n_visible_children;
-      min_size = allocation->height - n_expand_children;
-    }
+    space = (orientation == GTK_ORIENTATION_HORIZONTAL) ? allocation->width : allocation->height;
+    homogeneous_size = space / n_visible_children;
+    n_expand_children = space % n_visible_children;
+    min_size = space - n_expand_children;
   }
   else {
     min_size = 0;
