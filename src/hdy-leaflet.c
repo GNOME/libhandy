@@ -1578,8 +1578,10 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
 
   if (box_homogeneous) {
     space = (orientation == GTK_ORIENTATION_HORIZONTAL) ? allocation->width : allocation->height;
-    homogeneous_size = space / n_visible_children;
-    n_expand_children = space % n_visible_children;
+    if (n_visible_children) {
+      homogeneous_size = space / n_visible_children;
+      n_expand_children = space % n_visible_children;
+    }
     min_size = space - n_expand_children;
   }
   else {
