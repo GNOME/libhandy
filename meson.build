@@ -109,7 +109,11 @@ add_project_arguments(
 
 # Setup various paths that subdirectory meson.build files need
 package_subdir = get_option('package_subdir') # When used as subproject
-libdir = join_paths(get_option('libdir'), package_subdir)
+if target_system == 'windows'
+  libdir = [true]
+else
+  libdir = join_paths(get_option('libdir'), package_subdir)
+endif
 girdir = join_paths(get_option('datadir'), package_subdir, 'gir-1.0')
 typelibdir = join_paths(get_option('libdir'), package_subdir, 'girepository-1.0')
 if package_subdir != ''
