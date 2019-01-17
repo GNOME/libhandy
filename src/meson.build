@@ -143,6 +143,12 @@ else
   libtype = 'shared_library'
 endif
 
+if target_system == 'windows'
+  handy_libdir = [true]
+else
+  handy_libdir = libdir
+endif
+
 libhandy = build_target(
   'handy-' + apiversion,
   libhandy_sources,
