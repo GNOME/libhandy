@@ -187,71 +187,6 @@ hdy_dialog_finalize (GObject *object)
   G_OBJECT_CLASS (hdy_dialog_parent_class)->finalize (object);
 }
 
-/* <= 3.24.1 never actually emits notify::transient-for so 
- * we have this hacky workaround */
-#if !GTK_CHECK_VERSION(3, 24, 2)
-
-enum {
-  PROP_0,
-  /* Wrap the property on GtkWindow */
-  PROP_TRANSIENT_FOR,
-  LAST_PROP = PROP_TRANSIENT_FOR,
-};
-
-static void
-hdy_dialog_get_property (GObject    *object,
-                         guint       prop_id,
-                         GValue     *value,
-                         GParamSpec *pspec)
-{
-  HdyDialog *self = HDY_DIALOG (object);
-
-  switch (prop_id) {
-  case PROP_TRANSIENT_FOR:
-    g_value_set_object (value, gtk_window_get_transient_for (GTK_WINDOW (self)));
-    break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-  }
-}
-
-static void
-hdy_dialog_set_property (GObject      *object,
-                         guint         prop_id,
-                         const GValue *value,
-                         GParamSpec   *pspec)
-{
-  HdyDialog *self = HDY_DIALOG (object);
-
-  switch (prop_id) {
-  case PROP_TRANSIENT_FOR:
-    gtk_window_set_transient_for (GTK_WINDOW (self), g_value_get_object (value));
-    g_object_notify (G_OBJECT (self), "transient-for");
-    break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-  }
-}
-
-static void
-hdy_dialog_class_init (HdyDialogClass *klass)
-{
-  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-
-  object_class->get_property = hdy_dialog_get_property;
-  object_class->set_property = hdy_dialog_set_property;
-  object_class->finalize = hdy_dialog_finalize;
-
-  widget_class->realize = hdy_dialog_realize;
-
-  g_object_class_override_property (object_class,
-                                    PROP_TRANSIENT_FOR,
-                                    "transient-for");
-}
-
-#else
-
 static void
 hdy_dialog_class_init (HdyDialogClass *klass)
 {
@@ -262,8 +197,6 @@ hdy_dialog_class_init (HdyDialogClass *klass)
 
   widget_class->realize = hdy_dialog_realize;
 }
-
-#endif
 
 /* Handle GtkWidget::size-allocate on (HdyDialog) GtkWindow:transient-for */
 static void
