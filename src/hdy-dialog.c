@@ -53,14 +53,6 @@
 #define SNAP_POINT_A 400
 #define SNAP_POINT_B 800
 
-/* GTK < 3.24.2 never actually emits notify::transient-for so we have this to
- * work around it.
- *
- * We can't have get_property() without set_property(), so we have to implement
- * it even for GTK < 3.24.2.
- */
-#define TRANSIENT_FOR_WORKAROUND !GTK_CHECK_VERSION(3, 24, 2)
-
 enum {
   PROP_0,
   PROP_NARROW,
@@ -233,11 +225,6 @@ hdy_dialog_get_property (GObject    *object,
   case PROP_NARROW:
     g_value_set_boolean (value, hdy_dialog_get_narrow (self));
     break;
-#if TRANSIENT_FOR_WORKAROUND
-  case PROP_TRANSIENT_FOR:
-    g_value_set_object (value, gtk_window_get_transient_for (GTK_WINDOW (self)));
-    break;
-#endif
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -249,17 +236,7 @@ hdy_dialog_set_property (GObject      *object,
                          const GValue *value,
                          GParamSpec   *pspec)
 {
-#if TRANSIENT_FOR_WORKAROUND
-  HdyDialog *self = HDY_DIALOG (object);
-#endif
-
   switch (prop_id) {
-#if TRANSIENT_FOR_WORKAROUND
-  case PROP_TRANSIENT_FOR:
-    gtk_window_set_transient_for (GTK_WINDOW (self), g_value_get_object (value));
-    g_object_notify (G_OBJECT (self), "transient-for");
-    break;
-#endif
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -276,12 +253,6 @@ hdy_dialog_class_init (HdyDialogClass *klass)
   object_class->finalize = hdy_dialog_finalize;
 
   widget_class->realize = hdy_dialog_realize;
-
-#if TRANSIENT_FOR_WORKAROUND
-  g_object_class_override_property (object_class,
-                                    PROP_TRANSIENT_FOR,
-                                    "transient-for");
-#endif
 
   /**
    * HdyDialog:narrow:
