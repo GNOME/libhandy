@@ -143,6 +143,13 @@ else
   libtype = 'shared_library'
 endif
 
+# set default libdir on win32 for libhandy target to keep MinGW compatibility
+if target_system == 'windows'
+  handy_libdir = [true]
+else
+  handy_libdir = libdir
+endif
+
 libhandy = build_target(
   'handy-' + apiversion,
   libhandy_sources,
@@ -153,7 +160,7 @@ libhandy = build_target(
   include_directories: [ root_inc, src_inc ],
               install: true,
             link_args: libhandy_link_args,
-          install_dir: libdir,
+          install_dir: handy_libdir,
           target_type: libtype,
 )
 
