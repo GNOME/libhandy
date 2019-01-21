@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Purism SPC
+ * Copyright (C) 2019 Red Hat Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1+
  */
