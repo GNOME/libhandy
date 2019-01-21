@@ -35,7 +35,7 @@ typedef struct
   GtkImage *image;
   GtkListBox *list;
   GtkPopover *popover;
-  gint selected_position;
+  gint selected_index;
 
   GListModel *bound_model;
   GtkListBoxCreateWidgetFunc create_list_widget_func;
@@ -44,6 +44,14 @@ typedef struct
 } HdyComboRowPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (HdyComboRow, hdy_combo_row, HDY_TYPE_ACTION_ROW)
+
+enum {
+  PROP_0,
+  PROP_SELECTED_INDEX,
+  LAST_PROP,
+};
+
+static GParamSpec *props[LAST_PROP];
 
 typedef struct
 {
@@ -117,53 +125,55 @@ update (HdyComboRow *self)
 
   if (priv->bound_model == NULL || g_list_model_get_n_items (priv->bound_model) == 0) {
     gtk_widget_set_sensitive (GTK_WIDGET (self), FALSE);
-    priv->selected_position = -1;
+    g_assert (priv->selected_index == -1);
 
     return;
   }
 
-  if (priv->selected_position == -1)
-    priv->selected_position = 0;
+  g_assert (priv->selected_index >= 0 && priv->selected_index <= g_list_model_get_n_items (priv->bound_model));
 
   gtk_widget_set_sensitive (GTK_WIDGET (self), TRUE);
 
-  item = g_list_model_get_item (priv->bound_model, priv->selected_position);
+  item = g_list_model_get_item (priv->bound_model, priv->selected_index);
   widget = priv->create_current_widget_func (item, priv->create_widget_func_data);
   gtk_container_add (GTK_CONTAINER (priv->current), widget);
 }
 
 static void
 bound_model_changed (GListModel *list,
-                     guint       position,
+                     guint       index,
                      guint       removed,
                      guint       added,
                      gpointer    user_data)
 {
+  gint new_idx;
   HdyComboRow *self = HDY_COMBO_ROW (user_data);
   HdyComboRowPrivate *priv = hdy_combo_row_get_instance_private (self);
 
-  if (priv->selected_position < position)
+  /* Selection is in front of insertion/removal point, nothing to do */
+  if (priv->selected_index > 0 && priv->selected_index < index)
     return;
 
-  if (priv->selected_position < position + removed) {
-    priv->selected_position = -1;
-
-    return;
+  if (priv->selected_index < index + removed) {
+    /* The item selected item was removed (or none is selected) */
+    new_idx = -1;
+  } else {
+    /* The item selected item was behind the insertion/removal */
+    new_idx = priv->selected_index + added - removed;
   }
 
-  priv->selected_position += added;
+  /* Select the first item if none is selected. */
+  if (new_idx == -1 && g_list_model_get_n_items (list) > 0)
+    new_idx = 0;
 
-  update (self);
+  hdy_combo_row_set_selected_index (self, new_idx);
 }
 
 static void
 row_activated_cb (HdyComboRow   *self,
                   GtkListBoxRow *row)
 {
-  HdyComboRowPrivate *priv = hdy_combo_row_get_instance_private (self);
-
-  priv->selected_position = gtk_list_box_row_get_index (row);
-  update (self);
+  hdy_combo_row_set_selected_index (self, gtk_list_box_row_get_index (row));
 }
 
 static void
@@ -185,24 +195,58 @@ destroy_model (HdyComboRow *self)
     g_signal_handlers_disconnect_by_func (priv->bound_model, bound_model_changed, self);
 
     /* Destroy the model and the user data. */
-    gtk_list_box_bind_model (priv->list, NULL, NULL, NULL, NULL);
+    if (priv->list)
+      gtk_list_box_bind_model (priv->list, NULL, NULL, NULL, NULL);
 
     priv->bound_model = NULL;
     priv->create_list_widget_func = NULL;
     priv->create_current_widget_func = NULL;
     priv->create_widget_func_data = NULL;
-
   }
 }
 
 static void
-hdy_combo_row_finalize (GObject *object)
+hdy_combo_row_get_property (GObject    *object,
+                            guint       prop_id,
+                            GValue     *value,
+                            GParamSpec *pspec)
+{
+  HdyComboRow *self = HDY_COMBO_ROW (object);
+
+  switch (prop_id) {
+  case PROP_SELECTED_INDEX:
+    g_value_set_int (value, hdy_combo_row_get_selected_index (self));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+hdy_combo_row_set_property (GObject      *object,
+                            guint         prop_id,
+                            const GValue *value,
+                            GParamSpec   *pspec)
+{
+  HdyComboRow *self = HDY_COMBO_ROW (object);
+
+  switch (prop_id) {
+  case PROP_SELECTED_INDEX:
+    hdy_combo_row_set_selected_index (self, g_value_get_int (value));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+hdy_combo_row_dispose (GObject *object)
 {
   HdyComboRow *self = HDY_COMBO_ROW (object);
 
   destroy_model (self);
 
-  G_OBJECT_CLASS (hdy_combo_row_parent_class)->finalize (object);
+  G_OBJECT_CLASS (hdy_combo_row_parent_class)->dispose (object);
 }
 
 typedef struct {
@@ -253,11 +297,29 @@ hdy_combo_row_class_init (HdyComboRowClass *klass)
   GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
   HdyActionRowClass *row_class = HDY_ACTION_ROW_CLASS (klass);
 
-  object_class->finalize = hdy_combo_row_finalize;
+  object_class->get_property = hdy_combo_row_get_property;
+  object_class->set_property = hdy_combo_row_set_property;
+  object_class->dispose = hdy_combo_row_dispose;
 
   container_class->forall = hdy_combo_row_forall;
 
   row_class->activate = hdy_combo_row_activate;
+
+  /**
+   * HdyComboRow:selected-index:
+   *
+   * The index of the selected item in its #GListModel.
+   *
+   * Since: 0.0.7
+   */
+  props[PROP_SELECTED_INDEX] =
+      g_param_spec_int ("selected-index",
+                        _("Selected index"),
+                        _("The index of the selected item"),
+                        -1, G_MAXINT, -1,
+                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  g_object_class_install_properties (object_class, LAST_PROP, props);
 
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/sm/puri/handy/dialer/ui/hdy-combo-row.ui");
@@ -290,7 +352,7 @@ hdy_combo_row_init (HdyComboRow *self)
 
   list_init (self);
 
-  priv->selected_position = -1;
+  priv->selected_index = -1;
 
   gtk_list_box_set_header_func (priv->list, hdy_list_box_separator_header, NULL, NULL);
   g_signal_connect_object (priv->list, "row-activated", G_CALLBACK (gtk_widget_hide),
@@ -342,9 +404,9 @@ hdy_combo_row_get_model (HdyComboRow *self)
  * hdy_combo_row_bind_model:
  * @self: a #HdyComboRow
  * @model: (nullable): the #GListModel to be bound to @self
- * @create_list_widget_func: (nullable): a function that creates widgets for
- *   items to display in the list, or %NULL in case you also passed %NULL as
- *   @model
+ * @create_list_widget_func: (nullable) (scope call): a function that creates
+ *   widgets for items to display in the list, or %NULL in case you also passed
+ *   %NULL as @model
  * @create_current_widget_func: (nullable) (scope call): a function that creates
  *   widgets for items to display as the seleted item, or %NULL in case you also
  *   passed %NULL as @model
@@ -382,11 +444,12 @@ hdy_combo_row_bind_model (HdyComboRow                *self,
   destroy_model (self);
 
   gtk_container_foreach (GTK_CONTAINER (priv->current), (GtkCallback) gtk_widget_destroy, NULL);
-  priv->selected_position = -1;
+  priv->selected_index = -1;
 
   if (model == NULL) {
     update (self);
 
+    g_object_notify_by_pspec (G_OBJECT (self), props[PROP_SELECTED_INDEX]);
     return;
   }
 
@@ -400,7 +463,12 @@ hdy_combo_row_bind_model (HdyComboRow                *self,
 
   g_signal_connect (priv->bound_model, "items-changed", G_CALLBACK (bound_model_changed), self);
 
+  if (g_list_model_get_n_items (priv->bound_model) > 0)
+    priv->selected_index = 0;
+
   update (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_SELECTED_INDEX]);
 }
 
 /**
@@ -479,15 +547,72 @@ hdy_combo_row_set_for_enum (HdyComboRow                     *self,
                             GDestroyNotify                   user_data_free_func)
 {
   g_autoptr (GListStore) store = g_list_store_new (HDY_TYPE_ENUM_VALUE_OBJECT);
-  g_autoptr (GEnumClass) enum_class = g_type_class_ref (enum_type);
+  /* g_autoptr for GEnumClass would require glib > 2.56 */
+  GEnumClass *enum_class = NULL;
   gsize i;
 
   g_return_if_fail (HDY_IS_COMBO_ROW (self));
 
+  enum_class = g_type_class_ref (enum_type);
   for (i = 0; i < enum_class->n_values; i++)
     g_list_store_append (store, hdy_enum_value_object_new (&enum_class->values[i]));
 
   hdy_combo_row_bind_name_model (self, G_LIST_MODEL (store), (HdyComboRowGetNameFunc) get_name_func, user_data, user_data_free_func);
+  g_type_class_unref (enum_class);
+}
+
+/**
+ * hdy_combo_row_get_selected_index:
+ * @self: a #GtkListBoxRow
+ *
+ * Gets the index of the selected item in its #GListModel.
+ *
+ * Returns: the index of the selected item, or -1 if no item is selected
+ *
+ * Since: 0.0.7
+ */
+gint
+hdy_combo_row_get_selected_index (HdyComboRow *self)
+{
+  HdyComboRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_COMBO_ROW (self), -1);
+
+  priv = hdy_combo_row_get_instance_private (self);
+
+  return priv->selected_index;
+}
+
+/**
+ * hdy_combo_row_set_selected_index:
+ * @self: a #HdyComboRow
+ * @selected_index: the index of the selected item
+ *
+ * Sets the index of the selected item in its #GListModel.
+ *
+ * Since: 0.0.7
+ */
+void
+hdy_combo_row_set_selected_index (HdyComboRow *self,
+                                  gint         selected_index)
+{
+  HdyComboRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_COMBO_ROW (self));
+  g_return_if_fail (selected_index >= -1);
+
+  priv = hdy_combo_row_get_instance_private (self);
+
+  g_return_if_fail (selected_index >= 0 || priv->bound_model == NULL || g_list_model_get_n_items (priv->bound_model) == 0);
+  g_return_if_fail (selected_index == -1 || (priv->bound_model != NULL && selected_index < g_list_model_get_n_items (priv->bound_model)));
+
+  if (priv->selected_index == selected_index)
+    return;
+
+  priv->selected_index = selected_index;
+  update (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_SELECTED_INDEX]);
 }
 
 /**

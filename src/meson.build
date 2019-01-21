@@ -55,6 +55,7 @@ src_headers = [
   'hdy-dialer-button.h',
   'hdy-dialer-cycle-button.h',
   'hdy-dialer.h',
+  'hdy-dialog.h',
   'hdy-enum-value-object.h',
   'hdy-expander-row.h',
   'hdy-fold.h',
@@ -86,6 +87,7 @@ src_sources = [
   'hdy-dialer-button.c',
   'hdy-dialer-cycle-button.c',
   'hdy-dialer.c',
+  'hdy-dialog.c',
   'hdy-enum-value-object.c',
   'hdy-expander-row.c',
   'hdy-fold.c',
@@ -134,7 +136,14 @@ if cc.links('int main() { return 0; }', args : ld_version_script_arg, name : 'ld
   libhandy_link_args += [ld_version_script_arg]
 endif
 
-libhandy = shared_library(
+static = get_option('static')
+if static
+  libtype = 'static_library'
+else
+  libtype = 'shared_library'
+endif
+
+libhandy = build_target(
   'handy-' + apiversion,
   libhandy_sources,
 
@@ -145,6 +154,7 @@ libhandy = shared_library(
               install: true,
             link_args: libhandy_link_args,
           install_dir: libdir,
+          target_type: libtype,
 )
 
 libhandy_dep = declare_dependency(
@@ -154,7 +164,7 @@ libhandy_dep = declare_dependency(
   include_directories: include_directories('.'),
 )
 
-if get_option('introspection')
+if introspection
 
    libhandy_gir = gnome.generate_gir(libhandy,
                  sources: libhandy_generated_headers + libhandy_public_headers + libhandy_public_sources,
