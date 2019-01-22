@@ -23,6 +23,7 @@ struct _HdyDemoWindow
   GtkEntry *search_entry;
   GtkListBox *column_listbox;
   GtkListBox *lists_listbox;
+  GtkListBox *nested_listbox;
   HdyComboRow *combo_row;
   HdyComboRow *enum_combo_row;
   HdyHeaderGroup *header_group;
@@ -375,6 +376,7 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, search_entry);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, column_listbox);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, lists_listbox);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, nested_listbox);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, combo_row);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, enum_combo_row);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, header_group);
@@ -405,6 +407,7 @@ lists_page_init (HdyDemoWindow *self)
   HdyValueObject *obj;
 
   gtk_list_box_set_header_func (self->lists_listbox, hdy_list_box_separator_header, NULL, NULL);
+  gtk_list_box_set_header_func (self->nested_listbox, hdy_list_box_separator_header, NULL, NULL);
 
   list_store = g_list_store_new (HDY_TYPE_VALUE_OBJECT);
 
