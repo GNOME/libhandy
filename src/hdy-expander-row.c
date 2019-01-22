@@ -25,7 +25,6 @@
 typedef struct
 {
   GtkBox *box;
-  GtkToggleButton *button;
   GtkSwitch *enable_switch;
   GtkImage *image;
   GtkRevealer *revealer;
@@ -58,6 +57,17 @@ arrow_init (HdyExpanderRow *self)
   gtk_style_context_add_provider (gtk_widget_get_style_context (GTK_WIDGET (priv->image)),
                                   GTK_STYLE_PROVIDER (provider),
                                   HDY_STYLE_PROVIDER_PRIORITY);
+}
+
+static void
+update_arrow (HdyExpanderRow *self)
+{
+  HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (self);
+
+  if (priv->expanded)
+    gtk_widget_set_state_flags (GTK_WIDGET (priv->image), GTK_STATE_FLAG_CHECKED, FALSE);
+  else
+    gtk_widget_unset_state_flags (GTK_WIDGET (priv->image), GTK_STATE_FLAG_CHECKED);
 }
 
 static void
@@ -146,7 +156,7 @@ for_non_internal_child (GtkWidget *widget,
   ForallData *data = callback_data;
   HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (data->row);
 
-  if (widget != (GtkWidget *) priv->button &&
+  if (widget != (GtkWidget *) priv->image &&
       widget != (GtkWidget *) priv->enable_switch &&
       widget != (GtkWidget *) priv->revealer &&
       widget != (GtkWidget *) priv->separator)
@@ -184,7 +194,7 @@ hdy_expander_row_activate (HdyActionRow *row)
   HdyExpanderRow *self = HDY_EXPANDER_ROW (row);
   HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (self);
 
-  hdy_expander_row_set_expanded (self, priv->enable_expansion);
+  hdy_expander_row_set_expanded (self, !priv->expanded);
 
   HDY_ACTION_ROW_CLASS (hdy_expander_row_parent_class)->activate (row);
 }
@@ -248,7 +258,6 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/sm/puri/handy/ui/hdy-expander-row.ui");
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, box);
-  gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, button);
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, image);
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, revealer);
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, separator);
@@ -269,7 +278,7 @@ hdy_expander_row_init (HdyExpanderRow *self)
   g_object_bind_property (self, "show-enable-switch", priv->separator, "visible", G_BINDING_SYNC_CREATE);
   g_object_bind_property (self, "show-enable-switch", priv->enable_switch, "visible", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
   g_object_bind_property (self, "enable-expansion", priv->enable_switch, "active", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
-  g_object_bind_property (self, "enable-expansion", priv->button, "sensitive", G_BINDING_SYNC_CREATE);
+  g_object_bind_property (self, "enable-expansion", priv->image, "sensitive", G_BINDING_SYNC_CREATE);
   g_object_bind_property (self, "enable-expansion", priv->box, "sensitive", G_BINDING_SYNC_CREATE);
 }
 
@@ -318,6 +327,8 @@ hdy_expander_row_set_expanded (HdyExpanderRow *self,
   priv->expanded = expanded;
 
   gtk_revealer_set_reveal_child (priv->revealer, expanded);
+
+  update_arrow (self);
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_EXPANDED]);
 }

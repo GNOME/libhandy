@@ -6,3 +6,11 @@ stacksidebar list {
 hdypaginator.horizontal .paginator-icon {
   -gtk-icon-transform: rotate(90deg);
 }
+
+list row.expander {
+  padding: 0px;
+}
+
+list row.expander .header {
+  padding: 2px;
+}
