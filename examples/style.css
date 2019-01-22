@@ -2,3 +2,11 @@ stacksidebar list {
   border-left-width: 0px;
   border-right-width: 0px;
 }
+
+list row.expander {
+  padding: 0px;
+}
+
+list row.expander .header {
+  padding: 2px;
+}

@@ -8,6 +8,7 @@
 #include "hdy-list-box.h"
 
 #include <glib/gi18n-lib.h>
+#include "hdy-expander-row.h"
 
 /**
  * SECTION:hdy-list-box
@@ -34,6 +35,7 @@ hdy_list_box_separator_header (GtkListBoxRow *row,
                                gpointer       unused_user_data)
 {
   GtkWidget *header;
+  GtkWidget *child;
 
   g_return_if_fail (GTK_IS_LIST_BOX_ROW (row));
   g_return_if_fail (before == NULL || GTK_IS_LIST_BOX_ROW (before));
@@ -46,6 +48,10 @@ hdy_list_box_separator_header (GtkListBoxRow *row,
   }
 
   if (gtk_list_box_row_get_header (row) != NULL)
+    return;
+
+  child = gtk_bin_get_child (GTK_BIN (row));
+  if (HDY_IS_EXPANDER_ROW (before) && GTK_IS_REVEALER (child))
     return;
 
   header = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
