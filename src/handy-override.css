@@ -266,8 +266,8 @@ list.preferences > row.expander:checked + row,
 list.preferences > row.expander:checked + row.expander row.header {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  -gtk-outline-top-left-radius: 8px;
-  -gtk-outline-top-right-radius: 8px;
+  -gtk-outline-top-left-radius: 7px;
+  -gtk-outline-top-right-radius: 7px;
 }
 
 /* Bottom border */
@@ -282,12 +282,13 @@ list.preferences > row:last-child,
 list.preferences > row.checked-expander-row-previous-sibbling,
 list.preferences > row.expander:checked,
 list.preferences > row.expander:not(:checked):last-child row.header,
+list.preferences > row.expander:not(:checked).checked-expander-row-previous-sibbling row.header,
 list.preferences > row.expander.empty:checked row.header,
 row.expander list.nested > row:last-child {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
-  -gtk-outline-bottom-left-radius: 8px;
-  -gtk-outline-bottom-right-radius: 8px;
+  -gtk-outline-bottom-left-radius: 7px;
+  -gtk-outline-bottom-right-radius: 7px;
 }
 
 /* Add space around expanded rows */
