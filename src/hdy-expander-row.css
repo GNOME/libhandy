@@ -1,0 +1,5 @@
+/* Move the padding inside the expander row */
+
+list row.expander {
+  padding: 0px;
+}
