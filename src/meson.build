@@ -78,6 +78,7 @@ src_headers = [
   'hdy-title-bar.h',
   'hdy-value-object.h',
   'hdy-view-switcher.h',
+  'hdy-view-switcher-bar.h',
 ]
 
 sed = find_program('sed', required: true)
