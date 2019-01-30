@@ -61,9 +61,9 @@ update (HdyDemoWindow *self)
   GtkWidget *header_child = hdy_leaflet_get_visible_child (self->header_box);
   HdyFold fold = hdy_leaflet_get_fold (self->header_box);
 
-  g_assert (header_child == NULL || GTK_IS_HEADER_BAR (header_child));
+  /* g_assert (header_child == NULL || GTK_IS_HEADER_BAR (header_child)); */
 
-  hdy_header_group_set_focus (self->header_group, fold == HDY_FOLD_FOLDED ? GTK_HEADER_BAR (header_child) : NULL);
+  /* hdy_header_group_set_focus (self->header_group, fold == HDY_FOLD_FOLDED ? GTK_HEADER_BAR (header_child) : NULL); */
 }
 
 static void
@@ -275,6 +275,46 @@ dialog_action_clicked_cb (GtkButton     *btn,
   gtk_widget_show (dlg);
 }
 
+static gboolean
+is_title_label_visible (GBinding     *binding,
+                        const GValue *from_value,
+                        GValue       *to_value,
+                        gpointer      user_data)
+{
+  g_value_set_boolean (to_value, g_value_get_object (from_value) == user_data);
+
+  return TRUE;
+}
+
+static void
+switcher_demo_clicked_cb (GtkButton     *btn,
+                          HdyDemoWindow *self)
+{
+  GtkBuilder *builder;
+  GtkWidget  *win, *title_box, *title_label, *switcher_bar;
+
+  builder = gtk_builder_new_from_resource ("/sm/puri/handy/demo/ui/switcher-window.ui");
+
+  win = GTK_WIDGET (gtk_builder_get_object (builder, "window"));
+  title_box = GTK_WIDGET (gtk_builder_get_object (builder, "title_box"));
+  title_label = GTK_WIDGET (gtk_builder_get_object (builder, "title_label"));
+  switcher_bar = GTK_WIDGET (gtk_builder_get_object (builder, "switcher_bar"));
+
+  g_object_bind_property_full (title_box,
+                               "visible-child",
+                               switcher_bar,
+                               "reveal",
+                               G_BINDING_SYNC_CREATE,
+                               is_title_label_visible,
+                               NULL,
+                               title_label,
+                               NULL);
+
+  gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (self));
+
+  gtk_widget_show (win);
+}
+
 HdyDemoWindow *
 hdy_demo_window_new (GtkApplication *application)
 {
@@ -350,6 +390,7 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_callback_full (widget_class, "adj_arrows_duration_value_changed_cb", G_CALLBACK(adj_arrows_duration_value_changed_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "dialog_clicked_cb", G_CALLBACK(dialog_clicked_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "dialog_action_clicked_cb", G_CALLBACK(dialog_action_clicked_cb));
+  gtk_widget_class_bind_template_callback_full (widget_class, "switcher_demo_clicked_cb", G_CALLBACK(switcher_demo_clicked_cb));
 }
 
 static void
