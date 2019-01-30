@@ -29,8 +29,6 @@ enum {
   LAST_PROP,
 };
 
-#define HDY_EASE_OUT_TAN_CUBIC 3
-
 struct _HdyTitleBar
 {
   GtkBin parent_instance;
