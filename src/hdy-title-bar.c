@@ -7,7 +7,6 @@
 #include "hdy-title-bar.h"
 
 #include <glib/gi18n.h>
-#include <math.h>
 
 /**
  * SECTION:hdy-title-bar
