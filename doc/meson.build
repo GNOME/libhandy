@@ -4,6 +4,7 @@ subdir('xml')
 
 private_headers = [
     'config.h',
+    'gconstructor.h',
     'gtkprogresstrackerprivate.h',
     'gtk-window-private.h',
     'hdy-animation-private.h',
