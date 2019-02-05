@@ -6,6 +6,7 @@
 #include "config.h"
 #include "hdy-main-private.h"
 #include <glib/gi18n-lib.h>
+#include "gconstructor.h"
 
 static gint hdy_initialized = FALSE;
 
@@ -47,3 +48,38 @@ hdy_init (int *argc, char ***argv)
 
   return TRUE;
 }
+
+/**
+ * hdy_init_static:
+ *
+ * Initializes libhandy.
+ *
+ * This function is available and should be used only if you built libhandy as a
+ * static library, guard its usage by checking that HDY_IS_STATIC is defined.
+ * Otherwise, libhandy will be automatically initialized.
+ *
+ * Call this function before using any other libhandy functions in your GUI
+ * applications.
+ */
+
+/* It is important to have the library constructor when it is not static,
+ * otherwise the resources will be initialized before we try to register them,
+ * which will prevent the library from loading properly.
+ */
+
+#if defined (G_HAS_CONSTRUCTORS)
+
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(hdy_init_ctor)
+#endif
+G_DEFINE_CONSTRUCTOR(hdy_init_ctor)
+
+static void
+hdy_init_ctor (void)
+{
+  hdy_init (NULL, NULL);
+}
+
+#else
+# error Your platform/compiler is missing constructor support
+#endif
