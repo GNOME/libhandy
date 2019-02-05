@@ -70,7 +70,6 @@ src_headers = [
   'hdy-keypad.h',
   'hdy-leaflet.h',
   'hdy-list-box.h',
-  'hdy-main.h',
   'hdy-paginator.h',
   'hdy-preferences-group.h',
   'hdy-preferences-page.h',
