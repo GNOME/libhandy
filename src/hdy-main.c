@@ -36,6 +36,8 @@ GResource *hdy_get_resource (void);
  * simply return without processing the new arguments.
  *
  * Returns: %TRUE if initialization was successful, %FALSE otherwise.
+ *
+ * Deprecated:0.0.8: The library is now automatically initialized
  */
 gboolean
 hdy_init (int *argc, char ***argv)
