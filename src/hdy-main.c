@@ -7,6 +7,7 @@
 #include "hdy-main-private.h"
 #include <gio/gio.h>
 #include <glib/gi18n.h>
+#include "gconstructor.h"
 
 static gint hdy_initialized = FALSE;
 
@@ -52,3 +53,20 @@ hdy_init (int *argc, char ***argv)
 
   return TRUE;
 }
+
+#if defined (G_HAS_CONSTRUCTORS)
+
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(hdy_init_ctor)
+#endif
+G_DEFINE_CONSTRUCTOR(hdy_init_ctor)
+
+static void
+hdy_init_ctor (void)
+{
+  hdy_init (NULL, NULL);
+}
+
+#else
+# error Your platform/compiler is missing constructor support
+#endif
