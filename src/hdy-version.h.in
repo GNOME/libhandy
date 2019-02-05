@@ -17,6 +17,8 @@
  * Handy provides macros to check the version of the library at compile-time
  */
 
+#mesondefine HDY_IS_STATIC
+
 /**
  * HDY_MAJOR_VERSION:
  *

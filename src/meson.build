@@ -13,6 +13,7 @@ hdy_enum_headers = ['hdy-arrows.h',
                    ]
 
 version_data = configuration_data()
+version_data.set('HDY_IS_STATIC', static)
 version_data.set('HDY_MAJOR_VERSION', handy_version_major)
 version_data.set('HDY_MINOR_VERSION', handy_version_minor)
 version_data.set('HDY_MICRO_VERSION', handy_version_micro)
