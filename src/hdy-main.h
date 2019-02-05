@@ -14,7 +14,12 @@
 
 G_BEGIN_DECLS
 
+#ifndef HANDY_DISABLE_DEPRECATED
+
+HDY_DEPRECATED_IN_0_0_8
 gboolean hdy_init(int *argc, char ***argv);
+
+#endif
 
 #ifdef HDY_IS_STATIC
 void hdy_init_static (void);
