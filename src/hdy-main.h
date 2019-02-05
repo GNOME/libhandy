@@ -10,9 +10,14 @@
 #endif
 
 #include <glib.h>
+#include "hdy-version.h"
 
 G_BEGIN_DECLS
 
 gboolean hdy_init(int *argc, char ***argv);
+
+#ifdef HDY_IS_STATIC
+void hdy_init_static (void);
+#endif
 
 G_END_DECLS
