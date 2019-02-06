@@ -47,7 +47,9 @@ main (gint argc,
       gchar *argv[])
 {
   gtk_test_init (&argc, &argv, NULL);
-  hdy_init (&argc, &argv);
+#ifdef HDY_IS_STATIC
+  hdy_init_static ();
+#endif
 
   g_test_add_func("/Handy/ValueObject/init", test_hdy_value_object_init);
 
