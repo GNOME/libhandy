@@ -41,7 +41,9 @@ main (gint argc,
       gchar *argv[])
 {
   gtk_test_init (&argc, &argv, NULL);
-  hdy_init (&argc, &argv);
+#ifdef HDY_IS_STATIC
+  hdy_init_static ();
+#endif
 
   g_test_add_func("/Handy/ComboRow/set_for_enum", test_hdy_combo_row_set_for_enum);
 

@@ -48,7 +48,9 @@ main (gint argc,
       gchar *argv[])
 {
   gtk_test_init (&argc, &argv, NULL);
-  hdy_init (&argc, &argv);
+#ifdef HDY_IS_STATIC
+  hdy_init_static ();
+#endif
 
   g_test_add_func("/Handy/DialerCycleButton/cycle_end", test_hdy_dialer_cycle_button_cycle_end);
   g_test_add_func("/Handy/DialerCycleButton/cycle_timeout", test_hdy_dialer_cycle_button_cycle_timeout);

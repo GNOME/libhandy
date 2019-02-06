@@ -81,6 +81,9 @@ main (gint argc,
       gchar *argv[])
 {
   gtk_test_init (&argc, &argv, NULL);
+#ifdef HDY_IS_STATIC
+  hdy_init_static ();
+#endif
 
   g_test_add_func("/Handy/Dialog/is_small", test_hdy_dialog_is_small);
   g_test_add_func("/Handy/Dialog/normal", test_hdy_dialog_normal);
