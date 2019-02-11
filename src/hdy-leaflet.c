@@ -1873,6 +1873,8 @@ hdy_leaflet_draw_under (GtkWidget *widget,
 
   if (gtk_cairo_should_draw_window (cr, priv->bin_window)) {
     cairo_save (cr);
+    cairo_rectangle (cr, x, y, allocation.width, allocation.height);
+    cairo_clip (cr);
     cairo_translate (cr, -x, -y);
     gtk_container_propagate_draw (GTK_CONTAINER (self),
                                   priv->visible_child->widget,
@@ -1927,12 +1929,15 @@ hdy_leaflet_draw_slide (GtkWidget *widget,
   if (priv->child_transition.last_visible_surface &&
       gtk_cairo_should_draw_window (cr, priv->view_window)) {
     GtkAllocation allocation;
-    int x, y;
+    int x, y, clip_x, clip_y, clip_w, clip_h;
 
     gtk_widget_get_allocation (widget, &allocation);
 
     x = get_bin_window_x (self, &allocation);
     y = get_bin_window_y (self, &allocation);
+    clip_x = clip_y = 0;
+    clip_w = allocation.width;
+    clip_h = allocation.height;
 
     switch (priv->child_transition.active_type) {
     case HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE:
@@ -1957,11 +1962,23 @@ hdy_leaflet_draw_slide (GtkWidget *widget,
     case HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER:
       switch (priv->child_transition.active_direction) {
       case GTK_PAN_DIRECTION_LEFT:
+        clip_x = 0;
+        clip_w = x;
+        x = 0;
+        break;
       case GTK_PAN_DIRECTION_RIGHT:
+        clip_x = allocation.width + x;
+        clip_w = -x;
         x = 0;
         break;
       case GTK_PAN_DIRECTION_UP:
+        clip_y = 0;
+        clip_h = y;
+        y = 0;
+        break;
       case GTK_PAN_DIRECTION_DOWN:
+        clip_y = allocation.height + y;
+        clip_h = -y;
         y = 0;
         break;
       default:
@@ -1986,6 +2003,10 @@ hdy_leaflet_draw_slide (GtkWidget *widget,
       y -= (priv->child_transition.last_visible_widget_height - allocation.height) / 2;
 
     cairo_save (cr);
+    if (priv->child_transition.active_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER) {
+      cairo_rectangle (cr, clip_x, clip_y, clip_w, clip_h);
+      cairo_clip (cr);
+    }
     cairo_set_source_surface (cr, priv->child_transition.last_visible_surface, x, y);
     cairo_paint (cr);
     cairo_restore (cr);
