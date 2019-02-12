@@ -10,6 +10,7 @@
 #include "gtkprogresstrackerprivate.h"
 #include "hdy-animation-private.h"
 #include "hdy-leaflet.h"
+#include "hdy-style-private.h"
 
 /* TODO:
  * - Ensure folding and unfolding animations behave similarly.
@@ -122,6 +123,7 @@ typedef struct
   GtkOrientation orientation;
 
   gboolean move_bin_window_request;
+  GtkCssProvider *provider;
 
   struct {
     HdyLeafletModeTransitionType type;
@@ -1927,6 +1929,145 @@ hdy_leaflet_draw_crossfade (GtkWidget *widget,
   cairo_paint (cr);
 }
 
+static GtkStyleContext *
+create_context (HdyLeaflet      *self,
+                const gchar     *name,
+                GtkPanDirection  direction)
+{
+  HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
+  GtkWidgetPath *path;
+  GtkStyleContext *context;
+  gint pos;
+  const gchar *direction_name;
+  GEnumClass *enum_class;
+
+  enum_class = g_type_class_ref (GTK_TYPE_PAN_DIRECTION);
+  direction_name = g_enum_get_value (enum_class, direction)->value_nick;
+
+  path = gtk_widget_path_new ();
+  pos = gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
+  gtk_widget_path_iter_set_object_name (path, pos, "hdyleaflet");
+
+  pos = gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
+  gtk_widget_path_iter_set_object_name (path, pos, name);
+
+  gtk_widget_path_iter_add_class (path, pos, direction_name);
+
+  context = gtk_style_context_new ();
+  gtk_style_context_set_path (context, path);
+
+  gtk_style_context_add_provider (context,
+                                  GTK_STYLE_PROVIDER (priv->provider),
+                                  HDY_STYLE_PROVIDER_PRIORITY);
+
+  g_type_class_unref (enum_class);
+
+	return context;
+}
+
+static void
+draw_shadow (HdyLeaflet      *self,
+             cairo_t         *cr,
+             gint             x,
+             gint             y,
+             gint             width,
+             gint             height,
+             gdouble          distance,
+             gdouble          progress,
+             GtkPanDirection  direction)
+{
+  gdouble remaining_distance, shadow_opacity;
+  gint shadow_width, shadow_height, shadow_size;
+  cairo_pattern_t *dimming_pattern, *shadow_pattern;
+  GtkStyleContext *dim_context, *shadow_context;
+
+  dim_context = create_context (self, "dimming", direction);
+  shadow_context = create_context (self, "shadow", direction);
+
+  gtk_style_context_get (shadow_context,
+                         gtk_style_context_get_state (shadow_context),
+                         "min-width", &shadow_width,
+                         "min-height", &shadow_height,
+                         NULL);
+
+  switch (direction) {
+  case GTK_PAN_DIRECTION_LEFT:
+  case GTK_PAN_DIRECTION_RIGHT:
+    shadow_size = shadow_width;
+    break;
+  case GTK_PAN_DIRECTION_UP:
+  case GTK_PAN_DIRECTION_DOWN:
+    shadow_size = shadow_height;
+    break;
+  default:
+    g_assert_not_reached ();
+  }
+
+  remaining_distance = (1 - progress) * distance;
+  shadow_opacity = 1;
+  if (remaining_distance < shadow_size)
+    shadow_opacity *= (remaining_distance / shadow_size);
+
+  cairo_save (cr);
+
+  cairo_push_group (cr);
+  gtk_render_background (dim_context, cr, x, y, width, height);
+  gtk_render_frame (dim_context, cr, x, y, width, height);
+  dimming_pattern = cairo_pop_group (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
+  cairo_set_source (cr, dimming_pattern);
+  cairo_paint_with_alpha (cr, 1 - progress);
+
+  switch (direction) {
+  case GTK_PAN_DIRECTION_LEFT:
+    cairo_translate (cr, x, 0);
+    break;
+  case GTK_PAN_DIRECTION_RIGHT:
+    cairo_translate (cr, x + width, 0);
+    break;
+  case GTK_PAN_DIRECTION_UP:
+    cairo_translate (cr, 0, y);
+    break;
+  case GTK_PAN_DIRECTION_DOWN:
+    cairo_translate (cr, 0, y + height);
+    break;
+  default:
+    g_assert_not_reached ();
+  }
+
+  cairo_push_group (cr);
+  switch (direction) {
+  case GTK_PAN_DIRECTION_LEFT:
+    gtk_render_background (shadow_context, cr, 0, 0, shadow_size, height);
+    gtk_render_frame (shadow_context, cr, 0, 0, shadow_size, height);
+    break;
+  case GTK_PAN_DIRECTION_RIGHT:
+    gtk_render_background (shadow_context, cr, -shadow_size, 0, shadow_size, height);
+    gtk_render_frame (shadow_context, cr, -shadow_size, 0, shadow_size, height);
+    break;
+  case GTK_PAN_DIRECTION_UP:
+    gtk_render_background (shadow_context, cr, 0, 0, width, shadow_size);
+    gtk_render_frame (shadow_context, cr, 0, 0, width, shadow_size);
+    break;
+  case GTK_PAN_DIRECTION_DOWN:
+    gtk_render_background (shadow_context, cr, 0, -shadow_size, width, shadow_size);
+    gtk_render_frame (shadow_context, cr, 0, -shadow_size, width, shadow_size);
+    break;
+  default:
+    g_assert_not_reached ();
+  }
+  shadow_pattern = cairo_pop_group (cr);
+
+  cairo_set_source (cr, shadow_pattern);
+  cairo_paint_with_alpha (cr, shadow_opacity);
+
+  cairo_restore (cr);
+
+  cairo_pattern_destroy (dimming_pattern);
+  cairo_pattern_destroy (shadow_pattern);
+}
+
 static void
 hdy_leaflet_draw_under (GtkWidget *widget,
                         cairo_t   *cr)
@@ -1943,6 +2084,7 @@ hdy_leaflet_draw_under (GtkWidget *widget,
 
   if (gtk_cairo_should_draw_window (cr, priv->bin_window)) {
     int clip_x, clip_y, clip_w, clip_h;
+    double distance, progress;
 
     clip_x = 0;
     clip_y = 0;
@@ -1953,21 +2095,27 @@ hdy_leaflet_draw_under (GtkWidget *widget,
     case GTK_PAN_DIRECTION_LEFT:
       clip_x = x;
       clip_w -= x;
+      distance = allocation.width;
       break;
     case GTK_PAN_DIRECTION_RIGHT:
       clip_w += x;
+      distance = allocation.width;
       break;
     case GTK_PAN_DIRECTION_UP:
       clip_y = y;
       clip_h -= y;
+      distance = allocation.height;
       break;
     case GTK_PAN_DIRECTION_DOWN:
       clip_h += y;
+      distance = allocation.height;
       break;
     default:
       g_assert_not_reached ();
       break;
     }
+
+    progress = gtk_progress_tracker_get_ease_out_cubic (&priv->child_transition.tracker, FALSE);
 
     cairo_save (cr);
     cairo_rectangle (cr, clip_x, clip_y, clip_w, clip_h);
@@ -1975,6 +2123,8 @@ hdy_leaflet_draw_under (GtkWidget *widget,
     gtk_container_propagate_draw (GTK_CONTAINER (self),
                                   priv->visible_child->widget,
                                   cr);
+    draw_shadow (self, cr, clip_x, clip_y, clip_w, clip_h, distance, progress,
+                 priv->child_transition.active_direction);
     cairo_restore (cr);
   }
 
@@ -2025,6 +2175,8 @@ hdy_leaflet_draw_over (GtkWidget *widget,
       gtk_cairo_should_draw_window (cr, priv->view_window)) {
     GtkAllocation allocation;
     int x, y, clip_x, clip_y, clip_w, clip_h;
+    double distance, progress;
+    GtkPanDirection direction;
 
     gtk_widget_get_allocation (widget, &allocation);
 
@@ -2040,20 +2192,28 @@ hdy_leaflet_draw_over (GtkWidget *widget,
     case GTK_PAN_DIRECTION_LEFT:
       clip_w = x;
       x = 0;
+      distance = allocation.width;
+      direction = GTK_PAN_DIRECTION_RIGHT;
       break;
     case GTK_PAN_DIRECTION_RIGHT:
       clip_x = x + allocation.width;
       clip_w = -x;
       x = 0;
+      distance = allocation.width;
+      direction = GTK_PAN_DIRECTION_LEFT;
       break;
     case GTK_PAN_DIRECTION_UP:
       clip_h = y;
       y = 0;
+      distance = allocation.height;
+      direction = GTK_PAN_DIRECTION_DOWN;
       break;
     case GTK_PAN_DIRECTION_DOWN:
       clip_y = y + allocation.height;
       clip_h = -y;
       y = 0;
+      distance = allocation.height;
+      direction = GTK_PAN_DIRECTION_UP;
       break;
     default:
       g_assert_not_reached ();
@@ -2069,13 +2229,16 @@ hdy_leaflet_draw_over (GtkWidget *widget,
     else if (gtk_widget_get_valign (priv->last_visible_child->widget) == GTK_ALIGN_CENTER)
       y -= (priv->child_transition.last_visible_widget_height - allocation.height) / 2;
 
+    progress = 1 - gtk_progress_tracker_get_ease_out_cubic (&priv->child_transition.tracker, FALSE);
+
     cairo_save (cr);
     cairo_rectangle (cr, clip_x, clip_y, clip_w, clip_h);
     cairo_clip (cr);
     cairo_set_source_surface (cr, priv->child_transition.last_visible_surface, x, y);
     cairo_paint (cr);
+    draw_shadow (self, cr, clip_x, clip_y, clip_w, clip_h, distance, progress, direction);
     cairo_restore (cr);
-   }
+  }
 
   if (gtk_cairo_should_draw_window (cr, priv->bin_window))
     gtk_container_propagate_draw (GTK_CONTAINER (self),
@@ -2610,6 +2773,8 @@ hdy_leaflet_finalize (GObject *object)
   if (priv->child_transition.last_visible_surface != NULL)
     cairo_surface_destroy (priv->child_transition.last_visible_surface);
 
+  g_object_unref (priv->provider);
+
   G_OBJECT_CLASS (hdy_leaflet_parent_class)->finalize (object);
 }
 
@@ -2997,6 +3162,10 @@ hdy_leaflet_init (HdyLeaflet *self)
   priv->child_transition.duration = 200;
   priv->mode_transition.current_pos = 1.0;
   priv->mode_transition.target_pos = 1.0;
+
+  priv->provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_resource (priv->provider,
+                                       "/sm/puri/handy/style/hdy-leaflet.css");
 
   gtk_widget_set_has_window (widget, FALSE);
   gtk_widget_set_can_focus (widget, FALSE);
