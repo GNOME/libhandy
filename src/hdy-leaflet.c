@@ -45,7 +45,8 @@
  * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE: No transition
  * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_CROSSFADE: A cross-fade
  * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to orientation, text direction and order
- * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding according to orientation, text direction and order
+ * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
+ * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
  *
  * These enumeration values describe the possible transitions between pages in a
  * #HdyLeaflet widget.
@@ -231,6 +232,9 @@ is_window_moving_child_transition (HdyLeafletChildTransitionType transition_type
   if (transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER)
     return direction == GTK_PAN_DIRECTION_UP || direction == GTK_PAN_DIRECTION_LEFT;
 
+  if (transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER)
+    return direction == GTK_PAN_DIRECTION_DOWN || direction == GTK_PAN_DIRECTION_RIGHT;
+
   return FALSE;
 }
 
@@ -240,7 +244,8 @@ static inline gboolean
 is_direction_dependent_child_transition (HdyLeafletChildTransitionType transition_type)
 {
   return (transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE ||
-          transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER);
+          transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER ||
+          transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER);
 }
 
 static GtkPanDirection
@@ -1964,6 +1969,7 @@ hdy_leaflet_draw_slide (GtkWidget *widget,
       }
       break;
     case HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER:
+    case HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER:
       switch (priv->child_transition.active_direction) {
       case GTK_PAN_DIRECTION_LEFT:
         x = 0;
@@ -2003,7 +2009,8 @@ hdy_leaflet_draw_slide (GtkWidget *widget,
       y -= (priv->child_transition.last_visible_widget_height - allocation.height) / 2;
 
     cairo_save (cr);
-    if (priv->child_transition.active_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER) {
+    if (priv->child_transition.active_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER ||
+        priv->child_transition.active_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER) {
       cairo_rectangle (cr, clip_x, clip_y, allocation.width, allocation.height);
       cairo_clip (cr);
     }
@@ -2192,11 +2199,23 @@ hdy_leaflet_draw (GtkWidget *widget,
           break;
         }
         break;
-      /* FIXME */
-      /* case HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER: */
-      /*   if (gtk_cairo_should_draw_window (cr, priv->bin_window)) */
-      /*     hdy_leaflet_draw_under (widget, cr); */
-      /*   break; */
+      case HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER:
+        switch (priv->child_transition.active_direction) {
+        case GTK_PAN_DIRECTION_LEFT:
+        case GTK_PAN_DIRECTION_UP:
+           /* FIXME RTL */
+          hdy_leaflet_draw_under (widget, cr);
+          break;
+        case GTK_PAN_DIRECTION_RIGHT:
+        case GTK_PAN_DIRECTION_DOWN:
+           /* FIXME RTL */
+          hdy_leaflet_draw_slide (widget, cr);
+          break;
+        default:
+          g_assert_not_reached ();
+          break;
+        }
+        break;
       case HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE:
       default:
         g_assert_not_reached ();
