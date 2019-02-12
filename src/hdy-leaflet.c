@@ -85,6 +85,15 @@ enum {
 #define HDY_FOLD_MAX 2
 #define GTK_ORIENTATION_MAX 2
 
+#define SHADOW_GRADIENT_OFFSETS 0, 0.03125, 0.0625, 0.0938, 0.125, 0.1875, 0.25, 0.375, 0.4375, 0.5, 0.5625, 0.625, 0.6875, 0.75, 0.875, 1.0
+#define SHADOW_GRADIENT_ALPHA 1, 0.99, 0.98, 0.95, 0.92, 0.82, 0.71, 0.46, 0.35, 0.25, 0.17, 0.11, 0.07, 0.04, 0.01, 0.0
+#define SHADOW_SIZE 81
+#define SHADOW_OPACITY 0.06
+#define DIMMING_OPACITY 0.12
+
+static const double shadow_gradient_offsets[] = { SHADOW_GRADIENT_OFFSETS };
+static const double shadow_gradient_alpha[] = { SHADOW_GRADIENT_ALPHA };
+
 typedef struct _HdyLeafletChildInfo HdyLeafletChildInfo;
 
 struct _HdyLeafletChildInfo
@@ -1883,6 +1892,83 @@ hdy_leaflet_draw_crossfade (GtkWidget *widget,
 }
 
 static void
+hdy_leaflet_draw_shadow (cairo_t         *cr,
+                         int              x,
+                         int              y,
+                         int              width,
+                         int              height,
+                         double           distance,
+                         double           progress,
+                         GtkPanDirection  direction)
+{
+  double remaining_distance, shadow_opacity;
+  cairo_pattern_t *shadow_pattern;
+  remaining_distance = (1 - progress) * distance;
+  shadow_opacity = SHADOW_OPACITY;
+  if (remaining_distance < SHADOW_SIZE)
+    shadow_opacity *= (remaining_distance / SHADOW_SIZE);
+
+  switch (direction) {
+  case GTK_PAN_DIRECTION_LEFT:
+    shadow_pattern = cairo_pattern_create_linear (0, 0, SHADOW_SIZE, 0);
+    break;
+  case GTK_PAN_DIRECTION_RIGHT:
+    shadow_pattern = cairo_pattern_create_linear (0, 0, -SHADOW_SIZE, 0);
+    break;
+  case GTK_PAN_DIRECTION_UP:
+    shadow_pattern = cairo_pattern_create_linear (0, 0, 0, SHADOW_SIZE);
+    break;
+  case GTK_PAN_DIRECTION_DOWN:
+    shadow_pattern = cairo_pattern_create_linear (0, 0, 0, -SHADOW_SIZE);
+    break;
+  default:
+    g_assert_not_reached ();
+  }
+
+  for (int i = 0; i < 16; i++) {
+    double offset, alpha;
+
+    offset = shadow_gradient_offsets[i];
+    alpha = shadow_gradient_alpha[i] * shadow_opacity;
+    cairo_pattern_add_color_stop_rgba (shadow_pattern, offset, 0, 0, 0, alpha);
+  }
+
+  cairo_save (cr);
+
+  cairo_rectangle (cr, x, y, width, height);
+  cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
+  cairo_set_source_rgba (cr, 0, 0, 0, DIMMING_OPACITY * (1 - progress));
+  cairo_fill (cr);
+
+  switch (direction) {
+  case GTK_PAN_DIRECTION_LEFT:
+    cairo_translate (cr, x, 0);
+    cairo_rectangle (cr, 0, 0, SHADOW_SIZE, height);
+    break;
+  case GTK_PAN_DIRECTION_RIGHT:
+    cairo_translate (cr, x + width, 0);
+    cairo_rectangle (cr, -SHADOW_SIZE, 0, SHADOW_SIZE, height);
+    break;
+  case GTK_PAN_DIRECTION_UP:
+    cairo_translate (cr, 0, y);
+    cairo_rectangle (cr, 0, 0, width, SHADOW_SIZE);
+    break;
+  case GTK_PAN_DIRECTION_DOWN:
+    cairo_translate (cr, 0, y + height);
+    cairo_rectangle (cr, 0, -SHADOW_SIZE, width, SHADOW_SIZE);
+    break;
+  default:
+    g_assert_not_reached ();
+  }
+  cairo_set_source (cr, shadow_pattern);
+  cairo_fill (cr);
+
+  cairo_restore (cr);
+
+  cairo_pattern_destroy (shadow_pattern);
+}
+
+static void
 hdy_leaflet_draw_under (GtkWidget *widget,
                         cairo_t   *cr)
 {
@@ -1897,12 +1983,31 @@ hdy_leaflet_draw_under (GtkWidget *widget,
   y = get_bin_window_y (self, &allocation);
 
   if (gtk_cairo_should_draw_window (cr, priv->bin_window)) {
+    double distance, progress;
+
+    switch (priv->child_transition.active_direction) {
+    case GTK_PAN_DIRECTION_LEFT:
+    case GTK_PAN_DIRECTION_RIGHT:
+      distance = allocation.width;
+      break;
+    case GTK_PAN_DIRECTION_UP:
+    case GTK_PAN_DIRECTION_DOWN:
+      distance = allocation.height;
+      break;
+    default:
+      g_assert_not_reached ();
+      break;
+    }
+
+    progress = gtk_progress_tracker_get_ease_out_cubic (&priv->child_transition.tracker, FALSE);
+
     cairo_save (cr);
     cairo_rectangle (cr, x, y, allocation.width, allocation.height);
     cairo_clip (cr);
     gtk_container_propagate_draw (GTK_CONTAINER (self),
                                   priv->visible_child->widget,
                                   cr);
+    hdy_leaflet_draw_shadow (cr, x, y, allocation.width, allocation.height, distance, progress, priv->child_transition.active_direction);
     cairo_restore (cr);
   }
 
@@ -1953,6 +2058,7 @@ hdy_leaflet_draw_over (GtkWidget *widget,
       gtk_cairo_should_draw_window (cr, priv->view_window)) {
     GtkAllocation allocation;
     int x, y, clip_x, clip_y;
+    double distance, progress, direction;
 
     gtk_widget_get_allocation (widget, &allocation);
 
@@ -1963,18 +2069,26 @@ hdy_leaflet_draw_over (GtkWidget *widget,
     case GTK_PAN_DIRECTION_LEFT:
       x = 0;
       clip_x -= allocation.width;
+      distance = allocation.width;
+      direction = GTK_PAN_DIRECTION_RIGHT;
       break;
     case GTK_PAN_DIRECTION_RIGHT:
       x = 0;
       clip_x += allocation.width;
+      distance = allocation.width;
+      direction = GTK_PAN_DIRECTION_LEFT;
       break;
     case GTK_PAN_DIRECTION_UP:
       y = 0;
       clip_y -= allocation.height;
+      distance = allocation.height;
+      direction = GTK_PAN_DIRECTION_DOWN;
       break;
     case GTK_PAN_DIRECTION_DOWN:
       y = 0;
       clip_y += allocation.height;
+      distance = allocation.height;
+      direction = GTK_PAN_DIRECTION_UP;
       break;
     default:
       g_assert_not_reached ();
@@ -1990,13 +2104,16 @@ hdy_leaflet_draw_over (GtkWidget *widget,
     else if (gtk_widget_get_valign (priv->last_visible_child->widget) == GTK_ALIGN_CENTER)
       y -= (priv->child_transition.last_visible_widget_height - allocation.height) / 2;
 
+    progress = 1 - gtk_progress_tracker_get_ease_out_cubic (&priv->child_transition.tracker, FALSE);
+
     cairo_save (cr);
     cairo_rectangle (cr, clip_x, clip_y, allocation.width, allocation.height);
     cairo_clip (cr);
     cairo_set_source_surface (cr, priv->child_transition.last_visible_surface, x, y);
     cairo_paint (cr);
+    hdy_leaflet_draw_shadow (cr, clip_x, clip_y, allocation.width, allocation.height, distance, progress, direction);
     cairo_restore (cr);
-   }
+  }
 
   if (gtk_cairo_should_draw_window (cr, priv->bin_window))
     gtk_container_propagate_draw (GTK_CONTAINER (self),
