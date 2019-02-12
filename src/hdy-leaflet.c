@@ -223,10 +223,15 @@ get_enable_animations (void)
 
 /* Transitions that cause the bin window to move */
 static inline gboolean
-is_window_moving_child_transition (HdyLeafletChildTransitionType transition_type)
+is_window_moving_child_transition (HdyLeafletChildTransitionType transition_type, GtkPanDirection direction)
 {
-  return (transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE ||
-          transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER);
+  if (transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE)
+    return TRUE;
+
+  if (transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER)
+    return direction == GTK_PAN_DIRECTION_UP || direction == GTK_PAN_DIRECTION_LEFT;
+
+  return FALSE;
 }
 
 /* Transitions that change direction depending on the relative order of the
@@ -300,7 +305,7 @@ hdy_leaflet_child_progress_updated (HdyLeaflet *self)
     gtk_widget_queue_resize (GTK_WIDGET (self));
 
   if (priv->bin_window != NULL &&
-      is_window_moving_child_transition (priv->child_transition.active_type)) {
+      is_window_moving_child_transition (priv->child_transition.active_type, priv->child_transition.active_direction)) {
     GtkAllocation allocation;
     gtk_widget_get_allocation (GTK_WIDGET (self), &allocation);
     gdk_window_move (priv->bin_window,
@@ -1750,7 +1755,7 @@ hdy_leaflet_size_allocate (GtkWidget     *widget,
                             allocation->x, allocation->y,
                             allocation->width, allocation->height);
     if (priv->bin_window != NULL &&
-        is_window_moving_child_transition (priv->child_transition.active_type))
+        is_window_moving_child_transition (priv->child_transition.active_type, priv->child_transition.active_direction))
       gdk_window_move_resize (priv->bin_window,
                               get_bin_window_x (self, allocation), get_bin_window_y (self, allocation),
                               allocation->width, allocation->height);
@@ -1858,64 +1863,61 @@ hdy_leaflet_draw_crossfade (GtkWidget *widget,
   cairo_paint (cr);
 }
 
-/* FIXME This was copied from GtkStack and should be used to implement the UNDER
- * child transition animation, if ever.
- */
-/* static void */
-/* hdy_leaflet_draw_under (GtkWidget *widget, */
-/*                         cairo_t   *cr) */
-/* { */
-/*   HdyLeaflet *self = HDY_LEAFLET (widget); */
-/*   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self); */
-/*   GtkAllocation allocation; */
-/*   gint x, y, width, height, pos_x, pos_y; */
+static void
+hdy_leaflet_draw_under (GtkWidget *widget,
+                        cairo_t   *cr)
+{
+  HdyLeaflet *self = HDY_LEAFLET (widget);
+  HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
 
-/*   gtk_widget_get_allocation (widget, &allocation); */
-/*   x = y = 0; */
-/*   width = allocation.width; */
-/*   height = allocation.height; */
-/*   pos_x = pos_y = 0; */
+  if (gtk_cairo_should_draw_window (cr, priv->bin_window))
+    gtk_container_propagate_draw (GTK_CONTAINER (self),
+                                  priv->visible_child->widget,
+                                  cr);
 
-/*   switch (priv->child_transition.active_direction) { */
-/*   case GTK_PAN_DIRECTION_LEFT: */
-/*     x = allocation.width * (1 - gtk_progress_tracker_get_ease_out_cubic (&priv->child_transition.tracker, FALSE)); */
-/*     width = allocation.width - x; */
-/*     pos_x = x - allocation.width; */
-/*     break; */
-/*   case GTK_PAN_DIRECTION_RIGHT: */
-/*     x = 0; */
-/*     width = allocation.width * (gtk_progress_tracker_get_ease_out_cubic (&priv->child_transition.tracker, FALSE)); */
-/*     pos_x = width; */
-/*     break; */
-/*   case GTK_PAN_DIRECTION_DOWN: */
-/*     y = 0; */
-/*     height = allocation.height * (gtk_progress_tracker_get_ease_out_cubic (&priv->child_transition.tracker, FALSE)); */
-/*     pos_y = height; */
-/*     break; */
-/*   case GTK_PAN_DIRECTION_UP: */
-/*     y = allocation.height * (1 - gtk_progress_tracker_get_ease_out_cubic (&priv->child_transition.tracker, FALSE)); */
-/*     height = allocation.height - y; */
-/*     pos_y = y - allocation.height; */
-/*     break; */
-/*   default: */
-/*     g_assert_not_reached (); */
-/*   } */
+  if (priv->child_transition.last_visible_surface &&
+      gtk_cairo_should_draw_window (cr, priv->view_window)) {
+    GtkAllocation allocation;
+    int x, y;
 
-/*   cairo_save (cr); */
-/*   cairo_rectangle (cr, x, y, width, height); */
-/*   cairo_clip (cr); */
+    gtk_widget_get_allocation (widget, &allocation);
 
-/*   gtk_container_propagate_draw (GTK_CONTAINER (self), */
-/*                                 priv->visible_child->widget, */
-/*                                 cr); */
+    x = get_bin_window_x (self, &allocation);
+    y = get_bin_window_y (self, &allocation);
 
-/*   cairo_restore (cr); */
+    switch (priv->child_transition.active_direction) {
+    case GTK_PAN_DIRECTION_LEFT:
+      x -= allocation.width;
+      break;
+    case GTK_PAN_DIRECTION_RIGHT:
+      x += allocation.width;
+      break;
+    case GTK_PAN_DIRECTION_UP:
+      y -= allocation.height;
+      break;
+    case GTK_PAN_DIRECTION_DOWN:
+      y += allocation.height;
+      break;
+    default:
+      g_assert_not_reached ();
+      break;
+    }
 
-/*   if (priv->child_transition.last_visible_surface) { */
-/*     cairo_set_source_surface (cr, priv->child_transition.last_visible_surface, pos_x, pos_y); */
-/*     cairo_paint (cr); */
-/*   } */
-/* } */
+    x += priv->child_transition.last_visible_surface_allocation.x;
+    y += priv->child_transition.last_visible_surface_allocation.y;
+
+    if (gtk_widget_get_valign (priv->last_visible_child->widget) == GTK_ALIGN_END &&
+        priv->child_transition.last_visible_widget_height > allocation.height)
+      y -= priv->child_transition.last_visible_widget_height - allocation.height;
+    else if (gtk_widget_get_valign (priv->last_visible_child->widget) == GTK_ALIGN_CENTER)
+      y -= (priv->child_transition.last_visible_widget_height - allocation.height) / 2;
+
+    cairo_save (cr);
+    cairo_set_source_surface (cr, priv->child_transition.last_visible_surface, x, y);
+    cairo_paint (cr);
+    cairo_restore (cr);
+   }
+}
 
 static void
 hdy_leaflet_draw_slide (GtkWidget *widget,
@@ -2152,8 +2154,24 @@ hdy_leaflet_draw (GtkWidget *widget,
           hdy_leaflet_draw_crossfade (widget, cr);
         break;
       case HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE:
-      case HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER:
         hdy_leaflet_draw_slide (widget, cr);
+        break;
+      case HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER:
+        switch (priv->child_transition.active_direction) {
+        case GTK_PAN_DIRECTION_LEFT:
+        case GTK_PAN_DIRECTION_UP:
+           /* FIXME RTL */
+          hdy_leaflet_draw_slide (widget, cr);
+          break;
+        case GTK_PAN_DIRECTION_RIGHT:
+        case GTK_PAN_DIRECTION_DOWN:
+           /* FIXME RTL */
+          hdy_leaflet_draw_under (widget, cr);
+          break;
+        default:
+          g_assert_not_reached ();
+          break;
+        }
         break;
       /* FIXME */
       /* case HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER: */
