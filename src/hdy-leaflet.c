@@ -35,6 +35,8 @@
  * HdyLeafletModeTransitionType:
  * @HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE: No transition
  * @HDY_LEAFLET_MODE_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
+ * @HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
+ * @HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
  *
  * These enumeration values describe the possible transitions between pages in a
  * #HdyLeaflet widget.
@@ -1387,6 +1389,8 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
   gint max_child_size = 0;
   gboolean box_homogeneous;
   HdyLeafletModeTransitionType mode_transition_type;
+  GtkTextDirection direction;
+  gboolean under;
 
   directed_children = get_directed_children (self);
   visible_child = priv->visible_child;
@@ -1442,6 +1446,8 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
 
     break;
   case HDY_LEAFLET_MODE_TRANSITION_TYPE_SLIDE:
+  case HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER:
+  case HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER:
     /* Compute visible child size. */
 
     visible_size = orientation == GTK_ORIENTATION_HORIZONTAL ?
@@ -1497,14 +1503,15 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
     /* Store start and end allocations. */
     switch (orientation) {
     case GTK_ORIENTATION_HORIZONTAL:
-      priv->mode_transition.start_surface_allocation.width = start_size;
+      direction = gtk_widget_get_direction (GTK_WIDGET (self));
+      under = (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_LTR) ||
+              (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_RTL);
+      priv->mode_transition.start_surface_allocation.width = under ? remaining_size : start_size;
       priv->mode_transition.start_surface_allocation.height = allocation->height;
-      /* FIXME RTL */
       priv->mode_transition.start_surface_allocation.x = remaining_start_size - start_size;
       priv->mode_transition.start_surface_allocation.y = 0;
       priv->mode_transition.end_surface_allocation.width = end_size;
       priv->mode_transition.end_surface_allocation.height = allocation->height;
-      /* FIXME RTL */
       priv->mode_transition.end_surface_allocation.x = remaining_start_size + visible_size;
       priv->mode_transition.end_surface_allocation.y = 0;
       priv->mode_transition.end_surface_clip.width = end_size;
@@ -1513,8 +1520,9 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
       priv->mode_transition.end_surface_clip.y = priv->mode_transition.end_surface_allocation.y;
       break;
     case GTK_ORIENTATION_VERTICAL:
+      under = mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER;
       priv->mode_transition.start_surface_allocation.width = allocation->width;
-      priv->mode_transition.start_surface_allocation.height = start_size;
+      priv->mode_transition.start_surface_allocation.height = under ? remaining_size : start_size;
       priv->mode_transition.start_surface_allocation.x = 0;
       priv->mode_transition.start_surface_allocation.y = remaining_start_size - start_size;
       priv->mode_transition.end_surface_allocation.width = allocation->width;
@@ -1631,6 +1639,9 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
   gint n_visible_children, n_expand_children;
   gint start_pad = 0, end_pad = 0;
   gboolean box_homogeneous;
+  HdyLeafletModeTransitionType mode_transition_type;
+  GtkTextDirection direction;
+  gboolean under;
 
   directed_children = get_directed_children (self);
   visible_child = priv->visible_child;
@@ -1771,6 +1782,14 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
     end_pad = (gint) ((allocation->height - (visible_child->alloc.y + visible_child->alloc.height)) * (1.0 - priv->mode_transition.current_pos));
   }
 
+  mode_transition_type = priv->mode_transition.type;
+  direction = gtk_widget_get_direction (GTK_WIDGET (self));
+
+  if (orientation == GTK_ORIENTATION_HORIZONTAL)
+    under = (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_LTR) ||
+            (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_RTL);
+  else
+    under = mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER;
   for (children = directed_children; children; children = children->next) {
     child_info = children->data;
 
@@ -1780,12 +1799,20 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
     if (!child_info->visible)
       continue;
 
+    if (under)
+      continue;
+
     if (orientation == GTK_ORIENTATION_HORIZONTAL)
       child_info->alloc.x -= start_pad;
     else
       child_info->alloc.y -= start_pad;
   }
 
+  if (orientation == GTK_ORIENTATION_HORIZONTAL)
+    under = (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_LTR) ||
+            (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_RTL);
+  else
+    under = mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER;
   for (children = g_list_last (directed_children); children; children = children->prev) {
     child_info = children->data;
 
@@ -1793,6 +1820,9 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
       break;
 
     if (!child_info->visible)
+      continue;
+
+    if (under)
       continue;
 
     if (orientation == GTK_ORIENTATION_HORIZONTAL)
@@ -2247,6 +2277,12 @@ hdy_leaflet_draw (GtkWidget *widget,
   if (priv->visible_child) {
     if (gtk_progress_tracker_get_state (&priv->mode_transition.tracker) != GTK_PROGRESS_STATE_AFTER &&
         priv->fold == HDY_FOLD_FOLDED) {
+      GtkTextDirection direction;
+      gboolean is_horizontal;
+
+      is_horizontal = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget)) == GTK_ORIENTATION_HORIZONTAL;
+      direction = gtk_widget_get_direction (widget);
+
       if (priv->mode_transition.start_surface == NULL &&
           priv->mode_transition.start_surface_allocation.width != 0 &&
           priv->mode_transition.start_surface_allocation.height != 0) {
@@ -2317,30 +2353,54 @@ hdy_leaflet_draw (GtkWidget *widget,
 
       cairo_save (cr);
       if (priv->mode_transition.start_surface != NULL) {
-        cairo_rectangle (cr,
-                         priv->mode_transition.start_surface_allocation.x,
-                         priv->mode_transition.start_surface_allocation.y,
+        gint x, y;
+
+        x = priv->mode_transition.start_surface_allocation.x;
+        y = priv->mode_transition.start_surface_allocation.y;
+
+        if (is_horizontal) {
+          if ((priv->mode_transition.type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_LTR) ||
+              (priv->mode_transition.type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_RTL))
+            x = 0;
+        } else {
+          if (priv->mode_transition.type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER)
+            y = 0;
+        }
+
+        cairo_rectangle (cr, x, y,
                          priv->mode_transition.start_surface_allocation.width,
                          priv->mode_transition.start_surface_allocation.height);
         cairo_clip (cr);
-        cairo_set_source_surface (cr, priv->mode_transition.start_surface,
-                                  priv->mode_transition.start_surface_allocation.x,
-                                  priv->mode_transition.start_surface_allocation.y);
+        cairo_set_source_surface (cr, priv->mode_transition.start_surface, x, y);
         cairo_paint (cr);
       }
       cairo_restore (cr);
 
       cairo_save (cr);
       if (priv->mode_transition.end_surface != NULL) {
+        gint x, y;
+        GtkAllocation alloc;
+
+        x = priv->mode_transition.end_surface_allocation.x;
+        y = priv->mode_transition.end_surface_allocation.y;
+        gtk_widget_get_allocation (widget, &alloc);
+
+        if (is_horizontal) {
+          if ((priv->mode_transition.type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_LTR) ||
+              (priv->mode_transition.type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_RTL))
+            x = alloc.width - priv->mode_transition.end_surface_allocation.width;
+        } else {
+          if (priv->mode_transition.type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER)
+            y = alloc.height - priv->mode_transition.end_surface_allocation.height;
+        }
+
         cairo_rectangle (cr,
                          priv->mode_transition.end_surface_clip.x,
                          priv->mode_transition.end_surface_clip.y,
                          priv->mode_transition.end_surface_clip.width,
                          priv->mode_transition.end_surface_clip.height);
         cairo_clip (cr);
-        cairo_set_source_surface (cr, priv->mode_transition.end_surface,
-                                  priv->mode_transition.end_surface_allocation.x,
-                                  priv->mode_transition.end_surface_allocation.y);
+        cairo_set_source_surface (cr, priv->mode_transition.end_surface, x, y);
         cairo_paint (cr);
       }
       cairo_restore (cr);
