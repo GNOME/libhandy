@@ -91,39 +91,83 @@ hdy_column_set_property (GObject      *object,
   }
 }
 
-static gint
-get_child_width (HdyColumn *self,
-                 gint       width)
+static void
+measure_thresholds (HdyColumn *self,
+                    gint       child_minimum,
+                    gint       child_natural,
+                    gint      *child_maximum,
+                    gint      *linear_threshold,
+                    gint      *maximum_threshold)
 {
-  GtkBin *bin = GTK_BIN (self);
-  GtkWidget *child;
-  gint minimum_width = 0, maximum_width;
-  gdouble amplitude, threshold, progress;
+  /* Sanitize the linear threshold width to use for computations. */
+  *linear_threshold = MAX (MAX (child_minimum, child_natural), MIN (self->linear_growth_width, self->maximum_width));
+  /* Sanitize the maximum width to use for computations. */
+  *child_maximum = MAX (*linear_threshold, self->maximum_width);
+  *maximum_threshold = HDY_EASE_OUT_TAN_CUBIC * (*child_maximum - *linear_threshold) + *linear_threshold;
+}
 
-  child = gtk_bin_get_child (bin);
-  if (child == NULL)
-    return 0;
+/* Measure various sizes to use for size computations. */
+static void
+measure (HdyColumn *self,
+         gint      *minimum,
+         gint      *natural,
+         gint      *child_maximum,
+         gint      *linear_threshold,
+         gint      *maximum_threshold)
+{
+  GtkWidget *child;
+  gint child_minimum = 0, child_natural = 0;
+  gint _child_maximum;
+  gint _linear_threshold; // If the column width is ≤ this threshold, the child should have the same width as the column.
+  gint _maximum_threshold; // If the column width is ≥ this threshold, the child should be allocated its maximum width.
+
+  child = gtk_bin_get_child (GTK_BIN (self));
+  g_assert (child != NULL);
 
   if (gtk_widget_get_visible (child))
-    gtk_widget_get_preferred_width (child, &minimum_width, NULL);
+    gtk_widget_get_preferred_width (child, &child_minimum, &child_natural);
 
-  /* Sanitize the minimum width to use for computations. */
-  minimum_width = MIN (MAX (minimum_width, self->linear_growth_width), self->maximum_width);
+  if (minimum)
+    *minimum = child_minimum;
 
-  if (width <= minimum_width)
-    return width;
+  if (natural) {
+    /* First, measure including the natural width to measure the column's natural width. */
+    measure_thresholds (self, child_minimum, child_natural, &_child_maximum, &_linear_threshold, &_maximum_threshold);
+    *natural = _maximum_threshold;
+  }
 
-  /* Sanitize the maximum width to use for computations. */
-  maximum_width = MAX (minimum_width, self->maximum_width);
-  amplitude = maximum_width - minimum_width;
-  threshold = (HDY_EASE_OUT_TAN_CUBIC * amplitude + (gdouble) minimum_width);
+  /* Then, measure without the natural width to measure the sizes to actually use. */
+  measure_thresholds (self, child_minimum, 0, &_child_maximum, &_linear_threshold, &_maximum_threshold);
 
-  if (width >= threshold)
-    return maximum_width;
+  if (linear_threshold)
+    *linear_threshold = _linear_threshold;
+  if (child_maximum)
+    *child_maximum = _child_maximum;
+  if (maximum_threshold)
+    *maximum_threshold = _maximum_threshold;
+}
 
-  progress = (width - minimum_width) / (threshold - minimum_width);
+static gint
+get_child_width (HdyColumn *self,
+                 gint       for_width)
+{
+  gint child_maximum, linear_threshold, maximum_threshold;
+  gdouble progress;
 
-  return ease_out_cubic (progress) * amplitude + minimum_width;
+  if (gtk_bin_get_child (GTK_BIN (self)) == NULL)
+    return 0;
+
+  measure (self, NULL, NULL, &child_maximum, &linear_threshold, &maximum_threshold);
+
+  if (for_width <= linear_threshold)
+    return for_width;
+
+  if (for_width >= maximum_threshold)
+    return child_maximum;
+
+  progress = (gdouble) (for_width - linear_threshold) / (gdouble) (maximum_threshold - linear_threshold);
+
+  return ease_out_cubic (progress) * (child_maximum - linear_threshold) + linear_threshold;
 }
 
 /* This private method is prefixed by the call name because it will be a virtual
