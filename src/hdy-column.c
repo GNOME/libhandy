@@ -199,7 +199,7 @@ hdy_column_measure (GtkWidget      *widget,
     return;
 
   if (orientation == GTK_ORIENTATION_HORIZONTAL)
-    gtk_widget_get_preferred_width (child, minimum, natural);
+    measure (HDY_COLUMN (widget), minimum, natural, NULL, NULL, NULL);
   else {
     gint child_width = get_child_width (HDY_COLUMN (widget), for_size);
 
