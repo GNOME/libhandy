@@ -4,14 +4,10 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export LC_ALL=C.UTF-8
 
 %:
-	dh $@ --with gir
+	dh $@
 
 override_dh_auto_configure:
 	dh_auto_configure -- -Dgtk_doc=true
 
 override_dh_auto_test:
 	xvfb-run dh_auto_test
-
-override_dh_makeshlibs:
-	dh_makeshlibs -VUpstream-Version
-
