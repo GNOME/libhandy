@@ -18,18 +18,27 @@ version_data.set('HDY_MINOR_VERSION', handy_version_minor)
 version_data.set('HDY_MICRO_VERSION', handy_version_micro)
 version_data.set('HDY_VERSION', meson.project_version())
 
-hdy_version_h = configure_file(
-           input: 'hdy-version.h.in',
-          output: 'hdy-version.h',
-     install_dir: libhandy_header_dir,
-         install: true,
-   configuration: version_data)
+# TODO: Once Meson 0.50.0 is required, use this to prevent installation:
+#       install: installable,
+if installable
+  hdy_version_h = configure_file(
+             input: 'hdy-version.h.in',
+            output: 'hdy-version.h',
+       install_dir: libhandy_header_dir,
+     configuration: version_data)
+else
+  hdy_version_h = configure_file(
+             input: 'hdy-version.h.in',
+            output: 'hdy-version.h',
+     configuration: version_data)
+endif
 
 libhandy_generated_headers = [
 ]
-
-install_headers(['handy.h'],
-  subdir: libhandy_header_subdir)
+if installable
+  install_headers(['handy.h'],
+    subdir: libhandy_header_subdir)
+endif
 
 # Filled out in the subdirs
 libhandy_public_headers = []
@@ -40,7 +49,7 @@ hdy_enums = gnome.mkenums('hdy-enums',
       h_template: 'hdy-enums.h.in',
       c_template: 'hdy-enums.c.in',
          sources: hdy_enum_headers,
-  install_header: true,
+  install_header: installable,
      install_dir: libhandy_header_dir,
 )
 
@@ -66,6 +75,7 @@ src_headers = [
   'hdy-search-bar.h',
   'hdy-string-utf8.h',
   'hdy-title-bar.h',
+  'hdy-value-object.h',
 ]
 
 sed = find_program('sed', required: true)
@@ -98,12 +108,15 @@ src_sources = [
   'hdy-search-bar.c',
   'hdy-string-utf8.c',
   'hdy-title-bar.c',
+  'hdy-value-object.c',
 ]
 
 libhandy_public_headers += files(src_headers)
 libhandy_public_sources += files(src_sources)
 
-install_headers(src_headers, subdir: libhandy_header_subdir)
+if installable
+  install_headers(src_headers, subdir: libhandy_header_subdir)
+endif
 
 
 libhandy_sources = [
@@ -143,6 +156,13 @@ else
   libtype = 'shared_library'
 endif
 
+# set default libdir on win32 for libhandy target to keep MinGW compatibility
+if target_system == 'windows'
+  handy_libdir = [true]
+else
+  handy_libdir = libdir
+endif
+
 libhandy = build_target(
   'handy-' + apiversion,
   libhandy_sources,
@@ -151,9 +171,9 @@ libhandy = build_target(
                c_args: libhandy_c_args,
          dependencies: libhandy_deps,
   include_directories: [ root_inc, src_inc ],
-              install: true,
+              install: installable,
             link_args: libhandy_link_args,
-          install_dir: libdir,
+          install_dir: handy_libdir,
           target_type: libtype,
 )
 
@@ -165,6 +185,12 @@ libhandy_dep = declare_dependency(
 )
 
 if introspection
+
+   libhandy_gir_extra_args = [
+     '--c-include=handy.h',
+     '--quiet',
+     '-DHANDY_COMPILATION',
+   ]
 
    libhandy_gir = gnome.generate_gir(libhandy,
                  sources: libhandy_generated_headers + libhandy_public_headers + libhandy_public_sources,
@@ -178,7 +204,7 @@ if introspection
                  install: true,
          install_dir_gir: girdir,
      install_dir_typelib: typelibdir,
-              extra_args: [ '--c-include=handy.h', '--quiet' ],
+              extra_args: libhandy_gir_extra_args,
    )
 
    if get_option('vapi')
@@ -196,13 +222,15 @@ endif
 
 pkgg = import('pkgconfig')
 
-pkgg.generate(
-    libraries: [libhandy],
-      subdirs: libhandy_header_subdir,
-      version: meson.project_version(),
-         name: 'Handy',
-     filebase: 'libhandy-@0@'.format(apiversion),
-  description: 'Handy Mobile widgets',
-     requires: 'gtk+-3.0',
-  install_dir: join_paths(libdir, 'pkgconfig'),
-)
+if installable
+  pkgg.generate(
+      libraries: [libhandy],
+        subdirs: libhandy_header_subdir,
+        version: meson.project_version(),
+           name: 'Handy',
+       filebase: 'libhandy-@0@'.format(apiversion),
+    description: 'Handy Mobile widgets',
+       requires: 'gtk+-3.0',
+    install_dir: join_paths(libdir, 'pkgconfig'),
+  )
+endif
