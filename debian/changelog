@@ -1,6 +1,19 @@
-libhandy (0.0.8-1) experimental; urgency=medium
+libhandy (0.0.8-1) unstable; urgency=medium
 
+  [Guido Günther]
   * New upstream version 0.0.7
+
+  [ Jeremy Bicha ]
+  * [935807c] Build-Depend on debhelper-compat 12 and drop debian/compat
+    debhelper compat 12 uses dh_makeshlibs -VUpstream-Version by default
+  * [39272b8] Build-Depend on dh-sequence-gir
+    dh-sequence-gir is a virtual package provided by gobject-introspection.
+    debhelper 12 automatically enables the gir helper when this is
+    part of Build-Depends.
+    https://manpages.debian.org/unstable/dh#OPTIONS
+  * [e3cb678] Drop gir1.2-handy-0.0's unused dependency on ${shlibs:Depends}
+  * [20ef4cd] Build-Depend on libglib2.0-doc & libgtk-3-doc to fix doc build
+    warnings
 
  -- Guido Günther <agx@sigxcpu.org>  Fri, 15 Feb 2019 11:27:35 +0100
 
