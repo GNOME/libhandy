@@ -10,7 +10,7 @@ handy_version_major = version_arr[0].to_int()
 handy_version_minor = version_arr[1].to_int()
 handy_version_micro = version_arr[2].to_int()
 
-apiversion = '0.0'
+apiversion = '0.1'
 soversion = 0
 
 if handy_version_minor.is_odd()
