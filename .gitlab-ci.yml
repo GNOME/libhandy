@@ -36,7 +36,7 @@ build-debian-gcc-static:
     - export LC_ALL=C.UTF-8
     - meson . _build -Dintrospection=disabled -Dstatic=true -Dgtk_doc=false --werror
     - ninja -C _build
-    - test -f _build/src/libhandy-0.0.a
+    - test -f _build/src/libhandy-0.1.a
     - xvfb-run -s -noreset ninja -C _build test
 
 build-debian-clang:
