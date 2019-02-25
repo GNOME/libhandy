@@ -49,7 +49,7 @@
       When using the <productname>meson build system</productname> you can declare a dependency like
     </para>
     <informalexample><programlisting>
-      dependency('libhandy-0.0')
+      dependency('libhandy-0.1')
     </programlisting></informalexample>
 
   </refsect2>
