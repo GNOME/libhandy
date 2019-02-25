@@ -1,3 +1,9 @@
+libhandy (1.0.0) UNRELEASED; urgency=medium
+
+  * Bump API version to 1.0.0
+
+ -- Guido Günther <agx@sigxcpu.org>  Mon, 25 Feb 2019 10:14:18 +0100
+
 libhandy (0.0.9) experimental; urgency=medium
 
   [ Benjamin Berg ]

@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
-CFLAGS=$(shell pkg-config --cflags libhandy-0.0)
-LIBS=$(shell pkg-config --libs libhandy-0.0)
+CFLAGS=$(shell pkg-config --cflags libhandy-1)
+LIBS=$(shell pkg-config --libs libhandy-1)
 
 a.out: debian/tests/build-test.c
 	gcc $(CFLAGS) $< $(LIBS)
