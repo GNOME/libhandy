@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1+
  */
 
+#include "config.h"
 #include <glib/gi18n.h>
 #include <gobject/gvaluecollector.h>
 #include "hdy-value-object.h"
