@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1+
  */
 
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #include "hdy-header-group.h"
 
