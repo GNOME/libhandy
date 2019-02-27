@@ -71,7 +71,6 @@ src_headers = [
   'hdy-header-group.h',
   'hdy-leaflet.h',
   'hdy-list-box.h',
-  'hdy-main.h',
   'hdy-search-bar.h',
   'hdy-string-utf8.h',
   'hdy-title-bar.h',
