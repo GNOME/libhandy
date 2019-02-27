@@ -8,37 +8,20 @@
 #include <glib/gi18n.h>
 #include "gconstructor.h"
 
+#if defined (G_HAS_CONSTRUCTORS)
+
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(hdy_init)
+#endif
+G_DEFINE_CONSTRUCTOR(hdy_init)
+
 static gint hdy_initialized = FALSE;
 
-/**
- * SECTION:hdy-main
- * @Short_description: Library initialization
- * @Title: hdy-main
- *
- * Before using the Handy libarary you should initialize it. This makes
- * sure translations for the Handy library are set up properly.
- */
-
-/**
- * hdy_init:
- * @argc: (inout) (optional): Address of the <parameter>argc</parameter>
- *     parameter of your main() function (or 0 if @argv is %NULL). This will be
- *     changed if any arguments were handled.
- * @argv: (array length=argc) (inout) (nullable) (optional) (transfer none):
- *     Address of the <parameter>argv</parameter> parameter of main(), or %NULL.
- *     Any options understood by Handy are stripped before return.
- *
- * Call this function before using any other Handy functions in your
- * GUI applications. If libhandy has already been initialized, the function will
- * simply return without processing the new arguments.
- *
- * Returns: %TRUE if initialization was successful, %FALSE otherwise.
- */
-gboolean
-hdy_init (int *argc, char ***argv)
+static void
+hdy_init (void)
 {
   if (hdy_initialized)
-    return TRUE;
+    return;
 
   textdomain (GETTEXT_PACKAGE);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -46,39 +29,6 @@ hdy_init (int *argc, char ***argv)
   hdy_init_public_types ();
 
   hdy_initialized = TRUE;
-
-  return TRUE;
-}
-
-/**
- * hdy_init_static:
- *
- * Initializes libhandy.
- *
- * This function is available and should be used only if you built libhandy as a
- * static library, guard its usage by checking that HDY_IS_STATIC is defined.
- * Otherwise, libhandy will be automatically initialized.
- *
- * Call this function before using any other libhandy functions in your GUI
- * applications.
- */
-
-/* It is important to have the library constructor when it is not static,
- * otherwise the resources will be initialized before we try to register them,
- * which will prevent the library from loading properly.
- */
-
-#if defined (G_HAS_CONSTRUCTORS)
-
-#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
-#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(hdy_init_ctor)
-#endif
-G_DEFINE_CONSTRUCTOR(hdy_init_ctor)
-
-static void
-hdy_init_ctor (void)
-{
-  hdy_init (NULL, NULL);
 }
 
 #else
