@@ -39,7 +39,6 @@ G_BEGIN_DECLS
 #include "hdy-header-group.h"
 #include "hdy-leaflet.h"
 #include "hdy-list-box.h"
-#include "hdy-main.h"
 #include "hdy-search-bar.h"
 #include "hdy-string-utf8.h"
 #include "hdy-title-bar.h"
