@@ -120,6 +120,8 @@ typedef struct
 
   GtkOrientation orientation;
 
+  gboolean move_bin_window_request;
+
   struct {
     HdyLeafletModeTransitionType type;
     guint duration;
@@ -344,7 +346,7 @@ move_resize_bin_window (HdyLeaflet    *self,
     allocation = &alloc;
   }
 
-  move = is_window_moving_child_transition (self);
+  move = priv->move_bin_window_request || is_window_moving_child_transition (self);
 
   if (move && resize)
     gdk_window_move_resize (priv->bin_window,
@@ -356,6 +358,8 @@ move_resize_bin_window (HdyLeaflet    *self,
   else if (resize)
     gdk_window_resize (priv->bin_window,
                        allocation->width, allocation->height);
+
+  priv->move_bin_window_request = FALSE;
 }
 
 static void
@@ -713,6 +717,11 @@ hdy_leaflet_start_mode_transition (HdyLeaflet *self,
   if (priv->child_transition.last_visible_surface != NULL) {
     cairo_surface_destroy (priv->child_transition.last_visible_surface);
     priv->child_transition.last_visible_surface = NULL;
+
+    /* As a child transition was ongoing, we must move the bin window back in
+     * place.
+     */
+    priv->move_bin_window_request = TRUE;
   }
   if (priv->last_visible_child != NULL) {
     gtk_widget_set_child_visible (priv->last_visible_child->widget, FALSE);
