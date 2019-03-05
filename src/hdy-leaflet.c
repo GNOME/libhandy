@@ -31,28 +31,17 @@
  */
 
 /**
- * HdyLeafletModeTransitionType:
- * @HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE: No transition
- * @HDY_LEAFLET_MODE_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
+ * HdyLeafletTransitionType:
+ * @HDY_LEAFLET_TRANSITION_TYPE_NONE: No transition
+ * @HDY_LEAFLET_TRANSITION_TYPE_CROSSFADE: A cross-fade
+ * @HDY_LEAFLET_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
+ * @HDY_LEAFLET_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
+ * @HDY_LEAFLET_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
  *
  * These enumeration values describe the possible transitions between pages in a
  * #HdyLeaflet widget.
  *
- * New values may be added to this enumeration over time.
- */
-
-/**
- * HdyLeafletChildTransitionType:
- * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE: No transition
- * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_CROSSFADE: A cross-fade
- * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
- * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
- * @HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
- *
- * These enumeration values describe the possible transitions between pages in a
- * #HdyLeaflet widget.
- *
- * New values may be added to this enumeration over time.
+ * Since: 1.0
  */
 
 enum {
@@ -123,7 +112,7 @@ typedef struct
   gboolean move_bin_window_request;
 
   struct {
-    HdyLeafletModeTransitionType type;
+    HdyLeafletTransitionType type;
     guint duration;
 
     gdouble current_pos;
@@ -140,7 +129,7 @@ typedef struct
 
   /* Child transition variables. */
   struct {
-    HdyLeafletChildTransitionType type;
+    HdyLeafletTransitionType type;
     guint duration;
 
     cairo_surface_t *last_visible_surface;
@@ -154,7 +143,7 @@ typedef struct
 
     gboolean interpolate_size;
 
-    HdyLeafletChildTransitionType active_type;
+    HdyLeafletTransitionType active_type;
     GtkPanDirection active_direction;
   } child_transition;
 
@@ -255,14 +244,14 @@ is_window_moving_child_transition (HdyLeaflet *self)
   right_or_left = is_rtl ? GTK_PAN_DIRECTION_LEFT : GTK_PAN_DIRECTION_RIGHT;
 
   switch (priv->child_transition.active_type) {
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE:
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_CROSSFADE:
+  case HDY_LEAFLET_TRANSITION_TYPE_NONE:
+  case HDY_LEAFLET_TRANSITION_TYPE_CROSSFADE:
     return FALSE;
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE:
+  case HDY_LEAFLET_TRANSITION_TYPE_SLIDE:
     return TRUE;
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER:
+  case HDY_LEAFLET_TRANSITION_TYPE_OVER:
     return direction == GTK_PAN_DIRECTION_UP || direction == left_or_right;
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER:
+  case HDY_LEAFLET_TRANSITION_TYPE_UNDER:
     return direction == GTK_PAN_DIRECTION_DOWN || direction == right_or_left;
   default:
     g_assert_not_reached ();
@@ -272,11 +261,11 @@ is_window_moving_child_transition (HdyLeaflet *self)
 /* Transitions that change direction depending on the relative order of the
 old and new child */
 static inline gboolean
-is_direction_dependent_child_transition (HdyLeafletChildTransitionType transition_type)
+is_direction_dependent_transition (HdyLeafletTransitionType transition_type)
 {
-  return (transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE ||
-          transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER ||
-          transition_type == HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER);
+  return (transition_type == HDY_LEAFLET_TRANSITION_TYPE_SLIDE ||
+          transition_type == HDY_LEAFLET_TRANSITION_TYPE_OVER ||
+          transition_type == HDY_LEAFLET_TRANSITION_TYPE_UNDER);
 }
 
 static GtkPanDirection
@@ -449,7 +438,7 @@ hdy_leaflet_stop_child_transition (HdyLeaflet *self)
   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
 
   hdy_leaflet_unschedule_child_ticks (self);
-  priv->child_transition.active_type = HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE;
+  priv->child_transition.active_type = HDY_LEAFLET_TRANSITION_TYPE_NONE;
   gtk_progress_tracker_finish (&priv->child_transition.tracker);
   if (priv->child_transition.last_visible_surface != NULL) {
     cairo_surface_destroy (priv->child_transition.last_visible_surface);
@@ -465,17 +454,17 @@ hdy_leaflet_stop_child_transition (HdyLeaflet *self)
 }
 
 static void
-hdy_leaflet_start_child_transition (HdyLeaflet                    *self,
-                                    HdyLeafletChildTransitionType  transition_type,
-                                    guint                          transition_duration,
-                                    GtkPanDirection                transition_direction)
+hdy_leaflet_start_child_transition (HdyLeaflet               *self,
+                                    HdyLeafletTransitionType  transition_type,
+                                    guint                     transition_duration,
+                                    GtkPanDirection           transition_direction)
 {
   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
   GtkWidget *widget = GTK_WIDGET (self);
 
   if (gtk_widget_get_mapped (widget) &&
       get_enable_animations () &&
-      transition_type != HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE &&
+      transition_type != HDY_LEAFLET_TRANSITION_TYPE_NONE &&
       transition_duration != 0 &&
       priv->last_visible_child != NULL &&
       /* Don't animate child transition when a mode transition is ongoing. */
@@ -491,7 +480,7 @@ hdy_leaflet_start_child_transition (HdyLeaflet                    *self,
   }
   else {
     hdy_leaflet_unschedule_child_ticks (self);
-    priv->child_transition.active_type = HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE;
+    priv->child_transition.active_type = HDY_LEAFLET_TRANSITION_TYPE_NONE;
     gtk_progress_tracker_finish (&priv->child_transition.tracker);
   }
 
@@ -499,10 +488,10 @@ hdy_leaflet_start_child_transition (HdyLeaflet                    *self,
 }
 
 static void
-set_visible_child_info (HdyLeaflet                    *self,
-                        HdyLeafletChildInfo           *new_visible_child,
-                        HdyLeafletChildTransitionType  transition_type,
-                        guint                          transition_duration)
+set_visible_child_info (HdyLeaflet               *self,
+                        HdyLeafletChildInfo      *new_visible_child,
+                        HdyLeafletTransitionType  transition_type,
+                        guint                     transition_duration)
 {
   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
   GtkWidget *widget = GTK_WIDGET (self);
@@ -592,9 +581,9 @@ set_visible_child_info (HdyLeaflet                    *self,
   }
 
   if ((new_visible_child == NULL || priv->last_visible_child == NULL) &&
-      is_direction_dependent_child_transition (transition_type))
-    transition_type = HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE;
-  else if (is_direction_dependent_child_transition (transition_type)) {
+      is_direction_dependent_transition (transition_type))
+    transition_type = HDY_LEAFLET_TRANSITION_TYPE_NONE;
+  else if (is_direction_dependent_transition (transition_type)) {
     gboolean new_first = FALSE;
     for (children = priv->children; children; children = children->next) {
       if (new_visible_child == children->data) {
@@ -645,7 +634,7 @@ hdy_leaflet_set_position (HdyLeaflet *self,
   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
   gboolean new_visible;
   GtkWidget *child;
-  /* HdyLeafletModeTransitionType transition; */
+  /* HdyLeafletTransitionType transition; */
 
   priv->mode_transition.current_pos = pos;
 
@@ -724,7 +713,7 @@ hdy_leaflet_start_mode_transition (HdyLeaflet *self,
 {
   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
   GtkWidget *widget = GTK_WIDGET (self);
-  HdyLeafletModeTransitionType transition;
+  HdyLeafletTransitionType transition;
 
   if (priv->mode_transition.target_pos == target)
     return;
@@ -738,7 +727,7 @@ hdy_leaflet_start_mode_transition (HdyLeaflet *self,
   transition = priv->mode_transition.type;
   if (gtk_widget_get_mapped (widget) &&
       priv->mode_transition.duration != 0 &&
-      transition != HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE &&
+      transition != HDY_LEAFLET_TRANSITION_TYPE_NONE &&
       get_enable_animations ()) {
     priv->mode_transition.source_pos = priv->mode_transition.current_pos;
     if (priv->mode_transition.tick_id == 0)
@@ -890,12 +879,12 @@ hdy_leaflet_get_homogeneous (HdyLeaflet     *self,
  *
  * Returns: the current mode transition type of @self
  */
-HdyLeafletModeTransitionType
+HdyLeafletTransitionType
 hdy_leaflet_get_mode_transition_type (HdyLeaflet *self)
 {
   HdyLeafletPrivate *priv;
 
-  g_return_val_if_fail (HDY_IS_LEAFLET (self), HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE);
+  g_return_val_if_fail (HDY_IS_LEAFLET (self), HDY_LEAFLET_TRANSITION_TYPE_NONE);
 
   priv = hdy_leaflet_get_instance_private (self);
 
@@ -905,7 +894,7 @@ hdy_leaflet_get_mode_transition_type (HdyLeaflet *self)
 /**
  * hdy_leaflet_set_mode_transition_type:
  * @self: a #HdyLeaflet
- * @transition: the new transition type
+ * @transition_type: the new transition type
  *
  * Sets the type of animation that will be used for
  * transitions between modes in @self.
@@ -915,8 +904,8 @@ hdy_leaflet_get_mode_transition_type (HdyLeaflet *self)
  * based on the mode that is about to become current.
  */
 void
-hdy_leaflet_set_mode_transition_type (HdyLeaflet                   *self,
-                                      HdyLeafletModeTransitionType  transition)
+hdy_leaflet_set_mode_transition_type (HdyLeaflet               *self,
+                                      HdyLeafletTransitionType  transition_type)
 {
   HdyLeafletPrivate *priv;
 
@@ -924,10 +913,10 @@ hdy_leaflet_set_mode_transition_type (HdyLeaflet                   *self,
 
   priv = hdy_leaflet_get_instance_private (self);
 
-  if (priv->mode_transition.type == transition)
+  if (priv->mode_transition.type == transition_type)
     return;
 
-  priv->mode_transition.type = transition;
+  priv->mode_transition.type = transition_type;
   g_object_notify_by_pspec (G_OBJECT (self),
                             props[PROP_MODE_TRANSITION_TYPE]);
 }
@@ -988,12 +977,12 @@ hdy_leaflet_set_mode_transition_duration (HdyLeaflet *self,
  *
  * Returns: the current mode transition type of @self
  */
-HdyLeafletChildTransitionType
+HdyLeafletTransitionType
 hdy_leaflet_get_child_transition_type (HdyLeaflet *self)
 {
   HdyLeafletPrivate *priv;
 
-  g_return_val_if_fail (HDY_IS_LEAFLET (self), HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE);
+  g_return_val_if_fail (HDY_IS_LEAFLET (self), HDY_LEAFLET_TRANSITION_TYPE_NONE);
 
   priv = hdy_leaflet_get_instance_private (self);
 
@@ -1003,7 +992,7 @@ hdy_leaflet_get_child_transition_type (HdyLeaflet *self)
 /**
  * hdy_leaflet_set_child_transition_type:
  * @self: a #HdyLeaflet
- * @transition: the new transition type
+ * @transition_type: the new transition type
  *
  * Sets the type of animation that will be used for
  * transitions between children in @self.
@@ -1013,8 +1002,8 @@ hdy_leaflet_get_child_transition_type (HdyLeaflet *self)
  * based on the mode that is about to become current.
  */
 void
-hdy_leaflet_set_child_transition_type (HdyLeaflet                    *self,
-                                       HdyLeafletChildTransitionType  transition)
+hdy_leaflet_set_child_transition_type (HdyLeaflet               *self,
+                                       HdyLeafletTransitionType  transition_type)
 {
   HdyLeafletPrivate *priv;
 
@@ -1022,10 +1011,10 @@ hdy_leaflet_set_child_transition_type (HdyLeaflet                    *self,
 
   priv = hdy_leaflet_get_instance_private (self);
 
-  if (priv->child_transition.type == transition)
+  if (priv->child_transition.type == transition_type)
     return;
 
-  priv->child_transition.type = transition;
+  priv->child_transition.type = transition_type;
   g_object_notify_by_pspec (G_OBJECT (self),
                             props[PROP_CHILD_TRANSITION_TYPE]);
 }
@@ -1398,7 +1387,7 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
   gint current_pad;
   gint max_child_size = 0;
   gboolean box_homogeneous;
-  HdyLeafletModeTransitionType mode_transition_type;
+  HdyLeafletTransitionType mode_transition_type;
 
   directed_children = get_directed_children (self);
   visible_child = priv->visible_child;
@@ -1429,10 +1418,13 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
 
   /* Avoid useless computations and allow visible child transitions. */
   if (priv->mode_transition.current_pos <= 0.0)
-    mode_transition_type = HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE;
+    mode_transition_type = HDY_LEAFLET_TRANSITION_TYPE_NONE;
 
   switch (mode_transition_type) {
-  case HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE:
+  case HDY_LEAFLET_TRANSITION_TYPE_NONE:
+  case HDY_LEAFLET_TRANSITION_TYPE_CROSSFADE:
+  case HDY_LEAFLET_TRANSITION_TYPE_OVER:
+  case HDY_LEAFLET_TRANSITION_TYPE_UNDER:
     /* Child transitions should be applied only when folded and when no mode
      * transition is ongoing.
      */
@@ -1453,7 +1445,7 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
     }
 
     break;
-  case HDY_LEAFLET_MODE_TRANSITION_TYPE_SLIDE:
+  case HDY_LEAFLET_TRANSITION_TYPE_SLIDE:
     /* Compute visible child size. */
 
     visible_size = orientation == GTK_ORIENTATION_HORIZONTAL ?
@@ -2134,7 +2126,7 @@ hdy_leaflet_draw_over_or_under (GtkWidget *widget,
   right_or_left = is_rtl ? GTK_PAN_DIRECTION_LEFT : GTK_PAN_DIRECTION_RIGHT;
 
   switch (priv->child_transition.active_type) {
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER:
+  case HDY_LEAFLET_TRANSITION_TYPE_OVER:
     if (direction == GTK_PAN_DIRECTION_UP || direction == left_or_right)
       hdy_leaflet_draw_over (widget, cr);
     else if (direction == GTK_PAN_DIRECTION_DOWN || direction == right_or_left)
@@ -2142,7 +2134,7 @@ hdy_leaflet_draw_over_or_under (GtkWidget *widget,
     else
       g_assert_not_reached ();
     break;
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER:
+  case HDY_LEAFLET_TRANSITION_TYPE_UNDER:
     if (direction == GTK_PAN_DIRECTION_UP || direction == left_or_right)
       hdy_leaflet_draw_under (widget, cr);
     else if (direction == GTK_PAN_DIRECTION_DOWN || direction == right_or_left)
@@ -2150,9 +2142,9 @@ hdy_leaflet_draw_over_or_under (GtkWidget *widget,
     else
       g_assert_not_reached ();
     break;
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE:
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_CROSSFADE:
-  case HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE:
+  case HDY_LEAFLET_TRANSITION_TYPE_NONE:
+  case HDY_LEAFLET_TRANSITION_TYPE_CROSSFADE:
+  case HDY_LEAFLET_TRANSITION_TYPE_SLIDE:
   default:
     g_assert_not_reached ();
   }
@@ -2310,18 +2302,18 @@ hdy_leaflet_draw (GtkWidget *widget,
       cairo_clip (cr);
 
       switch (priv->child_transition.active_type) {
-      case HDY_LEAFLET_CHILD_TRANSITION_TYPE_CROSSFADE:
+      case HDY_LEAFLET_TRANSITION_TYPE_CROSSFADE:
         if (gtk_cairo_should_draw_window (cr, priv->bin_window))
           hdy_leaflet_draw_crossfade (widget, cr);
         break;
-      case HDY_LEAFLET_CHILD_TRANSITION_TYPE_SLIDE:
+      case HDY_LEAFLET_TRANSITION_TYPE_SLIDE:
         hdy_leaflet_draw_slide (widget, cr);
         break;
-      case HDY_LEAFLET_CHILD_TRANSITION_TYPE_OVER:
-      case HDY_LEAFLET_CHILD_TRANSITION_TYPE_UNDER:
+      case HDY_LEAFLET_TRANSITION_TYPE_OVER:
+      case HDY_LEAFLET_TRANSITION_TYPE_UNDER:
         hdy_leaflet_draw_over_or_under (widget, cr);
         break;
-      case HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE:
+      case HDY_LEAFLET_TRANSITION_TYPE_NONE:
       default:
         g_assert_not_reached ();
       }
@@ -2897,7 +2889,7 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
     g_param_spec_enum ("mode-transition-type",
                        _("Mode transition type"),
                        _("The type of animation used to transition between modes"),
-                       HDY_TYPE_LEAFLET_MODE_TRANSITION_TYPE, HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE,
+                       HDY_TYPE_LEAFLET_TRANSITION_TYPE, HDY_LEAFLET_TRANSITION_TYPE_NONE,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_MODE_TRANSITION_DURATION] =
@@ -2911,7 +2903,7 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
     g_param_spec_enum ("child-transition-type",
                        _("Child transition type"),
                        _("The type of animation used to transition between children"),
-                       HDY_TYPE_LEAFLET_CHILD_TRANSITION_TYPE, HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE,
+                       HDY_TYPE_LEAFLET_TRANSITION_TYPE, HDY_LEAFLET_TRANSITION_TYPE_NONE,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_CHILD_TRANSITION_DURATION] =
@@ -2970,9 +2962,9 @@ hdy_leaflet_init (HdyLeaflet *self)
   priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_VERTICAL] = FALSE;
   priv->homogeneous[HDY_FOLD_FOLDED][GTK_ORIENTATION_HORIZONTAL] = TRUE;
   priv->homogeneous[HDY_FOLD_FOLDED][GTK_ORIENTATION_VERTICAL] = TRUE;
-  priv->mode_transition.type = HDY_LEAFLET_MODE_TRANSITION_TYPE_NONE;
+  priv->mode_transition.type = HDY_LEAFLET_TRANSITION_TYPE_NONE;
   priv->mode_transition.duration = 250;
-  priv->child_transition.type = HDY_LEAFLET_CHILD_TRANSITION_TYPE_NONE;
+  priv->child_transition.type = HDY_LEAFLET_TRANSITION_TYPE_NONE;
   priv->child_transition.duration = 200;
   priv->mode_transition.current_pos = 1.0;
   priv->mode_transition.target_pos = 1.0;

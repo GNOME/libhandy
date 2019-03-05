@@ -115,7 +115,6 @@ libhandy-0.0.so.0 libhandy-0.0-0 #MINVER#
  hdy_header_group_set_focus@LIBHANDY_0_0_0 0.0.3
  hdy_init@LIBHANDY_0_0_0 0.0.5
  hdy_init_public_types@LIBHANDY_0_0_0 0.0.5
- hdy_leaflet_child_transition_type_get_type@LIBHANDY_0_0_0 0.0~git20180429
  hdy_leaflet_get_child_transition_duration@LIBHANDY_0_0_0 0.0~git20180429
  hdy_leaflet_get_child_transition_running@LIBHANDY_0_0_0 0.0~git20180429
  hdy_leaflet_get_child_transition_type@LIBHANDY_0_0_0 0.0~git20180429
@@ -127,7 +126,6 @@ libhandy-0.0.so.0 libhandy-0.0-0 #MINVER#
  hdy_leaflet_get_type@LIBHANDY_0_0_0 0.0~git20180429
  hdy_leaflet_get_visible_child@LIBHANDY_0_0_0 0.0~git20180429
  hdy_leaflet_get_visible_child_name@LIBHANDY_0_0_0 0.0~git20180429
- hdy_leaflet_mode_transition_type_get_type@LIBHANDY_0_0_0 0.0~git20180429
  hdy_leaflet_new@LIBHANDY_0_0_0 0.0~git20180429
  hdy_leaflet_set_child_transition_duration@LIBHANDY_0_0_0 0.0~git20180429
  hdy_leaflet_set_child_transition_type@LIBHANDY_0_0_0 0.0~git20180429
