@@ -8,5 +8,27 @@
 
 <chapter id="hdy-migrating-0-0-to-1">
   <title>Migrating from Handy 0.0.x to Handy 1</title>
+
+  <section>
+    <title>Changes that need to be done at the time of the switch</title>
+
+    <para>
+      This section outlines porting tasks that you need to tackle when you get
+      to the point that you actually build your application against Handy 1.
+      Making it possible to prepare for these in Handy 0.0 would have been
+      either impossible or impractical.
+    </para>
+
+    <section>
+      <title>Stop using HdyLeafletModeTransitionType and HdyLeafletChildTransitionType</title>
+
+      <para>
+        The HdyLeafletModeTransitionType and HdyLeafletChildTransitionType types
+        have been merged into Handy 1. Use HdyLeafletTransitionType instead.
+      </para>
+    </section>
+
+  </section>
+
 </chapter>
 
