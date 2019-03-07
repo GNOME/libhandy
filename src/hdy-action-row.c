@@ -41,6 +41,7 @@ typedef struct
   GtkImage *image;
   GtkBox *prefixes;
   GtkLabel *subtitle;
+  GtkBox *suffixes;
   GtkLabel *title;
   GtkBox *title_box;
 
@@ -193,6 +194,11 @@ hdy_action_row_show_all (GtkWidget *widget)
   gtk_container_foreach (GTK_CONTAINER (priv->prefixes),
                          (GtkCallback) gtk_widget_show_all,
                          NULL);
+
+  gtk_container_foreach (GTK_CONTAINER (priv->suffixes),
+                         (GtkCallback) gtk_widget_show_all,
+                         NULL);
+
   GTK_WIDGET_CLASS (hdy_action_row_parent_class)->show_all (widget);
 }
 
@@ -210,6 +216,7 @@ hdy_action_row_destroy (GtkWidget *widget)
   hdy_action_row_set_activatable_widget (self, NULL);
 
   priv->prefixes = NULL;
+  priv->suffixes = NULL;
   priv->header = NULL;
 
   GTK_WIDGET_CLASS (hdy_action_row_parent_class)->destroy (widget);
@@ -247,6 +254,7 @@ for_non_internal_child (GtkWidget *widget,
   if (widget != (GtkWidget *) priv->box &&
       widget != (GtkWidget *) priv->image &&
       widget != (GtkWidget *) priv->prefixes &&
+      widget != (GtkWidget *) priv->suffixes &&
       widget != (GtkWidget *) priv->title_box)
     data->callback (widget, data->callback_data);
 }
@@ -273,8 +281,8 @@ hdy_action_row_forall (GtkContainer *container,
 
   if (priv->prefixes)
     GTK_CONTAINER_GET_CLASS (priv->prefixes)->forall (GTK_CONTAINER (priv->prefixes), include_internals, for_non_internal_child, &data);
-  if (priv->header)
-    GTK_CONTAINER_GET_CLASS (priv->header)->forall (GTK_CONTAINER (priv->header), include_internals, for_non_internal_child, &data);
+  if (priv->suffixes)
+    GTK_CONTAINER_GET_CLASS (priv->suffixes)->forall (GTK_CONTAINER (priv->suffixes), include_internals, for_non_internal_child, &data);
   if (priv->box)
     GTK_CONTAINER_GET_CLASS (priv->box)->forall (GTK_CONTAINER (priv->box), include_internals, for_non_internal_child, &data);
 }
@@ -387,6 +395,7 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, HdyActionRow, image);
   gtk_widget_class_bind_template_child_private (widget_class, HdyActionRow, prefixes);
   gtk_widget_class_bind_template_child_private (widget_class, HdyActionRow, subtitle);
+  gtk_widget_class_bind_template_child_private (widget_class, HdyActionRow, suffixes);
   gtk_widget_class_bind_template_child_private (widget_class, HdyActionRow, title);
   gtk_widget_class_bind_template_child_private (widget_class, HdyActionRow, title_box);
 }
@@ -751,7 +760,8 @@ hdy_action_row_add_action (HdyActionRow *self,
 
   priv = hdy_action_row_get_instance_private (self);
 
-  gtk_box_pack_end (priv->header, widget, FALSE, TRUE, 0);
+  gtk_box_pack_start (priv->suffixes, widget, FALSE, TRUE, 0);
+  gtk_widget_show (GTK_WIDGET (priv->suffixes));
 }
 
 /**
