@@ -5,21 +5,6 @@
       <class name="expander"/>
     </style>
     <child type="action">
-      <object class="GtkSwitch" id="enable_switch">
-        <property name="can_focus">True</property>
-        <property name="halign">end</property>
-        <property name="valign">center</property>
-      </object>
-    </child>
-    <child type="action">
-      <object class="GtkSeparator" id="separator">
-        <property name="height_request">32</property>
-        <property name="margin_bottom">8</property>
-        <property name="margin_top">8</property>
-        <property name="orientation">vertical</property>
-      </object>
-    </child>
-    <child type="action">
       <object class="GtkToggleButton" id="button">
         <property name="active" bind-source="revealer" bind-property="reveal-child" bind-flags="bidirectional|sync-create"/>
         <property name="can_focus">True</property>
@@ -38,6 +23,21 @@
             <property name="icon_size">1</property>
           </object>
         </child>
+      </object>
+    </child>
+    <child type="action">
+      <object class="GtkSeparator" id="separator">
+        <property name="height_request">32</property>
+        <property name="margin_bottom">8</property>
+        <property name="margin_top">8</property>
+        <property name="orientation">vertical</property>
+      </object>
+    </child>
+    <child type="action">
+      <object class="GtkSwitch" id="enable_switch">
+        <property name="can_focus">True</property>
+        <property name="halign">end</property>
+        <property name="valign">center</property>
       </object>
     </child>
     <child>
