@@ -63,4 +63,14 @@ Description: GObject introspection files for libhandy
  .
  This package contains the GObject-introspection data in binary typelib format.
 
-
+Package: handy-1-examples
+Architecture: any
+Section: x11
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: Example files for libhandy
+ libhandy provides GTK+ widgets and GObjects to ease developing
+ applications for mobile phones.
+ .
+ This package contains the example files and a demonstration program for Handy.
