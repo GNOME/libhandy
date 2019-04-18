@@ -14,6 +14,7 @@ private_headers = [
 images = [
   'images/arrows.png',
   'images/dialer.png',
+  'images/header-bar.png',
 ]
 
 content_files = [
