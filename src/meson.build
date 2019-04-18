@@ -112,6 +112,7 @@ src_sources = [
   'hdy-title-bar.c',
   'hdy-value-object.c',
   'hdy-view-switcher.c',
+  'hdy-view-switcher-bar.c',
   'hdy-view-switcher-button.c',
 ]
 
