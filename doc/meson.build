@@ -5,9 +5,11 @@ subdir('xml')
 private_headers = [
     'config.h',
     'gtkprogresstrackerprivate.h',
+    'gtk-container-private.h',
     'hdy-main-private.h',
     'hdy-style-private.h',
     'hdy-view-switcher-button-private.h',
+    'hdy-window-private.h',
 ]
 
 images = [
