@@ -95,6 +95,7 @@ libhandy_init_public_types = custom_target('hdy-public-types.c',
 
 src_sources = [
   'gtkprogresstracker.c',
+  'gtk-container.c',
   'hdy-action-row.c',
   'hdy-arrows.c',
   'hdy-column.c',
