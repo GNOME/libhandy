@@ -270,12 +270,28 @@ update_active_button_for_visible_stack_child (HdyViewSwitcher *self)
 }
 
 static void
+on_stack_child_added (GtkStack        *stack,
+                      GtkWidget       *stack_child,
+                      HdyViewSwitcher *self)
+{
+  add_button_for_stack_child (stack_child, self);
+}
+
+static void
+on_stack_child_removed (GtkStack        *stack,
+                        GtkWidget       *stack_child,
+                        HdyViewSwitcher *self)
+{
+  remove_button_for_stack_child (stack_child, self);
+}
+
+static void
 disconnect_stack_signals (HdyViewSwitcher *self)
 {
   HdyViewSwitcherPrivate *priv = hdy_view_switcher_get_instance_private (self);
 
-  g_signal_handlers_disconnect_by_func (priv->stack, add_button_for_stack_child, self);
-  g_signal_handlers_disconnect_by_func (priv->stack, remove_button_for_stack_child, self);
+  g_signal_handlers_disconnect_by_func (priv->stack, on_stack_child_added, self);
+  g_signal_handlers_disconnect_by_func (priv->stack, on_stack_child_removed, self);
   g_signal_handlers_disconnect_by_func (priv->stack, update_active_button_for_visible_stack_child, self);
   g_signal_handlers_disconnect_by_func (priv->stack, disconnect_stack_signals, self);
 }
@@ -286,9 +302,9 @@ connect_stack_signals (HdyViewSwitcher *self)
   HdyViewSwitcherPrivate *priv = hdy_view_switcher_get_instance_private (self);
 
   g_signal_connect_after (priv->stack, "add",
-                          G_CALLBACK (add_button_for_stack_child), self);
+                          G_CALLBACK (on_stack_child_added), self);
   g_signal_connect_after (priv->stack, "remove",
-                          G_CALLBACK (remove_button_for_stack_child), self);
+                          G_CALLBACK (on_stack_child_removed), self);
   g_signal_connect_swapped (priv->stack, "notify::visible-child",
                             G_CALLBACK (update_active_button_for_visible_stack_child), self);
   g_signal_connect_swapped (priv->stack, "destroy",
