@@ -29,6 +29,12 @@
  * the view's icon and title one on top of the other, in a more compact way.
  * This can be controlled via the policy property.
  *
+ * To look good in a header bar, a #HdyViewSwitcher requires to fill its full
+ * height. #GtkHeaderBar forces its title widget to be centered and hence it
+ * prevents to ensure the view switcher will look right, #HdyHeaderBar doesn't
+ * force a vertical alignment on its title widget, so if you want to put a
+ * #HdyViewSwitcher in a header bar, we recommend you to use a #HdyHeaderBar.
+ *
  * Since: 0.0.10
  */
 
