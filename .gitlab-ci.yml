@@ -42,6 +42,20 @@ build-debian-gcc:
     paths:
       - _build
 
+build-debian-gcc-asan:
+  image: debian:buster
+  tags:
+    - privileged
+  stage: build
+  variables:
+    BUILD_OPTS: -Dintrospection=disabled -Db_sanitize=address --werror
+  script:
+    - *build_steps
+  artifacts:
+    when: always
+    paths:
+      - _build
+
 build-debian-clang:
   image: debian:buster
   before_script:
@@ -99,6 +113,24 @@ unit-test:
     - xvfb-run -s -noreset ninja -C _build test
     - ninja -C _build coverage
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
+  artifacts:
+    when: always
+    paths:
+      - _build
+
+
+unit-test-asan:
+  image: debian:buster
+  tags:
+    - privileged
+  stage: test+docs
+  dependencies:
+    - build-debian-gcc-asan
+  variables:
+    ASAN_OPTIONS: fast_unwind_on_malloc=0
+    LSAN_OPTIONS: suppressions=../data/leak-suppress.txt
+  script:
+    - xvfb-run -s -noreset ninja -C _build test
   artifacts:
     when: always
     paths:
