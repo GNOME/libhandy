@@ -42,6 +42,15 @@ build-debian-gcc:
     paths:
       - _build
 
+build-pureos-gcc:
+  image: godiug/pureos:amber
+  <<: *tags
+  stage: build
+  variables:
+    BUILD_OPTS: -Dgtk_doc=true --werror
+  script:
+    - *build_steps
+
 build-debian-clang:
   image: debian:buster
   before_script:
