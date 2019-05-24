@@ -13,6 +13,10 @@ private_headers = [
 images = [
   'images/arrows.png',
   'images/dialer.png',
+  'images/list.png',
+  'images/search.png',
+  'images/dialog-mobile.png',
+  'images/dialog-desktop.png',
 ]
 
 content_files = [
