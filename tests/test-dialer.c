@@ -97,6 +97,32 @@ test_hdy_dialer_action_buttions(void)
 }
 
 
+static void
+test_hdy_dialer_relief(void)
+{
+  HdyDialer *dialer = HDY_DIALER (hdy_dialer_new());
+  GtkReliefStyle style;
+
+  notified = 0;
+  g_signal_connect (dialer, "notify::relief", G_CALLBACK (notify_cb), NULL);
+  g_assert_cmpint(GTK_RELIEF_NORMAL, ==, hdy_dialer_get_relief (dialer));
+  hdy_dialer_set_relief (dialer, GTK_RELIEF_NONE);
+  g_assert_cmpint(GTK_RELIEF_NONE, ==, hdy_dialer_get_relief (dialer));
+  hdy_dialer_set_relief (dialer, GTK_RELIEF_NORMAL);
+  g_assert_cmpint(GTK_RELIEF_NORMAL, ==, hdy_dialer_get_relief (dialer));
+  g_assert_cmpint(2, ==, notified);
+
+  /* Property */
+  g_object_set (dialer, "relief", GTK_RELIEF_NONE, NULL);
+  g_object_get (dialer, "relief", &style, NULL);
+  g_assert_cmpint(GTK_RELIEF_NONE, ==, style);
+
+  /* Setting the same value should not notify */
+  hdy_dialer_set_relief (dialer, GTK_RELIEF_NONE);
+  g_assert_cmpint(3, ==, notified);
+}
+
+
 gint
 main (gint argc,
       gchar *argv[])
