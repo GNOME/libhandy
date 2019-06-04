@@ -650,6 +650,7 @@ hdy_search_bar_set_show_close_button (HdySearchBar *self,
 
   if (gtk_widget_get_visible (priv->close_button) != visible) {
     gtk_widget_set_visible (priv->close_button, visible);
+    gtk_box_set_spacing (GTK_BOX (priv->tool_box), visible ? 6 : 0);
     g_object_notify (G_OBJECT (self), "show-close-button");
   }
 }
