@@ -66,6 +66,12 @@ enum {
   PROP_SUBTITLE,
   PROP_TITLE,
   PROP_USE_UNDERLINE,
+  PROP_ELLIPSIZE_TITLE,
+  PROP_WRAP_TITLE,
+  PROP_TITLE_LINES,
+  PROP_ELLIPSIZE_SUBTITLE,
+  PROP_WRAP_SUBTITLE,
+  PROP_SUBTITLE_LINES,
   LAST_PROP,
 };
 
@@ -132,6 +138,24 @@ hdy_action_row_get_property (GObject    *object,
   case PROP_USE_UNDERLINE:
     g_value_set_boolean (value, hdy_action_row_get_use_underline (self));
     break;
+  case PROP_ELLIPSIZE_TITLE:
+    g_value_set_enum (value, hdy_action_row_get_title_ellipsize (self));
+    break;
+  case PROP_WRAP_TITLE:
+    g_value_set_boolean (value, hdy_action_row_get_wrap_title (self));
+    break;
+  case PROP_TITLE_LINES:
+    g_value_set_int (value, hdy_action_row_get_title_lines (self));
+    break;
+  case PROP_ELLIPSIZE_SUBTITLE:
+    g_value_set_enum (value, hdy_action_row_get_subtitle_ellipsize (self));
+    break;
+  case PROP_WRAP_SUBTITLE:
+    g_value_set_boolean (value, hdy_action_row_get_wrap_subtitle (self));
+    break;
+  case PROP_SUBTITLE_LINES:
+    g_value_set_int (value, hdy_action_row_get_subtitle_lines (self));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -160,6 +184,24 @@ hdy_action_row_set_property (GObject      *object,
     break;
   case PROP_USE_UNDERLINE:
     hdy_action_row_set_use_underline (self, g_value_get_boolean (value));
+    break;
+  case PROP_ELLIPSIZE_TITLE:
+    hdy_action_row_set_title_ellipsize (self, g_value_get_enum (value));
+    break;
+  case PROP_WRAP_TITLE:
+    hdy_action_row_set_wrap_title (self, g_value_get_boolean (value));
+    break;
+  case PROP_TITLE_LINES:
+    hdy_action_row_set_title_lines (self, g_value_get_int (value));
+    break;
+  case PROP_ELLIPSIZE_SUBTITLE:
+    hdy_action_row_set_subtitle_ellipsize (self, g_value_get_enum (value));
+    break;
+  case PROP_WRAP_SUBTITLE:
+    hdy_action_row_set_wrap_subtitle (self, g_value_get_boolean (value));
+    break;
+  case PROP_SUBTITLE_LINES:
+    hdy_action_row_set_subtitle_lines (self, g_value_get_int (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -378,6 +420,93 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
                           FALSE,
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyActionRow:title-ellipsize:
+   *
+   * The icon name for this row.
+   *
+   * Since: 0.0.11
+   */
+  props[PROP_ELLIPSIZE_TITLE] =
+    g_param_spec_enum ("title-ellipsize",
+                       _("Ellpisize the title"),
+                       _("The ellispize mode of the title"),
+                       PANGO_TYPE_ELLIPSIZE_MODE,
+                       PANGO_ELLIPSIZE_NONE,
+                       G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyActionRow:title-wrap:
+   *
+   * The icon name for this row.
+   *
+   * Since: 0.0.11
+   */
+  props[PROP_WRAP_TITLE] =
+    g_param_spec_boolean ("title-wrap",
+                          _("Wrap the title"),
+                          _("If set, the title lines will be automatically wrapped"),
+                          FALSE,
+                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyActionRow:title-lines:
+   *
+   * The icon name for this row.
+   *
+   * Since: 0.0.11
+   */
+  props[PROP_TITLE_LINES] =
+    g_param_spec_int ("title-lines",
+                      _("Title lines"),
+                      _("The number of lines to which the ellipsized label should be limited"),
+                      -1, G_MAXINT,
+                      -1,
+                      G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyActionRow:subtitle-ellipsize:
+   *
+   * The icon name for this row.
+   *
+   * Since: 0.0.11
+   */
+  props[PROP_ELLIPSIZE_SUBTITLE] =
+    g_param_spec_enum ("subtitle-ellipsize",
+                       _("Ellpisize the subtitle"),
+                       _("The ellispize mode of the subtitle"),
+                       PANGO_TYPE_ELLIPSIZE_MODE,
+                       PANGO_ELLIPSIZE_NONE,
+                       G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyActionRow:subtitle-wrap:
+   *
+   * The icon name for this row.
+   *
+   * Since: 0.0.11
+   */
+  props[PROP_WRAP_SUBTITLE] =
+    g_param_spec_boolean ("subtitle-wrap",
+                          _("Wrap the subtitle"),
+                          _("If set, the subtitle lines will be automatically wrapped"),
+                          FALSE,
+                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+  /**
+   * HdyActionRow:subtitle-lines:
+   *
+   * The icon name for this row.
+   *
+   * Since: 0.0.11
+   */
+  props[PROP_SUBTITLE_LINES] =
+    g_param_spec_int ("subtitle-lines",
+                      _("Subtitle lines"),
+                      _("The number of lines to which the ellipsized label should be limited"),
+                      -1, G_MAXINT,
+                      -1,
+                      G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
   g_object_class_install_properties (object_class, LAST_PROP, props);
 
   gtk_widget_class_set_template_from_resource (widget_class,
@@ -595,6 +724,264 @@ hdy_action_row_set_icon_name (HdyActionRow *self,
                           icon_name != NULL && g_strcmp0 (icon_name, "") != 0);
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ICON_NAME]);
+}
+
+/**
+ * hdy_action_row_set_title_ellipsize
+ * @self: a #HdyActionRow
+ * @mode: a #PangoEllipsizeMode
+ * 
+ * Sets the mode used to ellipsize the text in the title label
+ *
+ * Since: 0.0.11
+ */
+void
+hdy_action_row_set_title_ellipsize (HdyActionRow *self,
+                                    PangoEllipsizeMode mode)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+  gtk_label_set_ellipsize (priv->title, mode);
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ELLIPSIZE_TITLE]);
+}
+
+/**
+ * hdy_action_row_get_title_ellipsize
+ * @self: a #HdyActionRow
+ *
+ * Gets the ellipsize mode used in the title label
+ *
+ * Returns: a #PangoEllipsizeMode
+ *
+ * Since: 0.0.11
+ */
+PangoEllipsizeMode
+hdy_action_row_get_title_ellipsize (HdyActionRow *self)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_ACTION_ROW (self), PANGO_ELLIPSIZE_NONE);
+
+  priv = hdy_action_row_get_instance_private (self);
+  return gtk_label_get_ellipsize (priv->title);
+}
+
+/**
+ * hdy_action_row_set_subtitle_ellipsize
+ * @self: a #HdyActionRow
+ * @mode: a #PangoEllipsizeMode
+ *
+ *  Sets the mode used to ellipsize the text in the subtitle label
+ *
+ * Since: 0.0.11
+ */
+void
+hdy_action_row_set_subtitle_ellipsize (HdyActionRow *self,
+                                       PangoEllipsizeMode mode)
+{
+  HdyActionRowPrivate *priv;
+  
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+  gtk_label_set_ellipsize (priv->subtitle, mode);
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ELLIPSIZE_SUBTITLE]);
+}
+
+/**
+ * hdy_action_row_get_subtitle_ellipsize
+ * @self: a #HdyActionRow
+ *
+ * Gets the ellipsize mode used in the title label
+ *
+ * Returns: a #PangoEllipsizeMode
+ *
+ * Since: 0.0.11
+ */
+PangoEllipsizeMode
+hdy_action_row_get_subtitle_ellipsize (HdyActionRow *self)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_ACTION_ROW (self), PANGO_ELLIPSIZE_NONE);
+
+  priv = hdy_action_row_get_instance_private (self);
+  return gtk_label_get_ellipsize (priv->subtitle);
+}
+
+/**
+ * hdy_action_row_set_wrap_title
+ * @self: a #HdyActionRow
+ * @wrap: the wrap setting
+ *
+ * Gets whether the title label lines are wrapped
+ *
+ * Since: 0.0.11
+ */
+void
+hdy_action_row_set_wrap_title (HdyActionRow *self,
+                                  gboolean wrap)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  gtk_label_set_line_wrap (priv->title, wrap);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_WRAP_TITLE]);
+}
+
+/**
+ * hdy_action_row_get_wrap_title
+ * @self: a #HdyActionRow
+ *
+ * Gets whether the title label lines are wrapped
+ *
+ * Returns: TRUE if the lines of the title label are wrapped
+ * Since: 0.0.11
+ */
+gboolean
+hdy_action_row_get_wrap_title (HdyActionRow *self)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_ACTION_ROW (self), FALSE);
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  return gtk_label_get_ellipsize (priv->title);
+}
+
+/**
+ * hdy_action_row_set_wrap_subtitle
+ * @self: a #HdyActionRow
+ * @wrap: the wrap setting
+ *
+ * Gets whether the subtitle label lines are wrapped
+ *
+ * Since: 0.0.11
+ */
+void
+hdy_action_row_set_wrap_subtitle (HdyActionRow *self,
+                                  gboolean wrap)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  gtk_label_set_line_wrap (priv->subtitle, wrap);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_WRAP_SUBTITLE]);
+}
+
+/**
+ * hdy_action_row_get_wrap_subtitle
+ * @self: a #HdyActionRow
+ * 
+ * Gets whether the subtitle label lines are wrapped
+ * 
+ * Returns: TRUE if the lines of the subtitle label are wrapped
+ * Since: 0.0.11
+ */
+gboolean
+hdy_action_row_get_wrap_subtitle (HdyActionRow *self)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_ACTION_ROW (self), FALSE);
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  return gtk_label_get_ellipsize (priv->subtitle);
+}
+
+/**
+ * hdy_action_row_set_title_lines
+ * @self: a #HdyActionRow
+ * @lines: the desired number of lines or -1
+ *
+ * Since: 0.0.11
+ */
+void
+hdy_action_row_set_title_lines (HdyActionRow *self,
+                                gint lines)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  gtk_label_set_lines (priv->title, lines);
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_TITLE_LINES]);
+}
+
+/**
+ * hdy_action_row_get_title_lines
+ * @self: a #HdyActionRow
+ *
+ * Returns: the number of lines
+ *
+ * Since: 0.0.11
+ */
+gint
+hdy_action_row_get_title_lines (HdyActionRow *self)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_ACTION_ROW (self), -1);
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  return gtk_label_get_lines (priv->title);
+}
+
+/**
+ * hdy_action_row_set_subtitle_lines
+ * @self: a #HdyActionRow
+ * @lines: the desired number of lines or -1
+ *
+ * Since: 0.0.11
+ */
+void
+hdy_action_row_set_subtitle_lines (HdyActionRow *self,
+                                gint lines)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  gtk_label_set_lines (priv->subtitle, lines);
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_SUBTITLE_LINES]);
+}
+
+/**
+ * hdy_action_row_get_subtitle_lines
+ * @self: a #HdyActionRow
+ *
+ * Returns: the number of lines
+ *
+ * Since: 0.0.11
+ */
+gint
+hdy_action_row_get_subtitle_lines (HdyActionRow *self)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_ACTION_ROW (self), -1);
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  return gtk_label_get_lines (priv->subtitle);
 }
 
 /**
