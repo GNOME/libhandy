@@ -52,6 +52,30 @@ gboolean hdy_action_row_get_use_underline (HdyActionRow *self);
 void     hdy_action_row_set_use_underline (HdyActionRow *self,
                                            gboolean      use_underline);
 
+PangoEllipsizeMode hdy_action_row_get_title_ellipsize (HdyActionRow       *self);
+void               hdy_action_row_set_title_ellipsize (HdyActionRow       *self,
+                                                       PangoEllipsizeMode  mode);
+
+PangoEllipsizeMode hdy_action_row_get_subtitle_ellipsize (HdyActionRow      *self);
+void               hdy_action_row_set_subtitle_ellipsize (HdyActionRow      *self,
+                                                          PangoEllipsizeMode mode);
+
+gboolean hdy_action_row_get_title_wrap (HdyActionRow *self);
+void     hdy_action_row_set_title_wrap (HdyActionRow *self,
+                                        gboolean      wrap);
+
+gboolean hdy_action_row_get_subtitle_wrap (HdyActionRow *self);
+void     hdy_action_row_set_subtitle_wrap (HdyActionRow *self,
+                                           gboolean      wrap);
+
+gint hdy_action_row_get_title_lines (HdyActionRow *self);
+void hdy_action_row_set_title_lines (HdyActionRow *self,
+                                     gint          lines);
+
+gint hdy_action_row_get_subtitle_lines (HdyActionRow *self);
+void hdy_action_row_set_subtitle_lines (HdyActionRow *self,
+                                        gint          lines);
+
 void hdy_action_row_add_action (HdyActionRow *self,
                                 GtkWidget    *widget);
 
