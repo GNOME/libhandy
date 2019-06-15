@@ -1,8 +1,8 @@
 if glade_catalog
 
-glade_xml = 'libhandy.xml'
-module_dir = gladeui_dep.get_pkgconfig_variable('moduledir')
-dtd = join_paths(meson.current_source_dir(), 'glade-catalog.dtd')
+glade_xml        = 'libhandy.xml'
+module_dir       = gladeui_dep.get_pkgconfig_variable('moduledir')
+dtd              = meson.current_source_dir() / 'glade-catalog.dtd'
 glade_catalogdir = gladeui_dep.get_pkgconfig_variable('catalogdir')
 
 libglade_hdy_sources = [
@@ -31,10 +31,10 @@ xmllint = find_program('xmllint', required: true)
 if xmllint.found()
   custom_target(
     'xmllint',
-      build_by_default: true,
-      input: glade_xml,
-      output: 'doesnotexist',
-      command: [xmllint, '--dtdvalid', dtd, '--noout', '@INPUT@'],
+    build_by_default: true,
+               input: glade_xml,
+              output: 'doesnotexist',
+             command: [xmllint, '--dtdvalid', dtd, '--noout', '@INPUT@'],
   )
 endif
 
