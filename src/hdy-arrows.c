@@ -455,7 +455,7 @@ hdy_arrows_class_init (HdyArrowsClass *klass)
                        "Thickness of the arrows",
                        1,
                        G_MAXUINT,
-                       10,
+                       HDY_ARROWS_DEFAULT_THICKNESS,
                        (G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   gtk_widget_class_install_style_property (widget_class, style_properties [STYLE_PROP_THICKNESS]);
 
