@@ -244,7 +244,7 @@ draw_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     aw = width;
     ah = height / priv->count;
     xd = 0.0;
-    yd = -1.0 * height / priv->count;
+    yd = -1.0 * ah;
     x = 0.0;
     y = height - ah;
     break;
@@ -252,14 +252,14 @@ draw_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     aw = width;
     ah = height / priv->count;
     xd = 0.0;
-    yd = height / priv->count;
+    yd = ah;
     x = 0.0;
     y = 0.0;
     break;
   case HDY_ARROWS_DIRECTION_LEFT:
     aw = width / priv->count;
     ah = height;
-    xd = -1.0 * width / priv->count;
+    xd = -1.0 * aw;
     yd = 0.0;
     x = width - aw;
     y = 0.0;
@@ -267,7 +267,7 @@ draw_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
   case HDY_ARROWS_DIRECTION_RIGHT:
     aw = width / priv->count;
     ah = height;
-    xd = 1.0 * width / priv->count;
+    xd = aw;
     yd = 0.0;
     x = 0.0;
     y = 0.0;
