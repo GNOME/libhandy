@@ -47,13 +47,26 @@
 #define SNAP_POINT_A 400
 #define SNAP_POINT_B 800
 
+enum {
+  PROP_0,
+  PROP_NARROW,
+
+  /* Wrap the property on GtkWindow */
+  PROP_TRANSIENT_FOR,
+
+  LAST_PROP = PROP_NARROW + 1,
+};
+
 typedef struct {
   GtkWindow *parent;
   gulong     size_handler;
   gint       old_width, old_height;
   GtkWidget *closebtn;
-  gboolean   no_actions;
+  gboolean   no_actions : 1;
+  gboolean   is_small : 1;
 } HdyDialogPrivate;
+
+static GParamSpec *props[LAST_PROP];
 
 G_DEFINE_TYPE_WITH_CODE (HdyDialog, hdy_dialog, GTK_TYPE_DIALOG,
                          G_ADD_PRIVATE (HdyDialog))
@@ -129,6 +142,12 @@ handle_size (HdyDialog *self, GtkWindow *parent)
     priv->old_width = 0;
     priv->old_height = 0;
   }
+
+  if (priv->is_small == is_small)
+    return;
+
+  priv->is_small = is_small;
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_NARROW]);
 }
 
 static void
@@ -188,17 +207,6 @@ hdy_dialog_finalize (GObject *object)
   G_OBJECT_CLASS (hdy_dialog_parent_class)->finalize (object);
 }
 
-/* <= 3.24.1 never actually emits notify::transient-for so 
- * we have this hacky workaround */
-#if !GTK_CHECK_VERSION(3, 24, 2)
-
-enum {
-  PROP_0,
-  /* Wrap the property on GtkWindow */
-  PROP_TRANSIENT_FOR,
-  LAST_PROP = PROP_TRANSIENT_FOR,
-};
-
 static void
 hdy_dialog_get_property (GObject    *object,
                          guint       prop_id,
@@ -208,27 +216,45 @@ hdy_dialog_get_property (GObject    *object,
   HdyDialog *self = HDY_DIALOG (object);
 
   switch (prop_id) {
+  case PROP_NARROW:
+    g_value_set_boolean (value, hdy_dialog_get_narrow (self));
+    break;
+/* <= 3.24.1 never actually emits notify::transient-for so
+ * we have this hacky workaround */
+#if !GTK_CHECK_VERSION(3, 24, 2)
   case PROP_TRANSIENT_FOR:
     g_value_set_object (value, gtk_window_get_transient_for (GTK_WINDOW (self)));
     break;
+#endif
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
 
+/* We can't have get_property() without set_property(), so we have to implement
+ * it even for GTK < 3.24.2.
+ */
 static void
 hdy_dialog_set_property (GObject      *object,
                          guint         prop_id,
                          const GValue *value,
                          GParamSpec   *pspec)
 {
+/* <= 3.24.1 never actually emits notify::transient-for so
+ * we have this hacky workaround */
+#if !GTK_CHECK_VERSION(3, 24, 2)
   HdyDialog *self = HDY_DIALOG (object);
+#endif
 
   switch (prop_id) {
+/* <= 3.24.1 never actually emits notify::transient-for so
+ * we have this hacky workaround */
+#if !GTK_CHECK_VERSION(3, 24, 2)
   case PROP_TRANSIENT_FOR:
     gtk_window_set_transient_for (GTK_WINDOW (self), g_value_get_object (value));
     g_object_notify (G_OBJECT (self), "transient-for");
     break;
+#endif
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -246,25 +272,28 @@ hdy_dialog_class_init (HdyDialogClass *klass)
 
   widget_class->realize = hdy_dialog_realize;
 
+/* <= 3.24.1 never actually emits notify::transient-for so
+ * we have this hacky workaround */
+#if !GTK_CHECK_VERSION(3, 24, 2)
   g_object_class_override_property (object_class,
                                     PROP_TRANSIENT_FOR,
                                     "transient-for");
-}
-
-#else
-
-static void
-hdy_dialog_class_init (HdyDialogClass *klass)
-{
-  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-
-  object_class->finalize = hdy_dialog_finalize;
-
-  widget_class->realize = hdy_dialog_realize;
-}
-
 #endif
+
+  /**
+   * HdyDialog:narrow:
+   *
+   * %TRUE if the dialog is narrow.
+   */
+  props[PROP_NARROW] =
+    g_param_spec_boolean ("narrow",
+                          _("Narrow"),
+                          _("Whether the dialog is narrow"),
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
+
+  g_object_class_install_properties (object_class, LAST_PROP, props);
+}
 
 /* Handle GtkWidget::size-allocate on (HdyDialog) GtkWindow:transient-for */
 static void
@@ -379,4 +408,24 @@ hdy_dialog_new (GtkWindow *parent)
                        "use-header-bar", TRUE,
                        "transient-for", parent,
                        NULL);
+}
+
+/**
+ * hdy_dialog_get_narrow:
+ * @self: a #HdyDialog
+ *
+ * Gets whether @self is narrow.
+ *
+ * Returns: %TRUE if @self is narrow, %FALSE otherwise.
+ */
+gboolean
+hdy_dialog_get_narrow (HdyDialog *self)
+{
+  HdyDialogPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DIALOG (self), FALSE);
+
+  priv = hdy_dialog_get_instance_private (self);
+
+  return priv->is_small;
 }
