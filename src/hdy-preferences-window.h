@@ -11,12 +11,13 @@
 #endif
 
 #include <gtk/gtk.h>
+#include "hdy-dialog.h"
 
 G_BEGIN_DECLS
 
 #define HDY_TYPE_PREFERENCES_WINDOW (hdy_preferences_window_get_type())
 
-G_DECLARE_DERIVABLE_TYPE (HdyPreferencesWindow, hdy_preferences_window, HDY, PREFERENCES_WINDOW, GtkWindow)
+G_DECLARE_DERIVABLE_TYPE (HdyPreferencesWindow, hdy_preferences_window, HDY, PREFERENCES_WINDOW, HdyDialog)
 
 /**
  * HdyPreferencesWindowClass
@@ -24,7 +25,7 @@ G_DECLARE_DERIVABLE_TYPE (HdyPreferencesWindow, hdy_preferences_window, HDY, PRE
  */
 struct _HdyPreferencesWindowClass
 {
-  GtkWindowClass parent_class;
+  HdyDialogClass parent_class;
 };
 
 HdyPreferencesWindow *hdy_preferences_window_new (void);
