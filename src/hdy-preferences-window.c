@@ -46,7 +46,7 @@ typedef struct
   gint n_last_search_results;
 } HdyPreferencesWindowPrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (HdyPreferencesWindow, hdy_preferences_window, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE_WITH_PRIVATE (HdyPreferencesWindow, hdy_preferences_window, HDY_TYPE_DIALOG)
 
 static gboolean
 is_title_label_visible (GBinding     *binding,
@@ -318,9 +318,8 @@ hdy_preferences_window_add (GtkContainer *container,
   HdyPreferencesWindow *self = HDY_PREFERENCES_WINDOW (container);
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
 
-  if (priv->content_stack == NULL)
-    GTK_CONTAINER_CLASS (hdy_preferences_window_parent_class)->add (container, child);
-  else if (HDY_IS_PREFERENCES_PAGE (child)) {
+  if (HDY_IS_PREFERENCES_PAGE (child)) {
+    g_message ("add page");
     gtk_container_add (GTK_CONTAINER (priv->pages_stack), child);
     on_page_icon_name_changed (HDY_PREFERENCES_PAGE (child), NULL, self);
     on_page_title_changed (HDY_PREFERENCES_PAGE (child), NULL, self);
@@ -400,5 +399,7 @@ hdy_preferences_window_init (HdyPreferencesWindow *self)
 HdyPreferencesWindow *
 hdy_preferences_window_new (void)
 {
-  return g_object_new (HDY_TYPE_PREFERENCES_WINDOW, NULL);
+  return g_object_new (HDY_TYPE_PREFERENCES_WINDOW,
+                       "use-header-bar", TRUE,
+                       NULL);
 }

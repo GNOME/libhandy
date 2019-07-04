@@ -15,7 +15,7 @@ show_preferences (GSimpleAction *action,
   HdyDemoPreferencesWindow *preferences = hdy_demo_preferences_window_new ();
 
   gtk_window_set_transient_for (GTK_WINDOW (preferences), window);
-  gtk_widget_show (GTK_WIDGET (preferences));
+  gtk_window_present_with_time (GTK_WINDOW (preferences), gtk_get_current_event_time ());
 }
 
 static void
