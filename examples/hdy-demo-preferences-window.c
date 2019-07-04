@@ -10,7 +10,9 @@ G_DEFINE_TYPE (HdyDemoPreferencesWindow, hdy_demo_preferences_window, HDY_TYPE_P
 HdyDemoPreferencesWindow *
 hdy_demo_preferences_window_new (void)
 {
-  return g_object_new (HDY_TYPE_DEMO_PREFERENCES_WINDOW, NULL);
+  return g_object_new (HDY_TYPE_DEMO_PREFERENCES_WINDOW,
+                       "use-header-bar", TRUE,
+                       NULL);
 }
 
 static void
