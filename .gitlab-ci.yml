@@ -63,7 +63,7 @@ build-debian-clang:
       - _build/meson-logs/scanbuild
 
 build-fedora-gcc:
-  image: fedora:29
+  image: fedora:30
   <<: *tags
   stage: build
   variables:
