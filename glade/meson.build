@@ -1,9 +1,9 @@
 if glade_catalog
 
 glade_xml = 'libhandy.xml'
-module_dir = gladeui_dep.get_pkgconfig_variable('moduledir')
+module_dir = join_paths(libdir, 'glade', 'modules')
 dtd = join_paths(meson.current_source_dir(), 'glade-catalog.dtd')
-glade_catalogdir = gladeui_dep.get_pkgconfig_variable('catalogdir')
+glade_catalogdir = join_paths(datadir, 'glade', 'catalogs')
 
 libglade_hdy_sources = [
   'glade-hdy-header-group.c',
