@@ -13,6 +13,29 @@
     <glade-widget-class name="HdyComboRow" generic-name="comborow" title="Combo Row" since="0.0.6"/>
     <glade-widget-class name="HdyDialer" generic-name="dialer" title="Dialer"/>
     <glade-widget-class name="HdyDialog" generic-name="dialog" title="Dialog" since="0.0.7"/>
+    <glade-widget-class name="HdyDrawer" generic-name="drawer" title="Drawer" since="0.0.11" use-placeholders="False">
+      <post-create-function>glade_hdy_drawer_post_create</post-create-function>
+      <add-child-verify-function>glade_hdy_drawer_add_child_verify</add-child-verify-function>
+      <add-child-function>glade_hdy_drawer_add_child</add-child-function>
+      <remove-child-function>glade_hdy_drawer_remove_child</remove-child-function>
+      <special-child-type>overlay</special-child-type>
+      <properties>
+        <property id="direction">
+          <displayable-values>
+            <!-- GtkPanDirection enumeration value -->
+            <value id="GTK_PAN_DIRECTION_LEFT" name="Left"/>
+            <!-- GtkPanDirection enumeration value -->
+            <value id="GTK_PAN_DIRECTION_RIGHT" name="Right"/>
+            <!-- GtkPanDirection enumeration value -->
+            <value id="GTK_PAN_DIRECTION_UP" name="Up"/>
+            <!-- GtkPanDirection enumeration value -->
+            <value id="GTK_PAN_DIRECTION_DOWN" name="Down"/>
+          </displayable-values>
+        </property>
+        <property id="above-child" disabled="True" />
+        <property id="visible-window" disabled="True" />
+      </properties>
+    </glade-widget-class>
     <glade-widget-class name="HdyExpanderRow" generic-name="expanderrow" title="Expander Row" since="0.0.6"/>
     <glade-widget-class name="HdyHeaderBar" generic-name="headerbar" title="Header Bar" since="0.0.10"/>
     <glade-widget-class name="HdyHeaderGroup" generic-name="headergroup" title="Header Group" toplevel="True">
@@ -96,6 +119,7 @@
     <glade-widget-class-ref name="HdyComboRow"/>
     <glade-widget-class-ref name="HdyDialer"/>
     <glade-widget-class-ref name="HdyDialog"/>
+    <glade-widget-class-ref name="HdyDrawer"/>
     <glade-widget-class-ref name="HdyExpanderRow"/>
     <glade-widget-class-ref name="HdyHeaderBar"/>
     <glade-widget-class-ref name="HdyHeaderGroup"/>
