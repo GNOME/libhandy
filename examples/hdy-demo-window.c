@@ -32,6 +32,9 @@ struct _HdyDemoWindow
   GtkListBox *paginator_listbox;
   HdyComboRow *paginator_orientation_row;
   HdyComboRow *paginator_indicator_style_row;
+  HdyDrawer *drawer;
+  GtkWidget *drawer_first_anchor;
+  GtkWidget *drawer_second_anchor;
   GtkAdjustment *adj_arrows_count;
   GtkAdjustment *adj_arrows_duration;
 };
@@ -459,6 +462,9 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, paginator_listbox);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, paginator_orientation_row);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, paginator_indicator_style_row);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, drawer);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, drawer_first_anchor);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, drawer_second_anchor);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, adj_arrows_count);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, adj_arrows_duration);
   gtk_widget_class_bind_template_callback_full (widget_class, "key_pressed_cb", G_CALLBACK(hdy_demo_window_key_pressed_cb));
@@ -523,6 +529,9 @@ hdy_demo_window_init (HdyDemoWindow *self)
   hdy_combo_row_set_for_enum (self->paginator_orientation_row, GTK_TYPE_ORIENTATION, paginator_orientation_name, NULL, NULL);
   hdy_combo_row_set_for_enum (self->paginator_indicator_style_row, HDY_TYPE_PAGINATOR_INDICATOR_STYLE, paginator_indicator_style_name, NULL, NULL);
   hdy_combo_row_set_selected_index (self->paginator_indicator_style_row, HDY_PAGINATOR_INDICATOR_STYLE_DOTS);
+
+  hdy_drawer_add_anchor (self->drawer, GTK_WIDGET (self->drawer_first_anchor));
+  hdy_drawer_add_anchor (self->drawer, GTK_WIDGET (self->drawer_second_anchor));
 
   hdy_leaflet_set_visible_child_name (self->content_box, "content");
   update_header_bar (self);
