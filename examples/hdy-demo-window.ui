@@ -1492,6 +1492,130 @@
                     <property name="title">Paginator</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="HdyDrawer" id="drawer">
+                    <property name="visible">True</property>
+                    <property name="can-hide-overlay">False</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="vexpand">True</property>
+                        <property name="hexpand">True</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="valign">center</property>
+                            <property name="pixel_size">128</property>
+                            <property name="icon_name">go-up-symbolic</property>
+                            <property name="icon-size">0</property>
+                            <property name="margin-bottom">18</property>
+                            <style>
+                              <class name="dim-label"/>
+                              <class name="paginator-icon"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="opacity">0.5</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Drawer</property>
+                                <property name="halign">center</property>
+                                <property name="xalign">0</property>
+                                <property name="margin-bottom">12</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                  <attribute name="scale" value="2"/>
+                                </attributes>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="opacity">0.5</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">A pull-out drawer.</property>
+                                <property name="justify">center</property>
+                                <property name="use_markup">true</property>
+                                <property name="wrap">True</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="overlay">
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="halign">fill</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <style>
+                          <class name="drawer"/>
+                        </style>
+                        <child>
+                          <object class="GtkBox" id="drawer_second_anchor">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkLabel" id="drawer_first_anchor">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Pull me up</property>
+                                <property name="ellipsize">end</property>
+                                <property name="height-request">48</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparator">
+                                <property name="visible">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Pull up further</property>
+                                <property name="wrap">True</property>
+                                <property name="height-request">200</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkSeparator">
+                            <property name="visible">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="vexpand">True</property>
+                            <property name="pixel_size">128</property>
+                            <property name="icon_name">go-down-symbolic</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">drawer</property>
+                    <property name="title">Drawer</property>
+                  </packing>
+                </child>
               </object>
             </child>
           </object>
