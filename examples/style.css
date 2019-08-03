@@ -6,3 +6,10 @@ stacksidebar list {
 hdypaginator.horizontal .paginator-icon {
   -gtk-icon-transform: rotate(90deg);
 }
+
+box.drawer {
+  background: @theme_base_color;
+  color: @theme_text_color;
+  box-shadow: 0 -1px 0 @borders,
+              0 0 16px rgba (0, 0, 0, 0.12);
+}
