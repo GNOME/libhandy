@@ -31,9 +31,12 @@
  * gestures. It supports touch-based swipes, pointer dragging, and touchpad
  * scrolling.
  *
- * The implementing widgets must receive events on capture phase and call
- * hdy_swipe_tracker_captured_event() for the events. This can be done as
- * follows:
+ * The events must be received as early as possible to defer the events to
+ * child widgets when needed. Usually this happens naturally, but
+ * GtkScrolledWindow receives events on capture phase via a private function.
+ * Because of that, implementing widgets must do the same thing and receive
+ * events on capture phase  and call hdy_swipe_tracker_captured_event() for
+ * the each event. This can be done as follows:
  * |[<!-- language="C" -->
  * g_object_set_data (G_OBJECT (self), "captured-event-handler", captured_event_cb);
  * ]|
@@ -45,6 +48,9 @@
  *   return hdy_swipe_tracker_captured_event (self->tracker, event);
  * }
  * ]|
+ *
+ * NOTE: In GTK4 this can be replaced by a GtkEventControllerLegacy with capture
+ * propagation phase.
  *
  * Aside from that, implementing widgets must connect to #HdySwipeTracker::begin,
  * #HdySwipeTracker::update and #HdySwipeTracker::end signals. See these
