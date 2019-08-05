@@ -9,6 +9,7 @@
 #include <glib/gi18n-lib.h>
 
 #include "hdy-style-private.h"
+#include "hdy-utils-private.h"
 #include "hdy-view-switcher-button-private.h"
 
 /**
@@ -480,8 +481,7 @@ hdy_view_switcher_button_set_needs_attention (HdyViewSwitcherButton *self,
   GtkStyleContext *context;
 
   g_return_if_fail (HDY_IS_VIEW_SWITCHER_BUTTON (self));
-
-  needs_attention = !!needs_attention;
+  HDY_ENSURE_BOOLEAN (needs_attention);
 
   context = gtk_widget_get_style_context (GTK_WIDGET (self));
   if (gtk_style_context_has_class (context, GTK_STYLE_CLASS_NEEDS_ATTENTION) == needs_attention)

@@ -10,6 +10,7 @@
 #include <glib/gi18n-lib.h>
 #include "hdy-list-box.h"
 #include "hdy-style-private.h"
+#include "hdy-utils-private.h"
 
 /**
  * SECTION:hdy-combo-row
@@ -703,10 +704,9 @@ hdy_combo_row_set_use_subtitle (HdyComboRow *self,
   HdyComboRowPrivate *priv;
 
   g_return_if_fail (HDY_IS_COMBO_ROW (self));
+  HDY_ENSURE_BOOLEAN (use_subtitle);
 
   priv = hdy_combo_row_get_instance_private (self);
-
-  use_subtitle = !!use_subtitle;
 
   if (priv->use_subtitle == use_subtitle)
     return;

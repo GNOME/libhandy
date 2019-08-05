@@ -11,6 +11,7 @@
 #include "hdy-dialer-button.h"
 #include "hdy-dialer-cycle-button.h"
 #include "hdy-string-utf8.h"
+#include "hdy-utils-private.h"
 
 /**
  * SECTION:hdy-dialer
@@ -186,7 +187,7 @@ key_press_event_cb (GtkWidget   *widget,
                     gpointer     data)
 {
   HdyDialerPrivate *priv = hdy_dialer_get_instance_private (HDY_DIALER (widget));
-  gboolean pressed = !!GPOINTER_TO_INT (data);
+  gboolean pressed = HDY_AS_BOOLEAN (GPOINTER_TO_INT (data));
   guint keyval;
 
   gdk_event_get_keyval ((GdkEvent *) event, &keyval);

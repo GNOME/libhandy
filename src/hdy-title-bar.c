@@ -9,6 +9,8 @@
 
 #include <glib/gi18n-lib.h>
 
+#include "hdy-utils-private.h"
+
 /**
  * SECTION:hdy-title-bar
  * @short_description: A simple title bar container.
@@ -54,8 +56,7 @@ hdy_title_bar_set_selection_mode (HdyTitleBar *self,
   GtkStyleContext *context;
 
   g_return_if_fail (HDY_IS_TITLE_BAR (self));
-
-  selection_mode = !!selection_mode;
+  HDY_ENSURE_BOOLEAN (selection_mode);
 
   context = gtk_widget_get_style_context (GTK_WIDGET (self));
 

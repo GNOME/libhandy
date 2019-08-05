@@ -9,6 +9,7 @@
 
 #include <glib/gi18n-lib.h>
 #include "hdy-style-private.h"
+#include "hdy-utils-private.h"
 
 /**
  * SECTION:hdy-expander-row
@@ -310,7 +311,7 @@ hdy_expander_row_set_expanded (HdyExpanderRow *self,
 
   priv = hdy_expander_row_get_instance_private (self);
 
-  expanded = !!expanded && priv->enable_expansion;
+  expanded = HDY_AS_BOOLEAN (expanded && priv->enable_expansion);
 
   if (priv->expanded == expanded)
     return;
@@ -360,13 +361,14 @@ hdy_expander_row_set_enable_expansion (HdyExpanderRow *self,
   HdyExpanderRowPrivate *priv;
 
   g_return_if_fail (HDY_IS_EXPANDER_ROW (self));
+  HDY_ENSURE_BOOLEAN (enable_expansion);
 
   priv = hdy_expander_row_get_instance_private (self);
 
-  if (priv->enable_expansion == !!enable_expansion)
+  if (priv->enable_expansion == enable_expansion)
     return;
 
-  priv->enable_expansion = !!enable_expansion;
+  priv->enable_expansion = enable_expansion;
 
   hdy_expander_row_set_expanded (self, priv->enable_expansion);
 
@@ -411,13 +413,14 @@ hdy_expander_row_set_show_enable_switch (HdyExpanderRow *self,
   HdyExpanderRowPrivate *priv;
 
   g_return_if_fail (HDY_IS_EXPANDER_ROW (self));
+  HDY_ENSURE_BOOLEAN (show_enable_switch);
 
   priv = hdy_expander_row_get_instance_private (self);
 
-  if (priv->show_enable_switch == !!show_enable_switch)
+  if (priv->show_enable_switch == show_enable_switch)
     return;
 
-  priv->show_enable_switch = !!show_enable_switch;
+  priv->show_enable_switch = show_enable_switch;
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_SHOW_ENABLE_SWITCH]);
 }

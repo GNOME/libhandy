@@ -26,6 +26,7 @@
 
 #include "hdy-dialog.h"
 #include "hdy-enums.h"
+#include "hdy-utils-private.h"
 #include "gtkprogresstrackerprivate.h"
 #include "gtk-window-private.h"
 
@@ -2544,10 +2545,9 @@ hdy_header_bar_set_show_close_button (HdyHeaderBar *self,
   HdyHeaderBarPrivate *priv;
 
   g_return_if_fail (HDY_IS_HEADER_BAR (self));
+  HDY_ENSURE_BOOLEAN (setting);
 
   priv = hdy_header_bar_get_instance_private (self);
-
-  setting = setting != FALSE;
 
   if (priv->shows_wm_decorations == setting)
     return;
@@ -2574,10 +2574,9 @@ hdy_header_bar_set_has_subtitle (HdyHeaderBar *self,
   HdyHeaderBarPrivate *priv;
 
   g_return_if_fail (HDY_IS_HEADER_BAR (self));
+  HDY_ENSURE_BOOLEAN (setting);
 
   priv = hdy_header_bar_get_instance_private (self);
-
-  setting = setting != FALSE;
 
   if (priv->has_subtitle == setting)
     return;
@@ -2842,10 +2841,9 @@ hdy_header_bar_set_interpolate_size (HdyHeaderBar *self,
   HdyHeaderBarPrivate *priv;
 
   g_return_if_fail (HDY_IS_HEADER_BAR (self));
+  HDY_ENSURE_BOOLEAN (interpolate_size);
 
   priv = hdy_header_bar_get_instance_private (self);
-
-  interpolate_size = !!interpolate_size;
 
   if (priv->interpolate_size == interpolate_size)
     return;

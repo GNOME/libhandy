@@ -9,6 +9,8 @@
 
 #include "hdy-preferences-row.h"
 
+#include "hdy-utils-private.h"
+
 /**
  * SECTION:hdy-preferences-row
  * @short_description: A #GtkListBox row used to present preferences
@@ -247,13 +249,14 @@ hdy_preferences_row_set_use_underline (HdyPreferencesRow *self,
   HdyPreferencesRowPrivate *priv;
 
   g_return_if_fail (HDY_IS_PREFERENCES_ROW (self));
+  HDY_ENSURE_BOOLEAN (use_underline);
 
   priv = hdy_preferences_row_get_instance_private (self);
 
-  if (priv->use_underline == !!use_underline)
+  if (priv->use_underline == use_underline)
     return;
 
-  priv->use_underline = !!use_underline;
+  priv->use_underline = use_underline;
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_USE_UNDERLINE]);
 }

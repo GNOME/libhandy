@@ -20,6 +20,7 @@
 #include "hdy-squeezer.h"
 
 #include "gtkprogresstrackerprivate.h"
+#include "hdy-utils-private.h"
 
 /**
  * SECTION:hdy-squeezer
@@ -1209,10 +1210,9 @@ hdy_squeezer_set_homogeneous (HdySqueezer *self,
   HdySqueezerPrivate *priv;
 
   g_return_if_fail (HDY_IS_SQUEEZER (self));
+  HDY_ENSURE_BOOLEAN (homogeneous);
 
   priv = hdy_squeezer_get_instance_private (self);
-
-  homogeneous = !!homogeneous;
 
   if (priv->homogeneous == homogeneous)
     return;
@@ -1377,7 +1377,7 @@ hdy_squeezer_set_interpolate_size (HdySqueezer *self,
 
   priv = hdy_squeezer_get_instance_private (self);
 
-  interpolate_size = !!interpolate_size;
+  HDY_ENSURE_BOOLEAN (interpolate_size);
 
   if (priv->interpolate_size == interpolate_size)
     return;
@@ -1460,7 +1460,7 @@ hdy_squeezer_set_child_enabled (HdySqueezer *self,
 
   g_return_if_fail (child_info != NULL);
 
-  enabled = !!enabled;
+  HDY_ENSURE_BOOLEAN (enabled);
 
   if (child_info->enabled == enabled)
     return;

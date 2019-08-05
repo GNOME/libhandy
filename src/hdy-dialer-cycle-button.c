@@ -9,6 +9,8 @@
 
 #include "hdy-dialer-cycle-button.h"
 
+#include "hdy-utils-private.h"
+
 /**
  * SECTION:hdy-dialer-cycle-button
  * @short_description: A button on a #HdyDialer keypad cycling through available symbols
@@ -265,7 +267,7 @@ hdy_dialer_cycle_button_is_cycling (HdyDialerCycleButton *self)
 {
   HdyDialerCycleButtonPrivate *priv = hdy_dialer_cycle_button_get_instance_private (self);
 
-  return !!priv->source_id;
+  return HDY_AS_BOOLEAN (priv->source_id);
 }
 
 /**

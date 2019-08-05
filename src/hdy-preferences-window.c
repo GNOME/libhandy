@@ -14,6 +14,7 @@
 #include "hdy-preferences-group-private.h"
 #include "hdy-preferences-page-private.h"
 #include "hdy-squeezer.h"
+#include "hdy-utils-private.h"
 #include "hdy-view-switcher.h"
 #include "hdy-view-switcher-bar.h"
 
@@ -76,7 +77,7 @@ filter_search_results (HdyActionRow         *row,
 
   subtitle = g_utf8_casefold (hdy_action_row_get_subtitle (row), -1);
 
-  if (!!strstr (subtitle, text)) {
+  if (HDY_AS_BOOLEAN (strstr (subtitle, text))) {
     priv->n_last_search_results++;
 
     return TRUE;

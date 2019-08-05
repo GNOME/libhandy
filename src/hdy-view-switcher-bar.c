@@ -10,6 +10,7 @@
 
 #include "hdy-enums.h"
 #include "hdy-style-private.h"
+#include "hdy-utils-private.h"
 #include "hdy-view-switcher-bar.h"
 
 /**
@@ -412,10 +413,9 @@ hdy_view_switcher_bar_set_reveal (HdyViewSwitcherBar *self,
   HdyViewSwitcherBarPrivate *priv;
 
   g_return_if_fail (HDY_IS_VIEW_SWITCHER_BAR (self));
+  HDY_ENSURE_BOOLEAN (reveal);
 
   priv = hdy_view_switcher_bar_get_instance_private (self);
-
-  reveal = !!reveal;
 
   if (priv->reveal == reveal)
     return;

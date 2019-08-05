@@ -46,6 +46,8 @@
 
 #include "hdy-search-bar.h"
 
+#include "hdy-utils-private.h"
+
 /**
  * SECTION:hdy-search-bar
  * @Short_description: A toolbar to integrate a search entry with
@@ -649,10 +651,9 @@ hdy_search_bar_set_show_close_button (HdySearchBar *self,
                                       gboolean      visible)
 {
   HdySearchBarPrivate *priv = hdy_search_bar_get_instance_private (self);
+  HDY_ENSURE_BOOLEAN (visible);
 
   g_return_if_fail (HDY_IS_SEARCH_BAR (self));
-
-  visible = visible != FALSE;
 
   if (priv->show_close_button == visible)
     return;

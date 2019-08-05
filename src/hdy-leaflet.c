@@ -10,6 +10,8 @@
 #include "gtkprogresstrackerprivate.h"
 #include "hdy-leaflet.h"
 
+#include "hdy-utils-private.h"
+
 /* TODO:
  * - Ensure folding and unfolding animations behave similarly.
  * - Unify mode and child transition types?
@@ -840,10 +842,9 @@ hdy_leaflet_set_homogeneous (HdyLeaflet     *self,
   HdyLeafletPrivate *priv;
 
   g_return_if_fail (HDY_IS_LEAFLET (self));
+  HDY_ENSURE_BOOLEAN (homogeneous);
 
   priv = hdy_leaflet_get_instance_private (self);
-
-  homogeneous = !!homogeneous;
 
   if (priv->homogeneous[fold][orientation] == homogeneous)
     return;
@@ -1196,10 +1197,9 @@ hdy_leaflet_set_interpolate_size (HdyLeaflet *self,
   HdyLeafletPrivate *priv;
 
   g_return_if_fail (HDY_IS_LEAFLET (self));
+  HDY_ENSURE_BOOLEAN (interpolate_size);
 
   priv = hdy_leaflet_get_instance_private (self);
-
-  interpolate_size = !!interpolate_size;
 
   if (priv->child_transition.interpolate_size == interpolate_size)
     return;

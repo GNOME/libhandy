@@ -285,6 +285,25 @@ foo_button_get_state (FooButton *self)
 }
 ```
 
+Parameter sanitization
+----------------------
+
+Parameters should be sanitized just after the preconditions. Boolean parameters
+can be sanitized with the `HDY_ENSURE_BOOLEAN` macro function.
+
+```c
+#include "hdy-utils-private.h"
+
+void
+foo_button_set_enable (FooButton *self,
+                       gboolean   enable)
+{
+  g_return_if_fail (FOO_IS_BUTTON (self));
+  HDY_ENSURE_BOOLEAN (enable);
+  …
+}
+```
+
 User interface files
 --------------------
 User interface files should end in *.ui*. If there are multiple ui
