@@ -1,0 +1,108 @@
+--- a/data/glade.appdata.xml.in	2018-03-24 17:30:20.000000000 +0100
++++ b/data/glade.appdata.xml.in	2019-09-13 12:13:33.975742231 +0200
+@@ -3,29 +3,29 @@
+   <id>glade.desktop</id>
+   <metadata_license>CC0-1.0</metadata_license>
+   <project_license>GPL-2.0+ and LGPL-2.0+</project_license>
+-  <_name>Glade</_name>
+-  <_summary>Create or open user interface designs for GTK+ applications</_summary>
++  <name>Glade</name>
++  <summary>Create or open user interface designs for GTK+ applications</summary>
+   <description>
+
+     <!-- To translators: AppData description first paragraph -->
+-    <_p>
++    <p>
+       Glade is a RAD tool to enable quick &amp; easy development of user interfaces
+       for the GTK+ 3 toolkit and the GNOME desktop environment.
+-    </_p>
++    </p>
+
+     <!-- To translators: AppData description second paragraph -->
+-    <_p>
++    <p>
+       The user interfaces designed in Glade are saved as XML and these can be
+       loaded by applications dynamically as needed by using GtkBuilder or used
+       directly to define a new GtkWidget derived object class using
+       GTK+ new template feature.
+-    </_p>
++    </p>
+
+     <!-- To translators: AppData description third paragraph -->
+-    <_p>
++    <p>
+       By using GtkBuilder, Glade XML files can be used in numerous programming
+       languages including C, C++, C#, Vala, Java, Perl, Python, and others.
+-    </_p>
++    </p>
+   </description>
+   <screenshots>
+     <screenshot type="default">
+@@ -33,7 +33,7 @@
+     </screenshot>
+   </screenshots>
+   <url type="homepage">http://glade.gnome.org/</url>
+-  <url type="bugtracker">https://bugzilla.gnome.org/enter_bug.cgi?product=glade</url>
++  <url type="bugtracker">https://gitlab.gnome.org/GNOME/glade/issues</url>
+   <url type="donation">http://www.gnome.org/friends/</url>
+   <url type="help">https://help.gnome.org/users/glade/stable/</url>
+   <update_contact>juanpablougarte_at_gmail.com</update_contact>
+@@ -44,4 +44,58 @@
+   </kudos>
+   <project_group>GNOME</project_group>
+   <translation type="gettext">glade</translation>
++  <releases>
++    <release version="3.22.0" date="2018-03-12">
++      <description>
++        <p>
++          Glade 3.22.0
++        </p>
++        <ul>
++           <li>Fix bug 774994 &quot;in treeview columns editor contextual menu does nothing&quot;</li>
++          <li>Simplified GladeBaseEditor</li>
++          <li>Fix formatting / layout of project verification details (Daniel P. Berrange)</li>
++          <li>Widge chooser: activate treeview with single click and enable Drag &amp; Drop</li>
++          <li>Fix Design view selected state</li>
++          <li>Fixes bug 793036 &quot;GtkCellRenderer Properties not loaded from glade file&quot; (peter Onion)</li>
++          <li>Fix bug in action widgets response-id parsing on 32bits system</li>
++          <li>Fix bug 772485 &quot;File Name property of GtkImage is copied to all other GtkImage&quot;</li>
++          <li>GladeProject: always treat resource properties as relative</li>
++          <li>Fix bug 793652 &quot;Crash when deleting a list&quot;</li>
++          <li>Fix bug 793757 &quot;Gtk-CRITICAL **: _gtk_window_add_popover: assertion &apos;_gtk_widget_get_parent (popover) == NULL&apos; failed&quot;</li>
++          <li>Add GDK_SUPER_MASK accelerator handling (Sebastian Stang)</li>
++          <li>Fix bug #778537 &quot;ActionBar need placeholder&quot;</li>
++          <li>Fix bug #794141 - Gtk.IconView disappeared from glade (Albfan)</li>
++        </ul>
++      </description>
++    </release>
++  </releases>
++  <content_rating type="oars-1.1">
++    <content_attribute id="violence-cartoon">none</content_attribute>
++    <content_attribute id="violence-fantasy">none</content_attribute>
++    <content_attribute id="violence-realistic">none</content_attribute>
++    <content_attribute id="violence-bloodshed">none</content_attribute>
++    <content_attribute id="violence-sexual">none</content_attribute>
++    <content_attribute id="violence-desecration">none</content_attribute>
++    <content_attribute id="violence-slavery">none</content_attribute>
++    <content_attribute id="violence-worship">none</content_attribute>
++    <content_attribute id="drugs-alcohol">none</content_attribute>
++    <content_attribute id="drugs-narcotics">none</content_attribute>
++    <content_attribute id="drugs-tobacco">none</content_attribute>
++    <content_attribute id="sex-nudity">none</content_attribute>
++    <content_attribute id="sex-themes">none</content_attribute>
++    <content_attribute id="sex-homosexuality">none</content_attribute>
++    <content_attribute id="sex-prostitution">none</content_attribute>
++    <content_attribute id="sex-adultery">none</content_attribute>
++    <content_attribute id="sex-appearance">none</content_attribute>
++    <content_attribute id="language-profanity">none</content_attribute>
++    <content_attribute id="language-humor">none</content_attribute>
++    <content_attribute id="language-discrimination">none</content_attribute>
++    <content_attribute id="social-chat">none</content_attribute>
++    <content_attribute id="social-info">none</content_attribute>
++    <content_attribute id="social-audio">none</content_attribute>
++    <content_attribute id="social-location">none</content_attribute>
++    <content_attribute id="social-contacts">none</content_attribute>
++    <content_attribute id="money-purchasing">none</content_attribute>
++    <content_attribute id="money-gambling">none</content_attribute>
++  </content_rating>
+ </component>
