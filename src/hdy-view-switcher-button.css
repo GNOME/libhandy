@@ -8,14 +8,10 @@ hdyviewswitcher > button {
   font-size: 1rem;
 }
 
-hdyviewswitcher > button:not(:checked) {
+hdyviewswitcher > button:not(:checked):not(:hover) {
   background: transparent;
   border-left-color: transparent;
   border-right-color: transparent;
-}
-
-hdyviewswitcher > button:hover:not(:checked) {
-  background: lighter(@theme_base_color);
 }
 
 hdyviewswitcher > button > stack > box.narrow {
