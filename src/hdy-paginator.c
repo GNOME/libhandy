@@ -112,46 +112,11 @@ static void
 hdy_paginator_begin_swipe (HdySwipeable *swipeable)
 {
   HdyPaginator *self = HDY_PAGINATOR (swipeable);
-
-  hdy_paginator_box_stop_animation (self->scrolling_box);
-}
-
-static void
-hdy_paginator_update_swipe (HdySwipeable *swipeable,
-                            gdouble       value)
-{
-  HdyPaginator *self = HDY_PAGINATOR (swipeable);
-
-  hdy_paginator_box_set_position (self->scrolling_box, value);
-}
-
-static void
-hdy_paginator_end_swipe (HdySwipeable *swipeable,
-                         gint64       duration,
-                         gdouble      to)
-{
-  HdyPaginator *self = HDY_PAGINATOR (swipeable);
-
-  if (duration == 0) {
-    hdy_paginator_box_set_position (self->scrolling_box, to);
-    return;
-  }
-
-  hdy_paginator_box_animate (self->scrolling_box, to, duration);
-}
-
-static void
-swipe_begin_cb (HdyPaginator    *self,
-                gdouble          x,
-                gdouble          y,
-                HdySwipeTracker *tracker)
-{
   gdouble distance, position, closest_point;
   guint i, n_pages;
   gdouble *points;
 
-  hdy_paginator_begin_swipe (HDY_SWIPEABLE (self));
-  hdy_swipeable_emit_begin_swipe (HDY_SWIPEABLE (self));
+  hdy_paginator_box_stop_animation (self->scrolling_box);
 
   distance = hdy_paginator_box_get_distance (self->scrolling_box);
   g_object_get (self->scrolling_box,
@@ -164,27 +129,36 @@ swipe_begin_cb (HdyPaginator    *self,
   for (i = 0; i < n_pages; i++)
     points[i] = i;
 
-  hdy_swipe_tracker_confirm_swipe (tracker, distance, points, n_pages,
+  hdy_swipe_tracker_confirm_swipe (self->tracker, distance, points, n_pages,
                                    position, closest_point);
+  hdy_swipeable_emit_begin_swipe (HDY_SWIPEABLE (self));
 }
 
 static void
-swipe_update_cb (HdyPaginator    *self,
-                 gdouble          value,
-                 HdySwipeTracker *tracker)
+hdy_paginator_update_swipe (HdySwipeable *swipeable,
+                            gdouble       value)
 {
-  hdy_paginator_update_swipe (HDY_SWIPEABLE (self), value);
+  HdyPaginator *self = HDY_PAGINATOR (swipeable);
+
+  hdy_paginator_box_set_position (self->scrolling_box, value);
   hdy_swipeable_emit_update_swipe (HDY_SWIPEABLE (self), value);
 }
 
 static void
-swipe_end_cb (HdyPaginator    *self,
-              gint64           duration,
-              gdouble          to,
-              HdySwipeTracker *tracker)
+hdy_paginator_end_swipe (HdySwipeable *swipeable,
+                         gint64       duration,
+                         gdouble      to)
 {
-  hdy_paginator_end_swipe (HDY_SWIPEABLE (self), duration, to);
+  HdyPaginator *self = HDY_PAGINATOR (swipeable);
+
   hdy_swipeable_emit_end_swipe (HDY_SWIPEABLE (self), duration, to);
+
+  if (duration == 0) {
+    hdy_paginator_box_set_position (self->scrolling_box, to);
+    return;
+  }
+
+  hdy_paginator_box_animate (self->scrolling_box, to, duration);
 }
 
 static void
@@ -530,7 +504,6 @@ hdy_paginator_dispose (GObject *object)
   HdyPaginator *self = (HdyPaginator *)object;
 
   if (self->tracker) {
-    g_signal_handlers_disconnect_by_data (self->tracker, self);
     g_clear_object (&self->tracker);
 
     g_object_set_data (object, "captured-event-handler", NULL);
@@ -821,10 +794,7 @@ hdy_paginator_init (HdyPaginator *self)
 
   self->animation_duration = DEFAULT_DURATION;
 
-  self->tracker = hdy_swipe_tracker_new (GTK_WIDGET (self));
-  g_signal_connect_swapped (self->tracker, "begin", G_CALLBACK (swipe_begin_cb), self);
-  g_signal_connect_swapped (self->tracker, "update", G_CALLBACK (swipe_update_cb), self);
-  g_signal_connect_swapped (self->tracker, "end", G_CALLBACK (swipe_end_cb), self);
+  self->tracker = hdy_swipe_tracker_new (HDY_SWIPEABLE (self));
 
   /*
    * HACK: GTK3 has no other way to get events on capture phase.
