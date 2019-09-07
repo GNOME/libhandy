@@ -1,5 +1,5 @@
 project('libhandy', 'c',
-          version: '0.0.10',
+          version: '0.0.11',
           license: 'LGPL-2.1+',
     meson_version: '>= 0.47.0',
   default_options: [ 'warning_level=1', 'buildtype=debugoptimized', 'c_std=gnu11' ],
@@ -109,6 +109,7 @@ add_project_arguments(
 
 # Setup various paths that subdirectory meson.build files need
 package_subdir = get_option('package_subdir') # When used as subproject
+datadir = join_paths(get_option('datadir'), package_subdir)
 libdir = join_paths(get_option('libdir'), package_subdir)
 girdir = join_paths(get_option('datadir'), package_subdir, 'gir-1.0')
 typelibdir = join_paths(get_option('libdir'), package_subdir, 'girepository-1.0')

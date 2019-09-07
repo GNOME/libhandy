@@ -64,7 +64,7 @@ _build/run glade
 ## Documentation
 
 The documentation can be found online
-[here](http://honk.sigxcpu.org/projects/libhandy/doc/). Further examples on how
+[here](https://developer.puri.sm/projects/libhandy/unstable/). Further examples on how
 to use the widgets in your favorite programming language can be found here:
 
 ### C
@@ -76,7 +76,9 @@ to use the widgets in your favorite programming language can be found here:
 
 ### Python 3
 - [Daty](https://gitlab.gnome.org/World/Daty) (HdyColumn, HdyLeaflet, HdySearchBar, HdyTitleBar)
+- [HydraPaper](https://gabmus.gitlab.io/HydraPaper/) (HdyActionRow, HdyHeaderBar, HdyPreferencesGroup, HdyPreferencesPage, HdyPreferencesRow, HdyPreferencesWindow, HdyViewSwitcher)
 - [PasswordSafe](https://gitlab.gnome.org/World/PasswordSafe) (HdyColumn)
+- [Unifydmin](https://gitlab.com/gabmus/unifydmin) (HdyColumn, HdyLeaflet, HdyTitleBar)
 
 ### Rust
 - [Fractal](https://gitlab.gnome.org/World/fractal) (HdyColumn, HdyLeaflet)

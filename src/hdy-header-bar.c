@@ -24,6 +24,8 @@
 
 #include "hdy-header-bar.h"
 
+#include "hdy-animation-private.h"
+#include "hdy-dialog.h"
 #include "hdy-enums.h"
 #include "gtkprogresstrackerprivate.h"
 #include "gtk-window-private.h"
@@ -32,7 +34,7 @@
  * SECTION:hdy-header-bar
  * @Short_description: A box with a centered child
  * @Title: HdyHeaderBar
- * @See_also: #GtkHeaderBar, #HdyTitleBar, #HdyViewSwitcher
+ * @See_also: #GtkHeaderBar, #HdyTitleBar, #HdyViewSwitcher, #HdyDialog
  *
  * HdyHeaderBar is similar to #GtkHeaderBar but is designed to fix some of its
  * shortcomings for adaptive applications.
@@ -40,6 +42,10 @@
  * HdyHeaderBar doesn't force the custom title widget to be vertically centered,
  * hence allowing it to fill up the whole height, which is e.g. needed for
  * #HdyViewSwitcher.
+ *
+ * When used in a #HdyDialog, HdyHeaderBar will replace its window decorations
+ * by a back button allowing to close it. It doesn't have to be its direct child
+ * and you can use any complex contraption you like as the dialog's titlebar.
  */
 
 /**
@@ -50,6 +56,9 @@
 
 #define DEFAULT_SPACING 6
 #define MIN_TITLE_CHARS 5
+
+#define MOBILE_WINDOW_WIDTH  400
+#define MOBILE_WINDOW_HEIGHT 800
 
 typedef struct {
   gchar *title;
@@ -84,6 +93,10 @@ typedef struct {
   HdyCenteringPolicy centering_policy;
   guint transition_duration;
   gboolean interpolate_size;
+
+  gboolean is_mobile_window;
+
+  gulong window_size_allocated_id;
 } HdyHeaderBarPrivate;
 
 typedef struct _Child Child;
@@ -124,8 +137,6 @@ G_DEFINE_TYPE_WITH_CODE (HdyHeaderBar, hdy_header_bar, GTK_TYPE_CONTAINER,
                          G_ADD_PRIVATE (HdyHeaderBar)
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
                                                 hdy_header_bar_buildable_init));
-
-#define LERP(a, b, t) ((a) + (((b) - (a)) * (1.0 - (t))))
 
 static gboolean
 hdy_header_bar_transition_cb (GtkWidget     *widget,
@@ -357,6 +368,7 @@ hdy_header_bar_update_window_buttons (HdyHeaderBar *self)
   GMenuModel *menu;
   gboolean shown_by_shell;
   gboolean is_sovereign_window;
+  gboolean is_mobile_dialog;
 
   toplevel = gtk_widget_get_toplevel (widget);
   if (!gtk_widget_is_toplevel (toplevel))
@@ -400,6 +412,8 @@ hdy_header_bar_update_window_buttons (HdyHeaderBar *self)
   is_sovereign_window = (!gtk_window_get_modal (window) &&
                           gtk_window_get_transient_for (window) == NULL &&
                           gtk_window_get_type_hint (window) == GDK_WINDOW_TYPE_HINT_NORMAL);
+
+  is_mobile_dialog= (priv->is_mobile_window && !is_sovereign_window);
 
   tokens = g_strsplit (layout_desc, ":", 2);
   if (tokens)   {
@@ -502,7 +516,8 @@ hdy_header_bar_update_window_buttons (HdyHeaderBar *self)
             if (GTK_IS_ACCESSIBLE (accessible))
               atk_object_set_name (accessible, maximized ? _("Restore") : _("Maximize"));
         } else if (strcmp (t[j], "close") == 0 &&
-                 gtk_window_get_deletable (window)) {
+                   gtk_window_get_deletable (window) &&
+                   !is_mobile_dialog) {
           button = gtk_button_new ();
           gtk_widget_set_valign (button, GTK_ALIGN_CENTER);
           image = gtk_image_new_from_icon_name ("window-close-symbolic", GTK_ICON_SIZE_MENU);
@@ -518,6 +533,22 @@ hdy_header_bar_update_window_buttons (HdyHeaderBar *self)
           accessible = gtk_widget_get_accessible (button);
           if (GTK_IS_ACCESSIBLE (accessible))
             atk_object_set_name (accessible, _("Close"));
+        } else if (i == 0 && /* Only at the start. */
+                   gtk_window_get_deletable (window) &&
+                   is_mobile_dialog) {
+          button = gtk_button_new ();
+          gtk_widget_set_valign (button, GTK_ALIGN_CENTER);
+          image = gtk_image_new_from_icon_name ("go-previous-symbolic", GTK_ICON_SIZE_BUTTON);
+          g_object_set (image, "use-fallback", TRUE, NULL);
+          gtk_container_add (GTK_CONTAINER (button), image);
+          gtk_widget_set_can_focus (button, TRUE);
+          gtk_widget_show_all (button);
+          g_signal_connect_swapped (button, "clicked",
+                                    G_CALLBACK (gtk_window_close), window);
+
+          accessible = gtk_widget_get_accessible (button);
+          if (GTK_IS_ACCESSIBLE (accessible))
+            atk_object_set_name (accessible, _("Back"));
         }
 
         if (button) {
@@ -561,6 +592,42 @@ hdy_header_bar_update_window_buttons (HdyHeaderBar *self)
   g_free (layout_desc);
 
   _hdy_header_bar_update_separator_visibility (self);
+}
+
+static gboolean
+compute_is_mobile_window (GtkWindow *window)
+{
+  gint window_width, window_height;
+
+  gtk_window_get_size (window, &window_width, &window_height);
+
+  if (window_width <= MOBILE_WINDOW_WIDTH &&
+      window_height <= MOBILE_WINDOW_HEIGHT)
+    return TRUE;
+
+  /* Mobile landscape mode. */
+  if (window_width <= MOBILE_WINDOW_HEIGHT &&
+      window_height <= MOBILE_WINDOW_WIDTH &&
+      gtk_window_is_maximized (window))
+    return TRUE;
+
+  return FALSE;
+}
+
+static void
+update_is_mobile_window (HdyHeaderBar *self)
+{
+  HdyHeaderBarPrivate *priv = hdy_header_bar_get_instance_private (self);
+  GtkWidget *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (self));
+  gboolean was_mobile_window = priv->is_mobile_window;
+
+  if (!gtk_widget_is_toplevel (toplevel))
+    return;
+
+  priv->is_mobile_window = compute_is_mobile_window (GTK_WINDOW (toplevel));
+
+  if (priv->is_mobile_window != was_mobile_window)
+    hdy_header_bar_update_window_buttons (self);
 }
 
 static void
@@ -706,13 +773,13 @@ hdy_header_bar_get_size (GtkWidget      *widget,
       strict_centering_t = priv->centering_policy == HDY_CENTERING_POLICY_STRICT ? 1.0 : 0.0;
 
     *minimum = center_min + n_start_children * priv->spacing +
-               LERP (2 * MAX (start_min_spaced, end_min_spaced),
-                     start_min_spaced + end_min_spaced,
-                     strict_centering_t);
+               hdy_lerp (2 * MAX (start_min_spaced, end_min_spaced),
+                         start_min_spaced + end_min_spaced,
+                         strict_centering_t);
     *natural = center_nat + n_start_children * priv->spacing +
-               LERP (2 * MAX (start_nat_spaced, end_nat_spaced),
-                     start_nat_spaced + end_nat_spaced,
-                     strict_centering_t);
+               hdy_lerp (2 * MAX (start_nat_spaced, end_nat_spaced),
+                         start_nat_spaced + end_nat_spaced,
+                         strict_centering_t);
   } else {
     *minimum = MAX (MAX (start_min, end_min), center_min);
     *natural = MAX (MAX (start_nat, end_nat), center_nat);
@@ -1453,15 +1520,15 @@ hdy_header_bar_size_allocate (GtkWidget     *widget,
     get_strict_centering_allocations (self, allocation, &strict_allocations, &strict_title_allocation, decoration_width);
 
     for (i = 0; i < nvis_children; i++) {
-      allocations[i].x = LERP (strict_allocations[i].x, allocations[i].x, strict_centering_t);
-      allocations[i].y = LERP (strict_allocations[i].y, allocations[i].y, strict_centering_t);
-      allocations[i].width = LERP (strict_allocations[i].width, allocations[i].width, strict_centering_t);
-      allocations[i].height = LERP (strict_allocations[i].height, allocations[i].height, strict_centering_t);
+      allocations[i].x = hdy_lerp (strict_allocations[i].x, allocations[i].x, strict_centering_t);
+      allocations[i].y = hdy_lerp (strict_allocations[i].y, allocations[i].y, strict_centering_t);
+      allocations[i].width = hdy_lerp (strict_allocations[i].width, allocations[i].width, strict_centering_t);
+      allocations[i].height = hdy_lerp (strict_allocations[i].height, allocations[i].height, strict_centering_t);
     }
-    title_allocation.x = LERP (strict_title_allocation.x, title_allocation.x, strict_centering_t);
-    title_allocation.y = LERP (strict_title_allocation.y, title_allocation.y, strict_centering_t);
-    title_allocation.width = LERP (strict_title_allocation.width, title_allocation.width, strict_centering_t);
-    title_allocation.height = LERP (strict_title_allocation.height, title_allocation.height, strict_centering_t);
+    title_allocation.x = hdy_lerp (strict_title_allocation.x, title_allocation.x, strict_centering_t);
+    title_allocation.y = hdy_lerp (strict_title_allocation.y, title_allocation.y, strict_centering_t);
+    title_allocation.width = hdy_lerp (strict_title_allocation.width, title_allocation.width, strict_centering_t);
+    title_allocation.height = hdy_lerp (strict_title_allocation.height, title_allocation.height, strict_centering_t);
   }
 
   /* Allocate the children on both sides of the title. */
@@ -1903,6 +1970,7 @@ hdy_header_bar_realize (GtkWidget *widget)
                             G_CALLBACK (hdy_header_bar_update_window_buttons), widget);
   g_signal_connect_swapped (settings, "notify::gtk-decoration-layout",
                             G_CALLBACK (hdy_header_bar_update_window_buttons), widget);
+  update_is_mobile_window (HDY_HEADER_BAR (widget));
   hdy_header_bar_update_window_buttons (HDY_HEADER_BAR (widget));
 }
 
@@ -1943,6 +2011,7 @@ hdy_header_bar_hierarchy_changed (GtkWidget *widget,
 {
   GtkWidget *toplevel;
   HdyHeaderBar *self = HDY_HEADER_BAR (widget);
+  HdyHeaderBarPrivate *priv = hdy_header_bar_get_instance_private (self);
 
   toplevel = gtk_widget_get_toplevel (widget);
 
@@ -1954,6 +2023,17 @@ hdy_header_bar_hierarchy_changed (GtkWidget *widget,
     g_signal_connect_after (toplevel, "window-state-event",
                             G_CALLBACK (window_state_changed), widget);
 
+  if (priv->window_size_allocated_id > 0) {
+    g_signal_handler_disconnect (previous_toplevel, priv->window_size_allocated_id);
+    priv->window_size_allocated_id = 0;
+  }
+
+  if (GTK_IS_WINDOW (toplevel))
+    priv->window_size_allocated_id =
+      g_signal_connect_swapped (toplevel, "size-allocate",
+                                G_CALLBACK (update_is_mobile_window), self);
+
+  update_is_mobile_window (self);
   hdy_header_bar_update_window_buttons (self);
 }
 

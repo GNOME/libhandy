@@ -11,6 +11,7 @@ test_env = [
 
 test_cflags = [
   '-fPIE',
+  '-DHDY_LOG_DOMAIN="Handy"',
   '-DTEST_DATA_DIR="@0@/data"'.format(meson.current_source_dir()),
 ]
 
@@ -28,6 +29,7 @@ test_names = [
   'test-expander-row',
   'test-header-bar',
   'test-header-group',
+  'test-paginator',
   'test-preferences-group',
   'test-preferences-page',
   'test-preferences-row',

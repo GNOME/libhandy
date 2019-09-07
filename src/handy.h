@@ -26,6 +26,7 @@ G_BEGIN_DECLS
 
 #include "hdy-version.h"
 #include "hdy-action-row.h"
+#include "hdy-animation.h"
 #include "hdy-arrows.h"
 #include "hdy-column.h"
 #include "hdy-combo-row.h"
@@ -41,6 +42,7 @@ G_BEGIN_DECLS
 #include "hdy-leaflet.h"
 #include "hdy-list-box.h"
 #include "hdy-main.h"
+#include "hdy-paginator.h"
 #include "hdy-preferences-group.h"
 #include "hdy-preferences-page.h"
 #include "hdy-preferences-row.h"
