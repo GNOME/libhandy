@@ -21,9 +21,8 @@
         </child>
         <child>
           <object class="GtkLabel" id="secondary_label">
-            <property name="visible">True</property>
             <property name="no_show_all">True</property>
-            <property name="label">ABC</property>
+            <property name="label"></property>
             <attributes>
               <attribute name="scale" value="0.7"/>
             </attributes>
