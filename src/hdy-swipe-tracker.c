@@ -145,6 +145,9 @@ reset (HdySwipeTracker *self)
   self->cancel_progress = 0;
 
   self->cancelled = FALSE;
+
+  if (self->widget)
+    gtk_grab_remove (self->widget);
 }
 
 static void
@@ -170,6 +173,8 @@ gesture_begin (HdySwipeTracker *self)
   event = gtk_get_current_event ();
   self->prev_time = gdk_event_get_time (event);
   self->state = HDY_SWIPE_TRACKER_STATE_SCROLLING;
+
+  gtk_grab_add (self->widget);
 }
 
 static void
