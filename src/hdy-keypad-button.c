@@ -40,13 +40,18 @@ static void
 format_label(HdyKeypadButton *self)
 {
   HdyKeypadButtonPrivate *priv = hdy_keypad_button_get_instance_private(self);
-  gchar *symbols = priv->symbols != NULL ? priv->symbols : "";
   g_autofree gchar *text = NULL;
   gchar *secondary_text = NULL;
 
-  if (*symbols != '\0') {
-    secondary_text = g_utf8_find_next_char (symbols, NULL);
-    text = g_strndup (symbols, 1);
+  if (priv->symbols != NULL && *(priv->symbols) != '\0') {
+    secondary_text = g_utf8_find_next_char (priv->symbols, NULL);
+    text = g_strndup (priv->symbols, 1);
+  }
+
+  if (secondary_text == NULL || g_strcmp0 (secondary_text, "") == 0) {
+    gtk_widget_hide (GTK_WIDGET (priv->secondary_label));
+  } else {
+    gtk_widget_show (GTK_WIDGET (priv->secondary_label));
   }
 
   gtk_label_set_label (priv->label, text);
@@ -311,8 +316,11 @@ void
 hdy_keypad_button_show_symbols (HdyKeypadButton *self, gboolean visible)
 {
   HdyKeypadButtonPrivate *priv = hdy_keypad_button_get_instance_private(self);
+  gboolean is_empty = FALSE;
 
   g_return_if_fail (HDY_IS_KEYPAD_BUTTON (self));
 
-  gtk_widget_set_visible (GTK_WIDGET (priv->secondary_label), visible);
+  is_empty = g_strcmp0 (gtk_label_get_label (GTK_LABEL (priv->secondary_label)), "") == 0;
+
+  gtk_widget_set_visible (GTK_WIDGET (priv->secondary_label), visible && !is_empty);
 }
