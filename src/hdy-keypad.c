@@ -337,6 +337,7 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
 
 /**
  * hdy_keypad_new:
+ * @only_digits: whether we want onyl digits or symbols as well
  *
  * Create a new #HdyKeypad widget.
  *
