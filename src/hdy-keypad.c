@@ -422,6 +422,11 @@ hdy_keypad_get_entry (HdyKeypad *self)
                       G_CALLBACK (map_event_cb),
                       NULL);
 
+    g_signal_connect (G_OBJECT (priv->entry),
+                    "map",
+                    G_CALLBACK (map_event_cb),
+                    NULL);
+
     g_signal_connect (G_OBJECT (self),
                       "symbol_clicked",
                       G_CALLBACK (symbol_clicked_cb),
