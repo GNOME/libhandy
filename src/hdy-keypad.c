@@ -100,7 +100,8 @@ static gboolean
 is_control_key (GdkEventKey *event)
 {
   GdkModifierType modifiers = gtk_accelerator_get_default_mod_mask ();
-  if ((event->state & modifiers) == GDK_CONTROL_MASK)
+  if ((event->state & modifiers) == GDK_CONTROL_MASK ||
+      ((event->state & modifiers) == (GDK_CONTROL_MASK | GDK_SHIFT_MASK)))
     return TRUE;
 
   switch (event->keyval) {
