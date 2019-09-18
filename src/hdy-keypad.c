@@ -95,50 +95,45 @@ hdy_keypad_filter_key_press_event (HdyKeypad   *self,
   return !(priv->only_digits && !is_digit);
 }
 
-/* This list of key was extractad from gtkentry */
-static gboolean
-is_control_key (GdkEventKey *event)
-{
-  GdkModifierType modifiers = gtk_accelerator_get_default_mod_mask ();
-  if ((event->state & modifiers) == GDK_CONTROL_MASK ||
-      ((event->state & modifiers) == (GDK_CONTROL_MASK | GDK_SHIFT_MASK)))
-    return TRUE;
 
-  switch (event->keyval) {
-  case GDK_KEY_Right:
-  case GDK_KEY_Left:
-  case GDK_KEY_KP_Right:
-  case GDK_KEY_KP_Left:
-  case GDK_KEY_Home:
-  case GDK_KEY_End:
-  case GDK_KEY_KP_Home:
-  case GDK_KEY_KP_End:
-  case GDK_KEY_Return:
-  case GDK_KEY_ISO_Enter:
-  case GDK_KEY_KP_Enter:
-  case GDK_KEY_Delete:
-  case GDK_KEY_KP_Delete:
-  case GDK_KEY_BackSpace:
-  case GDK_KEY_Insert:
-  case GDK_KEY_KP_Insert:
-  case GDK_KEY_Escape:
-  case GDK_KEY_Up:
-  case GDK_KEY_Down:
-    return TRUE;
-  case GDK_KEY_a:
-    return (event->state & modifiers) == GDK_SHIFT_MASK;
+static gboolean
+filter_character (HdyKeypad *self, gchar digit)
+{
+  HdyKeypadPrivate *priv;
+  gboolean is_digit = FALSE;
+
+  g_return_val_if_fail (HDY_IS_KEYPAD (self), FALSE);
+  priv = hdy_keypad_get_instance_private (self);
+
+  switch (digit) {
+  case '0' ... '9':
+    is_digit = TRUE;
+    break;
+  case '#':
+  case '*':
+  case '+':
+    break;
   default:
     return FALSE;
   }
+
+  return !(priv->only_digits && !is_digit);
 }
 
-static gboolean
-key_press_event_cb (GtkWidget   *widget,
-                    GdkEventKey *event)
-{
-  g_return_val_if_fail (HDY_IS_KEYPAD (widget), FALSE);
 
-  return !((is_control_key (event) || hdy_keypad_filter_key_press_event (HDY_KEYPAD (widget), event)));
+static void
+insert_text_cb (HdyKeypad *self,
+               gchar       *text,
+               gint         length,
+               gpointer     position,
+               GtkEditable  *editable)
+{
+  gchar digit = *text;
+  g_return_if_fail (HDY_IS_KEYPAD (self));
+
+
+  if (!filter_character (self, digit))
+    g_signal_stop_emission_by_name (editable, "insert-text");
 }
 
 static void
@@ -412,9 +407,10 @@ hdy_keypad_get_entry (HdyKeypad *self)
     /* Workaround: To keep the osk cloesed
      * https://gitlab.gnome.org/GNOME/gtk/merge_requests/978#note_546576 */
     g_object_set (priv->entry, "im-module", "simple", NULL);
+
     g_signal_connect_swapped (G_OBJECT (priv->entry),
-                      "key_press_event",
-                      G_CALLBACK (key_press_event_cb),
+                      "insert-text",
+                      G_CALLBACK (insert_text_cb),
                       self);
 
     g_signal_connect (G_OBJECT (priv->entry),
