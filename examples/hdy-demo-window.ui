@@ -490,7 +490,7 @@
                                     <property name="visible">True</property>
                                     <property name="opacity">0.5</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Dialer</property>
+                                    <property name="label" translatable="yes">Keypad</property>
                                     <property name="halign">center</property>
                                     <property name="xalign">0</property>
                                     <property name="margin-bottom">12</property>
