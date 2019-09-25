@@ -350,10 +350,12 @@ hdy_keypad_show_symbols (HdyKeypad *self, gboolean visible)
 
   g_return_if_fail (HDY_IS_KEYPAD (self));
 
+  if (visible == priv->show_symbols)
+    return;
+
   priv->show_symbols = visible;
 
-  g_object_notify_by_pspec
-    (G_OBJECT (self), props[PROP_SHOW_SYMBOLS]);
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_SHOW_SYMBOLS]);
 }
 
 
