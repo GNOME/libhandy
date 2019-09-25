@@ -100,6 +100,7 @@ insert_text_cb (HdyKeypad *self,
     g_signal_stop_emission_by_name (editable, "insert-text");
 }
 
+
 static void
 symbol_clicked_cb (GtkWidget     *widget,
                    gchar          symbol)
@@ -113,11 +114,13 @@ symbol_clicked_cb (GtkWidget     *widget,
   gtk_entry_grab_focus_without_selecting (GTK_ENTRY (priv->entry));
 }
 
+
 static void
 map_event_cb (GtkWidget     *widget)
 {
   gtk_entry_grab_focus_without_selecting (GTK_ENTRY (widget));
 }
+
 
 static void
 long_press_zero_cb (GtkGesture *gesture,
@@ -131,17 +134,6 @@ long_press_zero_cb (GtkGesture *gesture,
   gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
 }
 
-
-static void
-hdy_keypad_finalize (GObject *object)
-{
-  HdyKeypadPrivate *priv = hdy_keypad_get_instance_private (HDY_KEYPAD (object));
-
-  if (priv->long_press_zero_gesture != NULL)
-    g_object_unref (priv->long_press_zero_gesture);
-
-  G_OBJECT_CLASS (hdy_keypad_parent_class)->finalize (object);
-}
 
 static void
 hdy_keypad_set_property (GObject      *object,
@@ -169,6 +161,7 @@ hdy_keypad_set_property (GObject      *object,
   }
 }
 
+
 static void
 hdy_keypad_get_property (GObject    *object,
                          guint       property_id,
@@ -193,6 +186,7 @@ hdy_keypad_get_property (GObject    *object,
   }
 }
 
+
 static GtkWidget *
 hdy_keypad_create_num_button (HdyKeypad *self, gint number) {
   GtkWidget *btn = hdy_keypad_button_new (SYMBOLS[number]);
@@ -208,6 +202,7 @@ hdy_keypad_create_num_button (HdyKeypad *self, gint number) {
 
   return btn;
 }
+
 
 static void
 hdy_keypad_constructed (GObject *object)
@@ -244,6 +239,19 @@ hdy_keypad_constructed (GObject *object)
 
   G_OBJECT_CLASS (hdy_keypad_parent_class)->constructed (object);
 }
+
+
+static void
+hdy_keypad_finalize (GObject *object)
+{
+  HdyKeypadPrivate *priv = hdy_keypad_get_instance_private (HDY_KEYPAD (object));
+
+  if (priv->long_press_zero_gesture != NULL)
+    g_object_unref (priv->long_press_zero_gesture);
+
+  G_OBJECT_CLASS (hdy_keypad_parent_class)->finalize (object);
+}
+
 
 static void
 hdy_keypad_class_init (HdyKeypadClass *klass)
