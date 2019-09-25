@@ -40,6 +40,7 @@ G_BEGIN_DECLS
 #include "hdy-fold.h"
 #include "hdy-header-bar.h"
 #include "hdy-header-group.h"
+#include "hdy-keypad.h"
 #include "hdy-leaflet.h"
 #include "hdy-list-box.h"
 #include "hdy-main.h"
