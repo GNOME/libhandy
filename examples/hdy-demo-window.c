@@ -17,6 +17,8 @@ struct _HdyDemoWindow
   GtkStack *stack;
   GtkWidget *box_dialer;
   HdyDialer *dialer;
+  GtkWidget *box_keypad;
+  HdyKeypad *keypad;
   GtkLabel *display;
   GtkWidget *arrows;
   HdySearchBar *search_bar;
@@ -444,6 +446,8 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, stack);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, box_dialer);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, dialer);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, box_keypad);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, keypad);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, display);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, arrows);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, search_bar);
