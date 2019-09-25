@@ -22,6 +22,7 @@ images = [
   'images/dialog-desktop.png',
   'images/dialog-mobile.png',
   'images/header-bar.png',
+  'images/keypad.png',
   'images/list.png',
   'images/preferences-window.png',
   'images/search.png',
