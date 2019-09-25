@@ -17,6 +17,9 @@ struct _HdyDemoWindow
   GtkStack *stack;
   GtkWidget *box_dialer;
   HdyDialer *dialer;
+  GtkWidget *box_keypad;
+  GtkListBox *keypad_listbox;
+  HdyKeypad *keypad;
   GtkLabel *display;
   GtkWidget *arrows;
   HdySearchBar *search_bar;
@@ -444,6 +447,9 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, stack);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, box_dialer);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, dialer);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, box_keypad);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, keypad_listbox);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, keypad);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, display);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, arrows);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, search_bar);
@@ -515,6 +521,7 @@ hdy_demo_window_init (HdyDemoWindow *self)
   gtk_list_box_set_header_func (self->column_listbox, hdy_list_box_separator_header, NULL, NULL);
 
   gtk_list_box_set_header_func (self->arrows_listbox, hdy_list_box_separator_header, NULL, NULL);
+  gtk_list_box_set_header_func (self->keypad_listbox, hdy_list_box_separator_header, NULL, NULL);
   hdy_combo_row_set_for_enum (self->arrows_direction_row, HDY_TYPE_ARROWS_DIRECTION, arrows_direction_name, NULL, NULL);
 
   lists_page_init (self);
