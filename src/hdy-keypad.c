@@ -310,8 +310,6 @@ hdy_keypad_init (HdyKeypad *self)
   HdyKeypadPrivate *priv = hdy_keypad_get_instance_private (self);
   priv->show_symbols = TRUE;
   priv->only_digits = FALSE;
-  priv->entry = NULL;
-  priv->long_press_zero_gesture = NULL;
   gtk_widget_set_events (GTK_WIDGET (self), GDK_KEY_PRESS_MASK);
 }
 
