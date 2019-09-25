@@ -59,42 +59,6 @@ digit_button_clicked (HdyKeypad       *self,
   g_signal_emit(self, signals[SIGNAL_SYMBOL_CLICKED], 0, digit);
 }
 
-/**
- * hdy_keypad_filter_key_press_event:
- * @self: a #HdyKeypad
- * @event: nullable: #GdkEventKey to filter
- *
- * Filter key press events which are possible to enter with the #HdyKeypad
- *
- * Returns: returns TRUE if the key could be entered with the #HdyKeypad
- */
-gboolean
-hdy_keypad_filter_key_press_event (HdyKeypad   *self,
-                            GdkEventKey *event)
-{
-  HdyKeypadPrivate *priv;
-  gboolean is_digit = FALSE;
-
-  g_return_val_if_fail (HDY_IS_KEYPAD (self), FALSE);
-  priv = hdy_keypad_get_instance_private (self);
-
-  switch (event->keyval) {
-  case GDK_KEY_KP_0 ... GDK_KEY_KP_9:
-  case GDK_KEY_0 ... GDK_KEY_9:
-    is_digit = TRUE;
-    break;
-  case GDK_KEY_numbersign:
-  case GDK_KEY_asterisk:
-  case GDK_KEY_KP_Multiply:
-  case GDK_KEY_plus:
-    break;
-  default:
-    return FALSE;
-  }
-
-  return !(priv->only_digits && !is_digit);
-}
-
 
 static gboolean
 filter_character (HdyKeypad *self, gchar digit)
@@ -331,6 +295,19 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
   gtk_widget_class_set_css_name (widget_class, "hdykeypad");
 }
 
+
+static void
+hdy_keypad_init (HdyKeypad *self)
+{
+  HdyKeypadPrivate *priv = hdy_keypad_get_instance_private (self);
+  priv->show_symbols = TRUE;
+  priv->only_digits = FALSE;
+  priv->entry = NULL;
+  priv->long_press_zero_gesture = NULL;
+  gtk_widget_set_events (GTK_WIDGET (self), GDK_KEY_PRESS_MASK);
+}
+
+
 /**
  * hdy_keypad_new:
  * @only_digits: whether we want onyl digits or symbols as well
@@ -351,16 +328,6 @@ GtkWidget *hdy_keypad_new (gboolean only_digits)
                        NULL);
 }
 
-static void
-hdy_keypad_init (HdyKeypad *self)
-{
-  HdyKeypadPrivate *priv = hdy_keypad_get_instance_private (self);
-  priv->show_symbols = TRUE;
-  priv->only_digits = FALSE;
-  priv->entry = NULL;
-  priv->long_press_zero_gesture = NULL;
-  gtk_widget_set_events (GTK_WIDGET (self), GDK_KEY_PRESS_MASK);
-}
 
 /**
  * hdy_keypad_show_symbols:
@@ -382,6 +349,7 @@ hdy_keypad_show_symbols (HdyKeypad *self, gboolean visible)
   g_object_notify_by_pspec
     (G_OBJECT (self), props[PROP_SHOW_SYMBOLS]);
 }
+
 
 /**
  * hdy_keypad_get_entry:
@@ -432,6 +400,7 @@ hdy_keypad_get_entry (HdyKeypad *self)
   return priv->entry;
 }
 
+
 /**
  * hdy_keypad_set_left_action:
  * @self: a #HdyKeypad
@@ -454,6 +423,7 @@ hdy_keypad_set_left_action (HdyKeypad *self, GtkWidget *widget)
     gtk_grid_attach (GTK_GRID (self), widget, 0, 3, 1, 1);
 }
 
+
 /**
  * hdy_keypad_set_right_action:
  * @self: a #HdyKeypad
@@ -474,4 +444,41 @@ hdy_keypad_set_right_action (HdyKeypad *self, GtkWidget *widget)
 
   if (widget != NULL)
     gtk_grid_attach (GTK_GRID (self), widget, 2, 3, 1, 1);
+}
+
+
+/**
+ * hdy_keypad_filter_key_press_event:
+ * @self: a #HdyKeypad
+ * @event: nullable: #GdkEventKey to filter
+ *
+ * Filter key press events which are possible to enter with the #HdyKeypad
+ *
+ * Returns: returns TRUE if the key could be entered with the #HdyKeypad
+ */
+gboolean
+hdy_keypad_filter_key_press_event (HdyKeypad   *self,
+                            GdkEventKey *event)
+{
+  HdyKeypadPrivate *priv;
+  gboolean is_digit = FALSE;
+
+  g_return_val_if_fail (HDY_IS_KEYPAD (self), FALSE);
+  priv = hdy_keypad_get_instance_private (self);
+
+  switch (event->keyval) {
+  case GDK_KEY_KP_0 ... GDK_KEY_KP_9:
+  case GDK_KEY_0 ... GDK_KEY_9:
+    is_digit = TRUE;
+    break;
+  case GDK_KEY_numbersign:
+  case GDK_KEY_asterisk:
+  case GDK_KEY_KP_Multiply:
+  case GDK_KEY_plus:
+    break;
+  default:
+    return FALSE;
+  }
+
+  return !(priv->only_digits && !is_digit);
 }
