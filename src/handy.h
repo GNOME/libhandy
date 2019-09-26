@@ -41,6 +41,7 @@ G_BEGIN_DECLS
 #include "hdy-header-group.h"
 #include "hdy-leaflet.h"
 #include "hdy-list-box.h"
+#include "hdy-macros.h"
 #include "hdy-main.h"
 #include "hdy-paginator.h"
 #include "hdy-preferences-group.h"
