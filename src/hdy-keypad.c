@@ -33,6 +33,9 @@ enum {
   PROP_0,
   PROP_SHOW_SYMBOLS,
   PROP_ONLY_DIGITS,
+  PROP_ENTRY,
+  PROP_RIGHT_ACTION,
+  PROP_LEFT_ACTION,
   PROP_LAST_PROP,
 };
 static GParamSpec *props[PROP_LAST_PROP];
@@ -148,6 +151,17 @@ hdy_keypad_set_property (GObject      *object,
     priv->only_digits = g_value_get_boolean (value);
     if (priv->only_digits)
       priv->show_symbols = FALSE;
+    break;
+  case PROP_ENTRY:
+    hdy_keypad_set_entry (self, g_value_get_object (value));
+    break;
+
+  case PROP_RIGHT_ACTION:
+    hdy_keypad_set_right_action (self, g_value_get_object (value));
+    break;
+
+  case PROP_LEFT_ACTION:
+    hdy_keypad_set_left_action (self, g_value_get_object (value));
     break;
 
   default:
@@ -274,6 +288,27 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
                          FALSE,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
+  props[PROP_ENTRY] =
+   g_param_spec_object ("entry",
+                        _("Entry widget"),
+                        _("The entry widget connected to the keypad"),
+                        GTK_TYPE_WIDGET,
+                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_RIGHT_ACTION] =
+   g_param_spec_object ("right_action",
+                        _("Right action widget"),
+                        _("The right action widget"),
+                        GTK_TYPE_WIDGET,
+                        G_PARAM_WRITABLE | G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_LEFT_ACTION] =
+   g_param_spec_object ("left_action",
+                        _("Left action widget"),
+                        _("The left action widget"),
+                        GTK_TYPE_WIDGET,
+                        G_PARAM_WRITABLE | G_PARAM_EXPLICIT_NOTIFY);
+
   g_object_class_install_properties (object_class, PROP_LAST_PROP, props);
 
   gtk_widget_class_set_accessible_role (widget_class, ATK_ROLE_DIAL);
@@ -387,6 +422,8 @@ hdy_keypad_set_entry (HdyKeypad *self, GtkEntry *entry)
                     "map",
                     G_CALLBACK (map_event_cb),
                     NULL);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ENTRY]);
 }
 
 
@@ -432,6 +469,8 @@ hdy_keypad_set_left_action (HdyKeypad *self, GtkWidget *widget)
 
   if (widget != NULL)
     gtk_grid_attach (GTK_GRID (self), widget, 0, 3, 1, 1);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_LEFT_ACTION]);
 }
 
 
@@ -455,6 +494,8 @@ hdy_keypad_set_right_action (HdyKeypad *self, GtkWidget *widget)
 
   if (widget != NULL)
     gtk_grid_attach (GTK_GRID (self), widget, 2, 3, 1, 1);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_RIGHT_ACTION]);
 }
 
 
