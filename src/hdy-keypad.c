@@ -48,7 +48,7 @@ symbol_clicked (HdyKeypad     *self,
   g_autofree gchar *string = g_strdup_printf ("%c", symbol);
   g_return_if_fail (HDY_IS_KEYPAD (self));
   priv = hdy_keypad_get_instance_private (self);
-  g_assert (priv->entry != NULL);
+  g_return_if_fail (priv->entry != NULL);
   g_signal_emit_by_name(GTK_ENTRY (priv->entry), "insert-at-cursor", string, NULL);
   gtk_entry_grab_focus_without_selecting (GTK_ENTRY (priv->entry));
 }
@@ -337,12 +337,66 @@ hdy_keypad_show_symbols (HdyKeypad *self, gboolean visible)
 
 
 /**
+ * hdy_keypad_set_entry:
+ * @self: a #HdyKeypad
+ * @entry: a #GtkEntry
+ *
+ * Binds a #GtkEntry to the keypad and connects signals
+ * so it grabs focus when visible, also it blocks every
+ * input which wouldn't be possible with the keypad
+ *
+ *
+ */
+void
+hdy_keypad_set_entry (HdyKeypad *self, GtkEntry *entry)
+{
+  HdyKeypadPrivate *priv;
+
+  g_return_if_fail (HDY_IS_KEYPAD (self));
+  g_return_if_fail (GTK_IS_ENTRY (entry));
+
+  priv = hdy_keypad_get_instance_private(self);
+  if (priv->entry != NULL) {
+    g_object_unref (priv->entry);
+  }
+
+  if (entry == NULL) {
+    priv->entry = NULL;
+    return;
+  }
+
+  priv->entry = GTK_WIDGET (g_object_ref (entry));
+
+  gtk_widget_show (priv->entry);
+  gtk_widget_set_can_focus (priv->entry, TRUE);
+  /* Workaround: To keep the osk cloesed
+   * https://gitlab.gnome.org/GNOME/gtk/merge_requests/978#note_546576 */
+  g_object_set (priv->entry, "im-module", "simple", NULL);
+
+  g_signal_connect_swapped (G_OBJECT (priv->entry),
+                            "insert-text",
+                            G_CALLBACK (insert_text_cb),
+                            self);
+
+  g_signal_connect (G_OBJECT (priv->entry),
+                    "map-event",
+                    G_CALLBACK (map_event_cb),
+                    NULL);
+
+  g_signal_connect (G_OBJECT (priv->entry),
+                    "map",
+                    G_CALLBACK (map_event_cb),
+                    NULL);
+}
+
+
+/**
  * hdy_keypad_get_entry:
  * @self: a #HdyKeypad
  *
- * Creats a #GtkEntry which gets filled with the pressed digets on the keypad and keyboard
+ * Get the connected entry. See hdy_keypad_set_entry () for details
  *
- * Returns: (transfer none): the newly created #HdyKeypad widget
+ * Returns: (transfer none): the set #GtkEntry or NULL if no widget was set
  *
  */
 GtkWidget *
@@ -353,29 +407,6 @@ hdy_keypad_get_entry (HdyKeypad *self)
   g_return_val_if_fail (HDY_IS_KEYPAD (self), NULL);
 
   priv = hdy_keypad_get_instance_private(self);
-  if (priv->entry == NULL) {
-    priv->entry = gtk_entry_new ();
-    gtk_widget_show (priv->entry);
-    gtk_widget_set_can_focus (priv->entry, TRUE);
-    /* Workaround: To keep the osk cloesed
-     * https://gitlab.gnome.org/GNOME/gtk/merge_requests/978#note_546576 */
-    g_object_set (priv->entry, "im-module", "simple", NULL);
-
-    g_signal_connect_swapped (G_OBJECT (priv->entry),
-                      "insert-text",
-                      G_CALLBACK (insert_text_cb),
-                      self);
-
-    g_signal_connect (G_OBJECT (priv->entry),
-                      "map-event",
-                      G_CALLBACK (map_event_cb),
-                      NULL);
-
-    g_signal_connect (G_OBJECT (priv->entry),
-                    "map",
-                    G_CALLBACK (map_event_cb),
-                    NULL);
-  }
 
   return priv->entry;
 }
@@ -438,7 +469,7 @@ hdy_keypad_set_right_action (HdyKeypad *self, GtkWidget *widget)
  */
 gboolean
 hdy_keypad_filter_key_press_event (HdyKeypad   *self,
-                            GdkEventKey *event)
+                                   GdkEventKey *event)
 {
   HdyKeypadPrivate *priv;
   gboolean is_digit = FALSE;
