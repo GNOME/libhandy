@@ -34,6 +34,8 @@ void             hdy_keypad_show_symbols            (HdyKeypad *self,
 gboolean         hdy_keypad_filter_key_press_event  (HdyKeypad   *self,
                                                     GdkEventKey *event);
 
+void             hdy_keypad_set_entry               (HdyKeypad *self,
+                                                     GtkEntry *entry);
 GtkWidget       *hdy_keypad_get_entry               (HdyKeypad *self);
 void             hdy_keypad_set_left_action         (HdyKeypad *self,
                                                      GtkWidget *widget);
