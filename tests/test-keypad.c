@@ -71,7 +71,7 @@ test_hdy_keypad_button_clicked (void)
   GList *list;
 
   notified = 0;
-  g_signal_connect (keypad, "symbol-clicked", G_CALLBACK (notify_cb), NULL);
+  g_signal_connect (hdy_keypad_get_entry (keypad), "insert-text", G_CALLBACK (notify_cb), NULL);
 
   list = gtk_container_get_children (GTK_CONTAINER (keypad));
 

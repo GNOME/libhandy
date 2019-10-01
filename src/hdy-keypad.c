@@ -37,13 +37,22 @@ enum {
 };
 static GParamSpec *props[PROP_LAST_PROP];
 
-enum {
-  SIGNAL_SYMBOL_CLICKED,
-  SIGNAL_LAST_SIGNAL,
-};
-static guint signals [SIGNAL_LAST_SIGNAL];
-
 static char* SYMBOLS[] = {"0+", "1", "2ABC", "3DEF", "4GHI", "5JKL", "6MNO", "7PQRS", "8TUV", "9WXYZ", "*", "#"};
+
+
+static void
+symbol_clicked (HdyKeypad     *self,
+                gchar          symbol)
+{
+  HdyKeypadPrivate *priv;
+  g_autofree gchar *string = g_strdup_printf ("%c", symbol);
+  g_return_if_fail (HDY_IS_KEYPAD (self));
+  priv = hdy_keypad_get_instance_private (self);
+  g_assert (priv->entry != NULL);
+  g_signal_emit_by_name(GTK_ENTRY (priv->entry), "insert-at-cursor", string, NULL);
+  gtk_entry_grab_focus_without_selecting (GTK_ENTRY (priv->entry));
+}
+
 
 static void
 digit_button_clicked (HdyKeypad       *self,
@@ -55,8 +64,8 @@ digit_button_clicked (HdyKeypad       *self,
   g_return_if_fail (HDY_IS_KEYPAD_BUTTON (btn));
 
   digit = hdy_keypad_button_get_digit (btn);
+  symbol_clicked (self, digit);
   g_debug ("Button with number %c was pressed", digit);
-  g_signal_emit(self, signals[SIGNAL_SYMBOL_CLICKED], 0, digit);
 }
 
 
@@ -102,20 +111,6 @@ insert_text_cb (HdyKeypad *self,
 
 
 static void
-symbol_clicked_cb (GtkWidget     *widget,
-                   gchar          symbol)
-{
-  HdyKeypadPrivate *priv;
-  g_autofree gchar *string = g_strdup_printf ("%c", symbol);
-  g_return_if_fail (HDY_IS_KEYPAD (widget));
-  priv = hdy_keypad_get_instance_private (HDY_KEYPAD (widget));
-  g_assert (priv->entry != NULL);
-  g_signal_emit_by_name(GTK_ENTRY (priv->entry), "insert-at-cursor", string, NULL);
-  gtk_entry_grab_focus_without_selecting (GTK_ENTRY (priv->entry));
-}
-
-
-static void
 map_event_cb (GtkWidget     *widget)
 {
   gtk_entry_grab_focus_without_selecting (GTK_ENTRY (widget));
@@ -130,7 +125,7 @@ long_press_zero_cb (GtkGesture *gesture,
 {
   g_return_if_fail (HDY_IS_KEYPAD (self));
   g_debug ("Long press on zero button");
-  g_signal_emit(self, signals[SIGNAL_SYMBOL_CLICKED], 0, '+');
+  symbol_clicked (self, '+');
   gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
 }
 
@@ -281,24 +276,6 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
 
   g_object_class_install_properties (object_class, PROP_LAST_PROP, props);
 
-  /**
-   * HdyKeypad::symbol-clicked:
-   * @self: The #HdyKeypad instance.
-   * @button: The main symbol on the button that was clicked
-   *
-   * This signal is emitted when one of the symbol buttons (0-9, # or *)
-   * is clicked or a long press on 0 (returns +) is performed.
-   */
-  signals[SIGNAL_SYMBOL_CLICKED] =
-    g_signal_new ("symbol-clicked",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE,
-                  1,
-                  G_TYPE_CHAR);
-
   gtk_widget_class_set_accessible_role (widget_class, ATK_ROLE_DIAL);
   gtk_widget_class_set_css_name (widget_class, "hdykeypad");
 }
@@ -398,11 +375,6 @@ hdy_keypad_get_entry (HdyKeypad *self)
                     "map",
                     G_CALLBACK (map_event_cb),
                     NULL);
-
-    g_signal_connect (G_OBJECT (self),
-                      "symbol_clicked",
-                      G_CALLBACK (symbol_clicked_cb),
-                      NULL);
   }
 
   return priv->entry;
