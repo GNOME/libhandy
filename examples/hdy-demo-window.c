@@ -530,10 +530,4 @@ hdy_demo_window_init (HdyDemoWindow *self)
 
   hdy_leaflet_set_visible_child_name (self->content_box, "content");
   update_header_bar (self);
-
-  gtk_box_pack_start (GTK_BOX (self->box_keypad),
-                      hdy_keypad_get_entry (self->keypad),
-                      FALSE,
-                      FALSE,
-                      0);
 }

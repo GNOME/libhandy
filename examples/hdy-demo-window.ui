@@ -542,6 +542,12 @@
                                 <property name="orientation">vertical</property>
                                 <property name="spacing">12</property>
                                 <child>
+                                  <object class="GtkEntry" id="entry_keypad">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </object>
+                                </child>
+                                <child>
                                   <object class="HdyKeypad" id="keypad">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
@@ -549,6 +555,7 @@
                                     <property name="row_spacing">8</property>
                                     <property name="only_digits">FALSE</property>
                                     <property name="halign">center</property>
+                                    <property name="entry">entry_keypad</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
