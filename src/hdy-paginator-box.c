@@ -32,6 +32,8 @@ struct _HdyPaginatorBoxChildInfo
   GtkWidget *widget;
   GdkWindow *window;
   gint position;
+  cairo_surface_t *surface;
+  cairo_region_t *dirty_region;
 };
 
 struct _HdyPaginatorBox
@@ -108,10 +110,50 @@ find_child_index (HdyPaginatorBox *self,
   return -1;
 }
 
+static HdyPaginatorBoxChildInfo *
+find_child_info_by_window (HdyPaginatorBox *self,
+                           GdkWindow       *window)
+{
+  GList *l;
+
+  for (l = self->children; l; l = l->next) {
+    HdyPaginatorBoxChildInfo *info = l->data;
+
+    if (window == info->window)
+      return info;
+  }
+
+  return NULL;
+}
+
 static void
 free_child_info (HdyPaginatorBoxChildInfo *info)
 {
+  if (info->surface)
+    cairo_surface_destroy (info->surface);
+  if (info->dirty_region)
+    cairo_region_destroy (info->dirty_region);
   g_free (info);
+}
+
+static void
+invalidate_handler_cb (GdkWindow      *window,
+                       cairo_region_t *region)
+{
+  gpointer user_data;
+  HdyPaginatorBox *self;
+  HdyPaginatorBoxChildInfo *info;
+
+  gdk_window_get_user_data (window, &user_data);
+  g_assert (HDY_IS_PAGINATOR_BOX (user_data));
+  self = HDY_PAGINATOR_BOX (user_data);
+
+  info = find_child_info_by_window (self, window);
+
+  if (!info->dirty_region)
+    info->dirty_region = cairo_region_create ();
+
+  cairo_region_union (info->dirty_region, region);
 }
 
 static void
@@ -141,6 +183,9 @@ register_window (HdyPaginatorBoxChildInfo *info,
                            &attributes, attributes_mask);
   gtk_widget_register_window (widget, window);
   gtk_widget_set_parent_window (info->widget, window);
+
+  gdk_window_set_user_data (window, self);
+  gdk_window_set_invalidate_handler (window, invalidate_handler_cb);
 
   gdk_window_show (window);
 
@@ -186,6 +231,69 @@ animation_cb (GtkWidget     *widget,
   }
 
   return G_SOURCE_CONTINUE;
+}
+
+static gboolean
+hdy_paginator_box_draw (GtkWidget *widget,
+                        cairo_t   *cr)
+{
+  HdyPaginatorBox *self = HDY_PAGINATOR_BOX (widget);
+  GList *l;
+
+  for (l = self->children; l; l = l->next) {
+    HdyPaginatorBoxChildInfo *info = l->data;
+
+    if (!gtk_widget_get_child_visible (info->widget))
+      continue;
+
+    if (info->dirty_region) {
+      cairo_t *surface_cr;
+      GtkAllocation child_alloc;
+
+      if (!info->surface) {
+        gint width, height;
+
+        width = gdk_window_get_width (info->window);
+        height = gdk_window_get_height (info->window);
+
+        info->surface = gdk_window_create_similar_surface (info->window,
+                                                           CAIRO_CONTENT_COLOR_ALPHA,
+                                                           width, height);
+      }
+
+      gtk_widget_get_allocation (info->widget, &child_alloc);
+
+      surface_cr = cairo_create (info->surface);
+
+      gdk_cairo_region (surface_cr, info->dirty_region);
+      cairo_clip (surface_cr);
+
+      cairo_translate (surface_cr, child_alloc.x, child_alloc.y);
+
+      cairo_save (surface_cr);
+      cairo_set_source_rgba (surface_cr, 0, 0, 0, 0);
+      cairo_set_operator (surface_cr, CAIRO_OPERATOR_SOURCE);
+      cairo_paint (surface_cr);
+      cairo_restore (surface_cr);
+
+      gtk_widget_draw (info->widget, surface_cr);
+      cairo_destroy (surface_cr);
+
+      cairo_region_destroy (info->dirty_region);
+      info->dirty_region = NULL;
+    }
+
+    if (!info->surface)
+      continue;
+
+    if (self->orientation == GTK_ORIENTATION_VERTICAL)
+      cairo_set_source_surface (cr, info->surface, 0, info->position);
+    else
+      cairo_set_source_surface (cr, info->surface, info->position, 0);
+    cairo_paint (cr);
+  }
+
+  return GDK_EVENT_PROPAGATE;
 }
 
 static void
@@ -276,6 +384,21 @@ hdy_paginator_box_get_preferred_height_for_width (GtkWidget *widget,
 }
 
 static void
+invalidate_drawing_cache (HdyPaginatorBox *self)
+{
+  GList *l;
+
+  for (l = self->children; l; l = l->next) {
+    HdyPaginatorBoxChildInfo *child_info = l->data;
+
+    if (child_info->surface) {
+      cairo_surface_destroy (child_info->surface);
+      child_info->surface = NULL;
+    }
+  }
+}
+
+static void
 update_windows (HdyPaginatorBox *self)
 {
   GList *children;
@@ -329,6 +452,11 @@ update_windows (HdyPaginatorBox *self)
                                    pos < alloc.width && pos + self->child_width > 0) ||
                                   (self->orientation == GTK_ORIENTATION_VERTICAL &&
                                    pos < alloc.height && pos + self->child_height > 0));
+
+    if (!gtk_widget_get_child_visible (child_info->widget)) {
+      cairo_surface_destroy (child_info->surface);
+      child_info->surface = NULL;
+    }
 
     if (self->orientation == GTK_ORIENTATION_VERTICAL)
       y += self->distance;
@@ -406,6 +534,9 @@ hdy_paginator_box_size_allocate (GtkWidget     *widget,
     width = allocation->width;
     height = size;
   }
+
+  if (width != self->child_width || height != self->child_height)
+    invalidate_drawing_cache (self);
 
   self->child_width = width;
   self->child_height = height;
@@ -591,6 +722,7 @@ hdy_paginator_box_class_init (HdyPaginatorBoxClass *klass)
   object_class->finalize = hdy_paginator_box_finalize;
   object_class->get_property = hdy_paginator_box_get_property;
   object_class->set_property = hdy_paginator_box_set_property;
+  widget_class->draw = hdy_paginator_box_draw;
   widget_class->get_preferred_width = hdy_paginator_box_get_preferred_width;
   widget_class->get_preferred_height = hdy_paginator_box_get_preferred_height;
   widget_class->get_preferred_width_for_height = hdy_paginator_box_get_preferred_width_for_height;
@@ -665,7 +797,6 @@ hdy_paginator_box_init (HdyPaginatorBox *self)
   self->orientation = GTK_ORIENTATION_HORIZONTAL;
 
   gtk_widget_set_has_window (widget, FALSE);
-  gtk_widget_set_redraw_on_allocate (widget, FALSE);
 }
 
 /**
