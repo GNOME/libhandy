@@ -52,10 +52,11 @@ enum {
   PROP_N_PAGES,
   PROP_POSITION,
   PROP_SPACING,
+  PROP_IS_ANIMATING,
 
   /* GtkOrientable */
   PROP_ORIENTATION,
-  LAST_PROP = PROP_SPACING + 1,
+  LAST_PROP = PROP_IS_ANIMATING + 1,
 };
 
 static GParamSpec *props[LAST_PROP];
@@ -85,6 +86,7 @@ animation_cb (GtkWidget     *widget,
 
   if (frame_time == self->animation_data.end_time) {
     self->animation_data.tick_cb_id = 0;
+    g_object_notify_by_pspec (G_OBJECT (self), props[PROP_IS_ANIMATING]);
     return G_SOURCE_REMOVE;
   }
 
@@ -346,6 +348,10 @@ hdy_paginator_box_get_property (GObject    *object,
     g_value_set_uint (value, hdy_paginator_box_get_spacing (self));
     break;
 
+  case PROP_IS_ANIMATING:
+    g_value_set_boolean (value, hdy_paginator_box_is_animating (self));
+    break;
+
   case PROP_ORIENTATION:
     g_value_set_enum (value, self->orientation);
     break;
@@ -454,6 +460,20 @@ hdy_paginator_box_class_init (HdyPaginatorBoxClass *klass)
                        G_MAXUINT,
                        0,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyPaginatorBox:is-animating:
+   *
+   * Whether the #HdyPaginatorBox is animating.
+   *
+   * Since: 0.0.12
+   */
+  props[PROP_IS_ANIMATING] =
+    g_param_spec_boolean ("is-animating",
+                          _("Is animating"),
+                          _("Whether the widget is animating"),
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_override_property (object_class,
                                     PROP_ORIENTATION,
@@ -586,12 +606,14 @@ hdy_paginator_box_animate (HdyPaginatorBox *self,
 
   if (duration <= 0 || !hdy_get_enable_animations (GTK_WIDGET (self))) {
     hdy_paginator_box_set_position (self, position);
+    g_object_notify_by_pspec (G_OBJECT (self), props[PROP_IS_ANIMATING]);
     return;
   }
 
   frame_clock = gtk_widget_get_frame_clock (GTK_WIDGET (self));
   if (!frame_clock) {
     hdy_paginator_box_set_position (self, position);
+    g_object_notify_by_pspec (G_OBJECT (self), props[PROP_IS_ANIMATING]);
     return;
   }
 
@@ -604,6 +626,7 @@ hdy_paginator_box_animate (HdyPaginatorBox *self,
   self->animation_data.end_time = self->animation_data.start_time + duration;
   self->animation_data.tick_cb_id =
     gtk_widget_add_tick_callback (GTK_WIDGET (self), animation_cb, self, NULL);
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_IS_ANIMATING]);
 }
 
 /**
@@ -639,12 +662,13 @@ hdy_paginator_box_stop_animation (HdyPaginatorBox *self)
 {
   g_return_if_fail (HDY_IS_PAGINATOR_BOX (self));
 
-  if (self->animation_data.tick_cb_id == 0)
+  if (!hdy_paginator_box_is_animating (self))
     return;
 
   gtk_widget_remove_tick_callback (GTK_WIDGET (self),
                                    self->animation_data.tick_cb_id);
   self->animation_data.tick_cb_id = 0;
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_IS_ANIMATING]);
 }
 
 /**
