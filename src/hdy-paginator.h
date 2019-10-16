@@ -69,4 +69,6 @@ guint         hdy_paginator_get_animation_duration (HdyPaginator *self);
 void          hdy_paginator_set_animation_duration (HdyPaginator *self,
                                                     guint         duration);
 
+gboolean      hdy_paginator_get_is_animating (HdyPaginator *self);
+
 G_END_DECLS
