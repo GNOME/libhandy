@@ -17,6 +17,7 @@
           <object class="HdyPaginatorBox" id="scrolling_box">
             <property name="visible">True</property>
             <property name="expand">True</property>
+            <signal name="notify::is-animating" handler="notify_is_animating_cb" swapped="true"/>
             <signal name="notify::n-pages" handler="notify_n_pages_cb" swapped="true"/>
             <signal name="notify::position" handler="notify_position_cb" swapped="true"/>
             <signal name="notify::spacing" handler="notify_spacing_cb" swapped="true"/>
