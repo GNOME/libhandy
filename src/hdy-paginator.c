@@ -68,6 +68,7 @@ struct _HdyPaginator
   gboolean center_content;
   GtkOrientation orientation;
   guint animation_duration;
+  gboolean gesture_active;
 };
 
 G_DEFINE_TYPE_WITH_CODE (HdyPaginator, hdy_paginator, GTK_TYPE_EVENT_BOX,
@@ -83,10 +84,11 @@ enum {
   PROP_CENTER_CONTENT,
   PROP_SPACING,
   PROP_ANIMATION_DURATION,
+  PROP_TRANSITION_RUNNING,
 
   /* GtkOrientable */
   PROP_ORIENTATION,
-  LAST_PROP = PROP_ANIMATION_DURATION + 1,
+  LAST_PROP = PROP_TRANSITION_RUNNING + 1,
 };
 
 static GParamSpec *props[LAST_PROP];
@@ -100,6 +102,9 @@ swipe_begin_cb (HdyPaginator    *self,
   gdouble distance, position, closest_point;
   guint i, n_pages;
   gdouble *points;
+
+  self->gesture_active = TRUE;
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_TRANSITION_RUNNING]);
 
   hdy_paginator_box_stop_animation (self->scrolling_box);
 
@@ -134,10 +139,25 @@ swipe_end_cb (HdyPaginator    *self,
 {
   if (duration == 0) {
     hdy_paginator_box_set_position (self->scrolling_box, to);
+    self->gesture_active = FALSE;
+    g_object_notify_by_pspec (G_OBJECT (self), props[PROP_TRANSITION_RUNNING]);
     return;
   }
 
   hdy_paginator_box_animate (self->scrolling_box, to, duration);
+  self->gesture_active = FALSE;
+}
+
+static void
+notify_is_animating_cb (HdyPaginator *self,
+                        GParamSpec   *spec,
+                        GObject      *object)
+{
+  /* If a swipe is active, the value is TRUE anyway, no need to notify */
+  if (self->gesture_active)
+    return;
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_TRANSITION_RUNNING]);
 }
 
 static void
@@ -537,6 +557,10 @@ hdy_paginator_get_property (GObject    *object,
     g_value_set_uint (value, hdy_paginator_get_animation_duration (self));
     break;
 
+  case PROP_TRANSITION_RUNNING:
+    g_value_set_boolean (value, hdy_paginator_get_transition_running (self));
+    break;
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -737,6 +761,20 @@ hdy_paginator_class_init (HdyPaginatorClass *klass)
                        0, G_MAXUINT, DEFAULT_DURATION,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyPaginator:transition-running:
+   *
+   * Whether the transition is currently running.
+   *
+   * Since: 0.0.12
+   */
+  props[PROP_TRANSITION_RUNNING] =
+    g_param_spec_boolean ("transition running",
+                         _("Transition running"),
+                         _("Whether the transition is currently running"),
+                         FALSE,
+                         G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
+
   g_object_class_override_property (object_class,
                                     PROP_ORIENTATION,
                                     "orientation");
@@ -750,6 +788,7 @@ hdy_paginator_class_init (HdyPaginatorClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyPaginator, scrolling_box);
   gtk_widget_class_bind_template_child (widget_class, HdyPaginator, indicators);
   gtk_widget_class_bind_template_callback (widget_class, draw_indicators_cb);
+  gtk_widget_class_bind_template_callback (widget_class, notify_is_animating_cb);
   gtk_widget_class_bind_template_callback (widget_class, notify_n_pages_cb);
   gtk_widget_class_bind_template_callback (widget_class, notify_position_cb);
   gtk_widget_class_bind_template_callback (widget_class, notify_spacing_cb);
@@ -1189,4 +1228,25 @@ hdy_paginator_set_animation_duration (HdyPaginator *self,
   self->animation_duration = duration;
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ANIMATION_DURATION]);
+}
+
+/**
+ * hdy_paginator_get_transition_running:
+ * @self: a #HdyPaginator
+ *
+ * Gets whether the transition is currently running.
+ *
+ * Returns: %TRUE if the transition is currently running
+ *
+ * Since: 0.0.12
+ */
+gboolean
+hdy_paginator_get_transition_running (HdyPaginator *self)
+{
+  g_return_val_if_fail (HDY_IS_PAGINATOR (self), FALSE);
+
+  if (self->gesture_active)
+      return TRUE;
+
+  return hdy_paginator_box_is_animating (self->scrolling_box);
 }
