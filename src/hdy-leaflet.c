@@ -1547,7 +1547,11 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
     }
 
     /* Allocate starting children. */
-    current_pad = start_size - remaining_start_size;
+    if (orientation == GTK_ORIENTATION_HORIZONTAL)
+      current_pad = -priv->mode_transition.start_surface_allocation.x;
+    else
+      current_pad = -priv->mode_transition.start_surface_allocation.y;
+
     for (children = directed_children; children; children = children->next) {
       child_info = children->data;
 
@@ -1579,7 +1583,11 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
     }
 
     /* Allocate ending children. */
-    current_pad = end_size - remaining_end_size;
+    if (orientation == GTK_ORIENTATION_HORIZONTAL)
+      current_pad = priv->mode_transition.end_surface_allocation.x;
+    else
+      current_pad = priv->mode_transition.end_surface_allocation.y;
+
     for (children = g_list_last (directed_children); children; children = children->prev) {
       child_info = children->data;
 
@@ -1587,26 +1595,26 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
         break;
 
       if (orientation == GTK_ORIENTATION_HORIZONTAL) {
+        current_pad -= child_info->alloc.width;
+
         child_info->alloc.width = box_homogeneous ?
           max_child_size :
           child_info->nat.width;
         child_info->alloc.height = allocation->height;
-        child_info->alloc.x = allocation->width - child_info->alloc.width + current_pad;
+        child_info->alloc.x = current_pad;
         child_info->alloc.y = 0;
         child_info->visible = child_info->alloc.x < allocation->width;
-
-        current_pad -= child_info->alloc.width;
       }
       else {
+        current_pad -= child_info->alloc.height;
+
         child_info->alloc.width = allocation->width;
         child_info->alloc.height = box_homogeneous ?
           max_child_size :
           child_info->nat.height;
         child_info->alloc.x = 0;
-        child_info->alloc.y = allocation->height - child_info->alloc.height + current_pad;
+        child_info->alloc.y = current_pad;
         child_info->visible = child_info->alloc.y < allocation->height;
-
-        current_pad -= child_info->alloc.height;
       }
     }
 
