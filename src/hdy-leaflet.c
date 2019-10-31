@@ -137,9 +137,11 @@ typedef struct
 
     cairo_surface_t *start_surface;
     GtkAllocation start_surface_allocation;
+    gdouble start_progress;
     cairo_surface_t *end_surface;
     GtkAllocation end_surface_allocation;
     GtkAllocation end_surface_clip;
+    gdouble end_progress;
     guint tick_id;
     GtkProgressTracker tracker;
   } mode_transition;
@@ -1427,7 +1429,7 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
   GList *directed_children, *children;
   HdyLeafletChildInfo *child_info, *visible_child;
   gint start_size, end_size, visible_size;
-  gint remaining_start_size, remaining_size;
+  gint remaining_start_size, remaining_end_size, remaining_size;
   gint current_pad;
   gint max_child_size = 0;
   gboolean box_homogeneous;
@@ -1541,6 +1543,7 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
       allocation->width - visible_size :
       allocation->height - visible_size;
     remaining_start_size = (gint) (remaining_size * ((gdouble) start_size / (gdouble) (start_size + end_size)));
+    remaining_end_size = remaining_size - remaining_start_size;
 
     /* Store start and end allocations. */
     switch (orientation) {
@@ -1552,6 +1555,7 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
       priv->mode_transition.start_surface_allocation.height = allocation->height;
       priv->mode_transition.start_surface_allocation.x = under ? 0 : remaining_start_size - start_size;
       priv->mode_transition.start_surface_allocation.y = 0;
+      priv->mode_transition.start_progress = under ? (gdouble) remaining_size / start_size : 1;
       under = (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_LTR) ||
               (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_RTL);
       priv->mode_transition.end_surface_allocation.width = end_size;
@@ -1562,6 +1566,7 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
       priv->mode_transition.end_surface_clip.height = priv->mode_transition.end_surface_allocation.height;
       priv->mode_transition.end_surface_clip.x = remaining_start_size + visible_size;
       priv->mode_transition.end_surface_clip.y = priv->mode_transition.end_surface_allocation.y;
+      priv->mode_transition.end_progress = under ? (gdouble) remaining_end_size / end_size : 1;
       break;
     case GTK_ORIENTATION_VERTICAL:
       under = mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER;
@@ -1569,6 +1574,7 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
       priv->mode_transition.start_surface_allocation.height = under ? remaining_size : start_size;
       priv->mode_transition.start_surface_allocation.x = 0;
       priv->mode_transition.start_surface_allocation.y = under ? 0 : remaining_start_size - start_size;
+      priv->mode_transition.start_progress = under ? (gdouble) remaining_size / start_size : 1;
       under = mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER;
       priv->mode_transition.end_surface_allocation.width = allocation->width;
       priv->mode_transition.end_surface_allocation.height = end_size;
@@ -1578,6 +1584,7 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
       priv->mode_transition.end_surface_clip.height = end_size;
       priv->mode_transition.end_surface_clip.x = priv->mode_transition.end_surface_allocation.x;
       priv->mode_transition.end_surface_clip.y = remaining_start_size + visible_size;
+      priv->mode_transition.end_progress = under ? (gdouble) remaining_end_size / end_size : 1;
       break;
     default:
       g_assert_not_reached ();
@@ -1861,6 +1868,8 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
       child_info->alloc.y -= start_pad;
   }
 
+  priv->mode_transition.start_progress = under ? priv->mode_transition.current_pos : 1;
+
   if (orientation == GTK_ORIENTATION_HORIZONTAL)
     under = (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_LTR) ||
             (mode_transition_type == HDY_LEAFLET_MODE_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_RTL);
@@ -1883,6 +1892,8 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
     else
       child_info->alloc.y += end_pad;
   }
+
+  priv->mode_transition.end_progress = under ? priv->mode_transition.current_pos : 1;
 
   if (orientation == GTK_ORIENTATION_HORIZONTAL) {
     visible_child->alloc.x -= start_pad;
@@ -2136,7 +2147,7 @@ cache_shadow (HdyLeaflet      *self,
     priv->shadow_cache.shadow_pattern =
       create_element_pattern (shadow_context, shadow_size, height);
     priv->shadow_cache.border_pattern =
-      create_element_pattern (shadow_context, border_size, height);
+      create_element_pattern (border_context, border_size, height);
   } else {
     priv->shadow_cache.shadow_pattern =
       create_element_pattern (shadow_context, width, shadow_size);
@@ -2546,6 +2557,14 @@ hdy_leaflet_draw_unfolded (GtkWidget *widget,
                                   child_info->widget,
                                   cr);
   }
+
+  if (priv->mode_transition.start_progress < 1)
+    draw_shadow (self, cr,
+                 is_horizontal ? child_allocation.x : allocation.width,
+                 is_horizontal ? allocation.height : child_allocation.y,
+                 priv->mode_transition.start_progress,
+                 is_horizontal ? GTK_PAN_DIRECTION_RIGHT : GTK_PAN_DIRECTION_DOWN);
+
   cairo_restore (cr);
 
   gtk_container_propagate_draw (GTK_CONTAINER (self),
@@ -2570,6 +2589,18 @@ hdy_leaflet_draw_unfolded (GtkWidget *widget,
                                   child_info->widget,
                                   cr);
   }
+
+  if (priv->mode_transition.end_progress < 1) {
+    cairo_translate (cr,
+                     is_horizontal ? child_allocation.x + child_allocation.width : 0,
+                     is_horizontal ? 0 : child_allocation.y + child_allocation.height);
+    draw_shadow (self, cr,
+                 is_horizontal ? allocation.width - child_allocation.x - child_allocation.width : allocation.width,
+                 is_horizontal ? allocation.height : allocation.height - child_allocation.y - child_allocation.height,
+                 priv->mode_transition.end_progress,
+                 is_horizontal ? GTK_PAN_DIRECTION_LEFT : GTK_PAN_DIRECTION_UP);
+  }
+
   cairo_restore (cr);
 
   return FALSE;
@@ -2606,6 +2637,8 @@ hdy_leaflet_draw (GtkWidget *widget,
   if (priv->visible_child) {
     if (gtk_progress_tracker_get_state (&priv->mode_transition.tracker) != GTK_PROGRESS_STATE_AFTER &&
         priv->fold == HDY_FOLD_FOLDED) {
+      gboolean is_horizontal = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget)) == GTK_ORIENTATION_HORIZONTAL;
+
       if (priv->mode_transition.start_surface == NULL &&
           priv->mode_transition.start_surface_allocation.width != 0 &&
           priv->mode_transition.start_surface_allocation.height != 0) {
@@ -2686,6 +2719,13 @@ hdy_leaflet_draw (GtkWidget *widget,
                                   priv->mode_transition.start_surface_allocation.x,
                                   priv->mode_transition.start_surface_allocation.y);
         cairo_paint (cr);
+
+        if (priv->mode_transition.start_progress < 1)
+          draw_shadow (self, cr,
+                       priv->mode_transition.start_surface_allocation.width,
+                       priv->mode_transition.start_surface_allocation.height,
+                       priv->mode_transition.start_progress,
+                       is_horizontal ? GTK_PAN_DIRECTION_RIGHT : GTK_PAN_DIRECTION_DOWN);
       }
       cairo_restore (cr);
 
@@ -2701,6 +2741,16 @@ hdy_leaflet_draw (GtkWidget *widget,
                                   priv->mode_transition.end_surface_allocation.x,
                                   priv->mode_transition.end_surface_allocation.y);
         cairo_paint (cr);
+
+        if (priv->mode_transition.end_progress < 1) {
+          cairo_translate (cr, priv->mode_transition.end_surface_clip.x,
+                           priv->mode_transition.end_surface_clip.y);
+          draw_shadow (self, cr,
+                       priv->mode_transition.end_surface_allocation.width,
+                       priv->mode_transition.end_surface_allocation.height,
+                       priv->mode_transition.end_progress,
+                       is_horizontal ? GTK_PAN_DIRECTION_LEFT : GTK_PAN_DIRECTION_UP);
+        }
       }
       cairo_restore (cr);
 
