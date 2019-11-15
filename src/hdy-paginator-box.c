@@ -60,6 +60,12 @@ enum {
 
 static GParamSpec *props[LAST_PROP];
 
+enum {
+  SIGNAL_ANIMATION_STOPPED,
+  SIGNAL_LAST_SIGNAL,
+};
+static guint signals[SIGNAL_LAST_SIGNAL];
+
 static gboolean
 animation_cb (GtkWidget     *widget,
               GdkFrameClock *frame_clock,
@@ -85,6 +91,7 @@ animation_cb (GtkWidget     *widget,
 
   if (frame_time == self->animation_data.end_time) {
     self->animation_data.tick_cb_id = 0;
+    g_signal_emit (self, signals[SIGNAL_ANIMATION_STOPPED], 0);
     return G_SOURCE_REMOVE;
   }
 
@@ -460,6 +467,24 @@ hdy_paginator_box_class_init (HdyPaginatorBoxClass *klass)
                                     "orientation");
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
+
+  /**
+   * HdyPaginatorBox::animation-stopped:
+   * @self: The #HdyPaginatorBox instance
+   *
+   * This signal is emitted after an animation has been stopped. If animations
+   * are disabled, the signal is emitted as well.
+   *
+   * Since: 0.0.12
+   */
+  signals[SIGNAL_ANIMATION_STOPPED] =
+    g_signal_new ("animation-stopped",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  0);
 }
 
 static void
@@ -586,12 +611,14 @@ hdy_paginator_box_animate (HdyPaginatorBox *self,
 
   if (duration <= 0 || !hdy_get_enable_animations (GTK_WIDGET (self))) {
     hdy_paginator_box_set_position (self, position);
+    g_signal_emit (self, signals[SIGNAL_ANIMATION_STOPPED], 0);
     return;
   }
 
   frame_clock = gtk_widget_get_frame_clock (GTK_WIDGET (self));
   if (!frame_clock) {
     hdy_paginator_box_set_position (self, position);
+    g_signal_emit (self, signals[SIGNAL_ANIMATION_STOPPED], 0);
     return;
   }
 
