@@ -98,6 +98,7 @@ enum {
 enum {
   CHILD_PROP_0,
   CHILD_PROP_NAME,
+  CHILD_PROP_ALLOW_VISIBLE,
   LAST_CHILD_PROP,
 };
 
@@ -110,6 +111,7 @@ struct _HdyLeafletChildInfo
 {
   GtkWidget *widget;
   gchar *name;
+  gboolean allow_visible;
 
   /* Convenience storage for per-child temporary frequently computed values. */
   GtkAllocation alloc;
@@ -2778,6 +2780,7 @@ hdy_leaflet_add (GtkContainer *container,
 
   child_info = g_new0 (HdyLeafletChildInfo, 1);
   child_info->widget = widget;
+  child_info->allow_visible = TRUE;
 
   priv->children = g_list_append (priv->children, child_info);
   priv->children_reversed = g_list_prepend (priv->children_reversed, child_info);
@@ -3028,6 +3031,10 @@ hdy_leaflet_get_child_property (GtkContainer *container,
     g_value_set_string (value, child_info->name);
     break;
 
+  case CHILD_PROP_ALLOW_VISIBLE:
+    g_value_set_boolean (value, child_info->allow_visible);
+    break;
+
   default:
     GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
     break;
@@ -3077,6 +3084,16 @@ hdy_leaflet_set_child_property (GtkContainer *container,
     if (priv->visible_child == child_info)
       g_object_notify_by_pspec (G_OBJECT (self),
                                 props[PROP_VISIBLE_CHILD_NAME]);
+
+    break;
+
+  case CHILD_PROP_ALLOW_VISIBLE:
+    child_info->allow_visible = g_value_get_boolean (value);
+    gtk_container_child_notify_by_pspec (container, widget, pspec);
+
+    if (!child_info->allow_visible &&
+        hdy_leaflet_get_visible_child (self) == widget)
+      set_visible_child_info (self, NULL, get_old_child_transition_type (self), priv->child_transition.duration);
 
     break;
 
@@ -3377,6 +3394,13 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                          _("The name of the child page"),
                          NULL,
                          G_PARAM_READWRITE);
+
+  child_props[CHILD_PROP_ALLOW_VISIBLE] =
+    g_param_spec_boolean ("allow-visible",
+                          _("Allow visible"),
+                          _("Whether the child can be visible in folded mode"),
+                          TRUE,
+                          G_PARAM_READWRITE);
 
   gtk_container_class_install_child_properties (container_class, LAST_CHILD_PROP, child_props);
 
