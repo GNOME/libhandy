@@ -151,18 +151,23 @@ hdy_swipeable_switch_child (HdySwipeable *self,
  * hdy_swipeable_begin_swipe:
  * @self: a #HdySwipeable
  * @direction: The direction of the swipe, can be 1 or -1
+ * @automatic: Whether the call is automatic
  *
  * This function is called by #HdySwipeTracker when a possible swipe is detected.
  * The implementation should check whether a swipe is possible, and if it is,
  * it must call hdy_swipe_tracker_confirm_swipe() to provide details about the
  * swipe, see that function for details.
  * The @direction value can be used to restrict the swipe to a certain direction.
+ * The @automatic parameter can be used to apply additional restrictions only
+ * to manual swipes, in order to have a widget that's only swipeable via other
+ * widgets.
  *
  * Since: 0.0.12
  */
 void
 hdy_swipeable_begin_swipe (HdySwipeable *self,
-                           gint          direction)
+                           gint          direction,
+                           gboolean      automatic)
 {
   HdySwipeableInterface *iface;
 
@@ -171,7 +176,7 @@ hdy_swipeable_begin_swipe (HdySwipeable *self,
   iface = HDY_SWIPEABLE_GET_IFACE (self);
   g_return_if_fail (iface->begin_swipe != NULL);
 
-  (* iface->begin_swipe) (self, direction);
+  (* iface->begin_swipe) (self, direction, automatic);
 
   g_signal_emit (self, signals[SIGNAL_BEGIN_SWIPE], 0, direction);
 }
