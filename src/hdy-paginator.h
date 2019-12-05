@@ -69,4 +69,8 @@ guint         hdy_paginator_get_animation_duration (HdyPaginator *self);
 void          hdy_paginator_set_animation_duration (HdyPaginator *self,
                                                     guint         duration);
 
+gboolean      hdy_paginator_get_mouse_drag (HdyPaginator *self);
+void          hdy_paginator_set_mouse_drag (HdyPaginator *self,
+                                            gboolean      mouse_drag);
+
 G_END_DECLS
