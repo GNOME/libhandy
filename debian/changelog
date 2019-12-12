@@ -1,4 +1,4 @@
-libhandy (0.0.12) experimental; urgency=medium
+libhandy (0.0.12) amber-phone; urgency=medium
 
   [ Zander Brown ]
   * build: Don't install glade catalogue when used as submodule
