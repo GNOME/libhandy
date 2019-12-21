@@ -8,6 +8,7 @@ libhandy_resources = gnome.compile_resources(
 )
 
 hdy_enum_headers = ['hdy-arrows.h',
+                    'hdy-deck.h',
                     'hdy-fold.h',
                     'hdy-header-bar.h',
                     'hdy-leaflet.h',
@@ -66,6 +67,7 @@ src_headers = [
   'hdy-arrows.h',
   'hdy-column.h',
   'hdy-combo-row.h',
+  'hdy-deck.h',
   'hdy-deprecation-macros.h',
   'hdy-dialer-button.h',
   'hdy-dialer-cycle-button.h',
@@ -114,6 +116,7 @@ src_sources = [
   'hdy-arrows.c',
   'hdy-column.c',
   'hdy-combo-row.c',
+  'hdy-deck.c',
   'hdy-dialer-button.c',
   'hdy-dialer-cycle-button.c',
   'hdy-dialer.c',
