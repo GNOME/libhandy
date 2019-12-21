@@ -1,0 +1,1168 @@
+/*
+ * Copyright (C) 2018 Purism SPC
+ * Copyright (C) 2019 Alexander Mikhaylenko <exalm7659@gmail.com>
+ *
+ * SPDX-License-Identifier: LGPL-2.1+
+ */
+
+#include "config.h"
+#include <glib/gi18n-lib.h>
+
+#include "hdy-deck.h"
+#include "hdy-enums.h"
+#include "hdy-stackable-box-private.h"
+#include "hdy-swipeable-private.h"
+
+/**
+ * SECTION:hdy-deck
+ * @short_description: An adaptive container acting like a box or a stack. FIXME
+ * @Title: HdyDeck
+ *
+ * The #HdyDeck widget displays one of the visible children, similar to a
+ * #GtkStack. The children are strictly ordered and can be navigated using
+ * swipe gestures.
+ *
+ * # CSS nodes
+ *
+ * #HdyDeck has a single CSS node with name hdydeck.
+ *
+ * Since: 1.0
+ */
+
+/**
+ * HdyDeckTransitionType:
+ * @HDY_DECK_TRANSITION_TYPE_NONE: No transition
+ * @HDY_DECK_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
+ * @HDY_DECK_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
+ * @HDY_DECK_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
+ *
+ * This enumeration value describes the possible transitions between children
+ * in a #HdyDeck widget.
+ *
+ * New values may be added to this enumeration over time.
+ *
+ * Since: 1.0
+ */
+
+enum {
+  PROP_0,
+  PROP_HHOMOGENEOUS,
+  PROP_VHOMOGENEOUS,
+  PROP_VISIBLE_CHILD,
+  PROP_VISIBLE_CHILD_NAME,
+  PROP_TRANSITION_TYPE,
+  PROP_TRANSITION_DURATION,
+  PROP_TRANSITION_RUNNING,
+  PROP_INTERPOLATE_SIZE,
+  PROP_CAN_SWIPE_BACK,
+  PROP_CAN_SWIPE_FORWARD,
+
+  /* orientable */
+  PROP_ORIENTATION,
+  LAST_PROP = PROP_ORIENTATION,
+};
+
+enum {
+  CHILD_PROP_0,
+  CHILD_PROP_NAME,
+  LAST_CHILD_PROP,
+};
+
+typedef struct
+{
+  HdyStackableBox *box;
+} HdyDeckPrivate;
+
+static GParamSpec *props[LAST_PROP];
+static GParamSpec *child_props[LAST_CHILD_PROP];
+
+static void hdy_deck_buildable_init (GtkBuildableIface  *iface);
+static void hdy_deck_swipeable_init (HdySwipeableInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (HdyDeck, hdy_deck, GTK_TYPE_CONTAINER,
+                         G_ADD_PRIVATE (HdyDeck)
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_ORIENTABLE, NULL)
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE, hdy_deck_buildable_init)
+                         G_IMPLEMENT_INTERFACE (HDY_TYPE_SWIPEABLE, hdy_deck_swipeable_init))
+
+/**
+ * hdy_deck_set_homogeneous:
+ * @self: a #HdyDeck
+ * @orientation: the orientation
+ * @homogeneous: %TRUE to make @self homogeneous
+ *
+ * Sets the #HdyDeck to be homogeneous or not for the given orientation.
+ * If it is homogeneous, the #HdyDeck will request the same
+ * width or height for all its children depending on the orientation.
+ * If it isn't, the deck may change width or height when a different child
+ * becomes visible.
+ *
+ * Since: 1.0
+ */
+void
+hdy_deck_set_homogeneous (HdyDeck        *self,
+                          GtkOrientation  orientation,
+                          gboolean        homogeneous)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_if_fail (HDY_IS_DECK (self));
+
+  priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_set_homogeneous (priv->box, TRUE, orientation, homogeneous);
+}
+
+/**
+ * hdy_deck_get_homogeneous:
+ * @self: a #HdyDeck
+ * @orientation: the orientation
+ *
+ * Gets whether @self is homogeneous for the given orientation.
+ * See hdy_deck_set_homogeneous().
+ *
+ * Returns: whether @self is homogeneous for the given orientation.
+ *
+ * Since: 1.0
+ */
+gboolean
+hdy_deck_get_homogeneous (HdyDeck        *self,
+                          GtkOrientation  orientation)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DECK (self), FALSE);
+
+  priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_get_homogeneous (priv->box, TRUE, orientation);
+}
+
+/**
+ * hdy_deck_get_transition_type:
+ * @self: a #HdyDeck
+ *
+ * Gets the type of animation that will be used
+ * for transitions between children in @self.
+ *
+ * Returns: the current transition type of @self
+ *
+ * Since: 1.0
+ */
+HdyDeckTransitionType
+hdy_deck_get_transition_type (HdyDeck *self)
+{
+  HdyDeckPrivate *priv;
+  HdyStackableBoxTransitionType type;
+
+  g_return_val_if_fail (HDY_IS_DECK (self), HDY_DECK_TRANSITION_TYPE_NONE);
+
+  priv = hdy_deck_get_instance_private (self);
+
+  type = hdy_stackable_box_get_transition_type (priv->box);
+
+  switch (type) {
+  case HDY_STACKABLE_BOX_TRANSITION_TYPE_NONE:
+    return HDY_DECK_TRANSITION_TYPE_NONE;
+
+  case HDY_STACKABLE_BOX_TRANSITION_TYPE_SLIDE:
+    return HDY_DECK_TRANSITION_TYPE_SLIDE;
+
+  case HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER:
+    return HDY_DECK_TRANSITION_TYPE_OVER;
+
+  case HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER:
+    return HDY_DECK_TRANSITION_TYPE_UNDER;
+
+  default:
+    g_assert_not_reached ();
+  }
+}
+
+/**
+ * hdy_deck_set_transition_type:
+ * @self: a #HdyDeck
+ * @transition: the new transition type
+ *
+ * Sets the type of animation that will be used for transitions between children
+ * in @self.
+ *
+ * The transition type can be changed without problems at runtime, so it is
+ * possible to change the animation based on the child that is about to become
+ * current.
+ *
+ * Since: 1.0
+ */
+void
+hdy_deck_set_transition_type (HdyDeck               *self,
+                              HdyDeckTransitionType  transition)
+{
+  HdyDeckPrivate *priv;
+  HdyStackableBoxTransitionType type;
+
+  g_return_if_fail (HDY_IS_DECK (self));
+
+  priv = hdy_deck_get_instance_private (self);
+
+  switch (transition) {
+  case HDY_DECK_TRANSITION_TYPE_NONE:
+    type = HDY_STACKABLE_BOX_TRANSITION_TYPE_NONE;
+    break;
+
+  case HDY_DECK_TRANSITION_TYPE_SLIDE:
+    type = HDY_STACKABLE_BOX_TRANSITION_TYPE_SLIDE;
+    break;
+
+  case HDY_DECK_TRANSITION_TYPE_OVER:
+    type = HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER;
+    break;
+
+  case HDY_DECK_TRANSITION_TYPE_UNDER:
+    type = HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER;
+    break;
+
+  default:
+    g_assert_not_reached ();
+  }
+
+  hdy_stackable_box_set_transition_type (priv->box, type);
+}
+
+/**
+ * hdy_deck_get_transition_duration:
+ * @self: a #HdyDeck
+ *
+ * Returns the amount of time (in milliseconds) that
+ * transitions between children in @self will take.
+ *
+ * Returns: the child transition duration
+ *
+ * Since: 1.0
+ */
+guint
+hdy_deck_get_transition_duration (HdyDeck *self)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DECK (self), 0);
+
+  priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_get_child_transition_duration (priv->box);
+}
+
+/**
+ * hdy_deck_set_transition_duration:
+ * @self: a #HdyDeck
+ * @duration: the new duration, in milliseconds
+ *
+ * Sets the duration that transitions between children in @self
+ * will take.
+ *
+ * Since: 1.0
+ */
+void
+hdy_deck_set_transition_duration (HdyDeck *self,
+                                  guint    duration)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_if_fail (HDY_IS_DECK (self));
+
+  priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_set_child_transition_duration (priv->box, duration);
+}
+
+/**
+ * hdy_deck_get_visible_child:
+ * @self: a #HdyDeck
+ *
+ * Gets the visible child widget.
+ *
+ * Returns: (transfer none): the visible child widget
+ *
+ * Since: 1.0
+ */
+GtkWidget *
+hdy_deck_get_visible_child (HdyDeck *self)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DECK (self), NULL);
+
+  priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_get_visible_child (priv->box);
+}
+
+/**
+ * hdy_deck_set_visible_child:
+ * @self: a #HdyDeck
+ * @visible_child: the new child
+ *
+ * Makes @visible_child visible using a transition determined by
+ * HdyDeck:transition-type and HdyDeck:transition-duration. The transition can
+ * be cancelled by the user, in which case visible child will change back to
+ * the previously visible child.
+ *
+ * Since: 1.0
+ */
+void
+hdy_deck_set_visible_child (HdyDeck   *self,
+                            GtkWidget *visible_child)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_if_fail (HDY_IS_DECK (self));
+
+  priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_set_visible_child (priv->box, visible_child);
+}
+
+/**
+ * hdy_deck_get_visible_child_name:
+ * @self: a #HdyDeck
+ *
+ * Gets the name of the currently visible child widget.
+ *
+ * Returns: (transfer none): the name of the visible child
+ *
+ * Since: 1.0
+ */
+const gchar *
+hdy_deck_get_visible_child_name (HdyDeck *self)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DECK (self), NULL);
+
+  priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_get_visible_child_name (priv->box);
+}
+
+/**
+ * hdy_deck_set_visible_child_name:
+ * @self: a #HdyDeck
+ * @name: the name of a child
+ *
+ * Makes the child with the name @name visible.
+ *
+ * See hdy_deck_set_visible_child() for more details.
+ *
+ * Since: 1.0
+ */
+void
+hdy_deck_set_visible_child_name (HdyDeck     *self,
+                                 const gchar *name)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_if_fail (HDY_IS_DECK (self));
+
+  priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_set_visible_child_name (priv->box, name);
+}
+
+/**
+ * hdy_deck_get_transition_running:
+ * @self: a #HdyDeck
+ *
+ * Returns whether @self is currently in a transition from one page to
+ * another.
+ *
+ * Returns: %TRUE if the transition is currently running, %FALSE otherwise.
+ *
+ * Since: 1.0
+ */
+gboolean
+hdy_deck_get_transition_running (HdyDeck *self)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DECK (self), FALSE);
+
+  priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_get_child_transition_running (priv->box);
+}
+
+/**
+ * hdy_deck_set_interpolate_size:
+ * @self: a #HdyDeck
+ * @interpolate_size: the new value
+ *
+ * Sets whether or not @self will interpolate its size when
+ * changing the visible child. If the #HdyDeck:interpolate-size
+ * property is set to %TRUE, @self will interpolate its size between
+ * the current one and the one it'll take after changing the
+ * visible child, according to the set transition duration.
+ *
+ * Since: 1.0
+ */
+void
+hdy_deck_set_interpolate_size (HdyDeck  *self,
+                               gboolean  interpolate_size)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_if_fail (HDY_IS_DECK (self));
+
+  priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_set_interpolate_size (priv->box, interpolate_size);
+}
+
+/**
+ * hdy_deck_get_interpolate_size:
+ * @self: a #HdyDeck
+ *
+ * Returns wether the #HdyDeck is set up to interpolate between
+ * the sizes of children on page switch.
+ *
+ * Returns: %TRUE if child sizes are interpolated
+ *
+ * Since: 1.0
+ */
+gboolean
+hdy_deck_get_interpolate_size (HdyDeck *self)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DECK (self), FALSE);
+
+  priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_get_interpolate_size (priv->box);
+}
+
+/**
+ * hdy_deck_set_can_swipe_back:
+ * @self: a #HdyDeck
+ * @can_swipe_back: the new value
+ *
+ * Sets whether or not @self allows switching to the previous child via a swipe
+ * gesture.
+ *
+ * Since: 1.0
+ */
+void
+hdy_deck_set_can_swipe_back (HdyDeck  *self,
+                             gboolean  can_swipe_back)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_if_fail (HDY_IS_DECK (self));
+
+  priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_set_can_swipe_back (priv->box, can_swipe_back);
+}
+
+/**
+ * hdy_deck_get_can_swipe_back
+ * @self: a #HdyDeck
+ *
+ * Returns whether the #HdyDeck allows swiping to the previous child.
+ *
+ * Returns: %TRUE if back swipe is enabled.
+ *
+ * Since: 1.0
+ */
+gboolean
+hdy_deck_get_can_swipe_back (HdyDeck *self)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DECK (self), FALSE);
+
+  priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_get_can_swipe_back (priv->box);
+}
+
+/**
+ * hdy_deck_set_can_swipe_forward:
+ * @self: a #HdyDeck
+ * @can_swipe_forward: the new value
+ *
+ * Sets whether or not @self allows switching to the next child via a swipe
+ * gesture.
+ *
+ * Since: 1.0
+ */
+void
+hdy_deck_set_can_swipe_forward (HdyDeck  *self,
+                                gboolean  can_swipe_forward)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_if_fail (HDY_IS_DECK (self));
+
+  priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_set_can_swipe_forward (priv->box, can_swipe_forward);
+}
+
+/**
+ * hdy_deck_get_can_swipe_forward
+ * @self: a #HdyDeck
+ *
+ * Returns whether the #HdyDeck allows swiping to the next child.
+ *
+ * Returns: %TRUE if back swipe is enabled.
+ *
+ * Since: 1.0
+ */
+gboolean
+hdy_deck_get_can_swipe_forward (HdyDeck *self)
+{
+  HdyDeckPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_DECK (self), FALSE);
+
+  priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_get_can_swipe_forward (priv->box);
+}
+
+/* This private method is prefixed by the call name because it will be a virtual
+ * method in GTK 4.
+ */
+static void
+hdy_deck_measure (GtkWidget      *widget,
+                  GtkOrientation  orientation,
+                  int             for_size,
+                  int            *minimum,
+                  int            *natural,
+                  int            *minimum_baseline,
+                  int            *natural_baseline)
+{
+  HdyDeck *self = HDY_DECK (widget);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_measure (priv->box, orientation, for_size,
+                             minimum, natural,
+                             minimum_baseline, natural_baseline);
+}
+
+static void
+hdy_deck_get_preferred_width (GtkWidget *widget,
+                              gint      *minimum_width,
+                              gint      *natural_width)
+{
+  hdy_deck_measure (widget, GTK_ORIENTATION_HORIZONTAL, -1,
+                    minimum_width, natural_width, NULL, NULL);
+}
+
+static void
+hdy_deck_get_preferred_height (GtkWidget *widget,
+                               gint      *minimum_height,
+                               gint      *natural_height)
+{
+  hdy_deck_measure (widget, GTK_ORIENTATION_VERTICAL, -1,
+                    minimum_height, natural_height, NULL, NULL);
+}
+
+static void
+hdy_deck_get_preferred_width_for_height (GtkWidget *widget,
+                                         gint       height,
+                                         gint      *minimum_width,
+                                         gint      *natural_width)
+{
+  hdy_deck_measure (widget, GTK_ORIENTATION_HORIZONTAL, height,
+                    minimum_width, natural_width, NULL, NULL);
+}
+
+static void
+hdy_deck_get_preferred_height_for_width (GtkWidget *widget,
+                                         gint       width,
+                                         gint      *minimum_height,
+                                         gint      *natural_height)
+{
+  hdy_deck_measure (widget, GTK_ORIENTATION_VERTICAL, width,
+                    minimum_height, natural_height, NULL, NULL);
+}
+
+static void
+hdy_deck_size_allocate (GtkWidget     *widget,
+                        GtkAllocation *allocation)
+{
+  HdyDeck *self = HDY_DECK (widget);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_size_allocate (priv->box, allocation);
+}
+
+static gboolean
+hdy_deck_draw (GtkWidget *widget,
+               cairo_t   *cr)
+{
+  HdyDeck *self = HDY_DECK (widget);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_draw (priv->box, cr);
+}
+
+static void
+hdy_deck_direction_changed (GtkWidget        *widget,
+                            GtkTextDirection  previous_direction)
+{
+  HdyDeck *self = HDY_DECK (widget);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_direction_changed (priv->box, previous_direction);
+}
+
+static void
+hdy_deck_add (GtkContainer *container,
+              GtkWidget    *widget)
+{
+  HdyDeck *self = HDY_DECK (container);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_add (priv->box, widget);
+}
+
+static void
+hdy_deck_remove (GtkContainer *container,
+                 GtkWidget    *widget)
+{
+  HdyDeck *self = HDY_DECK (container);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_remove (priv->box, widget);
+}
+
+static void
+hdy_deck_forall (GtkContainer *container,
+                 gboolean      include_internals,
+                 GtkCallback   callback,
+                 gpointer      callback_data)
+{
+  HdyDeck *self = HDY_DECK (container);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_forall (priv->box, include_internals, callback, callback_data);
+}
+
+static void
+hdy_deck_get_property (GObject    *object,
+                       guint       prop_id,
+                       GValue     *value,
+                       GParamSpec *pspec)
+{
+  HdyDeck *self = HDY_DECK (object);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  switch (prop_id) {
+  case PROP_HHOMOGENEOUS:
+    g_value_set_boolean (value, hdy_deck_get_homogeneous (self, GTK_ORIENTATION_HORIZONTAL));
+    break;
+  case PROP_VHOMOGENEOUS:
+    g_value_set_boolean (value, hdy_deck_get_homogeneous (self, GTK_ORIENTATION_VERTICAL));
+    break;
+  case PROP_VISIBLE_CHILD:
+    g_value_set_object (value, hdy_deck_get_visible_child (self));
+    break;
+  case PROP_VISIBLE_CHILD_NAME:
+    g_value_set_string (value, hdy_deck_get_visible_child_name (self));
+    break;
+  case PROP_TRANSITION_TYPE:
+    g_value_set_enum (value, hdy_deck_get_transition_type (self));
+    break;
+  case PROP_TRANSITION_DURATION:
+    g_value_set_uint (value, hdy_deck_get_transition_duration (self));
+    break;
+  case PROP_TRANSITION_RUNNING:
+    g_value_set_boolean (value, hdy_deck_get_transition_running (self));
+    break;
+  case PROP_INTERPOLATE_SIZE:
+    g_value_set_boolean (value, hdy_deck_get_interpolate_size (self));
+    break;
+  case PROP_CAN_SWIPE_BACK:
+    g_value_set_boolean (value, hdy_deck_get_can_swipe_back (self));
+    break;
+  case PROP_CAN_SWIPE_FORWARD:
+    g_value_set_boolean (value, hdy_deck_get_can_swipe_forward (self));
+    break;
+  case PROP_ORIENTATION:
+    g_value_set_enum (value, hdy_stackable_box_get_orientation (priv->box));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+hdy_deck_set_property (GObject      *object,
+                       guint         prop_id,
+                       const GValue *value,
+                       GParamSpec   *pspec)
+{
+  HdyDeck *self = HDY_DECK (object);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  switch (prop_id) {
+  case PROP_HHOMOGENEOUS:
+    hdy_deck_set_homogeneous (self, GTK_ORIENTATION_HORIZONTAL, g_value_get_boolean (value));
+    break;
+  case PROP_VHOMOGENEOUS:
+    hdy_deck_set_homogeneous (self, GTK_ORIENTATION_VERTICAL, g_value_get_boolean (value));
+    break;
+  case PROP_VISIBLE_CHILD:
+    hdy_deck_set_visible_child (self, g_value_get_object (value));
+    break;
+  case PROP_VISIBLE_CHILD_NAME:
+    hdy_deck_set_visible_child_name (self, g_value_get_string (value));
+    break;
+  case PROP_TRANSITION_TYPE:
+    hdy_deck_set_transition_type (self, g_value_get_enum (value));
+    break;
+  case PROP_TRANSITION_DURATION:
+    hdy_deck_set_transition_duration (self, g_value_get_uint (value));
+    break;
+  case PROP_INTERPOLATE_SIZE:
+    hdy_deck_set_interpolate_size (self, g_value_get_boolean (value));
+    break;
+  case PROP_CAN_SWIPE_BACK:
+    hdy_deck_set_can_swipe_back (self, g_value_get_boolean (value));
+    break;
+  case PROP_CAN_SWIPE_FORWARD:
+    hdy_deck_set_can_swipe_forward (self, g_value_get_boolean (value));
+    break;
+  case PROP_ORIENTATION:
+    hdy_stackable_box_set_orientation (priv->box, g_value_get_boolean (value));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+hdy_deck_dispose (GObject *object)
+{
+  HdyDeck *self = HDY_DECK (object);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_dispose (priv->box);
+
+  G_OBJECT_CLASS (hdy_deck_parent_class)->dispose (object);
+}
+
+static void
+hdy_deck_finalize (GObject *object)
+{
+  HdyDeck *self = HDY_DECK (object);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  g_clear_object (&priv->box);
+
+  g_object_set_data (object, "captured-event-handler", NULL);
+
+  G_OBJECT_CLASS (hdy_deck_parent_class)->finalize (object);
+}
+
+static void
+hdy_deck_get_child_property (GtkContainer *container,
+                             GtkWidget    *widget,
+                             guint         property_id,
+                             GValue       *value,
+                             GParamSpec   *pspec)
+{
+  HdyDeck *self = HDY_DECK (container);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  switch (property_id) {
+  case CHILD_PROP_NAME:
+    g_value_set_string (value, hdy_stackable_box_get_child_name (priv->box, widget));
+    break;
+
+  default:
+    GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
+    break;
+  }
+}
+
+static void
+hdy_deck_set_child_property (GtkContainer *container,
+                             GtkWidget    *widget,
+                             guint         property_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
+{
+  HdyDeck *self = HDY_DECK (container);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  switch (property_id) {
+  case CHILD_PROP_NAME:
+    hdy_stackable_box_set_child_name (priv->box, widget, g_value_get_string (value));
+    gtk_container_child_notify_by_pspec (container, widget, pspec);
+    break;
+
+  default:
+    GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
+    break;
+  }
+}
+
+static void
+hdy_deck_realize (GtkWidget *widget)
+{
+  HdyDeck *self = HDY_DECK (widget);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_realize (priv->box);
+}
+
+static void
+hdy_deck_unrealize (GtkWidget *widget)
+{
+  HdyDeck *self = HDY_DECK (widget);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_unrealize (priv->box);
+}
+
+static void
+hdy_deck_map (GtkWidget *widget)
+{
+  HdyDeck *self = HDY_DECK (widget);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_map (priv->box);
+}
+
+static void
+hdy_deck_unmap (GtkWidget *widget)
+{
+  HdyDeck *self = HDY_DECK (widget);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_unmap (priv->box);
+}
+
+static void
+hdy_deck_switch_child (HdySwipeable *swipeable,
+                       guint         index,
+                       gint64        duration)
+{
+  HdyDeck *self = HDY_DECK (swipeable);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_switch_child (priv->box, index, duration);
+}
+
+static void
+hdy_deck_begin_swipe (HdySwipeable *swipeable,
+                      gint          direction,
+                      gboolean      direct)
+{
+  HdyDeck *self = HDY_DECK (swipeable);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_begin_swipe (priv->box, direction, direct);
+}
+
+static void
+hdy_deck_update_swipe (HdySwipeable *swipeable,
+                       gdouble       value)
+{
+  HdyDeck *self = HDY_DECK (swipeable);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_update_swipe (priv->box, value);
+}
+
+static void
+hdy_deck_end_swipe (HdySwipeable *swipeable,
+                    gint64        duration,
+                    gdouble       to)
+{
+  HdyDeck *self = HDY_DECK (swipeable);
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  hdy_stackable_box_end_swipe (priv->box, duration, to);
+}
+
+static gboolean
+captured_event_cb (HdyDeck  *self,
+                   GdkEvent *event)
+{
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  return hdy_stackable_box_captured_event (priv->box, event);
+}
+
+static void
+hdy_deck_class_init (HdyDeckClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = (GtkWidgetClass*) klass;
+  GtkContainerClass *container_class = (GtkContainerClass*) klass;
+
+  object_class->get_property = hdy_deck_get_property;
+  object_class->set_property = hdy_deck_set_property;
+  object_class->dispose = hdy_deck_dispose;
+  object_class->finalize = hdy_deck_finalize;
+
+  widget_class->realize = hdy_deck_realize;
+  widget_class->unrealize = hdy_deck_unrealize;
+  widget_class->map = hdy_deck_map;
+  widget_class->unmap = hdy_deck_unmap;
+  widget_class->get_preferred_width = hdy_deck_get_preferred_width;
+  widget_class->get_preferred_height = hdy_deck_get_preferred_height;
+  widget_class->get_preferred_width_for_height = hdy_deck_get_preferred_width_for_height;
+  widget_class->get_preferred_height_for_width = hdy_deck_get_preferred_height_for_width;
+  widget_class->size_allocate = hdy_deck_size_allocate;
+  widget_class->draw = hdy_deck_draw;
+  widget_class->direction_changed = hdy_deck_direction_changed;
+
+  container_class->add = hdy_deck_add;
+  container_class->remove = hdy_deck_remove;
+  container_class->forall = hdy_deck_forall;
+  container_class->set_child_property = hdy_deck_set_child_property;
+  container_class->get_child_property = hdy_deck_get_child_property;
+  gtk_container_class_handle_border_width (container_class);
+
+  g_object_class_override_property (object_class,
+                                    PROP_ORIENTATION,
+                                    "orientation");
+
+  /**
+   * HdyDeck:hhomogeneous:
+   *
+   * Horizontally homogeneous sizing.
+   *
+   * Since: 1.0
+   */
+  props[PROP_HHOMOGENEOUS] =
+    g_param_spec_boolean ("hhomogeneous",
+                          _("Horizontally homogeneous"),
+                          _("Horizontally homogeneous sizing"),
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyDeck:vhomogeneous:
+   *
+   * Vertically homogeneous sizing.
+   *
+   * Since: 1.0
+   */
+  props[PROP_VHOMOGENEOUS] =
+    g_param_spec_boolean ("vhomogeneous",
+                          _("Vertically homogeneous"),
+                          _("Vertically homogeneous sizing"),
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyDeck:visible-child:
+   *
+   * The widget currently visible.
+   *
+   * Since: 1.0
+   */
+  props[PROP_VISIBLE_CHILD] =
+    g_param_spec_object ("visible-child",
+                         _("Visible child"),
+                         _("The widget currently visible"),
+                         GTK_TYPE_WIDGET,
+                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyDeck:visible-child-name:
+   *
+   * The name of the widget currently visible.
+   *
+   * Since: 1.0
+   */
+  props[PROP_VISIBLE_CHILD_NAME] =
+    g_param_spec_string ("visible-child-name",
+                         _("Name of visible child"),
+                         _("The name of the widget currently visible"),
+                         NULL,
+                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyDeck:transition-type:
+   *
+   * The type of animation that will be used for transitions between
+   * children.
+   *
+   * The transition type can be changed without problems at runtime, so it is
+   * possible to change the animation based on the child that is about
+   * to become current.
+   *
+   * Since: 1.0
+   */
+  props[PROP_TRANSITION_TYPE] =
+    g_param_spec_enum ("transition-type",
+                       _("Transition type"),
+                       _("The type of animation used to transition between children"),
+                       HDY_TYPE_DECK_TRANSITION_TYPE, HDY_DECK_TRANSITION_TYPE_NONE,
+                       G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyDeck:transition-duration:
+   *
+   * The transition animation duration, in milliseconds.
+   *
+   * Since: 1.0
+   */
+  props[PROP_TRANSITION_DURATION] =
+    g_param_spec_uint ("transition-duration",
+                       _("Transition duration"),
+                       _("The transition animation duration, in milliseconds"),
+                       0, G_MAXUINT, 200,
+                       G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyDeck:transition-running:
+   *
+   * Whether or not the transition is currently running.
+   *
+   * Since: 1.0
+   */
+  props[PROP_TRANSITION_RUNNING] =
+      g_param_spec_boolean ("transition-running",
+                            _("Transition running"),
+                            _("Whether or not the transition is currently running"),
+                            FALSE,
+                            G_PARAM_READABLE);
+
+  /**
+   * HdyDeck:interpolate-size:
+   *
+   * Whether or not the size should smoothly change when changing between
+   * differently sized children.
+   *
+   * Since: 1.0
+   */
+  props[PROP_INTERPOLATE_SIZE] =
+      g_param_spec_boolean ("interpolate-size",
+                            _("Interpolate size"),
+                            _("Whether or not the size should smoothly change when changing between differently sized children"),
+                            FALSE,
+                            G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyDeck:can-swipe-back:
+   *
+   * Whether or not @self allows switching to the previous child via a swipe
+   * gesture.
+   *
+   * Since: 1.0
+   */
+  props[PROP_CAN_SWIPE_BACK] =
+      g_param_spec_boolean ("can-swipe-back",
+                            _("Can swipe back"),
+                            _("Whether or not swipe gesture can be used to switch to the previous child"),
+                            FALSE,
+                            G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyDeck:can-swipe-forward:
+   *
+   * Whether or not @self allows switching to the next child via a swipe gesture.
+   *
+   * Since: 1.0
+   */
+  props[PROP_CAN_SWIPE_FORWARD] =
+      g_param_spec_boolean ("can-swipe-forward",
+                            _("Can swipe forward"),
+                            _("Whether or not swipe gesture can be used to switch to the next child"),
+                            FALSE,
+                            G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  g_object_class_install_properties (object_class, LAST_PROP, props);
+
+  child_props[CHILD_PROP_NAME] =
+    g_param_spec_string ("name",
+                         _("Name"),
+                         _("The name of the child page"),
+                         NULL,
+                         G_PARAM_READWRITE);
+
+  gtk_container_class_install_child_properties (container_class, LAST_CHILD_PROP, child_props);
+
+  gtk_widget_class_set_accessible_role (widget_class, ATK_ROLE_PANEL);
+  gtk_widget_class_set_css_name (widget_class, "hdydeck");
+}
+
+GtkWidget *
+hdy_deck_new (void)
+{
+  return g_object_new (HDY_TYPE_DECK, NULL);
+}
+
+#define NOTIFY(func, prop) \
+static void \
+func (HdyDeck *self) { \
+  g_object_notify_by_pspec (G_OBJECT (self), props[prop]); \
+}
+
+NOTIFY (notify_hhomogeneous_folded_cb, PROP_HHOMOGENEOUS);
+NOTIFY (notify_vhomogeneous_folded_cb, PROP_VHOMOGENEOUS);
+NOTIFY (notify_visible_child_cb, PROP_VISIBLE_CHILD);
+NOTIFY (notify_visible_child_name_cb, PROP_VISIBLE_CHILD_NAME);
+NOTIFY (notify_transition_type_cb, PROP_TRANSITION_TYPE);
+NOTIFY (notify_child_transition_duration_cb, PROP_TRANSITION_DURATION);
+NOTIFY (notify_child_transition_running_cb, PROP_TRANSITION_TYPE);
+NOTIFY (notify_interpolate_size_cb, PROP_INTERPOLATE_SIZE);
+NOTIFY (notify_can_swipe_back_cb, PROP_CAN_SWIPE_BACK);
+NOTIFY (notify_can_swipe_forward_cb, PROP_CAN_SWIPE_FORWARD);
+
+static void
+notify_orientation_cb (HdyDeck *self)
+{
+  g_object_notify (G_OBJECT (self), "orientation");
+}
+
+static void
+hdy_deck_init (HdyDeck *self)
+{
+  HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
+
+  priv->box = hdy_stackable_box_new (GTK_CONTAINER (self),
+                                     GTK_CONTAINER_CLASS (hdy_deck_parent_class),
+                                     FALSE);
+
+  g_signal_connect_object (priv->box, "notify::hhomogeneous-folded", G_CALLBACK (notify_hhomogeneous_folded_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::vhomogeneous-folded", G_CALLBACK (notify_vhomogeneous_folded_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::visible-child", G_CALLBACK (notify_visible_child_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::visible-child-name", G_CALLBACK (notify_visible_child_name_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::transition-type", G_CALLBACK (notify_transition_type_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::child-transition-duration", G_CALLBACK (notify_child_transition_duration_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::child-transition-running", G_CALLBACK (notify_child_transition_running_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::interpolate-size", G_CALLBACK (notify_interpolate_size_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::can-swipe-back", G_CALLBACK (notify_can_swipe_back_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::can-swipe-forward", G_CALLBACK (notify_can_swipe_forward_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::orientation", G_CALLBACK (notify_orientation_cb), self, G_CONNECT_SWAPPED);
+
+  /*
+   * HACK: GTK3 has no other way to get events on capture phase.
+   * This is a reimplementation of _gtk_widget_set_captured_event_handler(),
+   * which is private. In GTK4 it can be replaced with GtkEventControllerLegacy
+   * with capture propagation phase
+   */
+  g_object_set_data (G_OBJECT (self), "captured-event-handler", captured_event_cb);
+}
+
+static void
+hdy_deck_buildable_init (GtkBuildableIface *iface)
+{
+}
+
+static void
+hdy_deck_swipeable_init (HdySwipeableInterface *iface)
+{
+  iface->switch_child = hdy_deck_switch_child;
+  iface->begin_swipe = hdy_deck_begin_swipe;
+  iface->update_swipe = hdy_deck_update_swipe;
+  iface->end_swipe = hdy_deck_end_swipe;
+}

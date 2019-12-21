@@ -8,6 +8,7 @@ libhandy_resources = gnome.compile_resources(
 )
 
 hdy_enum_headers = ['hdy-carousel.h',
+                    'hdy-deck.h',
                     'hdy-header-bar.h',
                     'hdy-leaflet.h',
                     'hdy-stackable-box-private.h',
@@ -56,6 +57,7 @@ src_headers = [
   'hdy-carousel.h',
   'hdy-column.h',
   'hdy-combo-row.h',
+  'hdy-deck.h',
   'hdy-deprecation-macros.h',
   'hdy-dialog.h',
   'hdy-enum-value-object.h',
@@ -99,6 +101,7 @@ src_sources = [
   'hdy-carousel-box.c',
   'hdy-column.c',
   'hdy-combo-row.c',
+  'hdy-deck.c',
   'hdy-dialog.c',
   'hdy-enum-value-object.c',
   'hdy-expander-row.c',
