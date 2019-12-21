@@ -7,7 +7,8 @@ libhandy_resources = gnome.compile_resources(
    c_name: 'hdy',
 )
 
-hdy_enum_headers = ['hdy-fold.h',
+hdy_enum_headers = ['hdy-deck.h',
+                    'hdy-fold.h',
                     'hdy-header-bar.h',
                     'hdy-leaflet.h',
                     'hdy-paginator.h',
@@ -64,6 +65,7 @@ src_headers = [
   'hdy-animation.h',
   'hdy-column.h',
   'hdy-combo-row.h',
+  'hdy-deck.h',
   'hdy-deprecation-macros.h',
   'hdy-dialog.h',
   'hdy-enum-value-object.h',
@@ -108,6 +110,7 @@ src_sources = [
   'hdy-animation.c',
   'hdy-column.c',
   'hdy-combo-row.c',
+  'hdy-deck.c',
   'hdy-dialog.c',
   'hdy-enum-value-object.c',
   'hdy-expander-row.c',
