@@ -195,8 +195,7 @@ hdy_shadow_helper_constructed (GObject *object)
   HdyShadowHelper *self = HDY_SHADOW_HELPER (object);
 
   self->provider = gtk_css_provider_new ();
-  gtk_css_provider_load_from_resource (self->provider,
-                                       "/sm/puri/handy/style/hdy-leaflet.css");
+  gtk_css_provider_load_from_resource (self->provider, self->css_path);
 
   G_OBJECT_CLASS (hdy_shadow_helper_parent_class)->constructed (object);
 }
