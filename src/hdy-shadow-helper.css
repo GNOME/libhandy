@@ -1,18 +1,22 @@
+hdydeck > dimming,
 hdyleaflet > dimming {
   background: rgba(0, 0, 0, 0.12);
 }
 
+hdydeck > shadow,
 hdyleaflet > shadow {
   min-width: 56px;
   min-height: 56px;
 }
 
+hdydeck > border,
 hdyleaflet > border {
   min-width: 1px;
   min-height: 1px;
   background: rgba(0, 0, 0, 0.05);
 }
 
+hdydeck > shadow.left,
 hdyleaflet > shadow.left {
   background-image:
     linear-gradient(to right,
@@ -25,6 +29,7 @@ hdyleaflet > shadow.left {
                     alpha(#000, 0) 24px);
 }
 
+hdydeck > shadow.right,
 hdyleaflet > shadow.right {
   background-image:
     linear-gradient(to left,
@@ -38,6 +43,7 @@ hdyleaflet > shadow.right {
 
 }
 
+hdydeck > shadow.up,
 hdyleaflet > shadow.up {
   background-image:
     linear-gradient(to bottom,
@@ -50,6 +56,7 @@ hdyleaflet > shadow.up {
                     alpha(#000, 0) 24px);
 }
 
+hdydeck > shadow.down,
 hdyleaflet > shadow.down {
   background-image:
     linear-gradient(to top,
