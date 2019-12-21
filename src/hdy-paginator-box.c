@@ -25,6 +25,16 @@
  * Since: 0.0.11
  */
 
+typedef struct _HdyPaginatorBoxAnimationData HdyPaginatorBoxAnimationData;
+
+struct _HdyPaginatorBoxAnimationData {
+  guint tick_cb_id;
+  gint64 start_time;
+  gint64 end_time;
+  gdouble start_value;
+  gdouble end_value;
+};
+
 typedef struct _HdyPaginatorBoxChildInfo HdyPaginatorBoxChildInfo;
 
 struct _HdyPaginatorBoxChildInfo
@@ -40,13 +50,7 @@ struct _HdyPaginatorBox
 {
   GtkContainer parent_instance;
 
-  struct {
-    guint tick_cb_id;
-    gint64 start_time;
-    gint64 end_time;
-    gdouble start_position;
-    gdouble end_position;
-  } animation_data;
+  HdyPaginatorBoxAnimationData animation_data;
   GList *children;
 
   gint child_width;
@@ -229,8 +233,8 @@ animation_cb (GtkWidget     *widget,
 
   t = hdy_ease_out_cubic (position);
   hdy_paginator_box_set_position (self,
-                                  hdy_lerp (self->animation_data.start_position,
-                                            self->animation_data.end_position, 1 - t));
+                                  hdy_lerp (self->animation_data.start_value,
+                                            self->animation_data.end_value, 1 - t));
 
   if (frame_time == self->animation_data.end_time) {
     self->animation_data.tick_cb_id = 0;
@@ -983,8 +987,8 @@ hdy_paginator_box_animate (HdyPaginatorBox *self,
 
   frame_time = gdk_frame_clock_get_frame_time (frame_clock);
 
-  self->animation_data.start_position = self->position;
-  self->animation_data.end_position = position;
+  self->animation_data.start_value = self->position;
+  self->animation_data.end_value = position;
 
   self->animation_data.start_time = frame_time / 1000;
   self->animation_data.end_time = self->animation_data.start_time + duration;
