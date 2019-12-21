@@ -209,15 +209,15 @@ dialog_action_clicked_cb (GtkButton     *btn,
 }
 
 static void
-dialog_complex_deeper_clicked_cb (GtkStack *stack)
+dialog_complex_deeper_clicked_cb (HdyStack *stack)
 {
-  gtk_stack_set_visible_child_name (stack, "sub");
+  hdy_stack_set_visible_child_name (stack, "sub");
 }
 
 static void
-dialog_complex_back_clicked_cb (GtkStack *stack)
+dialog_complex_back_clicked_cb (HdyStack *stack)
 {
-  gtk_stack_set_visible_child_name (stack, "main");
+  hdy_stack_set_visible_child_name (stack, "main");
 }
 
 static void
