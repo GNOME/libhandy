@@ -131,10 +131,8 @@ hdy_paginator_begin_swipe (HdySwipeable *swipeable,
   hdy_paginator_box_stop_animation (self->scrolling_box);
 
   distance = hdy_paginator_box_get_distance (self->scrolling_box);
-  g_object_get (self->scrolling_box,
-                "position", &position,
-                "n-pages", &n_pages,
-                NULL);
+  position = hdy_paginator_box_get_position (self->scrolling_box);
+  n_pages = hdy_paginator_box_get_n_pages (self->scrolling_box, TRUE);
   closest_point = CLAMP (round (position), 0, n_pages - 1);
 
   points = g_new (gdouble, n_pages);
@@ -526,7 +524,7 @@ handle_discrete_scroll_event (HdyPaginator *self,
     return GDK_EVENT_PROPAGATE;
 
   index += (gint) round (hdy_paginator_get_position (self));
-  index = CLAMP (index, 0, (gint) hdy_paginator_get_n_pages (self) - 1);
+  index = CLAMP (index, 0, (gint) hdy_paginator_box_get_n_pages (self->scrolling_box, FALSE) - 1);
 
   hdy_paginator_scroll_to (self, hdy_paginator_box_get_nth_child (self->scrolling_box, index));
 
@@ -1123,7 +1121,7 @@ hdy_paginator_get_n_pages (HdyPaginator *self)
 {
   g_return_val_if_fail (HDY_IS_PAGINATOR (self), 0);
 
-  return hdy_paginator_box_get_n_pages (self->scrolling_box);
+  return hdy_paginator_box_get_n_pages (self->scrolling_box, FALSE);
 }
 
 /**

@@ -21,7 +21,7 @@ G_DECLARE_FINAL_TYPE (HdyPaginatorBox, hdy_paginator_box, HDY, PAGINATOR_BOX, Gt
 HdyPaginatorBox *hdy_paginator_box_new (void);
 
 void             hdy_paginator_box_insert (HdyPaginatorBox *self,
-                                           GtkWidget       *child,
+                                           GtkWidget       *widget,
                                            gint             position);
 void             hdy_paginator_box_reorder (HdyPaginatorBox *self,
                                             GtkWidget       *child,
@@ -37,7 +37,8 @@ void             hdy_paginator_box_scroll_to (HdyPaginatorBox *self,
                                               GtkWidget       *widget,
                                               gint64           duration);
 
-guint            hdy_paginator_box_get_n_pages (HdyPaginatorBox *self);
+guint            hdy_paginator_box_get_n_pages (HdyPaginatorBox *self,
+                                                gboolean         include_removing);
 gdouble          hdy_paginator_box_get_distance (HdyPaginatorBox *self);
 
 gdouble          hdy_paginator_box_get_position (HdyPaginatorBox *self);
