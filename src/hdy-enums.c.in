@@ -7,6 +7,7 @@
 #include "hdy-header-bar.h"
 #include "hdy-leaflet.h"
 #include "hdy-paginator.h"
+#include "hdy-stack.h"
 #include "hdy-squeezer.h"
 #include "hdy-view-switcher.h"
 
