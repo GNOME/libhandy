@@ -353,6 +353,13 @@ hdy_demo_window_constructed (GObject *object)
 
 
 static void
+on_p_clicked (GtkButton     *button,
+              HdyDemoWindow *self)
+{
+  gtk_container_remove (GTK_CONTAINER (self->paginator), GTK_WIDGET (button));
+}
+
+static void
 hdy_demo_window_class_init (HdyDemoWindowClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -396,6 +403,7 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_callback_full (widget_class, "notify_paginator_orientation_cb", G_CALLBACK(notify_paginator_orientation_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "notify_paginator_indicator_style_cb", G_CALLBACK(notify_paginator_indicator_style_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "paginator_return_clicked_cb", G_CALLBACK(paginator_return_clicked_cb));
+  gtk_widget_class_bind_template_callback_full (widget_class, "on_p_clicked", G_CALLBACK(on_p_clicked));
 }
 
 static void
