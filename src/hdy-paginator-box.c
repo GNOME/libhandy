@@ -408,10 +408,8 @@ invalidate_drawing_cache (HdyPaginatorBox *self)
   for (l = self->children; l; l = l->next) {
     HdyPaginatorBoxChildInfo *child_info = l->data;
 
-    if (child_info->surface) {
-      cairo_surface_destroy (child_info->surface);
-      child_info->surface = NULL;
-    }
+    if (child_info->surface)
+      g_clear_pointer (&child_info->surface, cairo_surface_destroy);
 
     if (child_info->dirty_region)
       cairo_region_destroy (child_info->dirty_region);
@@ -474,10 +472,8 @@ update_windows (HdyPaginatorBox *self)
                                   (self->orientation == GTK_ORIENTATION_VERTICAL &&
                                    pos < alloc.height && pos + self->child_height > 0));
 
-    if (!gtk_widget_get_child_visible (child_info->widget)) {
-      cairo_surface_destroy (child_info->surface);
-      child_info->surface = NULL;
-    }
+    if (!gtk_widget_get_child_visible (child_info->widget))
+      g_clear_pointer (&child_info->surface, cairo_surface_destroy);
 
     if (self->orientation == GTK_ORIENTATION_VERTICAL)
       y += self->distance;
