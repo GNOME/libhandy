@@ -880,6 +880,24 @@
                               </object>
                             </child>
                             <child>
+                              <object class="GtkButton">
+                                <property name="visible">True</property>
+                                <property name="label">Remove me!</property>
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                                <signal name="clicked" handler="on_p_clicked"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="visible">True</property>
+                                <property name="label">Remove me!</property>
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                                <signal name="clicked" handler="on_p_clicked"/>
+                              </object>
+                            </child>
+                            <child>
                               <object class="HdyColumn">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
@@ -1600,7 +1618,26 @@
                         <property name="visible">True</property>
                         <property name="center_content">True</property>
                         <property name="indicator_spacing">6</property>
+                        <property name="reveal-duration">500</property>
                         <signal name="notify::position" handler="notify_carousel_position_cb"/>
+                        <child>
+                          <object class="GtkButton">
+                            <property name="visible">True</property>
+                            <property name="label">Remove me!</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <signal name="clicked" handler="on_p_clicked"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton">
+                            <property name="visible">True</property>
+                            <property name="label">Remove me!</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <signal name="clicked" handler="on_p_clicked"/>
+                          </object>
+                        </child>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -1608,8 +1645,6 @@
                             <property name="can_focus">False</property>
                             <property name="halign">center</property>
                             <property name="valign">center</property>
-                            <property name="vexpand">True</property>
-                            <property name="hexpand">True</property>
                             <child>
                               <object class="GtkImage">
                                 <property name="visible">True</property>
@@ -1668,7 +1703,6 @@
                             <property name="margin-bottom">32</property>
                             <property name="margin-start">12</property>
                             <property name="margin-end">12</property>
-                            <property name="expand">True</property>
                             <property name="maximum-width">400</property>
                             <property name="linear-growth-width">300</property>
                             <child>
@@ -1705,8 +1739,6 @@
                             <property name="can_focus">False</property>
                             <property name="halign">center</property>
                             <property name="valign">center</property>
-                            <property name="vexpand">True</property>
-                            <property name="hexpand">True</property>
                             <property name="spacing">24</property>
                             <child>
                               <object class="GtkLabel">
@@ -1734,6 +1766,24 @@
                                 </style>
                               </object>
                             </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton">
+                            <property name="visible">True</property>
+                            <property name="label">Remove me!</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <signal name="clicked" handler="on_p_clicked"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton">
+                            <property name="visible">True</property>
+                            <property name="label">Remove me!</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <signal name="clicked" handler="on_p_clicked"/>
                           </object>
                         </child>
                       </object>

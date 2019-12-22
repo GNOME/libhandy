@@ -375,6 +375,54 @@ hdy_demo_window_constructed (GObject *object)
   hdy_search_bar_connect_entry (self->search_bar, self->search_entry);
 }
 
+typedef struct {
+  HdyCarousel *pag;
+  GtkButton *btn;
+} Tmp;
+
+static gboolean
+add_back_cb (GtkContainer *parent)
+{
+  GtkWidget *btn;
+
+  btn = gtk_button_new_with_label ("Remove me 2!");
+  gtk_widget_set_halign (btn, GTK_ALIGN_CENTER);
+  gtk_widget_set_valign (btn, GTK_ALIGN_CENTER);
+  gtk_widget_show (btn);
+
+  hdy_carousel_insert (HDY_CAROUSEL (parent), btn, 1);
+  return G_SOURCE_REMOVE;
+}
+
+static gboolean
+remove_cb (Tmp *tmp)
+{
+  HdyCarousel *pag;
+
+  pag = tmp->pag;
+
+  gtk_container_remove (GTK_CONTAINER (tmp->pag), GTK_WIDGET (tmp->btn));
+//  hdy_carousel_reorder (tmp->pag, GTK_WIDGET (tmp->btn), 5);
+//  gtk_button_set_label (tmp->btn, "Reordered!");
+  g_free (tmp);
+
+  g_timeout_add (1000, (GSourceFunc) add_back_cb, pag);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+on_p_clicked (GtkButton     *button,
+              HdyDemoWindow *self)
+{
+  Tmp *tmp;
+
+  tmp = g_new0 (Tmp, 1);
+  tmp->pag = self->carousel;
+  tmp->btn = button;
+
+  g_timeout_add (000, (GSourceFunc) remove_cb, tmp);
+}
 
 static void
 hdy_demo_window_class_init (HdyDemoWindowClass *klass)
@@ -425,6 +473,7 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_callback_full (widget_class, "carousel_return_clicked_cb", G_CALLBACK(carousel_return_clicked_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "avatar_file_remove_cb", G_CALLBACK(avatar_file_remove_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "avatar_file_set_cb", G_CALLBACK(avatar_file_set_cb));
+  gtk_widget_class_bind_template_callback_full (widget_class, "on_p_clicked", G_CALLBACK(on_p_clicked));
 }
 
 static void
