@@ -45,4 +45,7 @@ void             hdy_swipe_tracker_confirm_swipe (HdySwipeTracker *self,
                                                   gdouble          current_progress,
                                                   gdouble          cancel_progress);
 
+void             hdy_swipe_tracker_shift_position (HdySwipeTracker *self,
+                                                   gdouble          delta);
+
 G_END_DECLS
