@@ -915,3 +915,15 @@ hdy_swipe_tracker_confirm_swipe (HdySwipeTracker *self,
    * See https://source.puri.sm/Librem5/libhandy/issues/177
    */
 }
+
+void
+hdy_swipe_tracker_shift_position (HdySwipeTracker *self,
+                                  gdouble          delta)
+{
+  if (self->state != HDY_SWIPE_TRACKER_STATE_PENDING &&
+      self->state != HDY_SWIPE_TRACKER_STATE_SCROLLING)
+    return;
+
+  self->progress += delta;
+  self->initial_progress += delta;
+}
