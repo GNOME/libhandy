@@ -3472,8 +3472,6 @@ hdy_leaflet_begin_swipe (HdySwipeable *swipeable,
 {
   HdyLeaflet *self = HDY_LEAFLET (swipeable);
   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
-  gint n_snap_points;
-  gdouble *snap_points, distance, progress, cancel_progress;
 
   priv->child_transition.is_direct_swipe = direct;
   priv->child_transition.swipe_direction = direction;
@@ -3501,14 +3499,6 @@ hdy_leaflet_begin_swipe (HdySwipeable *swipeable,
       g_object_notify_by_pspec (G_OBJECT (self), props[PROP_CHILD_TRANSITION_RUNNING]);
     }
   }
-
-  distance = hdy_swipeable_get_distance (swipeable);
-  snap_points = hdy_swipeable_get_snap_points (swipeable, &n_snap_points);
-  progress = hdy_swipeable_get_progress (swipeable);
-  cancel_progress = hdy_swipeable_get_cancel_progress (swipeable);
-
-  hdy_swipe_tracker_confirm_swipe (priv->tracker, distance, snap_points,
-                                   n_snap_points, progress, cancel_progress);
 }
 
 static void
