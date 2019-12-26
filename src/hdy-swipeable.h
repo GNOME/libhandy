@@ -41,6 +41,15 @@ struct _HdySwipeableInterface
   void (*end_swipe)    (HdySwipeable *self,
                         gint64        duration,
                         gdouble       to);
+
+  gdouble   (*get_distance)        (HdySwipeable *self);
+  void      (*get_range)           (HdySwipeable *self,
+                                    gdouble      *min_progress,
+                                    gdouble      *max_progress);
+  gdouble * (*get_snap_points)     (HdySwipeable *self,
+                                    gint         *n_snap_points);
+  gdouble   (*get_progress)        (HdySwipeable *self);
+  gdouble   (*get_cancel_progress) (HdySwipeable *self);
 };
 
 G_END_DECLS
