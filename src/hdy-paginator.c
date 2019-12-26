@@ -235,6 +235,14 @@ animation_stopped_cb (HdyPaginator    *self,
   g_signal_emit (self, signals[SIGNAL_PAGE_CHANGED], 0, index);
 }
 
+static void
+position_shifted_cb (HdyPaginator    *self,
+                     gdouble          delta,
+                     HdyPaginatorBox *box)
+{
+  hdy_swipe_tracker_shift_position (self->tracker, delta);
+}
+
 static GdkRGBA
 get_color (GtkWidget *widget)
 {
@@ -988,6 +996,7 @@ hdy_paginator_class_init (HdyPaginatorClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, notify_position_cb);
   gtk_widget_class_bind_template_callback (widget_class, notify_spacing_cb);
   gtk_widget_class_bind_template_callback (widget_class, animation_stopped_cb);
+  gtk_widget_class_bind_template_callback (widget_class, position_shifted_cb);
 
   gtk_widget_class_set_css_name (widget_class, "hdypaginator");
 }
