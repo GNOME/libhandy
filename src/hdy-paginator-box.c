@@ -1200,3 +1200,78 @@ hdy_paginator_box_get_nth_child (HdyPaginatorBox *self,
   return info->widget;
 }
 
+/**
+ * hdy_paginator_box_get_snap_points:
+ * @self: a #HdyPaginatorBox
+ * @n_snap_points: (out)
+ *
+ * Gets the snap points of @self, representing the points between each page,
+ * before the first page and after the last page.
+ *
+ * Returns: (array length=n_snap_points) (transfer full): the snap points of @self
+ *
+ * Since: 0.0.14
+ */
+gdouble *
+hdy_paginator_box_get_snap_points (HdyPaginatorBox *self,
+                                   gint            *n_snap_points)
+{
+  guint i, n_pages;
+  gdouble *points;
+
+  g_return_val_if_fail (HDY_IS_PAGINATOR_BOX (self), NULL);
+
+  n_pages = hdy_paginator_box_get_n_pages (self);
+
+  points = g_new (gdouble, n_pages);
+  for (i = 0; i < n_pages; i++)
+    points[i] = i;
+
+  if (n_snap_points)
+    *n_snap_points = n_pages;
+
+  return points;
+}
+
+/**
+ * hdy_paginator_box_get_range:
+ * @self: a #HdyPaginatorBox
+ * @lower: (out) (allow-none): location to store the lowest possible position, or %NULL
+ * @upper: (out) (allow-none): location to store the maximum possible position, or %NULL
+ *
+ * Gets the range of possible positions.
+ *
+ * Since: 0.0.14
+ */
+void
+hdy_paginator_box_get_range (HdyPaginatorBox *self,
+                             gdouble         *lower,
+                             gdouble         *upper)
+{
+  g_return_if_fail (HDY_IS_PAGINATOR_BOX (self));
+
+  if (lower)
+    *lower = 0;
+
+  if (upper)
+    *upper = hdy_paginator_box_get_n_pages (self) - 1;
+}
+
+/**
+ * hdy_paginator_box_get_closest_snap_point:
+ * @self: a #HdyPaginatorBox
+ *
+ * Gets the snap point closest to the current position.
+ *
+ * Returns: the closest snap point.
+ *
+ * Since: 0.0.14
+ */
+gdouble
+hdy_paginator_box_get_closest_snap_point (HdyPaginatorBox *self)
+{
+  g_return_val_if_fail (HDY_IS_PAGINATOR_BOX (self), 0);
+
+  return CLAMP (round (self->position), 0,
+                hdy_paginator_box_get_n_pages (self) - 1);
+}
