@@ -11,6 +11,7 @@
 #endif
 
 #include <gtk/gtk.h>
+#include "hdy-deprecation-macros.h"
 #include "hdy-swipeable-private.h"
 
 G_BEGIN_DECLS
@@ -36,6 +37,7 @@ void             hdy_swipe_tracker_set_allow_mouse_drag (HdySwipeTracker *self,
 gboolean         hdy_swipe_tracker_captured_event (HdySwipeTracker *self,
                                                    GdkEvent        *event);
 
+_HDY_DEPRECATED
 void             hdy_swipe_tracker_confirm_swipe (HdySwipeTracker *self,
                                                   gdouble          distance,
                                                   gdouble         *snap_points,
