@@ -606,21 +606,8 @@ hdy_paginator_box_add (GtkContainer *container,
                        GtkWidget    *widget)
 {
   HdyPaginatorBox *self = HDY_PAGINATOR_BOX (container);
-  HdyPaginatorBoxChildInfo *info;
 
-  info = g_new0 (HdyPaginatorBoxChildInfo, 1);
-  info->widget = widget;
-
-  if (gtk_widget_get_realized (GTK_WIDGET (container)))
-    register_window (info, self);
-
-  self->children = g_list_append (self->children, info);
-
-  gtk_widget_set_parent (widget, GTK_WIDGET (container));
-
-  invalidate_drawing_cache (self);
-
-  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_N_PAGES]);
+  hdy_paginator_box_insert (self, widget, -1);
 }
 
 static void
@@ -886,11 +873,24 @@ hdy_paginator_box_insert (HdyPaginatorBox *self,
                           GtkWidget       *widget,
                           gint             position)
 {
+  HdyPaginatorBoxChildInfo *info;
+
   g_return_if_fail (HDY_IS_PAGINATOR_BOX (self));
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
-  gtk_container_add (GTK_CONTAINER (self), widget);
-  hdy_paginator_box_reorder (self, widget, position);
+  info = g_new0 (HdyPaginatorBoxChildInfo, 1);
+  info->widget = widget;
+
+  if (gtk_widget_get_realized (GTK_WIDGET (self)))
+    register_window (info, self);
+
+  self->children = g_list_insert (self->children, info, position);
+
+  gtk_widget_set_parent (widget, GTK_WIDGET (self));
+
+  invalidate_drawing_cache (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_N_PAGES]);
 }
 
 /**
