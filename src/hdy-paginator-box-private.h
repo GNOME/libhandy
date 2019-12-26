@@ -51,4 +51,11 @@ void             hdy_paginator_box_set_spacing (HdyPaginatorBox *self,
 GtkWidget       *hdy_paginator_box_get_nth_child (HdyPaginatorBox *self,
                                                   guint            n);
 
+gdouble         *hdy_paginator_box_get_snap_points        (HdyPaginatorBox *self,
+                                                           gint            *n_snap_points);
+void             hdy_paginator_box_get_range              (HdyPaginatorBox *self,
+                                                           gdouble         *lower,
+                                                           gdouble         *upper);
+gdouble          hdy_paginator_box_get_closest_snap_point (HdyPaginatorBox *self);
+
 G_END_DECLS
