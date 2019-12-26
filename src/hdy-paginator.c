@@ -124,25 +124,19 @@ hdy_paginator_begin_swipe (HdySwipeable *swipeable,
                            gboolean      direct)
 {
   HdyPaginator *self = HDY_PAGINATOR (swipeable);
-  gdouble distance, position, closest_point;
-  guint i, n_pages;
-  gdouble *points;
+  gdouble distance, progress, cancel_progress;
+  gint n_snap_points;
+  gdouble *snap_points;
 
   hdy_paginator_box_stop_animation (self->scrolling_box);
 
-  distance = hdy_paginator_box_get_distance (self->scrolling_box);
-  g_object_get (self->scrolling_box,
-                "position", &position,
-                "n-pages", &n_pages,
-                NULL);
-  closest_point = CLAMP (round (position), 0, n_pages - 1);
+  distance = hdy_swipeable_get_distance (swipeable);
+  snap_points = hdy_swipeable_get_snap_points (swipeable, &n_snap_points);
+  progress = hdy_swipeable_get_progress (swipeable);
+  cancel_progress = hdy_swipeable_get_cancel_progress (swipeable);
 
-  points = g_new (gdouble, n_pages);
-  for (i = 0; i < n_pages; i++)
-    points[i] = i;
-
-  hdy_swipe_tracker_confirm_swipe (self->tracker, distance, points, n_pages,
-                                   position, closest_point);
+  hdy_swipe_tracker_confirm_swipe (self->tracker, distance, snap_points,
+                                   n_snap_points, progress, cancel_progress);
 }
 
 static void
@@ -167,6 +161,72 @@ hdy_paginator_end_swipe (HdySwipeable *swipeable,
   }
 
   hdy_paginator_box_animate (self->scrolling_box, to, duration);
+}
+
+static gdouble
+hdy_paginator_get_distance (HdySwipeable *swipeable)
+{
+  HdyPaginator *self = HDY_PAGINATOR (swipeable);
+
+  return hdy_paginator_box_get_distance (self->scrolling_box);
+}
+
+static void
+hdy_paginator_get_range (HdySwipeable *swipeable,
+                         gdouble      *lower,
+                         gdouble      *upper)
+{
+  HdyPaginator *self = HDY_PAGINATOR (swipeable);
+
+  if (lower)
+    *lower = 0;
+
+  if (upper)
+    *upper = hdy_paginator_get_n_pages (self) - 1;
+}
+
+static gdouble *
+hdy_paginator_get_snap_points (HdySwipeable *swipeable,
+                               gint         *n_snap_points)
+{
+  HdyPaginator *self = HDY_PAGINATOR (swipeable);
+  guint i, n_pages;
+  gdouble *points;
+
+  n_pages = hdy_paginator_get_n_pages (self);
+
+  points = g_new (gdouble, n_pages);
+  for (i = 0; i < n_pages; i++)
+    points[i] = i;
+
+  if (n_snap_points)
+    *n_snap_points = n_pages;
+
+  return points;
+}
+
+static gdouble
+hdy_paginator_get_progress (HdySwipeable *swipeable)
+{
+  HdyPaginator *self = HDY_PAGINATOR (swipeable);
+
+  return hdy_paginator_get_position (self);
+}
+
+static gdouble
+hdy_paginator_get_cancel_progress (HdySwipeable *swipeable)
+{
+  gdouble position;
+  guint n_pages;
+
+  HdyPaginator *self = HDY_PAGINATOR (swipeable);
+
+  g_object_get (self->scrolling_box,
+                "position", &position,
+                "n-pages", &n_pages,
+                NULL);
+
+  return CLAMP (round (position), 0, n_pages - 1);
 }
 
 static void
@@ -753,6 +813,11 @@ hdy_paginator_swipeable_init (HdySwipeableInterface *iface)
   iface->begin_swipe = hdy_paginator_begin_swipe;
   iface->update_swipe = hdy_paginator_update_swipe;
   iface->end_swipe = hdy_paginator_end_swipe;
+  iface->get_distance = hdy_paginator_get_distance;
+  iface->get_range = hdy_paginator_get_range;
+  iface->get_snap_points = hdy_paginator_get_snap_points;
+  iface->get_progress = hdy_paginator_get_progress;
+  iface->get_cancel_progress = hdy_paginator_get_cancel_progress;
 }
 
 static void
