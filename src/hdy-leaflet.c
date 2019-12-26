@@ -193,6 +193,8 @@ typedef struct
 
     HdyLeafletChildTransitionType active_type;
     GtkPanDirection active_direction;
+    gboolean is_direct_swipe;
+    gint swipe_direction;
   } child_transition;
 
   HdyShadowHelper *shadow_helper;
@@ -435,6 +437,7 @@ hdy_leaflet_child_progress_updated (HdyLeaflet *self)
     }
 
     gtk_widget_queue_allocate (GTK_WIDGET (self));
+    priv->child_transition.swipe_direction = 0;
     hdy_shadow_helper_clear_cache (priv->shadow_helper);
   }
 }
@@ -516,6 +519,7 @@ hdy_leaflet_stop_child_transition (HdyLeaflet *self)
     priv->last_visible_child = NULL;
   }
 
+  priv->child_transition.swipe_direction = 0;
   hdy_shadow_helper_clear_cache (priv->shadow_helper);
 
   /* Move the bin window back in place as a child transition might have moved it. */
@@ -3468,43 +3472,13 @@ hdy_leaflet_begin_swipe (HdySwipeable *swipeable,
 {
   HdyLeaflet *self = HDY_LEAFLET (swipeable);
   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
-  gint n;
-  gdouble *points, distance, progress;
+  gint n_snap_points;
+  gdouble *snap_points, distance, progress, cancel_progress;
 
-  if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
-    distance = gtk_widget_get_allocated_width (GTK_WIDGET (self));
-  else
-    distance = gtk_widget_get_allocated_height (GTK_WIDGET (self));
+  priv->child_transition.is_direct_swipe = direct;
+  priv->child_transition.swipe_direction = direction;
 
   if (priv->child_transition.tick_id > 0) {
-    gint current_direction;
-    gboolean is_rtl;
-
-    is_rtl = (gtk_widget_get_direction (GTK_WIDGET (self)) == GTK_TEXT_DIR_RTL);
-
-    switch (priv->child_transition.active_direction) {
-    case GTK_PAN_DIRECTION_UP:
-      current_direction = 1;
-      break;
-    case GTK_PAN_DIRECTION_DOWN:
-      current_direction = -1;
-      break;
-    case GTK_PAN_DIRECTION_LEFT:
-      current_direction = is_rtl ? -1 : 1;
-      break;
-    case GTK_PAN_DIRECTION_RIGHT:
-      current_direction = is_rtl ? 1 : -1;
-      break;
-    default:
-      g_assert_not_reached ();
-    }
-
-    n = 2;
-    points = g_new0 (gdouble, n);
-    points[current_direction > 0 ? 1 : 0] = current_direction;
-
-    progress = get_current_progress (self);
-
     gtk_widget_remove_tick_callback (GTK_WIDGET (self), priv->child_transition.tick_id);
     priv->child_transition.tick_id = 0;
     priv->child_transition.is_gesture_active = TRUE;
@@ -3513,7 +3487,7 @@ hdy_leaflet_begin_swipe (HdySwipeable *swipeable,
     HdyLeafletChildInfo *child;
 
     if (((direction < 0 && priv->child_transition.can_swipe_back) ||
-        (direction > 0 && priv->child_transition.can_swipe_forward) ||
+         (direction > 0 && priv->child_transition.can_swipe_forward) ||
          !direct) && priv->fold == HDY_FOLD_FOLDED)
       child = find_swipeable_child (self, direction);
     else
@@ -3526,16 +3500,15 @@ hdy_leaflet_begin_swipe (HdySwipeable *swipeable,
 
       g_object_notify_by_pspec (G_OBJECT (self), props[PROP_CHILD_TRANSITION_RUNNING]);
     }
-
-    progress = 0;
-
-    n = child ? 2 : 1;
-    points = g_new0 (gdouble, n);
-    if (child)
-      points[direction > 0 ? 1 : 0] = direction;
   }
 
-  hdy_swipe_tracker_confirm_swipe (priv->tracker, distance, points, n, progress, 0);
+  distance = hdy_swipeable_get_distance (swipeable);
+  snap_points = hdy_swipeable_get_snap_points (swipeable, &n_snap_points);
+  progress = hdy_swipeable_get_progress (swipeable);
+  cancel_progress = hdy_swipeable_get_cancel_progress (swipeable);
+
+  hdy_swipe_tracker_confirm_swipe (priv->tracker, distance, snap_points,
+                                   n_snap_points, progress, cancel_progress);
 }
 
 static void
@@ -3579,9 +3552,91 @@ hdy_leaflet_end_swipe (HdySwipeable    *swipeable,
   }
 
   priv->child_transition.is_gesture_active = FALSE;
+
   hdy_leaflet_child_progress_updated (self);
 
   gtk_widget_queue_draw (GTK_WIDGET (self));
+}
+
+static gdouble
+hdy_leaflet_get_distance (HdySwipeable *swipeable)
+{
+  HdyLeaflet *self = HDY_LEAFLET (swipeable);
+  HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
+
+  if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
+    return gtk_widget_get_allocated_width (GTK_WIDGET (self));
+  else
+    return gtk_widget_get_allocated_height (GTK_WIDGET (self));
+}
+
+static void
+hdy_leaflet_get_range (HdySwipeable *swipeable,
+                       gdouble      *lower,
+                       gdouble      *upper)
+{
+  HdyLeaflet *self = HDY_LEAFLET (swipeable);
+  HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
+
+  if (priv->child_transition.tick_id > 0 ||
+      priv->child_transition.is_gesture_active) {
+    gint current_direction;
+    gboolean is_rtl;
+
+    is_rtl = (gtk_widget_get_direction (GTK_WIDGET (self)) == GTK_TEXT_DIR_RTL);
+
+    switch (priv->child_transition.active_direction) {
+    case GTK_PAN_DIRECTION_UP:
+      current_direction = 1;
+      break;
+    case GTK_PAN_DIRECTION_DOWN:
+      current_direction = -1;
+      break;
+    case GTK_PAN_DIRECTION_LEFT:
+      current_direction = is_rtl ? -1 : 1;
+      break;
+    case GTK_PAN_DIRECTION_RIGHT:
+      current_direction = is_rtl ? 1 : -1;
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+
+    if (lower)
+      *lower = MIN (0, current_direction);
+
+    if (upper)
+      *upper = MAX (0, current_direction);
+  } else {
+    HdyLeafletChildInfo *child;
+
+    if (((priv->child_transition.swipe_direction < 0 && priv->child_transition.can_swipe_back) ||
+         (priv->child_transition.swipe_direction > 0 && priv->child_transition.can_swipe_forward) ||
+         !priv->child_transition.is_direct_swipe) && priv->fold == HDY_FOLD_FOLDED)
+      child = find_swipeable_child (self, priv->child_transition.swipe_direction);
+    else
+      child = NULL;
+
+    if (lower)
+      *lower = MIN (0, child ? priv->child_transition.swipe_direction : 0);
+
+    if (upper)
+      *upper = MAX (0, child ? priv->child_transition.swipe_direction : 0);
+  }
+}
+
+static gdouble
+hdy_leaflet_get_progress (HdySwipeable *swipeable)
+{
+  HdyLeaflet *self = HDY_LEAFLET (swipeable);
+
+  return get_current_progress (self);
+}
+
+static gdouble
+hdy_leaflet_get_cancel_progress (HdySwipeable *swipeable)
+{
+  return 0;
 }
 
 static gboolean
@@ -3920,4 +3975,8 @@ hdy_leaflet_swipeable_init (HdySwipeableInterface *iface)
   iface->begin_swipe = hdy_leaflet_begin_swipe;
   iface->update_swipe = hdy_leaflet_update_swipe;
   iface->end_swipe = hdy_leaflet_end_swipe;
+  iface->get_distance = hdy_leaflet_get_distance;
+  iface->get_range = hdy_leaflet_get_range;
+  iface->get_progress = hdy_leaflet_get_progress;
+  iface->get_cancel_progress = hdy_leaflet_get_cancel_progress;
 }
