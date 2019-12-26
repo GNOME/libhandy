@@ -21,10 +21,10 @@ G_DECLARE_FINAL_TYPE (HdyPaginatorBox, hdy_paginator_box, HDY, PAGINATOR_BOX, Gt
 HdyPaginatorBox *hdy_paginator_box_new (void);
 
 void             hdy_paginator_box_insert (HdyPaginatorBox *self,
-                                           GtkWidget       *child,
+                                           GtkWidget       *widget,
                                            gint             position);
 void             hdy_paginator_box_reorder (HdyPaginatorBox *self,
-                                            GtkWidget       *child,
+                                            GtkWidget       *widget,
                                             gint             position);
 
 void             hdy_paginator_box_animate (HdyPaginatorBox *self,
