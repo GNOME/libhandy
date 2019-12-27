@@ -33,6 +33,9 @@ struct _HdyPaginatorBoxChildInfo
   GdkWindow *window;
   gint position;
   gboolean visible;
+  gdouble size;
+  gdouble snap_point;
+
   cairo_surface_t *surface;
   cairo_region_t *dirty_region;
 };
@@ -132,6 +135,25 @@ find_child_info_by_window (HdyPaginatorBox *self,
   }
 
   return NULL;
+}
+
+static HdyPaginatorBoxChildInfo *
+get_closest_child_at (HdyPaginatorBox *self,
+                      gdouble          position)
+{
+  GList *l;
+  HdyPaginatorBoxChildInfo *closest_child = NULL;
+
+  for (l = self->children; l; l = l->next) {
+    HdyPaginatorBoxChildInfo *child = l->data;
+
+    if (!closest_child ||
+        ABS (closest_child->snap_point - position) >
+        ABS (child->snap_point - position))
+      closest_child = child;
+  }
+
+  return closest_child;
 }
 
 static void
@@ -434,6 +456,7 @@ update_windows (HdyPaginatorBox *self)
   GtkAllocation alloc;
   gint x, y, offset;
   gboolean is_rtl;
+  gdouble snap_point;
 
   if (!gtk_widget_get_realized (GTK_WIDGET (self)))
     return;
@@ -457,8 +480,12 @@ update_windows (HdyPaginatorBox *self)
   else
     x -= offset;
 
+  snap_point = 0;
+
   for (children = self->children; children; children = children->next) {
     HdyPaginatorBoxChildInfo *child_info = children->data;
+
+    child_info->snap_point = snap_point;
 
     if (!gtk_widget_get_visible (child_info->widget))
       continue;
@@ -479,11 +506,13 @@ update_windows (HdyPaginatorBox *self)
       invalidate_cache_for_child (self, child_info);
 
     if (self->orientation == GTK_ORIENTATION_VERTICAL)
-      y += self->distance;
+      y += self->distance * child_info->size;
     else if (is_rtl)
-      x -= self->distance;
+      x -= self->distance * child_info->size;
     else
-      x += self->distance;
+      x += self->distance * child_info->size;
+
+    snap_point += child_info->size;
   }
 }
 
@@ -624,7 +653,6 @@ hdy_paginator_box_remove (GtkContainer *container,
                           GtkWidget    *widget)
 {
   HdyPaginatorBox *self = HDY_PAGINATOR_BOX (container);
-  gint index;
   gdouble closest_point;
   HdyPaginatorBoxChildInfo *info;
 
@@ -635,14 +663,13 @@ hdy_paginator_box_remove (GtkContainer *container,
   closest_point = hdy_paginator_box_get_closest_snap_point (self);
 
   gtk_widget_unparent (widget);
-  index = g_list_index (self->children, info);
   self->children = g_list_remove (self->children, info);
 
   if (gtk_widget_get_realized (GTK_WIDGET (container)))
     unregister_window (info, self);
 
-  if (closest_point >= index)
-    shift_position (self, -1);
+  if (closest_point >= info->snap_point)
+    shift_position (self, -info->size);
   else
     gtk_widget_queue_allocate (GTK_WIDGET (self));
 
@@ -905,22 +932,35 @@ hdy_paginator_box_insert (HdyPaginatorBox *self,
                           gint             position)
 {
   HdyPaginatorBoxChildInfo *info;
-  gdouble closest_point;
+  gdouble orig_point, closest_point;
+  GList *prev_link;
 
   g_return_if_fail (HDY_IS_PAGINATOR_BOX (self));
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
   info = g_new0 (HdyPaginatorBoxChildInfo, 1);
   info->widget = widget;
+  info->size = 1;
 
   if (gtk_widget_get_realized (GTK_WIDGET (self)))
     register_window (info, self);
 
   closest_point = hdy_paginator_box_get_closest_snap_point (self);
 
-  self->children = g_list_insert (self->children, info, position);
-  if (closest_point >= position && position >= 0)
-    shift_position (self, 1);
+  if (position >= 0)
+    prev_link = g_list_nth (self->children, position);
+  else
+    prev_link = NULL;
+
+  if (prev_link)
+    orig_point = ((HdyPaginatorBoxChildInfo *) prev_link->data)->snap_point;
+  else
+    orig_point = -1;
+
+  self->children = g_list_insert_before (self->children, prev_link, info);
+
+  if (closest_point >= orig_point && orig_point >= 0)
+    shift_position (self, info->size);
 
   gtk_widget_set_parent (widget, GTK_WIDGET (self));
 
@@ -947,10 +987,10 @@ hdy_paginator_box_reorder (HdyPaginatorBox *self,
                            GtkWidget       *widget,
                            gint             position)
 {
-  HdyPaginatorBoxChildInfo *info;
-  GList *link;
+  HdyPaginatorBoxChildInfo *info, *prev_info;
+  GList *link, *prev_link;
   gint old_position;
-  gdouble closest_point;
+  gdouble closest_point, old_point, new_point;
 
   g_return_if_fail (HDY_IS_PAGINATOR_BOX (self));
   g_return_if_fail (GTK_IS_WIDGET (widget));
@@ -960,23 +1000,29 @@ hdy_paginator_box_reorder (HdyPaginatorBox *self,
   info = find_child_info (self, widget);
   link = g_list_find (self->children, info);
   old_position = g_list_position (self->children, link);
-  self->children = g_list_delete_link (self->children, link);
+
+  if (position == old_position)
+    return;
+
+  old_point = ((HdyPaginatorBoxChildInfo *) link->data)->snap_point;
+
   if (position < 0 || position >= hdy_paginator_box_get_n_pages (self))
-    link = NULL;
-  else {
-    if (position > old_position)
-      position--;
-    link = g_list_nth (self->children, position);
-  }
+    prev_link = g_list_last (self->children);
+  else
+    prev_link = g_list_nth (self->children, position);
 
-  self->children = g_list_insert_before (self->children, link, info);
+  prev_info = prev_link->data;
+  new_point = prev_info->snap_point - prev_info->size;
 
-  if (closest_point == old_position)
-    shift_position (self, position - old_position);
-  else if (old_position > closest_point && closest_point >= position)
-    shift_position (self, 1);
-  else if (position >= closest_point && closest_point > old_position)
-    shift_position (self, -1);
+  self->children = g_list_remove_link (self->children, link);
+  self->children = g_list_insert_before (self->children, prev_link, link->data);
+
+  if (closest_point == old_point)
+    shift_position (self, new_point - old_point);
+  else if (old_point > closest_point && closest_point >= new_point)
+    shift_position (self, info->size);
+  else if (new_point >= closest_point && closest_point > old_point)
+    shift_position (self, -info->size);
 }
 
 /**
@@ -1003,12 +1049,14 @@ hdy_paginator_box_scroll_to (HdyPaginatorBox *self,
   GdkFrameClock *frame_clock;
   gint64 frame_time;
   gdouble position;
+  HdyPaginatorBoxChildInfo *child;
 
   g_return_if_fail (HDY_IS_PAGINATOR_BOX (self));
   g_return_if_fail (GTK_IS_WIDGET (widget));
   g_return_if_fail (duration >= 0);
 
-  position = find_child_index (self, widget);
+  child = find_child_info (self, widget);
+  position = child->snap_point;
 
   hdy_paginator_box_stop_animation (self);
 
@@ -1237,14 +1285,20 @@ hdy_paginator_box_get_snap_points (HdyPaginatorBox *self,
 {
   guint i, n_pages;
   gdouble *points;
+  GList *l;
 
   g_return_val_if_fail (HDY_IS_PAGINATOR_BOX (self), NULL);
 
-  n_pages = hdy_paginator_box_get_n_pages (self);
+  n_pages = MAX (hdy_paginator_box_get_n_pages (self), 1);
 
-  points = g_new (gdouble, n_pages);
-  for (i = 0; i < n_pages; i++)
-    points[i] = i;
+  points = g_new0 (gdouble, n_pages);
+
+  i = 0;
+  for (l = self->children; l; l = l->next) {
+    HdyPaginatorBoxChildInfo *info = l->data;
+
+    points[i++] = info->snap_point;
+  }
 
   if (n_snap_points)
     *n_snap_points = n_pages;
@@ -1267,13 +1321,19 @@ hdy_paginator_box_get_range (HdyPaginatorBox *self,
                              gdouble         *lower,
                              gdouble         *upper)
 {
+  GList *l;
+  HdyPaginatorBoxChildInfo *child;
+
   g_return_if_fail (HDY_IS_PAGINATOR_BOX (self));
+
+  l = g_list_last (self->children);
+  child = l ? l->data : NULL;
 
   if (lower)
     *lower = 0;
 
   if (upper)
-    *upper = hdy_paginator_box_get_n_pages (self) - 1;
+    *upper = child ? child->snap_point : 0;
 }
 
 /**
@@ -1289,10 +1349,14 @@ hdy_paginator_box_get_range (HdyPaginatorBox *self,
 gdouble
 hdy_paginator_box_get_closest_snap_point (HdyPaginatorBox *self)
 {
-  g_return_val_if_fail (HDY_IS_PAGINATOR_BOX (self), 0);
+  HdyPaginatorBoxChildInfo *closest_child;
 
-  return CLAMP (round (self->position), 0,
-                hdy_paginator_box_get_n_pages (self) - 1);
+  closest_child = get_closest_child_at (self, self->position);
+
+  if (!closest_child)
+    return 0;
+
+  return closest_child->snap_point;
 }
 
 /**
@@ -1313,7 +1377,7 @@ hdy_paginator_box_get_page_at_position (HdyPaginatorBox *self,
                                         gdouble          position)
 {
   gdouble lower, upper;
-  gint n;
+  HdyPaginatorBoxChildInfo *child;
 
   g_return_val_if_fail (HDY_IS_PAGINATOR_BOX (self), NULL);
 
@@ -1321,9 +1385,9 @@ hdy_paginator_box_get_page_at_position (HdyPaginatorBox *self,
 
   position = CLAMP (position, lower, upper);
 
-  n = round (position);
+  child = get_closest_child_at (self, position);
 
-  return hdy_paginator_box_get_nth_child (self, n);
+  return child->widget;
 }
 
 /**

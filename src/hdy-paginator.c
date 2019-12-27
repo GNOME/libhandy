@@ -223,11 +223,9 @@ static void
 animation_stopped_cb (HdyPaginator    *self,
                       HdyPaginatorBox *box)
 {
-  gdouble position;
   gint index;
 
-  position = hdy_paginator_box_get_position (self->scrolling_box);
-  index = round (position);
+  index = hdy_paginator_box_get_current_page_index (self->scrolling_box);
 
   g_signal_emit (self, signals[SIGNAL_PAGE_CHANGED], 0, index);
 }
@@ -557,7 +555,7 @@ handle_discrete_scroll_event (HdyPaginator *self,
   if (index == 0)
     return GDK_EVENT_PROPAGATE;
 
-  index += (gint) round (hdy_paginator_get_position (self));
+  index += hdy_paginator_box_get_current_page_index (self->scrolling_box);
   index = CLAMP (index, 0, (gint) hdy_paginator_get_n_pages (self) - 1);
 
   hdy_paginator_scroll_to (self, hdy_paginator_box_get_nth_child (self->scrolling_box, index));
