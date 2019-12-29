@@ -143,13 +143,10 @@ hdy_paginator_end_swipe (HdySwipeable *swipeable,
                          gdouble      to)
 {
   HdyPaginator *self = HDY_PAGINATOR (swipeable);
+  GtkWidget *child;
 
-  if (duration == 0) {
-    hdy_paginator_box_set_position (self->scrolling_box, to);
-    return;
-  }
-
-  hdy_paginator_box_animate (self->scrolling_box, to, duration);
+  child = hdy_paginator_box_get_page_at_position (self->scrolling_box, to);
+  hdy_paginator_box_scroll_to (self->scrolling_box, child, duration);
 }
 
 static gdouble
