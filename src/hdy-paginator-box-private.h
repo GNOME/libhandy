@@ -11,6 +11,7 @@
 #endif
 
 #include <gtk/gtk.h>
+#include "hdy-deprecation-macros.h"
 
 G_BEGIN_DECLS
 
@@ -27,6 +28,7 @@ void             hdy_paginator_box_reorder (HdyPaginatorBox *self,
                                             GtkWidget       *widget,
                                             gint             position);
 
+_HDY_DEPRECATED
 void             hdy_paginator_box_animate (HdyPaginatorBox *self,
                                             gdouble          position,
                                             gint64           duration);
