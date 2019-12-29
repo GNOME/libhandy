@@ -980,13 +980,13 @@ hdy_paginator_box_reorder (HdyPaginatorBox *self,
 }
 
 /**
- * hdy_paginator_box_animate:
+ * hdy_paginator_box_scroll_to:
  * @self: a #HdyPaginatorBox
- * @position: A value to animate to
- * @duration: Animation duration in milliseconds
+ * @widget: a child of @self
+ * @duration: animation duration in milliseconds
  *
- * Animates the widget's position to @position over the next @duration
- * milliseconds using easeOutCubic interpolator.
+ * Scrolls to @widget position over the next @duration milliseconds using
+ * easeOutCubic interpolator.
  *
  * If an animation was already running, it will be cancelled automatically.
  *
@@ -996,14 +996,19 @@ hdy_paginator_box_reorder (HdyPaginatorBox *self,
  * Since: 0.0.11
  */
 void
-hdy_paginator_box_animate (HdyPaginatorBox *self,
-                           gdouble          position,
-                           gint64           duration)
+hdy_paginator_box_scroll_to (HdyPaginatorBox *self,
+                             GtkWidget       *widget,
+                             gint64           duration)
 {
   GdkFrameClock *frame_clock;
   gint64 frame_time;
+  gdouble position;
 
   g_return_if_fail (HDY_IS_PAGINATOR_BOX (self));
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (duration >= 0);
+
+  position = find_child_index (self, widget);
 
   hdy_paginator_box_stop_animation (self);
 
@@ -1070,33 +1075,6 @@ hdy_paginator_box_stop_animation (HdyPaginatorBox *self)
   gtk_widget_remove_tick_callback (GTK_WIDGET (self),
                                    self->animation_data.tick_cb_id);
   self->animation_data.tick_cb_id = 0;
-}
-
-/**
- * hdy_paginator_box_scroll_to:
- * @self: a #HdyPaginatorBox
- * @widget: a child of @self
- * @duration: animation duration in milliseconds
- *
- * Scrolls to @widget position with an animation. If @duration is 0, changes
- * the position immediately.
- *
- * Since: 0.0.11
- */
-void
-hdy_paginator_box_scroll_to (HdyPaginatorBox *self,
-                             GtkWidget       *widget,
-                             gint64           duration)
-{
-  gint index;
-
-  g_return_if_fail (HDY_IS_PAGINATOR_BOX (self));
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (duration >= 0);
-
-  index = find_child_index (self, widget);
-
-  hdy_paginator_box_animate (self, index, duration);
 }
 
 /**
