@@ -284,6 +284,32 @@ test_hdy_paginator_allow_mouse_drag (void)
   g_assert_cmpint (notified, ==, 2);
 }
 
+static void
+test_hdy_paginator_reveal_duration (void)
+{
+  HdyPaginator *paginator = HDY_PAGINATOR (hdy_paginator_new ());
+  uint duration;
+
+  notified = 0;
+  g_signal_connect (paginator, "notify::reveal-duration", G_CALLBACK (notify_cb), NULL);
+
+  /* Accessors */
+  g_assert_cmpuint (hdy_paginator_get_reveal_duration (paginator), ==, 0);
+  hdy_paginator_set_reveal_duration (paginator, 200);
+  g_assert_cmpuint (hdy_paginator_get_reveal_duration (paginator), ==, 200);
+  g_assert_cmpint (notified, ==, 1);
+
+  /* Property */
+  g_object_set (paginator, "reveal-duration", 500, NULL);
+  g_object_get (paginator, "reveal-duration", &duration, NULL);
+  g_assert_cmpuint (duration, ==, 500);
+  g_assert_cmpint (notified, ==, 2);
+
+  /* Setting the same value should not notify */
+  hdy_paginator_set_reveal_duration (paginator, 500);
+  g_assert_cmpint (notified, ==, 2);
+}
+
 gint
 main (gint argc,
       gchar *argv[])
@@ -300,5 +326,6 @@ main (gint argc,
   g_test_add_func("/Handy/Paginator/spacing", test_hdy_paginator_spacing);
   g_test_add_func("/Handy/Paginator/animation_duration", test_hdy_paginator_animation_duration);
   g_test_add_func("/Handy/Paginator/allow_mouse_drag", test_hdy_paginator_allow_mouse_drag);
+  g_test_add_func("/Handy/Paginator/reveal_duration", test_hdy_paginator_reveal_duration);
   return g_test_run();
 }
