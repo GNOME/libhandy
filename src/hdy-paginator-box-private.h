@@ -27,15 +27,11 @@ void             hdy_paginator_box_reorder (HdyPaginatorBox *self,
                                             GtkWidget       *widget,
                                             gint             position);
 
-void             hdy_paginator_box_animate (HdyPaginatorBox *self,
-                                            gdouble          position,
-                                            gint64           duration);
-gboolean         hdy_paginator_box_is_animating (HdyPaginatorBox *self);
-void             hdy_paginator_box_stop_animation (HdyPaginatorBox *self);
-
 void             hdy_paginator_box_scroll_to (HdyPaginatorBox *self,
                                               GtkWidget       *widget,
                                               gint64           duration);
+gboolean         hdy_paginator_box_is_animating (HdyPaginatorBox *self);
+void             hdy_paginator_box_stop_animation (HdyPaginatorBox *self);
 
 guint            hdy_paginator_box_get_n_pages (HdyPaginatorBox *self);
 gdouble          hdy_paginator_box_get_distance (HdyPaginatorBox *self);
