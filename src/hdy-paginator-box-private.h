@@ -50,6 +50,10 @@ guint            hdy_paginator_box_get_spacing (HdyPaginatorBox *self);
 void             hdy_paginator_box_set_spacing (HdyPaginatorBox *self,
                                                 guint            spacing);
 
+guint            hdy_paginator_box_get_reveal_duration (HdyPaginatorBox *self);
+void             hdy_paginator_box_set_reveal_duration (HdyPaginatorBox *self,
+                                                        guint            reveal_duration);
+
 GtkWidget       *hdy_paginator_box_get_nth_child (HdyPaginatorBox *self,
                                                   guint            n);
 
