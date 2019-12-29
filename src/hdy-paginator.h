@@ -73,4 +73,7 @@ gboolean      hdy_paginator_get_allow_mouse_drag (HdyPaginator *self);
 void          hdy_paginator_set_allow_mouse_drag (HdyPaginator *self,
                                                   gboolean      allow_mouse_drag);
 
+guint         hdy_paginator_get_reveal_duration (HdyPaginator *self);
+void          hdy_paginator_set_reveal_duration (HdyPaginator *self,
+                                                 guint         reveal_duration);
 G_END_DECLS
