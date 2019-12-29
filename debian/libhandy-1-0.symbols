@@ -14,7 +14,6 @@ libhandy-1.so.0 libhandy-1-0 #MINVER#
  hdy_action_row_set_subtitle@LIBHANDY_1_0 0.0.6
  hdy_action_row_set_title@LIBHANDY_1_0 0.0.6
  hdy_action_row_set_use_underline@LIBHANDY_1_0 0.0.6
- hdy_carousel_box_animate@LIBHANDY_1_0 0.9.90
  hdy_carousel_box_get_distance@LIBHANDY_1_0 0.9.90
  hdy_carousel_box_get_n_pages@LIBHANDY_1_0 0.9.90
  hdy_carousel_box_get_nth_child@LIBHANDY_1_0 0.9.90
