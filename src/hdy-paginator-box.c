@@ -1306,3 +1306,25 @@ hdy_paginator_box_get_page_at_position (HdyPaginatorBox *self,
 
   return hdy_paginator_box_get_nth_child (self, n);
 }
+
+/**
+ * hdy_paginator_box_get_current_page_index:
+ * @self: a #HdyPaginatorBox
+ *
+ * Gets the index of the currently displayed page.
+ *
+ * Returns: the index of the current page.
+ *
+ * Since: 0.0.13
+ */
+gint
+hdy_paginator_box_get_current_page_index (HdyPaginatorBox *self)
+{
+  GtkWidget *child;
+
+  g_return_val_if_fail (HDY_IS_PAGINATOR_BOX (self), 0);
+
+  child = hdy_paginator_box_get_page_at_position (self, self->position);
+
+  return find_child_index (self, child);
+}

@@ -59,5 +59,6 @@ void             hdy_paginator_box_get_range              (HdyPaginatorBox *self
 gdouble          hdy_paginator_box_get_closest_snap_point (HdyPaginatorBox *self);
 GtkWidget       *hdy_paginator_box_get_page_at_position   (HdyPaginatorBox *self,
                                                            gdouble          position);
+gint             hdy_paginator_box_get_current_page_index (HdyPaginatorBox *self);
 
 G_END_DECLS
