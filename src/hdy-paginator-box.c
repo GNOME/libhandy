@@ -1275,3 +1275,34 @@ hdy_paginator_box_get_closest_snap_point (HdyPaginatorBox *self)
   return CLAMP (round (self->position), 0,
                 hdy_paginator_box_get_n_pages (self) - 1);
 }
+
+/**
+ * hdy_paginator_box_get_page_at_position:
+ * @self: a #HdyPaginatorBox
+ * @position: a scroll position
+ *
+ * Gets the page closest to @position. For example, if @position matches
+ * the current position, the returned widget will match the currently
+ * displayed page.
+ *
+ * Returns: the closest page.
+ *
+ * Since: 0.0.13
+ */
+GtkWidget *
+hdy_paginator_box_get_page_at_position (HdyPaginatorBox *self,
+                                        gdouble          position)
+{
+  gdouble lower, upper;
+  gint n;
+
+  g_return_val_if_fail (HDY_IS_PAGINATOR_BOX (self), NULL);
+
+  hdy_paginator_box_get_range (self, &lower, &upper);
+
+  position = CLAMP (position, lower, upper);
+
+  n = round (position);
+
+  return hdy_paginator_box_get_nth_child (self, n);
+}
