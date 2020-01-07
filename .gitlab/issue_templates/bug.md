@@ -5,10 +5,30 @@
  - [ ] build system
  - [ ] documentation
  - [ ] example application
+ - [ ] HdyActionRow
  - [ ] HdyArrows
  - [ ] HdyColumn
+ - [ ] HdyComboRow
  - [ ] HdyDialer
+ - [ ] HdyDialog
+ - [ ] HdyEnumValueObject
+ - [ ] HdyExpanderRow
+ - [ ] HdyHeaderBar
+ - [ ] HdyKeypad
  - [ ] HdyLeaflet
+ - [ ] HdyPaginator
+ - [ ] HdyPreferencesGroup
+ - [ ] HdyPreferencesPage
+ - [ ] HdyPreferencesRow
+ - [ ] HdyPreferencesWindow
+ - [ ] HdySearchBar
+ - [ ] HdySqueezer
+ - [ ] HdySwipeable
+ - [ ] HdySwipeGroup
+ - [ ] HdyTitleBar
+ - [ ] HdyValueObject
+ - [ ] HdyViewSwitcher
+ - [ ] HdyViewSwitcherBar
  - [ ] somewhere else (please elaborate)
 
 ## What is the actual behaviour?
