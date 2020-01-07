@@ -38,13 +38,6 @@ libhandy-0.0.so.0 libhandy-0.0-0 #MINVER#
  hdy_dialer_button_get_symbols@LIBHANDY_0_0_0 0.0.3
  hdy_dialer_button_get_type@LIBHANDY_0_0_0 0.0~git20180429
  hdy_dialer_button_new@LIBHANDY_0_0_0 0.0~git20180429
- hdy_dialer_cycle_button_get_current_symbol@LIBHANDY_0_0_0 0.0~git20180429
- hdy_dialer_cycle_button_get_cycle_timeout@LIBHANDY_0_0_0 0.0~git20180429
- hdy_dialer_cycle_button_get_type@LIBHANDY_0_0_0 0.0~git20180429
- hdy_dialer_cycle_button_is_cycling@LIBHANDY_0_0_0 0.0~git20180429
- hdy_dialer_cycle_button_new@LIBHANDY_0_0_0 0.0~git20180429
- hdy_dialer_cycle_button_set_cycle_timeout@LIBHANDY_0_0_0 0.0~git20180429
- hdy_dialer_cycle_button_stop_cycle@LIBHANDY_0_0_0 0.0~git20180429
  hdy_dialog_get_narrow@LIBHANDY_0_0_0 0.0.11
  hdy_dialog_get_type@LIBHANDY_0_0_0 0.0.7
  hdy_dialog_new@LIBHANDY_0_0_0 0.0.7
