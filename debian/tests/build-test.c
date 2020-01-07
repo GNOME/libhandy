@@ -6,5 +6,5 @@ int
 main (int    argc,
       char **argv)
 {
-   hdy_dialer_new ();  
+   hdy_keypad_new (TRUE, FALSE);
 }
