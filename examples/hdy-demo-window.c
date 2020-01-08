@@ -1,7 +1,6 @@
 #include "hdy-demo-window.h"
 
 #include <glib/gi18n.h>
-#define HANDY_USE_UNSTABLE_API
 #include <handy.h>
 #include "hdy-view-switcher-demo-window.h"
 
