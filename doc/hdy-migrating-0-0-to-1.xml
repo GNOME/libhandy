@@ -36,6 +36,16 @@
       you should first get your application to build and work with Handy 0.0.13.
     </para>
 
+    <refsect3>
+      <title>Do not use the static build option</title>
+      <para>
+        Static linking support has been removed, and so did the static build
+        option.
+        You must adapt you program to link to the library dynamically, using
+        the package_subdir build option if needed.
+      </para>
+    </refsect3>
+
   </refsect2>
 
   <refsect2>
