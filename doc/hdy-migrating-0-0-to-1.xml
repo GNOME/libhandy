@@ -60,6 +60,14 @@
       either impossible or impractical.
     </para>
 
+    <refsect3>
+      <title>Adapt to HdyActionRow API changes</title>
+      <para>
+        Action items were packed from the end toward the start of the row. It is
+        now reversed, and widgets have to be packed from the start to the end.
+      </para>
+    </refsect3>
+
   </refsect2>
 
 </refentry>
