@@ -67,6 +67,18 @@ test_hdy_preferences_group_description (void)
 }
 
 
+static void
+test_hdy_preferences_group_listbox (void)
+{
+  g_autoptr (HdyPreferencesGroup) group = NULL;
+
+  group = g_object_ref_sink (HDY_PREFERENCES_GROUP (hdy_preferences_group_new ()));
+  g_assert_nonnull (group);
+
+  g_assert_nonnull (hdy_preferences_group_get_listbox (group));
+}
+
+
 gint
 main (gint argc,
       gchar *argv[])
@@ -77,6 +89,7 @@ main (gint argc,
   g_test_add_func("/Handy/PreferencesGroup/add", test_hdy_preferences_group_add);
   g_test_add_func("/Handy/PreferencesGroup/title", test_hdy_preferences_group_title);
   g_test_add_func("/Handy/PreferencesGroup/description", test_hdy_preferences_group_description);
+  g_test_add_func("/Handy/PreferencesGroup/listbox", test_hdy_preferences_group_listbox);
 
   return g_test_run();
 }

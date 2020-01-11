@@ -423,3 +423,23 @@ hdy_preferences_group_add_preferences_to_model (HdyPreferencesGroup *self,
 
   gtk_container_foreach (GTK_CONTAINER (priv->listbox), (GtkCallback) add_preferences_to_model, model);
 }
+
+/**
+ * hdy_preferences_group_get_listbox:
+ * @self: a #HdyPreferencesGroup
+ *
+ * Get internal listbox widget from @self.
+ *
+ * Returns: (transfer none) (nullable): the #GtkListBox or %NULL if no widget is set
+ *
+ * Since: 0.0.14
+ */
+GtkWidget *
+hdy_preferences_group_get_listbox (HdyPreferencesGroup *self)
+{
+  HdyPreferencesGroupPrivate *priv = hdy_preferences_group_get_instance_private (self);
+
+  g_return_val_if_fail (HDY_IS_PREFERENCES_GROUP (self), NULL);
+
+  return GTK_WIDGET (priv->listbox);
+}
