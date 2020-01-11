@@ -37,4 +37,6 @@ const gchar *hdy_preferences_group_get_description (HdyPreferencesGroup *self);
 void         hdy_preferences_group_set_description (HdyPreferencesGroup *self,
                                                     const gchar         *description);
 
+GtkWidget  *hdy_preferences_group_get_listbox (HdyPreferencesGroup *self);
+
 G_END_DECLS
