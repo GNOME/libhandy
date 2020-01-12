@@ -1,9 +1,15 @@
 stages:
+  - lint
   - build
   - docs
   - test
   - package
   - deploy
+
+api-visibility:
+  stage: lint
+  script:
+    - lint/api-visibility.sh
 
 before_script:
   - apt-get -y update
