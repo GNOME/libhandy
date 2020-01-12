@@ -5,6 +5,11 @@ stages:
   - package
   - deploy
 
+api-visibility:
+  stage: build
+  script:
+    - lint/api-visibility.sh
+
 before_script:
   - apt-get -y update
   - apt-get -y install build-essential libgtk-3-doc lcov
