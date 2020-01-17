@@ -6,3 +6,9 @@ stacksidebar list {
 hdypaginator.horizontal .paginator-icon {
   -gtk-icon-transform: rotate(90deg);
 }
+
+hdyleaflet.folded .sidebar row:selected:not(:hover) {
+  background-color: rgba(0,0,0,0);
+  border-color: @theme_fg_color;
+  color: @theme_fg_color;
+}
