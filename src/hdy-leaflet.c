@@ -2037,18 +2037,22 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
   HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
   GtkOrientation orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget));
   gboolean is_horizontal = orientation == GTK_ORIENTATION_HORIZONTAL;
+  GtkRequestedSize *sizes;
   GtkAllocation remaining_alloc;
   GList *directed_children, *children;
   HdyLeafletChildInfo *child_info;
-  gint homogeneous_size = 0, min_size, extra_size;
+  gint homogeneous_size = 0, min_size = 0, extra_size = 0;
   gint per_child_extra, n_extra_widgets;
   gint n_visible_children, n_expand_children;
   gboolean box_homogeneous;
+  gint i;
 
   directed_children = get_directed_children (self);
 
   box_homogeneous = (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_HORIZONTAL] && is_horizontal) ||
                     (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_VERTICAL] && !is_horizontal);
+
+  /* Compute the number of visible and expanded children. */
 
   n_visible_children = n_expand_children = 0;
   for (children = directed_children; children; children = children->next) {
@@ -2073,40 +2077,45 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
     if (is_horizontal) {
       homogeneous_size = allocation->width / n_visible_children;
       n_expand_children = allocation->width % n_visible_children;
-      min_size = allocation->width - n_expand_children;
+      extra_size = allocation->width - n_expand_children;
     }
     else {
       homogeneous_size = allocation->height / n_visible_children;
       n_expand_children = allocation->height % n_visible_children;
-      min_size = allocation->height - n_expand_children;
+      extra_size = allocation->height - n_expand_children;
     }
   }
   else {
-    min_size = 0;
-    if (is_horizontal) {
-      for (children = directed_children; children; children = children->next) {
-        child_info = children->data;
+    sizes = g_newa (GtkRequestedSize, n_visible_children);
 
-        min_size += child_info->nat.width;
-      }
-    }
-    else {
-      for (children = directed_children; children; children = children->next) {
-        child_info = children->data;
+    i = 0;
+    for (children = directed_children; children; children = children->next) {
+      child_info = children->data;
 
-        min_size += child_info->nat.height;
+      if (!child_info->visible)
+        continue;
+
+      if (is_horizontal) {
+        sizes[i].minimum_size = child_info->min.width;
+        sizes[i].natural_size = child_info->nat.width;
+      } else {
+        sizes[i].minimum_size = child_info->min.height;
+        sizes[i].natural_size = child_info->nat.height;
       }
+      min_size += sizes[i].minimum_size;
+      i++;
     }
+
+    if (is_horizontal)
+      extra_size = gtk_distribute_natural_allocation (MAX (0, allocation->width - min_size), n_visible_children, sizes);
+    else
+      extra_size = gtk_distribute_natural_allocation (MAX (0, allocation->height - min_size), n_visible_children, sizes);
   }
 
   remaining_alloc.x = 0;
   remaining_alloc.y = 0;
   remaining_alloc.width = allocation->width;
   remaining_alloc.height = allocation->height;
-
-  extra_size = is_horizontal ?
-    remaining_alloc.width - min_size :
-    remaining_alloc.height - min_size;
 
   per_child_extra = 0, n_extra_widgets = 0;
   if (n_expand_children > 0) {
@@ -2115,6 +2124,8 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
   }
 
   /* Compute children allocation */
+
+  i = 0;
   for (children = directed_children; children; children = children->next) {
     child_info = children->data;
 
@@ -2133,7 +2144,7 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
         }
       }
       else {
-        child_info->alloc.width = child_info->nat.width;
+        child_info->alloc.width = sizes[i].minimum_size;
         if (gtk_widget_compute_expand (child_info->widget, orientation)) {
           child_info->alloc.width += per_child_extra;
           if (n_extra_widgets > 0) {
@@ -2156,7 +2167,7 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
         }
       }
       else {
-        child_info->alloc.height = child_info->nat.height;
+        child_info->alloc.height = sizes[i].minimum_size;
         if (gtk_widget_compute_expand (child_info->widget, orientation)) {
           child_info->alloc.height += per_child_extra;
           if (n_extra_widgets > 0) {
@@ -2170,6 +2181,8 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
       remaining_alloc.y += child_info->alloc.height;
       remaining_alloc.height -= child_info->alloc.height;
     }
+
+    i++;
   }
 
   hdy_leaflet_size_allocate_unfolded_animate (self, allocation);
