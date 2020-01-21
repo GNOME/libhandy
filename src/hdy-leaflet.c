@@ -2197,7 +2197,7 @@ hdy_leaflet_size_allocate (GtkWidget     *widget,
   GtkOrientation orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget));
   GList *directed_children, *children;
   HdyLeafletChildInfo *child_info;
-  gint nat_box_size, nat_max_size, visible_children;
+  gint min_box_size = 0, min_max_size = 0, nat_box_size = 0, nat_max_size = 0, visible_children;
   gboolean folded;
 
   directed_children = get_directed_children (self);
@@ -2221,8 +2221,6 @@ hdy_leaflet_size_allocate (GtkWidget     *widget,
   }
 
   /* Check whether the children should be stacked or not. */
-  nat_box_size = 0;
-  nat_max_size = 0;
   visible_children = 0;
   if (orientation == GTK_ORIENTATION_HORIZONTAL) {
     for (children = directed_children; children; children = children->next) {
@@ -2232,13 +2230,16 @@ hdy_leaflet_size_allocate (GtkWidget     *widget,
       if (!child_info->widget)
         continue;
 
+      min_box_size += child_info->min.width;
+      min_max_size = MAX (min_max_size, child_info->min.width);
       nat_box_size += child_info->nat.width;
       nat_max_size = MAX (nat_max_size, child_info->nat.width);
       visible_children++;
     }
     if (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_HORIZONTAL])
       nat_box_size = nat_max_size * visible_children;
-    folded = allocation->width < nat_box_size;
+    /* FIXME allow folding on the natural *or* the minimum size, maybe? */
+    folded = allocation->width < min_box_size;
   }
   else {
     for (children = directed_children; children; children = children->next) {
@@ -2248,13 +2249,18 @@ hdy_leaflet_size_allocate (GtkWidget     *widget,
       if (!child_info->widget)
         continue;
 
+      min_box_size += child_info->min.height;
+      min_max_size = MAX (min_max_size, child_info->min.height);
       nat_box_size += child_info->nat.height;
       nat_max_size = MAX (nat_max_size, child_info->nat.height);
       visible_children++;
     }
-    if (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_VERTICAL])
+    if (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_VERTICAL]) {
+      min_box_size = min_max_size * visible_children;
       nat_box_size = nat_max_size * visible_children;
-    folded = allocation->height < nat_box_size;
+    }
+    /* FIXME allow folding on the natural *or* the minimum size, maybe? */
+    folded = allocation->height < min_box_size;
   }
 
   hdy_leaflet_set_fold (self, folded ? HDY_FOLD_FOLDED : HDY_FOLD_UNFOLDED);
