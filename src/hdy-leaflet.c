@@ -1946,6 +1946,95 @@ hdy_leaflet_size_allocate_folded (GtkWidget     *widget,
 }
 
 static void
+hdy_leaflet_size_allocate_unfolded_animate (HdyLeaflet    *self,
+                                            GtkAllocation *allocation)
+{
+  HdyLeafletPrivate *priv = hdy_leaflet_get_instance_private (self);
+  gboolean is_horizontal = gtk_orientable_get_orientation (GTK_ORIENTABLE (self)) == GTK_ORIENTATION_HORIZONTAL;
+  GList *directed_children = get_directed_children (self);
+  HdyLeafletChildInfo *visible_child = priv->visible_child;
+  HdyLeafletTransitionType mode_transition_type = get_mode_transition_type (self);
+  GtkTextDirection direction = gtk_widget_get_direction (GTK_WIDGET (self));
+  GList *children;
+  HdyLeafletChildInfo *child_info;
+  gint start_pad, end_pad;
+  gboolean under;
+
+
+  if (is_horizontal) {
+    start_pad = (gint) ((visible_child->alloc.x) * (1.0 - priv->mode_transition.current_pos));
+    end_pad = (gint) ((allocation->width - (visible_child->alloc.x + visible_child->alloc.width)) * (1.0 - priv->mode_transition.current_pos));
+
+    priv->mode_transition.start_distance = visible_child->alloc.x;
+    priv->mode_transition.end_distance = allocation->width - (visible_child->alloc.x + visible_child->alloc.width);
+  } else {
+    start_pad = (gint) ((visible_child->alloc.y) * (1.0 - priv->mode_transition.current_pos));
+    end_pad = (gint) ((allocation->height - (visible_child->alloc.y + visible_child->alloc.height)) * (1.0 - priv->mode_transition.current_pos));
+
+    priv->mode_transition.start_distance = visible_child->alloc.y;
+    priv->mode_transition.end_distance = allocation->height - (visible_child->alloc.y + visible_child->alloc.height);
+  }
+
+  if (is_horizontal)
+    under = (mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_LTR) ||
+            (mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_RTL);
+  else
+    under = mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_OVER;
+  for (children = directed_children; children; children = children->next) {
+    child_info = children->data;
+
+    if (child_info == visible_child)
+      break;
+
+    if (!child_info->visible)
+      continue;
+
+    if (under)
+      continue;
+
+    if (is_horizontal)
+      child_info->alloc.x -= start_pad;
+    else
+      child_info->alloc.y -= start_pad;
+  }
+
+  priv->mode_transition.start_progress = under ? priv->mode_transition.current_pos : 1;
+
+  if (is_horizontal)
+    under = (mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_LTR) ||
+            (mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_RTL);
+  else
+    under = mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_UNDER;
+  for (children = g_list_last (directed_children); children; children = children->prev) {
+    child_info = children->data;
+
+    if (child_info == visible_child)
+      break;
+
+    if (!child_info->visible)
+      continue;
+
+    if (under)
+      continue;
+
+    if (is_horizontal)
+      child_info->alloc.x += end_pad;
+    else
+      child_info->alloc.y += end_pad;
+  }
+
+  priv->mode_transition.end_progress = under ? priv->mode_transition.current_pos : 1;
+
+  if (is_horizontal) {
+    visible_child->alloc.x -= start_pad;
+    visible_child->alloc.width += start_pad + end_pad;
+  } else {
+    visible_child->alloc.y -= start_pad;
+    visible_child->alloc.height += start_pad + end_pad;
+  }
+}
+
+static void
 hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
                                     GtkAllocation *allocation)
 {
@@ -1954,18 +2043,13 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
   GtkOrientation orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget));
   GtkAllocation remaining_alloc;
   GList *directed_children, *children;
-  HdyLeafletChildInfo *child_info, *visible_child;
+  HdyLeafletChildInfo *child_info;
   gint homogeneous_size = 0, min_size, extra_size;
   gint per_child_extra, n_extra_widgets;
   gint n_visible_children, n_expand_children;
-  gint start_pad = 0, end_pad = 0;
   gboolean box_homogeneous;
-  HdyLeafletTransitionType mode_transition_type;
-  GtkTextDirection direction;
-  gboolean under;
 
   directed_children = get_directed_children (self);
-  visible_child = priv->visible_child;
 
   box_homogeneous = (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_HORIZONTAL] && orientation == GTK_ORIENTATION_HORIZONTAL) ||
                     (priv->homogeneous[HDY_FOLD_UNFOLDED][GTK_ORIENTATION_VERTICAL] && orientation == GTK_ORIENTATION_VERTICAL);
@@ -2092,84 +2176,7 @@ hdy_leaflet_size_allocate_unfolded (GtkWidget     *widget,
     }
   }
 
-  /* Apply animations. */
-
-  if (orientation == GTK_ORIENTATION_HORIZONTAL) {
-    start_pad = (gint) ((visible_child->alloc.x) * (1.0 - priv->mode_transition.current_pos));
-    end_pad = (gint) ((allocation->width - (visible_child->alloc.x + visible_child->alloc.width)) * (1.0 - priv->mode_transition.current_pos));
-
-    priv->mode_transition.start_distance = visible_child->alloc.x;
-    priv->mode_transition.end_distance = allocation->width - (visible_child->alloc.x + visible_child->alloc.width);
-  }
-  else {
-    start_pad = (gint) ((visible_child->alloc.y) * (1.0 - priv->mode_transition.current_pos));
-    end_pad = (gint) ((allocation->height - (visible_child->alloc.y + visible_child->alloc.height)) * (1.0 - priv->mode_transition.current_pos));
-
-    priv->mode_transition.start_distance = visible_child->alloc.y;
-    priv->mode_transition.end_distance = allocation->height - (visible_child->alloc.y + visible_child->alloc.height);
-  }
-
-  mode_transition_type = get_mode_transition_type (self);
-  direction = gtk_widget_get_direction (GTK_WIDGET (self));
-
-  if (orientation == GTK_ORIENTATION_HORIZONTAL)
-    under = (mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_LTR) ||
-            (mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_RTL);
-  else
-    under = mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_OVER;
-  for (children = directed_children; children; children = children->next) {
-    child_info = children->data;
-
-    if (child_info == visible_child)
-      break;
-
-    if (!child_info->visible)
-      continue;
-
-    if (under)
-      continue;
-
-    if (orientation == GTK_ORIENTATION_HORIZONTAL)
-      child_info->alloc.x -= start_pad;
-    else
-      child_info->alloc.y -= start_pad;
-  }
-
-  priv->mode_transition.start_progress = under ? priv->mode_transition.current_pos : 1;
-
-  if (orientation == GTK_ORIENTATION_HORIZONTAL)
-    under = (mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_UNDER && direction == GTK_TEXT_DIR_LTR) ||
-            (mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_OVER && direction == GTK_TEXT_DIR_RTL);
-  else
-    under = mode_transition_type == HDY_LEAFLET_TRANSITION_TYPE_UNDER;
-  for (children = g_list_last (directed_children); children; children = children->prev) {
-    child_info = children->data;
-
-    if (child_info == visible_child)
-      break;
-
-    if (!child_info->visible)
-      continue;
-
-    if (under)
-      continue;
-
-    if (orientation == GTK_ORIENTATION_HORIZONTAL)
-      child_info->alloc.x += end_pad;
-    else
-      child_info->alloc.y += end_pad;
-  }
-
-  priv->mode_transition.end_progress = under ? priv->mode_transition.current_pos : 1;
-
-  if (orientation == GTK_ORIENTATION_HORIZONTAL) {
-    visible_child->alloc.x -= start_pad;
-    visible_child->alloc.width += start_pad + end_pad;
-  }
-  else {
-    visible_child->alloc.y -= start_pad;
-    visible_child->alloc.height += start_pad + end_pad;
-  }
+  hdy_leaflet_size_allocate_unfolded_animate (self, allocation);
 }
 
 static void
