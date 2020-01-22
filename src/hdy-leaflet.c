@@ -30,12 +30,9 @@
  *
  * # CSS nodes
  *
- * #HdyLeaflet has a main CSS node with name hdyleaflet. The node will get the
+ * #HdyLeaflet has a single CSS node with name hdyleaflet. The node will get the
  * style classes .folded when it is folded, .unfolded when it's not, or none if
  * it didn't compute its fold yet.
- *
- * It adds a subnodes with names dimmin, shadow, and border when it is running a
- * transition casting a shadow.
  */
 
 /**
