@@ -38,6 +38,10 @@
  * The #HdyPaginator widget can be used to display a set of pages with
  * swipe-based navigation between them and optional indicators.
  *
+ * # CSS nodes
+ *
+ * #HdyPaginator has a single CSS node with name paginator.
+ *
  * Since: 0.0.11
  */
 
