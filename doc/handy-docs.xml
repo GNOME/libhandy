@@ -68,6 +68,7 @@
     <xi:include href="xml/hdy-string-utf8.xml"/>
     <xi:include href="xml/hdy-fold.xml"/>
     <xi:include href="xml/hdy-list-box.xml"/>
+    <xi:include href="xml/hdy-transition-type.xml"/>
   </chapter>
 
   <chapter id="migrating">

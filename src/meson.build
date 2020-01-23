@@ -12,6 +12,7 @@ hdy_enum_headers = ['hdy-fold.h',
                     'hdy-leaflet.h',
                     'hdy-paginator.h',
                     'hdy-squeezer.h',
+                    'hdy-transition-type.h',
                     'hdy-view-switcher.h',
                    ]
 
@@ -86,6 +87,7 @@ src_headers = [
   'hdy-swipe-group.h',
   'hdy-swipeable.h',
   'hdy-title-bar.h',
+  'hdy-transition-type.h',
   'hdy-value-object.h',
   'hdy-view-switcher.h',
   'hdy-view-switcher-bar.h',
@@ -133,6 +135,7 @@ src_sources = [
   'hdy-swipe-tracker.c',
   'hdy-swipeable.c',
   'hdy-title-bar.c',
+  'hdy-transition-type.c',
   'hdy-value-object.c',
   'hdy-view-switcher.c',
   'hdy-view-switcher-bar.c',
