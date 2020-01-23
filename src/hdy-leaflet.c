@@ -1343,6 +1343,99 @@ hdy_leaflet_get_can_swipe_forward (HdyLeaflet *self)
   return priv->child_transition.can_swipe_forward;
 }
 
+static HdyLeafletChildInfo *
+find_swipeable_child (HdyLeaflet *self,
+                      gint        direction)
+{
+  HdyLeafletPrivate *priv;
+  GList *children;
+  HdyLeafletChildInfo *child = NULL;
+
+  priv = hdy_leaflet_get_instance_private (self);
+
+  children = g_list_find (priv->children, priv->visible_child);
+  do {
+    children = (direction < 0) ? children->prev : children->next;
+
+    if (children == NULL)
+      break;
+
+    child = children->data;
+  } while (child && !child->allow_visible);
+
+  return child;
+}
+
+/**
+ * hdy_leaflet_go_back
+ * @self: a #HdyLeaflet
+ *
+ * Switches to the previous child that doesn't have 'allow-visible' child
+ * property set to %FALSE, similar to performing a swipe gesture.
+ *
+ * Does nothing if #HdyLeaflet:can-swipe-back is %FALSE.
+ *
+ * Returns: %TRUE if visible child was changed, %FALSE otherwise.
+ *
+ * Since: 1.0
+ */
+gboolean
+hdy_leaflet_go_back (HdyLeaflet *self)
+{
+  HdyLeafletPrivate *priv;
+  HdyLeafletChildInfo *child;
+
+  g_return_val_if_fail (HDY_IS_LEAFLET (self), FALSE);
+  g_return_val_if_fail (hdy_leaflet_get_can_swipe_back (self), FALSE);
+
+  priv = hdy_leaflet_get_instance_private (self);
+
+  child = find_swipeable_child (self, -1);
+
+  if (!child)
+    return FALSE;
+
+  set_visible_child_info (self, child, priv->transition_type, priv->child_transition.duration, TRUE);
+
+  return TRUE;
+}
+
+/**
+ * hdy_leaflet_go_forward
+ * @self: a #HdyLeaflet
+ *
+ * Switches to the next child that doesn't have 'allow-visible' child property
+ * set to %FALSE, similar to performing a swipe gesture.
+ *
+ * Does nothing if #HdyLeaflet:can-swipe-forward is %FALSE.
+ *
+ * Returns: %TRUE if visible child was changed, %FALSE otherwise.
+ *
+ * Since: 1.0
+ */
+gboolean
+hdy_leaflet_go_forward (HdyLeaflet *self)
+{
+  HdyLeafletPrivate *priv;
+  HdyLeafletChildInfo *child;
+
+  g_return_val_if_fail (HDY_IS_LEAFLET (self), FALSE);
+
+  if (!hdy_leaflet_get_can_swipe_forward (self))
+    return FALSE;
+
+  priv = hdy_leaflet_get_instance_private (self);
+
+  child = find_swipeable_child (self, 1);
+
+  if (!child)
+    return FALSE;
+
+  set_visible_child_info (self, child, priv->transition_type, priv->child_transition.duration, TRUE);
+
+  return TRUE;
+}
+
 static void
 get_preferred_size (gint     *min,
                     gint     *nat,
@@ -3187,29 +3280,6 @@ hdy_leaflet_switch_child (HdySwipeable *swipeable,
 
   set_visible_child_info (self, child_info, priv->transition_type,
                           duration, FALSE);
-}
-
-static HdyLeafletChildInfo *
-find_swipeable_child (HdyLeaflet *self,
-                      gint        direction)
-{
-  HdyLeafletPrivate *priv;
-  GList *children;
-  HdyLeafletChildInfo *child = NULL;
-
-  priv = hdy_leaflet_get_instance_private (self);
-
-  children = g_list_find (priv->children, priv->visible_child);
-  do {
-    children = (direction < 0) ? children->prev : children->next;
-
-    if (children == NULL)
-      break;
-
-    child = children->data;
-  } while (child && !child->allow_visible);
-
-  return child;
 }
 
 static double

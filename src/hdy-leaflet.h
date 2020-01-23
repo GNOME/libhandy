@@ -80,4 +80,7 @@ gboolean         hdy_leaflet_get_can_swipe_forward (HdyLeaflet *self);
 void             hdy_leaflet_set_can_swipe_forward (HdyLeaflet *self,
                                                     gboolean    can_swipe_forward);
 
+gboolean         hdy_leaflet_go_back (HdyLeaflet *self);
+gboolean         hdy_leaflet_go_forward (HdyLeaflet *self);
+
 G_END_DECLS
