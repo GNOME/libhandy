@@ -39,6 +39,11 @@
  * The #HdyCarousel widget can be used to display a set of pages with
  * swipe-based navigation between them and optional indicators.
  *
+ * # CSS nodes
+ *
+ * #HdyCarousel has a single CSS node with name carousel.
+ *
+ * Since: 0.0.11
  * Since: 1.0
  */
 
