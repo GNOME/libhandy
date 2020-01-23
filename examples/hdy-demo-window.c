@@ -128,13 +128,13 @@ leaflet_transition_name (HdyEnumValueObject *value,
   g_return_val_if_fail (HDY_IS_ENUM_VALUE_OBJECT (value), NULL);
 
   switch (hdy_enum_value_object_get_value (value)) {
-  case HDY_LEAFLET_TRANSITION_TYPE_NONE:
+  case HDY_TRANSITION_TYPE_NONE:
     return g_strdup (_("None"));
-  case HDY_LEAFLET_TRANSITION_TYPE_SLIDE:
+  case HDY_TRANSITION_TYPE_SLIDE:
     return g_strdup (_("Slide"));
-  case HDY_LEAFLET_TRANSITION_TYPE_OVER:
+  case HDY_TRANSITION_TYPE_OVER:
     return g_strdup (_("Over"));
-  case HDY_LEAFLET_TRANSITION_TYPE_UNDER:
+  case HDY_TRANSITION_TYPE_UNDER:
     return g_strdup (_("Under"));
   default:
     return NULL;
@@ -430,8 +430,8 @@ hdy_demo_window_init (HdyDemoWindow *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  hdy_combo_row_set_for_enum (self->leaflet_transition_row, HDY_TYPE_LEAFLET_TRANSITION_TYPE, leaflet_transition_name, NULL, NULL);
-  hdy_combo_row_set_selected_index (self->leaflet_transition_row, HDY_LEAFLET_TRANSITION_TYPE_OVER);
+  hdy_combo_row_set_for_enum (self->leaflet_transition_row, HDY_TYPE_TRANSITION_TYPE, leaflet_transition_name, NULL, NULL);
+  hdy_combo_row_set_selected_index (self->leaflet_transition_row, HDY_TRANSITION_TYPE_OVER);
 
   gtk_list_box_set_header_func (self->column_listbox, hdy_list_box_separator_header, NULL, NULL);
   gtk_list_box_set_header_func (self->keypad_listbox, hdy_list_box_separator_header, NULL, NULL);

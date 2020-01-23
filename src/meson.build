@@ -9,7 +9,6 @@ libhandy_resources = gnome.compile_resources(
 
 hdy_enum_headers = ['hdy-fold.h',
                     'hdy-header-bar.h',
-                    'hdy-leaflet.h',
                     'hdy-paginator.h',
                     'hdy-squeezer.h',
                     'hdy-transition-type.h',
