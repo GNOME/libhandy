@@ -60,6 +60,16 @@
       either impossible or impractical.
     </para>
 
+    <refsect3>
+      <title>Replace HdyPaginator by HdyCarousel</title>
+      <para>
+        HdyPaginator has been renamed HdyCarousel, so you should replace the
+        former by the later.
+        Similarly, HdyPaginatorIndicatorStyle has been renamed
+        HdyCarouselIndicatorStyle.
+      </para>
+    </refsect3>
+
   </refsect2>
 
 </refentry>
