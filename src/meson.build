@@ -10,6 +10,7 @@ libhandy_resources = gnome.compile_resources(
 hdy_enum_headers = ['hdy-carousel.h',
                     'hdy-header-bar.h',
                     'hdy-leaflet.h',
+                    'hdy-stackable-box-private.h',
                     'hdy-squeezer.h',
                     'hdy-view-switcher.h',
                    ]
@@ -115,6 +116,7 @@ src_sources = [
   'hdy-search-bar.c',
   'hdy-shadow-helper.c',
   'hdy-squeezer.c',
+  'hdy-stackable-box.c',
   'hdy-string-utf8.c',
   'hdy-swipe-group.c',
   'hdy-swipe-tracker.c',
