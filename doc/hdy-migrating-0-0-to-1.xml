@@ -60,6 +60,17 @@
       either impossible or impractical.
     </para>
 
+      <refsect3>
+      <title>Replace HdyLeafletTransitionType by HdyTransitionType</title>
+      <para>
+        HdyLeafletTransitionType has been renamed to HdyTransitionType, as it's
+        not specific to HdyLeaflet anymore, so all usages should be changed. The
+        type of HdyLeaflet's 'transition-type' property, as well as
+        hdy_leaflet_get_transition_type() and hdy_leaflet_set_transition_type()
+        functions has been similarly changed.
+      </para>
+    </refsect3>
+
   </refsect2>
 
 </refentry>
