@@ -7,10 +7,10 @@ libhandy_resources = gnome.compile_resources(
    c_name: 'hdy',
 )
 
-hdy_enum_headers = ['hdy-fold.h',
+hdy_enum_headers = ['hdy-carousel.h',
+                    'hdy-fold.h',
                     'hdy-header-bar.h',
                     'hdy-leaflet.h',
-                    'hdy-paginator.h',
                     'hdy-squeezer.h',
                     'hdy-view-switcher.h',
                    ]
@@ -62,6 +62,7 @@ libhandy_generated_headers += [hdy_enums[1]]
 src_headers = [
   'hdy-action-row.h',
   'hdy-animation.h',
+  'hdy-carousel.h',
   'hdy-column.h',
   'hdy-combo-row.h',
   'hdy-deprecation-macros.h',
@@ -75,7 +76,6 @@ src_headers = [
   'hdy-leaflet.h',
   'hdy-list-box.h',
   'hdy-main.h',
-  'hdy-paginator.h',
   'hdy-preferences-group.h',
   'hdy-preferences-page.h',
   'hdy-preferences-row.h',
@@ -106,6 +106,8 @@ src_sources = [
   'gtk-window.c',
   'hdy-action-row.c',
   'hdy-animation.c',
+  'hdy-carousel.c',
+  'hdy-carousel-box.c',
   'hdy-column.c',
   'hdy-combo-row.c',
   'hdy-dialog.c',
@@ -119,8 +121,6 @@ src_sources = [
   'hdy-leaflet.c',
   'hdy-list-box.c',
   'hdy-main.c',
-  'hdy-paginator.c',
-  'hdy-paginator-box.c',
   'hdy-preferences-group.c',
   'hdy-preferences-page.c',
   'hdy-preferences-row.c',
