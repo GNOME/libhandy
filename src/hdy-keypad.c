@@ -21,6 +21,10 @@
  *
  * This widget should not be altered using the #GtkGrid and #GtkContainer APIs,
  * they are considered internal to this widget, using them externally will lead to unexpected results.
+ *
+ * # CSS nodes
+ *
+ * #HdyKeypad has a single CSS node with name keypad.
  */
 
 typedef struct
