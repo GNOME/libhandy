@@ -22,6 +22,10 @@
  * a window and to be revealed only on really narrow windows e.g. on mobile
  * phones.
  *
+ * # CSS nodes
+ *
+ * #HdyViewSwitcherBar has a single CSS node with name viewswitcherbar.
+ *
  * Since: 0.0.10
  */
 
