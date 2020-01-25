@@ -3,3 +3,75 @@
  * priority only if noting provides a style.
  * Try adding style here first, if it doesn't work then add it to hand.css.
  */
+
+/* Preferences */
+
+HdyPreferencesPage label.h4 {
+  font-weight: bold;
+}
+
+/* Shadows */
+
+dimming {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+shadow {
+  min-width: 56px;
+  min-height: 56px;
+}
+
+border {
+  min-width: 1px;
+  min-height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+shadow.left {
+  background-image:
+    linear-gradient(to right,
+                    alpha(#000, 0.05),
+                    alpha(#000, 0.01) 40px,
+                    alpha(#000, 0) 56px),
+    linear-gradient(to right,
+                    alpha(#000, 0.03),
+                    alpha(#000, 0.01) 7px,
+                    alpha(#000, 0) 24px);
+}
+
+shadow.right {
+  background-image:
+    linear-gradient(to left,
+                    alpha(#000, 0.05),
+                    alpha(#000, 0.01) 40px,
+                    alpha(#000, 0) 56px),
+    linear-gradient(to left,
+                    alpha(#000, 0.03),
+                    alpha(#000, 0.01) 7px,
+                    alpha(#000, 0) 24px);
+
+}
+
+shadow.up {
+  background-image:
+    linear-gradient(to bottom,
+                    alpha(#000, 0.05),
+                    alpha(#000, 0.01) 40px,
+                    alpha(#000, 0) 56px),
+    linear-gradient(to bottom,
+                    alpha(#000, 0.03),
+                    alpha(#000, 0.01) 7px,
+                    alpha(#000, 0) 24px);
+}
+
+shadow.down {
+  background-image:
+    linear-gradient(to top,
+                    alpha(#000, 0.05),
+                    alpha(#000, 0.01) 40px,
+                    alpha(#000, 0) 56px),
+    linear-gradient(to top,
+                    alpha(#000, 0.03),
+                    alpha(#000, 0.01) 7px,
+                    alpha(#000, 0) 24px);
+}
