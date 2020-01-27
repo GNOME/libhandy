@@ -20,7 +20,7 @@ test_hdy_combo_row_set_for_enum (void)
 
   g_assert_null (hdy_combo_row_get_model (row));
 
-  hdy_combo_row_set_for_enum (row, HDY_TYPE_FOLD, hdy_enum_value_row_name, NULL, NULL);
+  hdy_combo_row_set_for_enum (row, HDY_TYPE_LEAFLET_TRANSITION_TYPE, hdy_enum_value_row_name, NULL, NULL);
   model = hdy_combo_row_get_model (row);
   g_assert_true (G_IS_LIST_MODEL (model));
 
