@@ -35,12 +35,6 @@ typedef enum {
 struct _HdyLeafletClass
 {
   GtkContainerClass parent_class;
-
-  /*< private >*/
-
-  /* Signals
-   */
-  void (*todo) (HdyLeaflet *self);
 };
 
 GtkWidget       *hdy_leaflet_new (void);
