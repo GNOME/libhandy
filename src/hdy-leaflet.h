@@ -11,7 +11,6 @@
 #endif
 
 #include <gtk/gtk.h>
-#include "hdy-deprecation-macros.h"
 #include "hdy-fold.h"
 #include "hdy-enums.h"
 
