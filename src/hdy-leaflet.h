@@ -11,7 +11,6 @@
 #endif
 
 #include <gtk/gtk.h>
-#include "hdy-deprecation-macros.h"
 #include "hdy-enums.h"
 
 G_BEGIN_DECLS
