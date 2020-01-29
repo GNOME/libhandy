@@ -1,0 +1,6 @@
+/*
+ * This will be loaded with the a priority higher than themes and settings, but
+ * lower than application and user provided styles.
+ * Try adding style in hand-fallback.css first, if it doesn't work then add it
+ * here.
+ */
