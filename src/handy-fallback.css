@@ -1,0 +1,8 @@
+/*
+ * This contains fallback styles. Style goes here when we are happy to let
+ * themes use their own style, but we still need a good default in case they
+ * don't.
+ *
+ * It will be loaded with the a priority lower than themes, settings,
+ * applications, and user provided style.
+ */

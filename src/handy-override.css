@@ -1,0 +1,8 @@
+/*
+ * This contains styles overriding the themes. Style goes here when we want a
+ * very specific style which collides with common themes, and we need to
+ * override what they do.
+ *
+ * It will be loaded with the a priority higher than themes and settings, but
+ * lower than application and user provided styles.
+ */
