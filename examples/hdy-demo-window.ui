@@ -373,7 +373,7 @@
                             <property name="expand">True</property>
                             <property name="selection-mode">none</property>
                             <style>
-                              <class name="frame"/>
+                              <class name="preferences"/>
                             </style>
                             <child>
                               <object class="HdyComboRow" id="leaflet_transition_row">
@@ -507,7 +507,7 @@
                                     <property name="expand">True</property>
                                     <property name="selection-mode">none</property>
                                     <style>
-                                      <class name="frame"/>
+                                      <class name="preferences"/>
                                     </style>
                                     <child>
                                       <object class="HdyActionRow">
@@ -691,7 +691,7 @@
                             <property name="expand">True</property>
                             <property name="selection-mode">none</property>
                             <style>
-                              <class name="frame"/>
+                              <class name="preferences"/>
                             </style>
                             <child>
                               <object class="HdyActionRow">
@@ -845,7 +845,7 @@
                             <property name="expand">True</property>
                             <property name="selection-mode">none</property>
                             <style>
-                              <class name="frame"/>
+                              <class name="preferences"/>
                             </style>
                             <child>
                               <object class="HdyActionRow">
@@ -930,48 +930,20 @@
                                 <property name="show_enable_switch">True</property>
                                 <property name="title" translatable="yes">Toggleable expander row</property>
                                 <property name="visible">True</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkListBoxRow">
-                                <property name="activatable">False</property>
-                                <property name="visible">True</property>
-                                <style>
-                                  <class name="expander"/>
-                                </style>
                                 <child>
-                                  <object class="GtkRevealer" id="nested_list_revealer">
-                                    <property name="reveal-child" bind-source="enable_expander_row" bind-property="expanded" bind-flags="sync-create"/>
-                                    <property name="transition_type">slide-up</property>
+                                  <object class="GtkListBox" id="nested_listbox">
+                                    <property name="selection_mode">none</property>
                                     <property name="visible">True</property>
                                     <child>
-                                      <object class="GtkBox">
-                                        <property name="orientation">vertical</property>
+                                      <object class="HdyActionRow">
+                                        <property name="title" translatable="yes">A nested row</property>
                                         <property name="visible">True</property>
-                                        <child>
-                                          <object class="GtkSeparator">
-                                            <property name="visible">True</property>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkListBox" id="nested_listbox">
-                                            <property name="margin-start">24</property>
-                                            <property name="selection_mode">none</property>
-                                            <property name="visible">True</property>
-                                            <child>
-                                              <object class="HdyActionRow">
-                                                <property name="title" translatable="yes">A nested row</property>
-                                                <property name="visible">True</property>
-                                              </object>
-                                            </child>
-                                            <child>
-                                              <object class="HdyActionRow">
-                                                <property name="title" translatable="yes">Another nested row</property>
-                                                <property name="visible">True</property>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="HdyActionRow">
+                                        <property name="title" translatable="yes">Another nested row</property>
+                                        <property name="visible">True</property>
                                       </object>
                                     </child>
                                   </object>
@@ -1432,7 +1404,7 @@
                             <property name="valign">center</property>
                             <property name="selection-mode">none</property>
                             <style>
-                              <class name="frame"/>
+                              <class name="preferences"/>
                             </style>
                             <child>
                               <object class="HdyComboRow" id="carousel_orientation_row">

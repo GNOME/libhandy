@@ -25,7 +25,7 @@
     <child type="action">
       <object class="GtkImage" id="image">
         <property name="can_focus">False</property>
-        <property name="icon_name">pan-down-symbolic</property>
+        <property name="icon_name">go-down-symbolic</property>
         <property name="icon_size">1</property>
         <property name="sensitive" bind-source="HdyExpanderRow" bind-property="enable-expansion" bind-flags="sync-create"/>
         <property name="visible">True</property>

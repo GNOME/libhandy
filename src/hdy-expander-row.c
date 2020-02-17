@@ -55,11 +55,32 @@ static void
 update_arrow (HdyExpanderRow *self)
 {
   HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (self);
+  GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (self));
+  GtkWidget *previous_sibbling = NULL;
+
+  if (parent) {
+    g_autoptr (GList) sibblings = gtk_container_get_children (GTK_CONTAINER (parent));
+    GList *l;
+
+    for (l = sibblings; l != NULL && l->next != NULL && l->next->data != self; l = l->next);
+
+    if (l->next->data == self)
+      previous_sibbling = l->data;
+  }
 
   if (priv->expanded)
-    gtk_widget_set_state_flags (GTK_WIDGET (priv->image), GTK_STATE_FLAG_CHECKED, FALSE);
+    gtk_widget_set_state_flags (GTK_WIDGET (self), GTK_STATE_FLAG_CHECKED, FALSE);
   else
-    gtk_widget_unset_state_flags (GTK_WIDGET (priv->image), GTK_STATE_FLAG_CHECKED);
+    gtk_widget_unset_state_flags (GTK_WIDGET (self), GTK_STATE_FLAG_CHECKED);
+
+  if (previous_sibbling) {
+    GtkStyleContext *context = gtk_widget_get_style_context (previous_sibbling);
+
+    if (priv->expanded)
+      gtk_style_context_add_class (context, "checked-expander-row-previous-sibbling");
+    else
+      gtk_style_context_remove_class (context, "checked-expander-row-previous-sibbling");
+  }
 }
 
 static void
