@@ -50,6 +50,9 @@
                     <property name="hexpand">True</property>
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
+                    <style>
+                      <class name="title"/>
+                    </style>
                   </object>
                 </child>
                 <child>
@@ -60,11 +63,11 @@
                     <property name="hexpand">True</property>
                     <property name="xalign">0</property>
                     <style>
-                      <class name="dim-label" />
+                      <class name="subtitle" />
                     </style>
-                    <attributes>
-                      <attribute name="scale" value="0.8" />
-                    </attributes>
+                    <!-- <attributes> -->
+                    <!--   <attribute name="scale" value="0.8" /> -->
+                    <!-- </attributes> -->
                   </object>
                 </child>
               </object>
