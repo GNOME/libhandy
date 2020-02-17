@@ -57,9 +57,9 @@ update_arrow (HdyExpanderRow *self)
   HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (self);
 
   if (priv->expanded)
-    gtk_widget_set_state_flags (GTK_WIDGET (priv->image), GTK_STATE_FLAG_CHECKED, FALSE);
+    gtk_widget_set_state_flags (GTK_WIDGET (self), GTK_STATE_FLAG_CHECKED, FALSE);
   else
-    gtk_widget_unset_state_flags (GTK_WIDGET (priv->image), GTK_STATE_FLAG_CHECKED);
+    gtk_widget_unset_state_flags (GTK_WIDGET (self), GTK_STATE_FLAG_CHECKED);
 }
 
 static void

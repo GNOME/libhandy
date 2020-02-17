@@ -270,8 +270,6 @@ hdy_preferences_group_init (HdyPreferencesGroup *self)
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  gtk_list_box_set_header_func (priv->listbox, hdy_list_box_separator_header, NULL, NULL);
-
   update_description_visibility (self);
   update_title_visibility (self);
   update_listbox_visibility (self);
