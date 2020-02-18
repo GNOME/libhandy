@@ -407,7 +407,7 @@ hdy_action_row_buildable_add_child (GtkBuildable *buildable,
 
   if (priv->header == NULL)
     gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (child));
-  else if (type && strcmp (type, "action") == 0)
+  else if (!type)
     hdy_action_row_add_action (self, GTK_WIDGET (child));
   else if (type && strcmp (type, "prefix") == 0)
     hdy_action_row_add_prefix (self, GTK_WIDGET (child));
