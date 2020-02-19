@@ -27,6 +27,16 @@ row > box.header > box.title {
   margin-bottom: 8px;
 }
 
+/* HdyComboRow */
+
+popover.combo list {
+  min-width: 200px;
+}
+
+popover.combo image.checkmark {
+  color: @insensitive_fg_color;
+}
+
 /* Preferences */
 
 preferencespage label.h4 {
