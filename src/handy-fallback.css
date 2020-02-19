@@ -27,6 +27,49 @@ row > box.header > box.title {
   margin-bottom: 8px;
 }
 
+/* HdyExpanderRow */
+
+row.expander list.nested {
+  background-color: alpha(@theme_bg_color, 0.5);
+}
+
+row.expander list.nested > row {
+  border-color: alpha(@borders, 0.5);
+  border-style: solid;
+  border-width: 1px 0px 0px 0px;
+}
+
+/* HdyExpanderRow arrow rotation */
+
+row.expander:checked image.rotated-checked:dir(ltr),
+row.expander:checked image.rotated-checked:dir(rtl) {
+  transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -gtk-icon-transform: rotate(0turn);
+}
+
+row.expander:not(:checked) image.rotated-checked:dir(ltr) {
+  transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -gtk-icon-transform: rotate(-0.25turn);
+}
+
+row.expander:not(:checked) image.rotated-checked:dir(rtl) {
+  transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -gtk-icon-transform: rotate(0.25turn);
+}
+
+row.expander:not(:checked) image.rotated-checked {
+  opacity: 0.55;
+  text-shadow: none;
+}
+
+row.expander:checked image.rotated-checked:not(:disabled) {
+  color: @theme_selected_bg_color;
+}
+
+row.expander image.rotated-checked:disabled {
+  color: @insensitive_fg_color;
+}
+
 /* Preferences */
 
 preferencespage label.h4 {

@@ -17,7 +17,7 @@ G_BEGIN_DECLS
 
 #define HDY_TYPE_EXPANDER_ROW (hdy_expander_row_get_type())
 
-G_DECLARE_DERIVABLE_TYPE (HdyExpanderRow, hdy_expander_row, HDY, EXPANDER_ROW, HdyActionRow)
+G_DECLARE_DERIVABLE_TYPE (HdyExpanderRow, hdy_expander_row, HDY, EXPANDER_ROW, HdyPreferencesRow)
 
 /**
  * HdyExpanderRowClass
@@ -25,7 +25,7 @@ G_DECLARE_DERIVABLE_TYPE (HdyExpanderRow, hdy_expander_row, HDY, EXPANDER_ROW, H
  */
 struct _HdyExpanderRowClass
 {
-  HdyActionRowClass parent_class;
+  HdyPreferencesRowClass parent_class;
 };
 
 HdyExpanderRow *hdy_expander_row_new (void);
