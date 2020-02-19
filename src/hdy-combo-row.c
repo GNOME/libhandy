@@ -22,6 +22,12 @@
  * is specified in the form of a #GListModel, and the display of the choices can
  * be adapted to the data in the model via widget creation functions.
  *
+ * # CSS nodes
+ *
+ * #HdyComboRow has a main CSS node with name row.
+ *
+ * Its popover  has the node name popover with the .combo style class.
+
  * Since: 0.0.6
  */
 
