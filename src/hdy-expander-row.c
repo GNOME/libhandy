@@ -23,7 +23,8 @@
 
 typedef struct
 {
-  GtkToggleButton *button;
+  GtkBox *box;
+  GtkListBox *list;
   GtkSwitch *enable_switch;
   GtkImage *image;
   GtkSeparator *separator;
@@ -33,7 +34,7 @@ typedef struct
   gboolean show_enable_switch;
 } HdyExpanderRowPrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (HdyExpanderRow, hdy_expander_row, HDY_TYPE_ACTION_ROW)
+G_DEFINE_TYPE_WITH_PRIVATE (HdyExpanderRow, hdy_expander_row, HDY_TYPE_PREFERENCES_ROW)
 
 enum {
   PROP_0,
@@ -46,8 +47,47 @@ enum {
 static GParamSpec *props[LAST_PROP];
 
 static void
-arrow_init (HdyExpanderRow *self)
+update_arrow (HdyExpanderRow *self)
 {
+  HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (self);
+  GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (self));
+  GtkStyleContext *context = gtk_widget_get_style_context (GTK_WIDGET (self));
+  GtkWidget *previous_sibbling = NULL;
+  gboolean is_penultimate = FALSE;
+
+  if (parent) {
+    g_autoptr (GList) sibblings = gtk_container_get_children (GTK_CONTAINER (parent));
+    GList *l;
+
+    for (l = sibblings; l != NULL && l->next != NULL && l->next->data != self; l = l->next);
+
+    if (l && l->next && l->next->data == self)
+      previous_sibbling = l->data;
+
+    for (l = sibblings; l != NULL && l->next != NULL && l->data != self; l = l->next);
+
+    if (l && l->data == self && l->next && !l->next->next)
+      is_penultimate = TRUE;
+  }
+
+  if (priv->expanded)
+    gtk_widget_set_state_flags (GTK_WIDGET (self), GTK_STATE_FLAG_CHECKED, FALSE);
+  else
+    gtk_widget_unset_state_flags (GTK_WIDGET (self), GTK_STATE_FLAG_CHECKED);
+
+  if (previous_sibbling) {
+    GtkStyleContext *previous_sibbling_context = gtk_widget_get_style_context (previous_sibbling);
+
+    if (priv->expanded)
+      gtk_style_context_add_class (previous_sibbling_context, "checked-expander-row-previous-sibbling");
+    else
+      gtk_style_context_remove_class (previous_sibbling_context, "checked-expander-row-previous-sibbling");
+  }
+
+  if (is_penultimate)
+    gtk_style_context_add_class (context, "penultimate-child");
+  else
+    gtk_style_context_remove_class (context, "penultimate-child");
 }
 
 static void
@@ -109,7 +149,7 @@ for_non_internal_child (GtkWidget *widget,
   ForallData *data = callback_data;
   HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (data->row);
 
-  if (widget != (GtkWidget *) priv->button &&
+  if (widget != (GtkWidget *) priv->image &&
       widget != (GtkWidget *) priv->enable_switch &&
       widget != (GtkWidget *) priv->separator)
     data->callback (widget, data->callback_data);
@@ -138,14 +178,28 @@ hdy_expander_row_forall (GtkContainer *container,
 }
 
 static void
-hdy_expander_row_activate (HdyActionRow *row)
+hdy_expander_row_activate (HdyExpanderRow *self)
 {
-  HdyExpanderRow *self = HDY_EXPANDER_ROW (row);
   HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (self);
 
-  hdy_expander_row_set_expanded (self, priv->enable_expansion);
+  hdy_expander_row_set_expanded (self, !priv->expanded);
+}
 
-  HDY_ACTION_ROW_CLASS (hdy_expander_row_parent_class)->activate (row);
+static void
+hdy_expander_row_add (GtkContainer *container,
+                    GtkWidget    *child)
+{
+  HdyExpanderRow *self = HDY_EXPANDER_ROW (container);
+  HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (self);
+
+  /* When constructing the widget, we want the box to be added as the child of
+   * the GtkListBoxRow, as an implementation detail.
+   */
+  if (priv->box == NULL)
+    GTK_CONTAINER_CLASS (hdy_expander_row_parent_class)->add (container, child);
+  else {
+    gtk_container_add (GTK_CONTAINER (priv->list), child);
+  }
 }
 
 static void
@@ -154,14 +208,12 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
-  HdyActionRowClass *row_class = HDY_ACTION_ROW_CLASS (klass);
 
   object_class->get_property = hdy_expander_row_get_property;
   object_class->set_property = hdy_expander_row_set_property;
   
+  container_class->add = hdy_expander_row_add;
   container_class->forall = hdy_expander_row_forall;
-
-  row_class->activate = hdy_expander_row_activate;
 
   /**
    * HdyExpanderRow:expanded:
@@ -203,27 +255,21 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/sm/puri/handy/ui/hdy-expander-row.ui");
-  gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, button);
+  gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, box);
+  gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, list);
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, image);
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, separator);
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, enable_switch);
+  gtk_widget_class_bind_template_callback (widget_class, hdy_expander_row_activate);
 }
 
 static void
 hdy_expander_row_init (HdyExpanderRow *self)
 {
-  HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (self);
-
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  arrow_init (self);
   hdy_expander_row_set_enable_expansion (self, TRUE);
   hdy_expander_row_set_expanded (self, FALSE);
-
-  g_object_bind_property (self, "show-enable-switch", priv->separator, "visible", G_BINDING_SYNC_CREATE);
-  g_object_bind_property (self, "show-enable-switch", priv->enable_switch, "visible", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
-  g_object_bind_property (self, "enable-expansion", priv->enable_switch, "active", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
-  g_object_bind_property (self, "enable-expansion", priv->button, "sensitive", G_BINDING_SYNC_CREATE);
 }
 
 /**
@@ -269,6 +315,8 @@ hdy_expander_row_set_expanded (HdyExpanderRow *self,
     return;
 
   priv->expanded = expanded;
+
+  update_arrow (self);
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_EXPANDED]);
 }
