@@ -11,9 +11,49 @@
 
 /* HdyComboRow */
 
-popover list.transparent-background {
+popover.combo {
+  padding: 0px;
+}
+
+popover.combo list {
   border-style: none;
   background-color: transparent;
+}
+
+popover.combo list > row {
+  padding: 0px 12px 0px 12px;
+  min-height: 50px;
+}
+
+popover.combo list > row:not(:last-child) {
+  border-color: alpha(@borders, 0.5);
+  border-style: solid;
+  border-width: 0px 0px 1px 0px;
+}
+
+popover.combo list > row:first-child {
+  -gtk-outline-top-left-radius: 8px;
+  -gtk-outline-top-right-radius: 8px;
+}
+
+popover.combo list > row:last-child {
+  -gtk-outline-bottom-left-radius: 8px;
+  -gtk-outline-bottom-right-radius: 8px;
+}
+
+popover.combo overshoot.top {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+popover.combo overshoot.bottom {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+popover.combo scrollbar.vertical {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 /* HdyExpanderRow */
