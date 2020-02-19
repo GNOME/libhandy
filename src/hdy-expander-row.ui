@@ -1,44 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="HdyExpanderRow" parent="HdyActionRow">
+  <template class="HdyExpanderRow" parent="HdyPreferencesRow">
+    <property name="activatable">False</property>
+    <property name="can-focus">True</property>
+    <signal name="activate" handler="activate_cb" after="yes"/>
     <style>
+      <class name="empty"/>
       <class name="expander"/>
     </style>
     <child>
-      <object class="GtkToggleButton" id="button">
-        <property name="active" bind-source="HdyExpanderRow" bind-property="expanded" bind-flags="bidirectional|sync-create"/>
-        <property name="can_focus">True</property>
-        <property name="halign">end</property>
-        <property name="relief">none</property>
-        <property name="valign">center</property>
+      <object class="GtkBox" id="box">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
-        <style>
-          <class name="image-button"/>
-          <class name="rotated-checked"/>
-        </style>
         <child>
-          <object class="GtkImage" id="image">
+          <object class="GtkListBox">
+            <property name="selection-mode">none</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="icon_name">pan-down-symbolic</property>
-            <property name="icon_size">1</property>
+            <signal name="row-activated" handler="activate_cb" after="yes" swapped="yes"/>
+            <child>
+              <object class="HdyActionRow" id="action_row">
+                <property name="visible">True</property>
+                <style>
+                  <class name="header"/>
+                </style>
+                <child>
+                  <object class="GtkImage" id="image">
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">hdy-expander-arrow-symbolic</property>
+                    <property name="icon-size">1</property>
+                    <property name="sensitive" bind-source="HdyExpanderRow" bind-property="enable-expansion" bind-flags="sync-create"/>
+                    <property name="visible">True</property>
+                    <style>
+                      <class name="rotated-checked"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSeparator" id="separator">
+                    <property name="margin-bottom">8</property>
+                    <property name="margin-top">8</property>
+                    <property name="orientation">vertical</property>
+                    <property name="visible" bind-source="HdyExpanderRow" bind-property="show-enable-switch" bind-flags="sync-create"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="enable_switch">
+                    <property name="active" bind-source="HdyExpanderRow" bind-property="enable-expansion" bind-flags="bidirectional|sync-create"/>
+                    <property name="can-focus">True</property>
+                    <property name="valign">center</property>
+                    <property name="visible" bind-source="HdyExpanderRow" bind-property="show-enable-switch" bind-flags="bidirectional|sync-create"/>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparator" id="separator">
-        <property name="height_request">32</property>
-        <property name="margin_bottom">8</property>
-        <property name="margin_top">8</property>
-        <property name="orientation">vertical</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSwitch" id="enable_switch">
-        <property name="can_focus">True</property>
-        <property name="halign">end</property>
-        <property name="valign">center</property>
+        <child>
+          <object class="GtkRevealer">
+            <property name="reveal-child" bind-source="HdyExpanderRow" bind-property="expanded" bind-flags="sync-create"/>
+            <property name="transition-type">slide-up</property>
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkListBox" id="list">
+                <property name="selection-mode">none</property>
+                <property name="visible">True</property>
+                <style>
+                  <class name="nested"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </template>
