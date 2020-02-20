@@ -917,10 +917,16 @@
                                 <property name="title" translatable="yes">Expander row</property>
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Hello, world!</property>
-                                    <property name="margin">12</property>
+                                  <object class="GtkListBoxRow">
+                                    <property name="activatable">False</property>
                                     <property name="visible">True</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Hello, world!</property>
+                                        <property name="margin">12</property>
+                                        <property name="visible">True</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -932,12 +938,14 @@
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="HdyActionRow">
+                                    <property name="activatable">False</property>
                                     <property name="title" translatable="yes">A nested row</property>
                                     <property name="visible">True</property>
                                   </object>
                                 </child>
                                 <child>
                                   <object class="HdyActionRow">
+                                    <property name="activatable">False</property>
                                     <property name="title" translatable="yes">Another nested row</property>
                                     <property name="visible">True</property>
                                   </object>
