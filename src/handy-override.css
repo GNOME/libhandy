@@ -227,6 +227,16 @@ list.preferences list {
   background-color: transparent;
 }
 
+list.preferences > row:not(.expander):not(:active):not(:hover):not(:selected),
+list.preferences > row:not(.expander):not(:active):hover:not(.activatable):not(:selected) {
+  background-color: @theme_base_color;
+}
+
+list.preferences > row:not(.expander):not(:active):hover.activatable:not(:selected) {
+  /* background-color: if(variant == light, transparentize($fg_color, 0.9), transparentize($fg_color, 0.95)); */
+  background-color: mix(@theme_fg_color, @theme_base_color, 0.95);
+}
+
 list.preferences > row {
   transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -236,10 +246,6 @@ list.preferences > row list > row {
   border-color: alpha(@borders, 0.5);
   border-style: solid;
   transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-list.preferences > row:not(:active):not(:hover):not(:selected) {
-  background-color: @theme_base_color;
 }
 
 /* Top border */
@@ -252,18 +258,29 @@ list.preferences > row:not(:last-child) {
 /* Rounded top */
 list.preferences > row:first-child,
 list.preferences > row.expander:checked,
-list.preferences > row.expander:checked + row {
+list.preferences > row.expander:checked row.header,
+list.preferences > row.expander:checked + row,
+list.preferences > row.expander:checked + row.expander row.header {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   -gtk-outline-top-left-radius: 8px;
   -gtk-outline-top-right-radius: 8px;
 }
 
-/* Rounded bottom border */
+/* Bottom border */
 list.preferences > row:last-child,
 list.preferences > row.checked-expander-row-previous-sibbling,
-list.preferences > row:checked {
+list.preferences > row.expander:checked {
   border-width: 1px 1px 1px 1px;
+}
+
+/* Rounded bottom */
+list.preferences > row:last-child,
+list.preferences > row.checked-expander-row-previous-sibbling,
+list.preferences > row.expander:checked,
+list.preferences > row.expander:not(:checked):last-child row.header,
+list.preferences > row.expander:checked row.header.empty,
+row.expander list.nested > row:last-child {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   -gtk-outline-bottom-left-radius: 8px;

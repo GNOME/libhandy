@@ -16,9 +16,13 @@
             <property name="visible">True</property>
             <signal name="row-activated" handler="hdy_expander_row_activate" after="yes" swapped="yes"/>
             <child>
-              <object class="HdyActionRow">
+              <object class="HdyActionRow" id="action_row">
                 <property name="title" bind-source="HdyExpanderRow" bind-property="title" bind-flags="sync-create"/>
                 <property name="visible">True</property>
+                <style>
+                  <class name="header"/>
+                  <class name="empty"/>
+                </style>
                 <child>
                   <object class="GtkImage" id="image">
                     <property name="can-focus">False</property>

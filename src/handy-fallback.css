@@ -33,17 +33,14 @@ popover.combo list {
   min-width: 200px;
 }
 
-popover.combo image.checkmark {
-  color: @insensitive_fg_color;
-}
-
 /* HdyExpanderRow */
 
-row.expander list.nested {
-  background-color: alpha(@theme_bg_color, 0.5);
+row.expander {
+  background-color: @theme_base_color;
 }
 
 row.expander list.nested > row {
+  background-color: alpha(@theme_bg_color, 0.5);
   border-color: alpha(@borders, 0.5);
   border-style: solid;
   border-width: 1px 0px 0px 0px;

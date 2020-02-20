@@ -25,6 +25,7 @@ typedef struct
 {
   GtkBox *box;
   GtkListBox *list;
+  GtkWidget *action_row;
   GtkSwitch *enable_switch;
   GtkImage *image;
   GtkSeparator *separator;
@@ -53,7 +54,6 @@ update_arrow (HdyExpanderRow *self)
   GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (self));
   GtkStyleContext *context = gtk_widget_get_style_context (GTK_WIDGET (self));
   GtkWidget *previous_sibbling = NULL;
-  gboolean is_penultimate = FALSE;
 
   if (parent) {
     g_autoptr (GList) sibblings = gtk_container_get_children (GTK_CONTAINER (parent));
@@ -63,11 +63,6 @@ update_arrow (HdyExpanderRow *self)
 
     if (l && l->next && l->next->data == self)
       previous_sibbling = l->data;
-
-    for (l = sibblings; l != NULL && l->next != NULL && l->data != self; l = l->next);
-
-    if (l && l->data == self && l->next && !l->next->next)
-      is_penultimate = TRUE;
   }
 
   if (priv->expanded)
@@ -83,11 +78,6 @@ update_arrow (HdyExpanderRow *self)
     else
       gtk_style_context_remove_class (previous_sibbling_context, "checked-expander-row-previous-sibbling");
   }
-
-  if (is_penultimate)
-    gtk_style_context_add_class (context, "penultimate-child");
-  else
-    gtk_style_context_remove_class (context, "penultimate-child");
 }
 
 static void
@@ -198,7 +188,10 @@ hdy_expander_row_add (GtkContainer *container,
   if (priv->box == NULL)
     GTK_CONTAINER_CLASS (hdy_expander_row_parent_class)->add (container, child);
   else {
+    GtkStyleContext *context = gtk_widget_get_style_context (priv->action_row);
+
     gtk_container_add (GTK_CONTAINER (priv->list), child);
+    gtk_style_context_remove_class (context, "empty");
   }
 }
 
@@ -255,6 +248,7 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/sm/puri/handy/ui/hdy-expander-row.ui");
+  gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, action_row);
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, box);
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, list);
   gtk_widget_class_bind_template_child_private (widget_class, HdyExpanderRow, image);
