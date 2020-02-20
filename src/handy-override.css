@@ -294,3 +294,12 @@ list.preferences > row.expander:checked:not(:first-child),
 list.preferences > row.expander:checked + row {
   margin-top: 6px;
 }
+
+/* Blended button */
+
+button.blended-button {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0px;
+}
