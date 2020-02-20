@@ -89,7 +89,7 @@ create_list_label (gpointer item,
   return g_object_new (GTK_TYPE_LABEL,
                        "ellipsize", PANGO_ELLIPSIZE_END,
                        "label", name,
-                       "margin", 12,
+                       /* "margin", 12, */
                        "max-width-chars", 20,
                        "valign", GTK_ALIGN_CENTER,
                        "visible", TRUE,
