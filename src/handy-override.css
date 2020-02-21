@@ -306,3 +306,11 @@ button.blended {
   text-shadow: none;
   -gtk-icon-shadow: none;
 }
+
+/* List button */
+
+button.list-button:not(:active):not(:checked):not(:hover) {
+  background: none;
+  border: 1px solid alpha(@borders, 0.5);
+  box-shadow: none;
+}
