@@ -304,3 +304,9 @@ button.blended-button {
   box-shadow: none;
   padding: 0px;
 }
+
+button.list-button:not(:active):not(:checked):not(:hover) {
+  background: none;
+  border: 1px solid alpha(@borders;, 0.5);
+  box-shadow: none;
+}
