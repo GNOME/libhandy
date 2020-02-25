@@ -82,6 +82,7 @@ src_headers = [
   'hdy-value-object.h',
   'hdy-view-switcher.h',
   'hdy-view-switcher-bar.h',
+  'hdy-view-switcher-title.h',
 ]
 
 sed = find_program('sed', required: true)
@@ -132,6 +133,7 @@ src_sources = [
   'hdy-view-switcher.c',
   'hdy-view-switcher-bar.c',
   'hdy-view-switcher-button.c',
+  'hdy-view-switcher-title.c',
 ]
 
 libhandy_public_headers += files(src_headers)
