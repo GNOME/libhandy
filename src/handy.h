@@ -54,6 +54,7 @@ G_BEGIN_DECLS
 #include "hdy-value-object.h"
 #include "hdy-view-switcher.h"
 #include "hdy-view-switcher-bar.h"
+#include "hdy-view-switcher-title.h"
 
 #undef _HANDY_INSIDE
 
