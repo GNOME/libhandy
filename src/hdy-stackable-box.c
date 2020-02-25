@@ -22,9 +22,9 @@
  * @stability: Private
  * @See_also: #HdyDeck, #HdyLeaflet
  *
- * The #HdyStackableBox object can arrange the widgets it manages #GtkBox does
- * or like a #GtkStack does, adapting to size changes by switching between the
- * two modes. These modes are named respectively “unfoled” and “folded”.
+ * The #HdyStackableBox object can arrange the widgets it manages like #GtkBox
+ * does or like a #GtkStack does, adapting to size changes by switching between
+ * the two modes. These modes are named respectively “unfoled” and “folded”.
  *
  * When there is enough space the children are displayed side by side, otherwise
  * only one is displayed. The threshold is dictated by the preferred minimum
@@ -2717,7 +2717,7 @@ hdy_stackable_box_add (HdyStackableBox *self,
     set_visible_child_info (self, child_info, self->transition_type, self->child_transition.duration, FALSE);
   }
 
-  if (self->folded ||
+  if (!self->folded ||
       (self->folded && (self->homogeneous[HDY_FOLD_FOLDED][GTK_ORIENTATION_HORIZONTAL] ||
                         self->homogeneous[HDY_FOLD_FOLDED][GTK_ORIENTATION_VERTICAL] ||
                         self->visible_child == child_info)))
@@ -3457,8 +3457,15 @@ hdy_stackable_box_new (GtkContainer      *container,
                        GtkContainerClass *klass,
                        gboolean           can_unfold)
 {
-  HdyStackableBox *self = g_object_new (HDY_TYPE_STACKABLE_BOX, NULL);
-  GtkWidget *widget = GTK_WIDGET (container);
+  GtkWidget *widget;
+  HdyStackableBox *self;
+
+  g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
+  g_return_val_if_fail (GTK_IS_ORIENTABLE (container), NULL);
+  g_return_val_if_fail (GTK_IS_CONTAINER_CLASS (klass), NULL);
+
+  widget = GTK_WIDGET (container);
+  self = g_object_new (HDY_TYPE_STACKABLE_BOX, NULL);
 
   self->container = container;
   self->klass = klass;
