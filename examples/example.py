@@ -9,20 +9,26 @@ from gi.repository import Handy
 import sys
 
 
-window = Gtk.Window(title="Dialer Example with Python")
+window = Gtk.Window()
 vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 entry = Gtk.Entry()
+headerBar = Handy.HeaderBar()
 column = Handy.Column()
 keypad = Handy.Keypad()
 
-column.add(vbox)
-vbox.pack_start(entry, True, False, 16)
-vbox.pack_start(keypad, True, True, 16)
+headerBar.props.title = "Keypad Example with Python"
+headerBar.set_show_close_button(True)
+headerBar.set_decoration_layout(":close")
 
-column.set_maximum_width(200)
+vbox.add(entry)
+vbox.add(keypad)
+vbox.set_halign(Gtk.Align.CENTER)
+vbox.set_valign(Gtk.Align.CENTER)
+
 keypad.set_entry(entry)
-window.connect("destroy", Gtk.main_quit)
 
-window.add(column)
+window.connect("destroy", Gtk.main_quit)
+window.set_titlebar(headerBar)
+window.add(vbox)
 window.show_all()
 Gtk.main()
