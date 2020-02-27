@@ -1,2 +1,17 @@
 @import 'colors';
 @import 'drawing';
+
+$ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$button_transition: all 200ms $ease-out-quad;
+
+@mixin background-shadow($direction) {
+      background-image:
+        linear-gradient($direction,
+                        gtkalpha(#000, 0.05),
+                        gtkalpha(#000, 0.01) 40px,
+                        gtkalpha(#000, 0) 56px),
+        linear-gradient($direction,
+                        gtkalpha(#000, 0.03),
+                        gtkalpha(#000, 0.01) 7px,
+                        gtkalpha(#000, 0) 24px);
+}
