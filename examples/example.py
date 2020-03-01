@@ -40,6 +40,7 @@ vbox.props.spacing = 18
 keypad.set_entry(entry)     # attach the entry widget
 
 scrollWindow.add(column)
+scrollWindow.set_propagate_natural_height(True)
 scrollWindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
 window.connect("destroy", Gtk.main_quit)    # terminate app with close button
