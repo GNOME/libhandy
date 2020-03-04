@@ -2,6 +2,8 @@
 <gresources>
   <gresource prefix="/sm/puri/handy">
     <file preprocess="xml-stripblanks">icons/hdy-expander-arrow-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/hdy-eye-not-looking-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/hdy-eye-open-symbolic.svg</file>
   </gresource>
   <gresource prefix="/sm/puri/handy/ui">
     <file preprocess="xml-stripblanks">hdy-action-row.ui</file>
