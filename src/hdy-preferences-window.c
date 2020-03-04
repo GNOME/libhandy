@@ -300,6 +300,17 @@ on_page_icon_name_changed (HdyPreferencesPage   *page,
 }
 
 static void
+toggle_search_state (GtkSearchEntry *entry,
+                    gpointer *data)
+{
+  HdyPreferencesWindowPrivate *priv =
+              hdy_preferences_window_get_instance_private (HDY_PREFERENCES_WINDOW (data));
+
+  if (gtk_toggle_button_get_active (priv->search_button))
+    gtk_toggle_button_set_active (priv->search_button, FALSE);
+}
+
+static void
 on_page_title_changed (HdyPreferencesPage   *page,
                        GParamSpec           *pspec,
                        HdyPreferencesWindow *self)
@@ -381,6 +392,9 @@ hdy_preferences_window_init (HdyPreferencesWindow *self)
                                NULL,
                                priv->title_label,
                                NULL);
+
+    g_signal_connect (priv->search_entry, "stop-search",
+                      G_CALLBACK (toggle_search_state), self);
 
   gtk_list_box_set_header_func (priv->search_results, hdy_list_box_separator_header, NULL, NULL);
   gtk_list_box_set_filter_func (priv->search_results, (GtkListBoxFilterFunc) filter_search_results, self, NULL);
