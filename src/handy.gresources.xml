@@ -2,6 +2,8 @@
 <gresources>
   <gresource prefix="/sm/puri/handy">
     <file preprocess="xml-stripblanks">icons/hdy-expander-arrow-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/hdy-eye-not-looking-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/hdy-eye-open-symbolic.svg</file>
     <file compressed="true">themes/Adwaita.css</file>
     <file compressed="true">themes/Adwaita-dark.css</file>
     <file compressed="true">themes/shared.css</file>
