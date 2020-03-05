@@ -19,6 +19,7 @@
           <object class="GtkStack" id="title_stack">
             <property name="transition-type">crossfade</property>
             <property name="visible">True</property>
+            <signal name="notify::transition-running" handler="title_stack_transition_running_cb" swapped="true"/>
             <child>
               <object class="HdySqueezer" id="squeezer">
                 <property name="halign">center</property>
