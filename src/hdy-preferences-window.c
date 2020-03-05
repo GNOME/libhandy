@@ -300,11 +300,9 @@ on_page_icon_name_changed (HdyPreferencesPage   *page,
 }
 
 static void
-toggle_search_state (GtkSearchEntry *entry,
-                    gpointer *data)
+toggle_search_state (HdyPreferencesWindow *self)
 {
-  HdyPreferencesWindowPrivate *priv =
-              hdy_preferences_window_get_instance_private (HDY_PREFERENCES_WINDOW (data));
+  HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
 
   if (gtk_toggle_button_get_active (priv->search_button))
     gtk_toggle_button_set_active (priv->search_button, FALSE);
@@ -374,6 +372,7 @@ hdy_preferences_window_class_init (HdyPreferencesWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, search_button_activated);
   gtk_widget_class_bind_template_callback (widget_class, search_changed);
   gtk_widget_class_bind_template_callback (widget_class, search_result_activated);
+  gtk_widget_class_bind_template_callback (widget_class, toggle_search_state);
 }
 
 static void
@@ -392,9 +391,6 @@ hdy_preferences_window_init (HdyPreferencesWindow *self)
                                NULL,
                                priv->title_label,
                                NULL);
-
-    g_signal_connect (priv->search_entry, "stop-search",
-                      G_CALLBACK (toggle_search_state), self);
 
   gtk_list_box_set_header_func (priv->search_results, hdy_list_box_separator_header, NULL, NULL);
   gtk_list_box_set_filter_func (priv->search_results, (GtkListBoxFilterFunc) filter_search_results, self, NULL);
