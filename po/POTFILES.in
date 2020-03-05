@@ -1,5 +1,5 @@
 src/gtkprogresstracker.c
-src/hdy-column.c
+src/hdy-clamp.c
 src/hdy-header-group.c
 src/hdy-leaflet.c
 src/hdy-title-bar.c
