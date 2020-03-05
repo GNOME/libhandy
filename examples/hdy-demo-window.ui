@@ -1475,6 +1475,196 @@
                     <property name="title">Carousel</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="HdyColumn">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">fill</property>
+                    <property name="valign">fill</property>
+                    <property name="margin-bottom">32</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">32</property>
+                    <property name="expand">True</property>
+                    <property name="maximum-width">400</property>
+                    <property name="linear-growth-width">300</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="can_focus">False</property>
+                        <property name="valign">start</property>
+                        <property name="expand">True</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="margin-bottom">32</property>
+                            <property name="expand">True</property>
+                            <child>
+                              <object class="HdyAvatar" id="avatar">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="valign">center</property>
+                                <property name="halign">center</property>
+                                <property name="margin-bottom">18</property>
+                                <property name="size">128</property>
+                                <property name="show-initials" bind-source="avatar_show_initials" bind-property="state" bind-flags="sync-create"/>
+                                <property name="name" bind-source="avatar_name" bind-property="text" bind-flags="sync-create"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="opacity">0.5</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Avatar</property>
+                                    <property name="halign">center</property>
+                                    <property name="xalign">0</property>
+                                    <property name="margin-bottom">12</property>
+                                    <attributes>
+                                      <attribute name="weight" value="bold"/>
+                                      <attribute name="scale" value="2"/>
+                                    </attributes>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="opacity">0.5</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">A Avatar widget with fallback.</property>
+                                    <property name="justify">center</property>
+                                    <property name="use_markup">true</property>
+                                    <property name="wrap">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="HdyColumn">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="maximum-width">300</property>
+                            <property name="linear-growth-width">300</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="valign">center</property>
+                                <property name="hexpand">True</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">12</property>
+                                <child>
+                                  <object class="GtkListBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="expand">True</property>
+                                    <property name="selection-mode">none</property>
+                                    <style>
+                                      <class name="frame"/>
+                                    </style>
+                                    <child>
+                                      <object class="HdyActionRow">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="title" translatable="yes">Name</property>
+                                        <child type="action">
+                                          <object class="GtkEntry" id="avatar_name">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="valign">center</property>
+                                            <property name="text">Mario Rossi</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="HdyActionRow">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="title" translatable="yes">Show initials</property>
+                                        <child type="action">
+                                          <object class="GtkSwitch" id="avatar_show_initials">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="valign">center</property>
+                                            <property name="state">True</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="HdyActionRow">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="title" translatable="yes">File</property>
+                                        <child type="action">
+                                          <object class="GtkButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="valign">center</property>
+                                            <signal name="clicked" handler="avatar_file_remove_cb"/>
+                                            <child>
+                                              <object class="GtkImage">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="icon_name">user-trash-symbolic</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child type="action">
+                                          <object class="GtkFileChooserButton" id="avatar_filechooser">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="valign">center</property>
+                                            <property name="title" translatable="yes"/>
+                                            <signal name="file-set" handler="avatar_file_set_cb"/>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">avatar</property>
+                    <property name="title">Avatar</property>
+                  </packing>
+                </child>
               </object>
             </child>
           </object>
