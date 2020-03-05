@@ -304,8 +304,7 @@ toggle_search_state (HdyPreferencesWindow *self)
 {
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
 
-  if (gtk_toggle_button_get_active (priv->search_button))
-    gtk_toggle_button_set_active (priv->search_button, FALSE);
+  gtk_toggle_button_set_active (priv->search_button, FALSE);
 }
 
 static void
