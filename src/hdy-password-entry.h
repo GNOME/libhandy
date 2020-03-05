@@ -25,8 +25,5 @@ struct _HdyPasswordEntryClass
 
 GtkWidget   *hdy_password_entry_new               (void);
 
-void         hdy_password_entry_show_password     (HdyPasswordEntry *self,
-                                                   gboolean show_password);
-
 
 G_END_DECLS
