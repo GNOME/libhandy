@@ -313,3 +313,52 @@ button.list-button:not(:active):not(:checked):not(:hover) {
   border: 1px solid hdyalpha($borders_color, 0.5);
   box-shadow: none;
 }
+
+/* Avatar */
+
+avatar {
+  border-radius: 9999px;
+  -gtk-outline-radius: 9999px;
+  font-weight: bold;
+  font-size: 300%;
+}
+
+avatar.color0 {
+  color: #ffe5c5;
+  background-image: linear-gradient(#ffbe6f, #ed6f00);
+}
+
+avatar.color1 {
+  color: #f9f4e1;
+  background-image: linear-gradient(#f8e45c, #e5a50a);
+}
+
+avatar.color2 {
+  color: #e7c2e8;
+  background-image: linear-gradient(#dc8add, #8a3ea3);
+}
+
+avatar.color3 {
+  color: #cfe1f5;
+  background-image: linear-gradient(#99c1f1, #337fdc);
+}
+
+avatar.color4 {
+  color: #d8d7d3;
+  background-image: linear-gradient(#c0bfbc, #6e6d71);
+}
+
+avatar.color5 {
+  color: #cbf7d5;
+  background-image: linear-gradient(#8de6ae, #29ae71);
+}
+
+avatar.color6 {
+  color: #f6c8c4;
+  background-image: linear-gradient(#f67365, #d91a23);
+}
+
+avatar.color7 {
+  color: #e5d6ca;
+  background-image: linear-gradient(#cdab8f, #865d3c);
+}
