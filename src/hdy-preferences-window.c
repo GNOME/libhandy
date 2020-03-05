@@ -148,8 +148,8 @@ update_search_results (HdyPreferencesWindow *self)
 }
 
 static void
-search_result_activated (HdyPreferencesWindow *self,
-                         HdyActionRow         *widget)
+search_result_activated_cb (HdyPreferencesWindow *self,
+                            HdyActionRow         *widget)
 {
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
   HdyPreferencesPage *page;
@@ -183,9 +183,9 @@ search_result_activated (HdyPreferencesWindow *self,
 }
 
 static gboolean
-key_pressed (GtkWidget            *sender,
-             GdkEvent             *event,
-             HdyPreferencesWindow *self)
+key_press_event_cb (GtkWidget            *sender,
+                    GdkEvent             *event,
+                    HdyPreferencesWindow *self)
 {
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
   GdkModifierType default_modifiers = gtk_accelerator_get_default_mod_mask ();
@@ -212,8 +212,8 @@ key_pressed (GtkWidget            *sender,
 }
 
 static void
-header_bar_size_allocated (HdyPreferencesWindow *self,
-                           GdkRectangle         *allocation)
+header_bar_size_allocate_cb (HdyPreferencesWindow *self,
+                             GdkRectangle         *allocation)
 {
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
 
@@ -222,7 +222,7 @@ header_bar_size_allocated (HdyPreferencesWindow *self,
 }
 
 static void
-search_button_activated (HdyPreferencesWindow *self)
+search_button_notify_active_cb (HdyPreferencesWindow *self)
 {
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
 
@@ -244,7 +244,7 @@ search_button_activated (HdyPreferencesWindow *self)
 }
 
 static void
-search_changed (HdyPreferencesWindow *self)
+search_changed_cb (HdyPreferencesWindow *self)
 {
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
 
@@ -353,11 +353,11 @@ hdy_preferences_window_class_init (HdyPreferencesWindowClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, HdyPreferencesWindow, view_switcher_bar);
   gtk_widget_class_bind_template_child_private (widget_class, HdyPreferencesWindow, view_switcher_narrow);
   gtk_widget_class_bind_template_child_private (widget_class, HdyPreferencesWindow, view_switcher_wide);
-  gtk_widget_class_bind_template_callback (widget_class, header_bar_size_allocated);
-  gtk_widget_class_bind_template_callback (widget_class, key_pressed);
-  gtk_widget_class_bind_template_callback (widget_class, search_button_activated);
-  gtk_widget_class_bind_template_callback (widget_class, search_changed);
-  gtk_widget_class_bind_template_callback (widget_class, search_result_activated);
+  gtk_widget_class_bind_template_callback (widget_class, header_bar_size_allocate_cb);
+  gtk_widget_class_bind_template_callback (widget_class, key_press_event_cb);
+  gtk_widget_class_bind_template_callback (widget_class, search_button_notify_active_cb);
+  gtk_widget_class_bind_template_callback (widget_class, search_changed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, search_result_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, stop_search_cb);
 }
 
