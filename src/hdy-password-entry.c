@@ -11,37 +11,67 @@
 
 typedef struct
 {
-  GtkWidget *icon;
-
-  GtkWidget *entry;
+  guint timeout_id;
   gboolean show_characters;
 } HdyPasswordEntryPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (HdyPasswordEntry, hdy_password_entry, GTK_TYPE_ENTRY);
 
+#define REVEAL_TIMEOUT 2000
+
+static gboolean
+timeout_cb (gpointer user_data)
+{
+  HdyPasswordEntry *entry = user_data;
+  HdyPasswordEntryPrivate *priv = hdy_password_entry_get_instance_private (entry);
+
+  priv->timeout_id = 0;
+  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+
+  return TRUE;
+}
 
 static void
-secondary_icon_clicked_cb (GtkEntry              *entry,
-                           GtkEntryIconPosition   icon_pos,
-                           GdkEvent              *event,
-                           gpointer               user_data)
+set_timeout (HdyPasswordEntry *entry)
 {
+  HdyPasswordEntryPrivate *priv = hdy_password_entry_get_instance_private (entry);
+
+  if (priv->timeout_id > 0)
+    g_source_remove (priv->timeout_id);
+  priv->timeout_id = g_timeout_add (REVEAL_TIMEOUT,
+                                    timeout_cb,
+                                    entry);
+  g_source_set_name_by_id (priv->timeout_id, "[gtk] gtk_search_entry_changed_timeout_cb");
+}
+
+static void
+secondary_icon_clicked_cb (HdyPasswordEntry              *entry,
+                           GtkEntryIconPosition           icon_pos,
+                           GdkEvent                      *event,
+                           gpointer                       user_data)
+{
+  HdyPasswordEntryPrivate *priv = hdy_password_entry_get_instance_private (entry);
+
   if (icon_pos == GTK_ENTRY_ICON_SECONDARY)
-    g_print ("gotcha!");
+  {
+    if (priv->timeout_id > 0)
+    {
+      g_source_remove (priv->timeout_id);
+      gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+      priv->timeout_id = 0;
+    }
+    else
+    {
+      gtk_entry_set_visibility (GTK_ENTRY (entry), TRUE);
+      set_timeout (entry);
+    }
+  }
 }
 
 static void
 hdy_password_entry_finalize (GObject *object)
 {
-  HdyPasswordEntryPrivate *priv = hdy_password_entry_get_instance_private (HDY_PASSWORD_ENTRY (object));
-
-  g_clear_pointer (&priv->entry, gtk_widget_unparent);
-  g_clear_pointer (&priv->icon, gtk_widget_unparent);
-
-  if (priv->entry != NULL)
-    g_object_unref (priv->entry);
-  if (priv->icon != NULL)
-    g_object_unref (priv->icon);
+  // just for future use
 
   G_OBJECT_CLASS (hdy_password_entry_parent_class)->finalize (object);
 
@@ -64,10 +94,6 @@ hdy_password_entry_class_init (HdyPasswordEntryClass *klass)
 static void
 hdy_password_entry_init (HdyPasswordEntry *entry)
 {
-  HdyPasswordEntryPrivate *priv = hdy_password_entry_get_instance_private (entry);
-
-  priv->entry = gtk_entry_new ();
-
   gtk_widget_init_template (GTK_WIDGET (entry));
 }
 
