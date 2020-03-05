@@ -9,8 +9,8 @@ from gi.repository import Handy
 import sys
 
 
-window = Gtk.Window(title="Keypad Example with Python")
-vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+window = Gtk.Window(title = "Keypad Example with Python")
+vbox = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
 entry = Gtk.Entry()
 keypad = Handy.Keypad()
 
