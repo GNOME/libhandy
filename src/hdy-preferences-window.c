@@ -191,7 +191,6 @@ key_pressed (GtkWidget            *sender,
   GdkModifierType default_modifiers = gtk_accelerator_get_default_mod_mask ();
   guint keyval;
   GdkModifierType state;
-  gunichar c;
 
   gdk_event_get_keyval (event, &keyval);
   gdk_event_get_state (event, &state);
@@ -203,18 +202,7 @@ key_pressed (GtkWidget            *sender,
     return TRUE;
   }
 
-  if (keyval == GDK_KEY_Escape &&
-      gtk_toggle_button_get_active (priv->search_button)) {
-    gtk_toggle_button_set_active (priv->search_button, FALSE);
-
-    return TRUE;
-  }
-
-  c = gdk_keyval_to_unicode (keyval);
-  if (g_unichar_isgraph (c)) {
-    gchar text[6] = { 0 };
-    g_unichar_to_utf8 (c, text);
-    gtk_entry_set_text (GTK_ENTRY (priv->search_entry), text);
+  if (gtk_search_entry_handle_event (priv->search_entry, event)) {
     gtk_toggle_button_set_active (priv->search_button, TRUE);
 
     return TRUE;
