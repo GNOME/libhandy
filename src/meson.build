@@ -63,6 +63,7 @@ libhandy_generated_headers += [hdy_enums[1]]
 src_headers = [
   'hdy-action-row.h',
   'hdy-animation.h',
+  'hdy-avatar.h',
   'hdy-arrows.h',
   'hdy-column.h',
   'hdy-combo-row.h',
@@ -112,6 +113,7 @@ src_sources = [
   'hdy-action-row.c',
   'hdy-animation.c',
   'hdy-arrows.c',
+  'hdy-avatar.c',
   'hdy-column.c',
   'hdy-combo-row.c',
   'hdy-dialer-button.c',

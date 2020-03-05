@@ -29,6 +29,7 @@ G_BEGIN_DECLS
 #include "hdy-animation.h"
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 #include "hdy-arrows.h"
+#include "hdy-avatar.h"
 G_GNUC_END_IGNORE_DEPRECATIONS
 #include "hdy-column.h"
 #include "hdy-combo-row.h"
