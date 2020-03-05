@@ -313,3 +313,34 @@ button.list-button:not(:active):not(:checked):not(:hover) {
   border: 1px solid hdyalpha($borders_color, 0.5);
   box-shadow: none;
 }
+
+// Avatar
+
+avatar {
+  border-radius: 9999px;
+  -gtk-outline-radius: 9999px;
+  font-weight: bold;
+
+  $avatarcolorlist: (
+  (#ffe5c5, #ffbe6f, #ed6f00),
+  (#f9f4e1, #f8e45c, #e5a50a),
+  (#e7c2e8, #dc8add, #8a3ea3),
+  (#cfe1f5, #99c1f1, #337fdc),
+  (#d8d7d3, #c0bfbc, #6e6d71),
+  (#cbf7d5, #8de6ae, #29ae71),
+  (#f6c8c4, #f67365, #d91a23),
+  (#e5d6ca, #cdab8f, #865d3c),
+  );
+
+  @for $i from 1 through 8 {
+    &.color#{$i - 1} {
+      $avatarcolor: nth($avatarcolorlist, $i);
+      color: nth($avatarcolor, 1);
+      background-image: linear-gradient(nth($avatarcolor, 2), nth($avatarcolor, 3));
+    }
+  }
+
+  &.contrasted {
+    color: #fff;
+  }
+}
