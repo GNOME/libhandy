@@ -45,7 +45,7 @@ set_timeout (HdyPasswordEntry *entry)
 }
 
 static void
-secondary_icon_clicked_cb (HdyPasswordEntry              *entry,
+icon_release_cb (HdyPasswordEntry              *entry,
                            GtkEntryIconPosition           icon_pos,
                            GdkEvent                      *event,
                            gpointer                       user_data)
@@ -88,7 +88,7 @@ hdy_password_entry_class_init (HdyPasswordEntryClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/sm/puri/handy/ui/hdy-password-entry.ui");
 
-  gtk_widget_class_bind_template_callback (widget_class, secondary_icon_clicked_cb);
+  gtk_widget_class_bind_template_callback (widget_class, icon_release_cb);
 }
 
 static void
