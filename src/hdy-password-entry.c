@@ -27,6 +27,9 @@ timeout_cb (gpointer user_data)
 
   priv->timeout_id = 0;
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
+                                     GTK_ENTRY_ICON_SECONDARY,
+                                     "hdy-eye-not-looking-symbolic");
 
   return TRUE;
 }
@@ -41,7 +44,7 @@ set_timeout (HdyPasswordEntry *entry)
   priv->timeout_id = g_timeout_add (REVEAL_TIMEOUT,
                                     timeout_cb,
                                     entry);
-  g_source_set_name_by_id (priv->timeout_id, "[gtk] gtk_search_entry_changed_timeout_cb");
+  g_source_set_name_by_id (priv->timeout_id, "[gtk] hdy_password_entry_reveal_timeout_cb");
 }
 
 static void
@@ -58,11 +61,17 @@ icon_release_cb (HdyPasswordEntry              *entry,
     {
       g_source_remove (priv->timeout_id);
       gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+      gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
+                                         GTK_ENTRY_ICON_SECONDARY,
+                                         "hdy-eye-not-looking-symbolic");
       priv->timeout_id = 0;
     }
     else
     {
       gtk_entry_set_visibility (GTK_ENTRY (entry), TRUE);
+      gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
+                                         GTK_ENTRY_ICON_SECONDARY,
+                                         "hdy-eye-open-symbolic");
       set_timeout (entry);
     }
   }
