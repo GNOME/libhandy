@@ -609,7 +609,7 @@ hdy_view_switcher_init (HdyViewSwitcher *self)
  *
  * Since: 0.0.10
  */
-HdyViewSwitcher *
+GtkWidget *
 hdy_view_switcher_new (void)
 {
   return g_object_new (HDY_TYPE_VIEW_SWITCHER, NULL);

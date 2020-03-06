@@ -404,7 +404,7 @@ hdy_preferences_window_init (HdyPreferencesWindow *self)
  *
  * Since: 0.0.10
  */
-HdyPreferencesWindow *
+GtkWidget *
 hdy_preferences_window_new (void)
 {
   return g_object_new (HDY_TYPE_PREFERENCES_WINDOW, NULL);
