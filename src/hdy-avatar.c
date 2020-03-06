@@ -36,10 +36,15 @@
 
 /**
  * SECTION:hdy-avatar
- * @short_description: A widget displaying an avatar, with a fallback icon
+ * @short_description: A widget displaying an image, with a generated fallback.
  * @Title: HdyAvatar
  *
- * The #HdyAvatar widget
+ * #HdyAvatar is a widget to display a round avatar or to generated a GNOME styled fallback.
+ * A provided image is made round and displayed, if no image is given this widget generates
+ * a round fallback with the initials of the #HdyAvatar:name on top of a colord background.
+ * The color is picked based on the hash of the #HdyAvatar:name. If #HdyAvatar:show-initials is set to %FALSE `avatar-default-symbolic` in place of the initials.
+ *
+ * See hdy_avatar_set_image () for a code example.
  *
  */
 
@@ -353,25 +358,25 @@ hdy_avatar_class_init (HdyAvatarClass *klass)
 
   props[PROP_IMAGE] = g_param_spec_object ("image",
                                            "image",
-                                           "The avatar image to show, if NULL we create the fallback image",
+                                           "The avatar to show, when set to %NULL a fallback is generated",
                                            GDK_TYPE_PIXBUF,
                                            G_PARAM_WRITABLE);
 
   props[PROP_SIZE] = g_param_spec_int ("size",
                                           "size",
                                           "The size of the avatar",
-                                          -1, INT_MAX, 64,
+                                          -1, INT_MAX, -1,
                                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_NAME] = g_param_spec_string ("name",
                                           "name",
-                                          "The name used to generate the color and for the initials",
+                                          "The name used to generate the color and the initials",
                                           NULL,
                                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_SHOW_INITIALS] = g_param_spec_boolean ("show-initials",
                                                     "Show initials",
-                                                    "Whether to show the initials or a fallback icon",
+                                                    "Whether to show the initials or a fallback icon on the generated avatar",
                                                     FALSE,
                                                     G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -388,15 +393,14 @@ hdy_avatar_init (HdyAvatar *self)
 
 /**
  * hdy_avatar_new:
- * @image (allow-none): The Avatar to show or %NULL
+ * @image: (allow-none): The Avatar to show or %NULL
  * @size: The size of the avatar
- * @name (allow-none): The name used to generate the color and initials if @show_initials is %TRUE. The color is selected at random if @name is %NULL.
+ * @name: (allow-none): The name used to generate the color and initials if @show_initials is %TRUE. The color is selected at random if @name is %NULL.
  * @show_initials: whether to show the initials or the fallback icon on top of the color generated based on @name.
  *
- * Create a new #HdyAvatar widget.
+ * Creates a new #HdyAvatar.
  *
- * Returns: the newly created #HdyAvatar widget
- *
+ * Returns: the newly created #HdyAvatar
  */
 GtkWidget *
 hdy_avatar_new (GdkPixbuf *image, gint size, const gchar *name, gboolean show_initials)
@@ -411,15 +415,12 @@ hdy_avatar_new (GdkPixbuf *image, gint size, const gchar *name, gboolean show_in
 
 /**
  * hdy_avatar_get_name:
- * @self: The Avatar to show or %NULL
- * @size: The size of the avatar
- * @name (allow-none): The name used to generate the color and initials if @show_initials is %TRUE. The color is selected at random if @name is %NULL.
- * @show_initials: whether to show the initials or the fallback icon on top of the color generated based on @name.
+ * @self: a #HdyAvatar
  *
- * Create a new #HdyAvatar widget.
+ * Get the name used to generate the fallback initials and color
  *
- * Returns: the newly created #HdyAvatar widget
- *
+ * Returns: (nullable) (transfer none): returns the name used to generate the fallback initials.
+ * This is the internal string used by the #HdyAvatar, and must not be modified.
  */
 const gchar *
 hdy_avatar_get_name (HdyAvatar *self)
@@ -432,6 +433,14 @@ hdy_avatar_get_name (HdyAvatar *self)
   return priv->name;
 }
 
+/**
+ * hdy_avatar_set_name:
+ * @self: a #HdyAvatar
+ * @name: (allow-none): the name used to get the initials and color
+ *
+ * Set the name used to generate the fallback initials color
+ *
+ */
 void
 hdy_avatar_set_name (HdyAvatar *self, const gchar *name)
 {
@@ -450,6 +459,14 @@ hdy_avatar_set_name (HdyAvatar *self, const gchar *name)
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_NAME]);
 }
 
+/**
+ * hdy_avatar_get_show_initials:
+ * @self: a #HdyAvatar
+ *
+ * Returns whether initals are used for the fallback or the icon.
+ *
+ * Returns: %TRUE if the initials are used for the fallback.
+ */
 gboolean
 hdy_avatar_get_show_initials (HdyAvatar *self)
 {
@@ -461,6 +478,13 @@ hdy_avatar_get_show_initials (HdyAvatar *self)
   return priv->show_initials;
 }
 
+/**
+ * hdy_avatar_set_show_initials:
+ * @self: a #HdyAvatar
+ * @show_initials: whether the initials should be shown on the fallback avatar or the icon.
+ *
+ * Sets whether the initials should be shown on the fallback avatar or the icon.
+ */
 void
 hdy_avatar_set_show_initials (HdyAvatar *self, gboolean show_initials)
 {
@@ -478,6 +502,31 @@ hdy_avatar_set_show_initials (HdyAvatar *self, gboolean show_initials)
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_SHOW_INITIALS]);
 }
 
+/**
+ * hdy_avatar_set_image:
+ * @self: a #HdyAvatar
+ * @image: (allow-none): a #GdkPixbuf, or %NULL
+ *
+ * Sets the image to be displayed. The @image is required to be the size of the avatar.
+ * To consider also HIDPI the size of @image should be 
+ * hdy_avatar_get_size () * gtk_widget_get_scale_factor ().
+ *
+ * |[<!-- language="C" -->
+ * GtkWidget *avatar = hdy_avatar_new (NULL, 128, NULL, TRUE);
+ * g_autoptr (GdkPixbuf) pixbuf = NULL;
+ * gint scale;
+ * gint size;
+ *
+ * scale = gtk_widget_get_scale_factor (avatar);
+ * size = hdy_avatar_get_size (self->avatar);
+ * pixbuf = gdk_pixbuf_new_from_file_at_scale ("./avatar.png", size * scale, size * scale, TRUE, NULL);
+ *
+ * hdy_avatar_set_image (HDY_AVATAR (avatar), pixbuf);
+ * ]|
+ *
+ * You probably also want to connect to `notify::scale-factor` to updated the @image
+ * when the scale factor changes.
+ */
 void
 hdy_avatar_set_image (HdyAvatar *self, GdkPixbuf *image)
 {
@@ -502,6 +551,14 @@ hdy_avatar_set_image (HdyAvatar *self, GdkPixbuf *image)
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_IMAGE]);
 }
 
+/**
+ * hdy_avatar_get_size:
+ * @self: a #HdyAvatar
+ *
+ * Returns the size of the avatar.
+ *
+ * Returns: the size of the avatar.
+ */
 gint
 hdy_avatar_get_size (HdyAvatar *self)
 {
@@ -513,6 +570,13 @@ hdy_avatar_get_size (HdyAvatar *self)
   return priv->size;
 }
 
+/**
+ * hdy_avatar_set_size:
+ * @self: a #HdyAvatar
+ * @size: The size to be used for the avatar
+ *
+ * Sets the size of the avatar.
+ */
 void
 hdy_avatar_set_size (HdyAvatar *self, gint size)
 {

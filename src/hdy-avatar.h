@@ -36,7 +36,6 @@ const gchar *hdy_avatar_get_name          (HdyAvatar *self);
 void         hdy_avatar_set_name          (HdyAvatar *self, const gchar *name);
 gboolean     hdy_avatar_get_show_initials (HdyAvatar *self);
 void         hdy_avatar_set_show_initials (HdyAvatar *self, gboolean show_initials);
-GdkPixbuf   *hdy_avatar_get_image         (HdyAvatar *self);
 void         hdy_avatar_set_image         (HdyAvatar *self, GdkPixbuf *image);
 gint         hdy_avatar_get_size          (HdyAvatar *self);
 void         hdy_avatar_set_size          (HdyAvatar *self, gint size);
