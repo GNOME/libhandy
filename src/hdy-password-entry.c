@@ -12,7 +12,7 @@
 typedef struct
 {
   guint timeout_id;
-  gboolean show_characters;
+  gboolean show_characters; // not used
 } HdyPasswordEntryPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (HdyPasswordEntry, hdy_password_entry, GTK_TYPE_ENTRY);
@@ -25,6 +25,8 @@ timeout_cb (gpointer user_data)
   HdyPasswordEntry *entry = user_data;
   HdyPasswordEntryPrivate *priv = hdy_password_entry_get_instance_private (entry);
 
+  if (priv->timeout_id > 0)
+    g_source_remove (priv->timeout_id);
   priv->timeout_id = 0;
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
   gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
