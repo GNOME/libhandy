@@ -1548,7 +1548,7 @@
                                     <property name="visible">True</property>
                                     <property name="opacity">0.5</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">A Avatar widget with fallback.</property>
+                                    <property name="label" translatable="yes">A avatar with generated fallback.</property>
                                     <property name="justify">center</property>
                                     <property name="use_markup">true</property>
                                     <property name="wrap">True</property>
