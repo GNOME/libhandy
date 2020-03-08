@@ -51,9 +51,9 @@ set_timeout (HdyPasswordEntry *entry)
 
 static void
 icon_release_cb (HdyPasswordEntry              *entry,
-                           GtkEntryIconPosition           icon_pos,
-                           GdkEvent                      *event,
-                           gpointer                       user_data)
+                 GtkEntryIconPosition           icon_pos,
+                 GdkEvent                      *event,
+                 gpointer                       user_data)
 {
   HdyPasswordEntryPrivate *priv = hdy_password_entry_get_instance_private (entry);
 
@@ -80,12 +80,14 @@ icon_release_cb (HdyPasswordEntry              *entry,
 }
 
 static void
-hdy_password_entry_finalize (GObject *object)
+hdy_password_entry_dispose (GObject *object)
 {
-  // just for future use
+  HdyPasswordEntryPrivate *priv = hdy_password_entry_get_instance_private (HDY_PASSWORD_ENTRY (object));
 
-  G_OBJECT_CLASS (hdy_password_entry_parent_class)->finalize (object);
+  if (priv->timeout_id > 0)
+    g_source_remove (priv->timeout_id);
 
+  G_OBJECT_CLASS (hdy_password_entry_parent_class)->dispose (object);
 }
 
 static void
@@ -94,7 +96,7 @@ hdy_password_entry_class_init (HdyPasswordEntryClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->finalize = hdy_password_entry_finalize;
+  object_class->dispose = hdy_password_entry_dispose;
 
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/sm/puri/handy/ui/hdy-password-entry.ui");
