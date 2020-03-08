@@ -29,7 +29,7 @@ timeout_cb (gpointer user_data)
   priv->timeout_id = 0;
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
   gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
-                                     GTK_ENTRY_ICON_SECONDARY,
+                                     GTK_ENTRY_ICON_PRIMARY,
                                      "hdy-eye-not-looking-symbolic");
 
   return TRUE;
@@ -56,14 +56,14 @@ icon_release_cb (HdyPasswordEntry              *entry,
 {
   HdyPasswordEntryPrivate *priv = hdy_password_entry_get_instance_private (entry);
 
-  if (icon_pos == GTK_ENTRY_ICON_SECONDARY)
+  if (icon_pos == GTK_ENTRY_ICON_PRIMARY)
   {
     if (priv->timeout_id > 0)
     {
       g_source_remove (priv->timeout_id);
       gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
       gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
-                                         GTK_ENTRY_ICON_SECONDARY,
+                                         GTK_ENTRY_ICON_PRIMARY,
                                          "hdy-eye-not-looking-symbolic");
       priv->timeout_id = 0;
     }
@@ -71,7 +71,7 @@ icon_release_cb (HdyPasswordEntry              *entry,
     {
       gtk_entry_set_visibility (GTK_ENTRY (entry), TRUE);
       gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
-                                         GTK_ENTRY_ICON_SECONDARY,
+                                         GTK_ENTRY_ICON_PRIMARY,
                                          "hdy-eye-open-symbolic");
       set_timeout (entry);
     }
@@ -104,10 +104,10 @@ hdy_password_entry_init (HdyPasswordEntry *entry)
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
   gtk_entry_set_input_purpose (GTK_ENTRY (entry), GTK_INPUT_PURPOSE_PASSWORD);
   gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
-                                     GTK_ENTRY_ICON_SECONDARY,
+                                     GTK_ENTRY_ICON_PRIMARY,
                                      "hdy-eye-not-looking-symbolic");
   gtk_entry_set_icon_tooltip_text (GTK_ENTRY (entry),
-                                     GTK_ENTRY_ICON_SECONDARY,
+                                     GTK_ENTRY_ICON_PRIMARY,
                                      "Clear entry");
 
   g_signal_connect (GTK_ENTRY (entry),
