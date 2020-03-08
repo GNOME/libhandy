@@ -150,6 +150,10 @@ viewswitcher > button:not(only-child):last-child:not(:checked):hover {
   border-right-color: shade(@borders, 1.15);
 }
 
+headerbar viewswitcher {
+  margin: 0px 30px 0px 30px;
+}
+
 headerbar viewswitcher > button:not(:checked):hover:not(:backdrop) {
   /* Reimplementation of $button_fill from Adwaita. The shade should be 4% and
    * 1% in light and dark mode respectively, so please note the shade is a bit
