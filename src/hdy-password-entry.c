@@ -12,7 +12,6 @@
 typedef struct
 {
   guint timeout_id;
-  gboolean show_characters; // not used
 } HdyPasswordEntryPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (HdyPasswordEntry, hdy_password_entry, GTK_TYPE_ENTRY);
@@ -86,6 +85,7 @@ hdy_password_entry_dispose (GObject *object)
 
   if (priv->timeout_id > 0)
     g_source_remove (priv->timeout_id);
+  g_signal_handlers_disconnect_by_func (object, G_CALLBACK (icon_release_cb), NULL);
 
   G_OBJECT_CLASS (hdy_password_entry_parent_class)->dispose (object);
 }
@@ -94,20 +94,26 @@ static void
 hdy_password_entry_class_init (HdyPasswordEntryClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->dispose = hdy_password_entry_dispose;
-
-  gtk_widget_class_set_template_from_resource (widget_class,
-                                               "/sm/puri/handy/ui/hdy-password-entry.ui");
-
-  gtk_widget_class_bind_template_callback (widget_class, icon_release_cb);
 }
 
 static void
 hdy_password_entry_init (HdyPasswordEntry *entry)
 {
-  gtk_widget_init_template (GTK_WIDGET (entry));
+  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+  gtk_entry_set_input_purpose (GTK_ENTRY (entry), GTK_INPUT_PURPOSE_PASSWORD);
+  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry),
+                                     GTK_ENTRY_ICON_SECONDARY,
+                                     "hdy-eye-not-looking-symbolic");
+  gtk_entry_set_icon_tooltip_text (GTK_ENTRY (entry),
+                                     GTK_ENTRY_ICON_SECONDARY,
+                                     "Clear entry");
+
+  g_signal_connect (GTK_ENTRY (entry),
+                    "icon-release",
+                    G_CALLBACK (icon_release_cb),
+                    NULL);
 }
 
 GtkWidget *

@@ -12,7 +12,6 @@
     <file preprocess="xml-stripblanks">hdy-expander-row.ui</file>
     <file preprocess="xml-stripblanks">hdy-keypad.ui</file>
     <file preprocess="xml-stripblanks">hdy-keypad-button.ui</file>
-    <file preprocess="xml-stripblanks">hdy-password-entry.ui</file>
     <file preprocess="xml-stripblanks">hdy-preferences-group.ui</file>
     <file preprocess="xml-stripblanks">hdy-preferences-page.ui</file>
     <file preprocess="xml-stripblanks">hdy-preferences-window.ui</file>
