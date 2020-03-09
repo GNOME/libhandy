@@ -141,41 +141,23 @@ extract_initials_from_text (const gchar *text)
 }
 
 static GdkRGBA
-get_color_for_text (const gchar *text)
+get_color_for_text (const gchar *text, cairo_pattern_t *pat)
 {
-  // https://gitlab.gnome.org/Community/Design/HIG-app-icons/blob/master/GNOME%20HIG.gpl
-  static gdouble gnome_color_palette[][3] = {
-      {  98, 160, 234 },
-      {  53, 132, 228 },
-      {  28, 113, 216 },
-      {  26,  95, 180 },
-      {  87, 227, 137 },
-      {  51, 209, 122 },
-      {  46, 194, 126 },
-      {  38, 162, 105 },
-      { 248, 228,  92 },
-      { 246, 211,  45 },
-      { 245, 194,  17 },
-      { 229, 165,  10 },
-      { 255, 163,  72 },
-      { 255, 120,   0 },
-      { 230,  97,   0 },
-      { 198,  70,   0 },
-      { 237,  51,  59 },
-      { 224,  27,  36 },
-      { 192,  28,  40 },
-      { 165,  29,  45 },
-      { 192,  97, 203 },
-      { 163,  71, 186 },
-      { 129,  61, 156 },
-      {  97,  53, 131 },
-      { 181, 131,  90 },
-      { 152, 106,  68 },
-      { 134,  94,  60 },
-      {  99,  69,  44 }
+  #define RED 0
+  #define GREEN 1
+  #define BLUE 2
+  static gdouble color_palette[][2][3] = {
+      {{237, 111, 0}, {255, 190, 111}},
+      {{229, 165, 10}, {248, 228, 92}},
+      {{138, 62, 163}, {220, 138, 221}},
+      {{51, 127, 220}, {153, 193, 241}},
+      {{110, 109, 113}, {192, 191, 188}},
+      {{41, 174, 113}, {141, 230, 174}},
+      {{217, 26, 35}, {246, 115, 101}},
+      {{134, 93, 60}, {205, 171, 143}}
   };
 
-  GdkRGBA color = { 255, 255, 255, 1.0 };
+  GdkRGBA color;
   guint hash;
   gint number_of_colors;
   gint idx;
@@ -184,17 +166,27 @@ get_color_for_text (const gchar *text)
   if (text == NULL || strlen (text) == 0) {
     /* Use a random color if we don't have a text */
     rand = g_rand_new ();
-    idx = g_rand_int_range (rand, 0, G_N_ELEMENTS (gnome_color_palette));
+    idx = g_rand_int_range (rand, 0, G_N_ELEMENTS (color_palette));
   } else {
     hash = g_str_hash (text);
-    number_of_colors = G_N_ELEMENTS (gnome_color_palette);
+    number_of_colors = G_N_ELEMENTS (color_palette);
     idx = hash % number_of_colors;
   }
 
-  color.red   = gnome_color_palette[idx][0] / 255.0;
-  color.green = gnome_color_palette[idx][1] / 255.0;
-  color.blue  = gnome_color_palette[idx][2] / 255.0;
-  color.alpha  = 1.0;
+  cairo_pattern_add_color_stop_rgb (pat,
+                                    1,
+                                    color_palette[idx][0][RED] / 255.0,
+                                    color_palette[idx][0][GREEN] / 255.0,
+                                    color_palette[idx][0][BLUE] / 255.0);
+  cairo_pattern_add_color_stop_rgb (pat,
+                                    0,
+                                    color_palette[idx][1][RED] / 255.0,
+                                    color_palette[idx][1][GREEN] / 255.0,
+                                    color_palette[idx][1][BLUE] / 255.0);
+  color.red   = (color_palette[idx][1][RED] / 255.0) + 0.3;
+  color.green = (color_palette[idx][1][GREEN] / 255.0) + 0.3;
+  color.blue  = (color_palette[idx][1][BLUE] / 255.0) + 0.3;
+  color.alpha  = 0.85;
 
   return color;
 }
@@ -207,12 +199,14 @@ generate_user_picture (const gchar *text,
   PangoFontDescription *font_desc;
   g_autofree gchar *initials = NULL;
   g_autofree gchar *font = NULL;
-  g_autoptr (GdkPixbuf) fallback_icon = NULL;
+  g_autoptr (GtkIconInfo) fallback_icon = NULL;
+  g_autoptr (GdkPixbuf) fallback_pixbuf = NULL;
+  GdkRGBA color;
   PangoLayout *layout;
-  GdkRGBA color = get_color_for_text (text);
   cairo_surface_t *surface;
   gint width, height;
   cairo_t *cr;
+  cairo_pattern_t *gradient;
 
   surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
                                         size,
@@ -220,14 +214,17 @@ generate_user_picture (const gchar *text,
   cr = cairo_create (surface);
 
   cairo_arc (cr, size/2, size/2, size/2, 0, 2 * G_PI);
-  gdk_cairo_set_source_rgba (cr, &color);
+  gradient = cairo_pattern_create_linear (0.0, 0.0,  0.0, (gdouble) size);
+  color = get_color_for_text (text, gradient);
+  cairo_set_source (cr, gradient);
+  cairo_pattern_destroy (gradient);
   cairo_fill (cr);
 
   if (show_initials) {
     /* Draw the initials on top */
-    font = g_strdup_printf ("Cantarell Ultra-Bold %d", (gint)ceil (size / 3));
+    font = g_strdup_printf ("Cantarell Bold %d", (gint)ceil (size / 4));
     initials = extract_initials_from_text (text);
-    cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+    gdk_cairo_set_source_rgba (cr, &color);
     layout = pango_cairo_create_layout (cr);
     pango_layout_set_text (layout, initials, -1);
     font_desc = pango_font_description_from_string (font);
@@ -240,16 +237,16 @@ generate_user_picture (const gchar *text,
     pango_cairo_show_layout (cr, layout);
   } else {
     /* Draw fallback icon on top */
-    fallback_icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+    fallback_icon = gtk_icon_theme_lookup_icon (gtk_icon_theme_get_default (),
                                               "avatar-default-symbolic",
-                                              size / 2,
-                                              GTK_ICON_LOOKUP_FORCE_SYMBOLIC,
-                                              NULL);
-    if (fallback_icon) {
-      width = gdk_pixbuf_get_width (fallback_icon);
-      height = gdk_pixbuf_get_width (fallback_icon);
+                                              size / 3,
+                                              GTK_ICON_LOOKUP_FORCE_SYMBOLIC);
+    fallback_pixbuf = gtk_icon_info_load_symbolic (fallback_icon, &color, NULL, NULL, NULL, NULL, NULL);
+    if (fallback_pixbuf) {
+      width = gdk_pixbuf_get_width (fallback_pixbuf);
+      height = gdk_pixbuf_get_width (fallback_pixbuf);
       gdk_cairo_set_source_pixbuf (cr,
-                                   fallback_icon,
+                                   fallback_pixbuf,
                                    (gdouble) size / 2.0 - (gdouble) width / 2.0,
                                    (gdouble) size / 2.0 - (gdouble) height / 2.0);
       cairo_paint (cr);
