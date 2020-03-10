@@ -65,6 +65,7 @@ filter_search_results (HdyActionRow         *row,
 
   if (strstr (title, text)) {
     priv->n_last_search_results++;
+    gtk_widget_show (GTK_WIDGET (row));
 
     return TRUE;
   }
@@ -73,9 +74,12 @@ filter_search_results (HdyActionRow         *row,
 
   if (!!strstr (subtitle, text)) {
     priv->n_last_search_results++;
+    gtk_widget_show (GTK_WIDGET (row));
 
     return TRUE;
   }
+
+  gtk_widget_hide (GTK_WIDGET (row));
 
   return FALSE;
 }
