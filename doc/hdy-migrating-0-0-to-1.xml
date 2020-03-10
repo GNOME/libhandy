@@ -81,6 +81,22 @@
     </refsect3>
 
     <refsect3>
+      <title>Adapt to GTK 3 convention</title>
+      <para>
+        Some widgets were adapted to follow the GTK 3 convention to maintain
+        consistency.
+        Now every widget constructor returns a GtkWidget* when called.
+      </para>
+      <para>
+        Affected widgets:
+        #HdyActionRow, #HdyColumn, #HdyComboRow, #HdyExpanderRow,
+        #HdyPreferencesGroup, #HdyPreferencesPage, #HdyPreferencesRow,
+        #HdyPreferencesWindow, #HdySqueezer, #HdyTitleBar, #HdyViewSwitcherBar,
+        #HdyViewSwitcher
+      </para>
+    </refsect3>
+
+    <refsect3>
       <title>HdyFold has been removed</title>
       <para>
         #HdyFold has been removed. This affects the API of #HdyLeaflet, see the
