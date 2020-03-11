@@ -53,7 +53,7 @@
               </object>
               <packing>
                 <property name="name">page3</property>
-                <property name="title" translatable="yes">Stopwatch</property>
+                <property name="title" translatable="yes">StopwatchStopwatch</property>
                 <property name="icon_name">document-print-symbolic</property>
                 <property name="position">2</property>
               </packing>
