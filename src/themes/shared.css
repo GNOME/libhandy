@@ -27,6 +27,8 @@ row.expander image.expander-row-arrow:disabled { color: #929595; }
 
 preferencespage label.h4 { font-weight: bold; }
 
+headerbar viewswitcher { margin: 0px 30px; }
+
 deck > dimming, leaflet > dimming { background: rgba(0, 0, 0, 0.12); }
 
 deck > border, leaflet > border { min-width: 1px; min-height: 1px; background: rgba(0, 0, 0, 0.05); }
