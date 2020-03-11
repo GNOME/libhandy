@@ -9,14 +9,29 @@
 
 #include "hdy-password-entry.h"
 
+#define REVEAL_TIMEOUT 2000
+
+/**
+ * SECTION:hdy-password-entry
+ * @short_description: A password entry widget.
+ * @title: HdyPasswordEntry
+ *
+ * The #HdyPasswordEntry widget is a password entry widget with toggle
+ * functionality to view entered characters for a short duration of time.
+ *
+ * # CSS nodes
+ *
+ * #HdyPasswordEntry has a single CSS node with name passwordentry.
+ *
+ * Since: 1.0
+ */
+
 typedef struct
 {
   guint timeout_id;
 } HdyPasswordEntryPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (HdyPasswordEntry, hdy_password_entry, GTK_TYPE_ENTRY);
-
-#define REVEAL_TIMEOUT 2000
 
 static gboolean
 timeout_cb (gpointer user_data)
@@ -94,8 +109,11 @@ static void
 hdy_password_entry_class_init (HdyPasswordEntryClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->dispose = hdy_password_entry_dispose;
+
+  gtk_widget_class_set_css_name (widget_class, "passwordentry");
 }
 
 static void
@@ -116,6 +134,15 @@ hdy_password_entry_init (HdyPasswordEntry *entry)
                     NULL);
 }
 
+/**
+ * hdy_password_entry_new:
+ *
+ * Create a new #HdyPasswordEntry widget.
+ *
+ * Returns: The newly created #HdyPasswordEntry widget
+ *
+ * Since: 1.0
+ */
 GtkWidget *
 hdy_password_entry_new (void)
 {
