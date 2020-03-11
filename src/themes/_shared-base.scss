@@ -72,6 +72,10 @@ row.expander image.expander-row-arrow:disabled {
   color: $insensitive_fg_color;
 }
 
+headerbar viewswitcher {
+  margin: 0px 30px;
+}
+
 // Preferences
 
 preferencespage label.h4 {

@@ -25,6 +25,8 @@ row.expander:checked image.expander-row-arrow:not(:disabled) { color: #15539e; }
 
 row.expander image.expander-row-arrow:disabled { color: #919190; }
 
+headerbar viewswitcher { margin: 0px 30px; }
+
 preferencespage label.h4 { font-weight: bold; }
 
 deck > dimming, leaflet > dimming { background: rgba(0, 0, 0, 0.12); }
