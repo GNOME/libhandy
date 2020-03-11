@@ -20,3 +20,23 @@
                         hdyalpha(#000, 0.01) 7px,
                         hdyalpha(#000, 0) 24px);
 }
+
+@mixin rounded-border($border) {
+  $corners: (
+    'top': (('top'), ('left', 'right')),
+    'bottom': (('bottom'), ('left', 'right')),
+    'left': (('top', 'bottom'), ('left')),
+    'right': (('top', 'bottom'), ('right')),
+  );
+
+  @if not map-get($corners, $border) {
+    @error "Unkown border type: #{$border}";
+  }
+
+  @each $floor in nth(map-get($corners, $border), 1) {
+    @each $wall in nth(map-get($corners, $border), 2) {
+      border-#{$floor}-#{$wall}-radius: 8px;
+      -gtk-outline-#{$floor}-#{$wall}-radius: 7px;
+    }
+  }
+}
