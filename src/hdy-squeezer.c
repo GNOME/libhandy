@@ -781,6 +781,7 @@ hdy_squeezer_size_allocate (GtkWidget     *widget,
   gint child_min;
   GList *l;
   GtkAllocation child_allocation;
+  GtkBorder margin = {0};
 
   gtk_widget_set_allocation (widget, allocation);
 
@@ -794,11 +795,17 @@ hdy_squeezer_size_allocate (GtkWidget     *widget,
     if (!child_info->enabled)
       continue;
 
+    gtk_style_context_get_margin (gtk_widget_get_style_context (child),
+                                  gtk_widget_get_state_flags (child),
+                                  &margin);
+
     if (priv->orientation == GTK_ORIENTATION_VERTICAL) {
       if (gtk_widget_get_request_mode (child) != GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH)
         gtk_widget_get_preferred_height (child, &child_min, NULL);
       else
         gtk_widget_get_preferred_height_for_width (child, allocation->width, &child_min, NULL);
+
+      child_min += margin.top + margin.bottom;
 
       if (child_min <= allocation->height)
         break;
@@ -807,6 +814,8 @@ hdy_squeezer_size_allocate (GtkWidget     *widget,
         gtk_widget_get_preferred_width (child, &child_min, NULL);
       else
         gtk_widget_get_preferred_width_for_height (child, allocation->height, &child_min, NULL);
+
+      child_min += margin.left + margin.right;
 
       if (child_min <= allocation->width)
         break;
@@ -884,6 +893,7 @@ hdy_squeezer_measure (GtkWidget      *widget,
   GtkWidget *child;
   gint child_min, child_nat;
   GList *l;
+  GtkBorder margin = {0};
 
   *minimum = 0;
   *natural = 0;
@@ -905,16 +915,28 @@ hdy_squeezer_measure (GtkWidget      *widget,
      * child gets enabled/disabled.
      */
 
+    gtk_style_context_get_margin (gtk_widget_get_style_context (child),
+                                  gtk_widget_get_state_flags (child),
+                                  &margin);
+
     if (orientation == GTK_ORIENTATION_VERTICAL) {
       if (for_size < 0)
         gtk_widget_get_preferred_height (child, &child_min, &child_nat);
       else
         gtk_widget_get_preferred_height_for_width (child, for_size, &child_min, &child_nat);
+
+      child_min += margin.top + margin.bottom;
+      child_nat += margin.top + margin.bottom;
+
     } else {
       if (for_size < 0)
         gtk_widget_get_preferred_width (child, &child_min, &child_nat);
       else
         gtk_widget_get_preferred_width_for_height (child, for_size, &child_min, &child_nat);
+
+      child_min += margin.left + margin.right;
+      child_nat += margin.left + margin.right;
+
     }
 
     if (priv->orientation == orientation)
