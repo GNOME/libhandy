@@ -23,7 +23,10 @@ struct _HdyPasswordEntryClass
   GtkEntryClass parent_class;
 };
 
-GtkWidget   *hdy_password_entry_new               (void);
+GtkWidget   *hdy_password_entry_new                   (void);
+guint        hdy_password_entry_get_reveal_duration   (HdyPasswordEntry *entry);
+void         hdy_password_entry_set_reveal_duration   (HdyPasswordEntry *entry,
+                                                       guint             reveal_duration);
 
 
 G_END_DECLS
