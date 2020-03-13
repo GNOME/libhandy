@@ -849,7 +849,6 @@
                             </style>
                             <child>
                               <object class="HdyActionRow">
-                                <property name="activatable">False</property>
                                 <property name="icon_name" translatable="yes">preferences-other-symbolic</property>
                                 <property name="subtitle" translatable="yes">They also have a subtitle and an icon</property>
                                 <property name="title" translatable="yes">Rows have a title</property>
@@ -943,14 +942,12 @@
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="HdyActionRow">
-                                    <property name="activatable">False</property>
                                     <property name="title" translatable="yes">A nested row</property>
                                     <property name="visible">True</property>
                                   </object>
                                 </child>
                                 <child>
                                   <object class="HdyActionRow">
-                                    <property name="activatable">False</property>
                                     <property name="title" translatable="yes">Another nested row</property>
                                     <property name="visible">True</property>
                                   </object>
