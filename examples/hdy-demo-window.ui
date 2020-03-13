@@ -514,6 +514,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="title" translatable="yes">Show extra symbols</property>
+                                        <property name="activatable_widget">keypad_show_symbols</property>
                                         <child>
                                           <object class="GtkSwitch" id="keypad_show_symbols">
                                             <property name="visible">True</property>
@@ -529,6 +530,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="title" translatable="yes">Show only digits</property>
+                                        <property name="activatable_widget">keypad_show_symbols</property>
                                         <child>
                                           <object class="GtkSwitch" id="keypad_only_digits">
                                             <property name="visible">True</property>
@@ -698,6 +700,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="title" translatable="yes">Maximum width</property>
                                 <property name="visible">True</property>
+                                <property name="activatable">False</property>
                                 <child>
                                   <object class="GtkSpinButton">
                                     <property name="adjustment">column_width_adjustment</property>
@@ -712,6 +715,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="title" translatable="yes">Linear growth width</property>
                                 <property name="visible">True</property>
+                                <property name="activatable">False</property>
                                 <child>
                                   <object class="GtkSpinButton">
                                     <property name="adjustment">column_linear_width_adjustment</property>
