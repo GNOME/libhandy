@@ -527,6 +527,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="title" translatable="yes">Show extra symbols</property>
+                                        <property name="activatable_widget">keypad_show_symbols</property>
                                         <child>
                                           <object class="GtkSwitch" id="keypad_show_symbols">
                                             <property name="visible">True</property>
@@ -542,6 +543,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="title" translatable="yes">Show only digits</property>
+                                        <property name="activatable_widget">keypad_show_symbols</property>
                                         <child>
                                           <object class="GtkSwitch" id="keypad_only_digits">
                                             <property name="visible">True</property>
