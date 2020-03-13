@@ -709,10 +709,12 @@ hdy_action_row_set_activatable_widget (HdyActionRow *self,
 
   priv->activatable_widget = widget;
 
-  if (priv->activatable_widget != NULL)
+  if (priv->activatable_widget != NULL) {
     g_object_weak_ref (G_OBJECT (priv->activatable_widget),
                        activatable_widget_weak_notify,
                        self);
+    gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (self), TRUE);
+  }
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ACTIVATABLE_WIDGET]);
 }
