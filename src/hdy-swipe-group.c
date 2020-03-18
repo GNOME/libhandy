@@ -120,6 +120,7 @@ switch_child_cb (HdySwipeGroup *self,
 static void
 begin_swipe_cb (HdySwipeGroup          *self,
                 HdyNavigationDirection  direction,
+                gboolean                direct,
                 HdySwipeable           *swipeable)
 {
   GSList *swipeables;
