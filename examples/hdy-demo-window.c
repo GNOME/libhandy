@@ -1,13 +1,11 @@
 #include "hdy-demo-window.h"
 
 #include <glib/gi18n.h>
-#define HANDY_USE_UNSTABLE_API
-#include <handy.h>
 #include "hdy-view-switcher-demo-window.h"
 
 struct _HdyDemoWindow
 {
-  GtkApplicationWindow parent_instance;
+  HdyApplicationWindow parent_instance;
 
   HdyLeaflet *header_box;
   HdyLeaflet *content_box;
@@ -35,7 +33,7 @@ struct _HdyDemoWindow
   GtkFileChooserButton *avatar_filechooser;
 };
 
-G_DEFINE_TYPE (HdyDemoWindow, hdy_demo_window, GTK_TYPE_APPLICATION_WINDOW)
+G_DEFINE_TYPE (HdyDemoWindow, hdy_demo_window, HDY_TYPE_APPLICATION_WINDOW)
 
 static void
 theme_variant_button_clicked_cb (HdyDemoWindow *self)
