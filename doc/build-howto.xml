@@ -182,7 +182,7 @@
         git clone https://source.puri.sm/Librem5/libhandy.git
         cd libhandy
         meson . _build
-        ninja -C _build
+        ninja -C _build test
         ninja -C _build install
       </programlisting>
     </informalexample>
