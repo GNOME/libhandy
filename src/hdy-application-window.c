@@ -75,14 +75,6 @@ hdy_application_window_size_allocate (GtkWidget     *widget,
   hdy_window_mixin_size_allocate (HDY_GET_WINDOW_MIXIN (widget), alloc);
 }
 
-static gboolean
-hdy_application_window_window_state_event (GtkWidget           *widget,
-                                           GdkEventWindowState *event)
-{
-  return hdy_window_mixin_window_state_event (HDY_GET_WINDOW_MIXIN (widget),
-                                              event);
-}
-
 static void
 hdy_application_window_finalize (GObject *object)
 {
@@ -104,7 +96,6 @@ hdy_application_window_class_init (HdyApplicationWindowClass *klass)
   object_class->finalize = hdy_application_window_finalize;
   widget_class->draw = hdy_application_window_draw;
   widget_class->size_allocate = hdy_application_window_size_allocate;
-  widget_class->window_state_event = hdy_application_window_window_state_event;
   container_class->add = hdy_application_window_add;
   container_class->remove = hdy_application_window_remove;
   container_class->forall = hdy_application_window_forall;
