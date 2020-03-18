@@ -136,3 +136,17 @@ avatar {
 
   &.contrasted { color: #fff; }
 }
+
+window.unified {
+  &:not(.tiled):not(.tiled-top):not(.tiled-bottom):not(.tiled-left):not(.tiled-right):not(.maximized):not(.fullscreen):not(.solid-csd) {
+    &,
+    > decoration,
+    > decoration-overlay {
+      border-radius: 8px;
+    }
+  }
+
+  headerbar {
+    border-radius: 0;
+  }
+}
