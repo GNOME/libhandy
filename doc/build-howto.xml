@@ -164,14 +164,12 @@
     <title>Building on macOS</title>
 
     <para>
-      Working with <literal>libhandy</literal> on macOS is similar to working with
-      it on Linux, but requires some additional libraries. Thankfully, because of the ubiquitous <ulink url="https://brew.sh"><literal>brew</literal></ulink> package manager, getting these is almost as simple
-      as on Linux:
+      To build on macOS you need to install the build-dependencies first. This can e.g. be done via <ulink url="https://brew.sh"><literal>brew</literal></ulink>:
     </para>
 
     <informalexample>
       <programlisting>
-        % brew install pkg-config gtk+3 adwaita-icon-theme meson cmake glade gobject-introspection vala
+        brew install pkg-config gtk+3 adwaita-icon-theme meson glade gobject-introspection vala
       </programlisting>
     </informalexample>
 
@@ -181,31 +179,21 @@
 
     <informalexample>
       <programlisting>
-        % git clone https://source.puri.sm/Librem5/libhandy.git
-        % cd libhandy
-        % meson . _build
-        % ninja -C _build
-        % ninja -C _build install
+        git clone https://source.puri.sm/Librem5/libhandy.git
+        cd libhandy
+        meson . _build
+        ninja -C _build
+        ninja -C _build install
       </programlisting>
     </informalexample>
 
     <para>
-      To validate that the commands above have worked, one can run the demo app:
+      Working with the library on macOS is pretty much the same as on Linux. To link it, use <literal>pkg-config</literal>:
     </para>
 
     <informalexample>
       <programlisting>
-        % ./_build/examples/handy-1-demo
-      </programlisting>
-    </informalexample>
-
-    <para>
-      Working with library on macOS is pretty much the same as on Linux. To link it, use <literal>pkg-config</literal>:
-    </para>
-
-    <informalexample>
-      <programlisting>
-        % gcc $(pkg-config --cflags --libs gtk+-3.0) $(pkg-config --cflags --libs libhandy-1) main.c -o main
+        gcc $(pkg-config --cflags --libs gtk+-3.0) $(pkg-config --cflags --libs libhandy-1) main.c -o main
       </programlisting>
     </informalexample>
   </refsect2>
