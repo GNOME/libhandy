@@ -67,6 +67,8 @@ window.csd.unified:not(.tiled):not(.tiled-top):not(.tiled-bottom):not(.tiled-lef
 
 window.csd.unified:not(.solid-csd) > decoration { background: black; }
 
+windowhandle, windowhandle * { -GtkWidget-window-dragging: true; }
+
 popover.combo { padding: 0px; }
 
 popover.combo list { border-style: none; background-color: transparent; }
