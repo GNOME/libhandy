@@ -27,6 +27,7 @@
 #include "hdy-animation-private.h"
 #include "hdy-dialog.h"
 #include "hdy-enums.h"
+#include "hdy-window-handle-controller-private.h"
 #include "gtkprogresstrackerprivate.h"
 #include "gtk-window-private.h"
 
@@ -101,6 +102,8 @@ typedef struct {
   gboolean is_mobile_window;
 
   gulong window_size_allocated_id;
+
+  HdyWindowHandleController *controller;
 } HdyHeaderBarPrivate;
 
 typedef struct _Child Child;
@@ -1595,6 +1598,7 @@ hdy_header_bar_finalize (GObject *object)
   g_clear_pointer (&priv->title, g_free);
   g_clear_pointer (&priv->subtitle, g_free);
   g_clear_pointer (&priv->decoration_layout, g_free);
+  g_clear_object (&priv->controller);
 
   G_OBJECT_CLASS (hdy_header_bar_parent_class)->finalize (object);
 }
@@ -2256,6 +2260,7 @@ hdy_header_bar_init (HdyHeaderBar *self)
   init_sizing_box (self);
   construct_label_box (self);
 
+  priv->controller = hdy_window_handle_controller_new (GTK_WIDGET (self));
 }
 
 static void
