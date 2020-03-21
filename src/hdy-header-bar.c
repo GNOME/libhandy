@@ -27,6 +27,7 @@
 #include "hdy-animation-private.h"
 #include "hdy-dialog.h"
 #include "hdy-enums.h"
+#include "hdy-window-handle-controller-private.h"
 #include "gtkprogresstrackerprivate.h"
 #include "gtk-window-private.h"
 
@@ -101,6 +102,8 @@ typedef struct {
   gboolean is_mobile_window;
 
   gulong window_size_allocated_id;
+
+  HdyWindowHandleController *controller;
 } HdyHeaderBarPrivate;
 
 typedef struct _Child Child;
@@ -1596,6 +1599,16 @@ hdy_header_bar_destroy (GtkWidget *widget)
 }
 
 static void
+hdy_header_bar_dispose (GObject *object)
+{
+  HdyHeaderBarPrivate *priv = hdy_header_bar_get_instance_private (HDY_HEADER_BAR (object));
+
+  g_clear_object (&priv->controller);
+
+  G_OBJECT_CLASS (hdy_header_bar_parent_class)->dispose (object);
+}
+
+static void
 hdy_header_bar_finalize (GObject *object)
 {
   HdyHeaderBarPrivate *priv = hdy_header_bar_get_instance_private (HDY_HEADER_BAR (object));
@@ -2076,6 +2089,7 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
   GtkContainerClass *container_class = GTK_CONTAINER_CLASS (class);
 
+  object_class->dispose = hdy_header_bar_dispose;
   object_class->finalize = hdy_header_bar_finalize;
   object_class->get_property = hdy_header_bar_get_property;
   object_class->set_property = hdy_header_bar_set_property;
@@ -2264,6 +2278,7 @@ hdy_header_bar_init (HdyHeaderBar *self)
   init_sizing_box (self);
   construct_label_box (self);
 
+  priv->controller = hdy_window_handle_controller_new (GTK_WIDGET (self));
 }
 
 static void
