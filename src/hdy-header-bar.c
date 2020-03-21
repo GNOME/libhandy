@@ -1446,6 +1446,13 @@ hdy_header_bar_size_allocate (GtkWidget     *widget,
 
   gtk_widget_set_allocation (widget, allocation);
 
+  if (gtk_widget_get_realized (widget))
+    gdk_window_move_resize (gtk_widget_get_window (widget),
+                            allocation->x,
+                            allocation->y,
+                            allocation->width,
+                            allocation->height);
+
   /* Manually apply the border, the padding and the margin as we can't use the
    * private GtkGagdet.
    */
@@ -1966,8 +1973,10 @@ static void
 hdy_header_bar_realize (GtkWidget *widget)
 {
   GtkSettings *settings;
-
-  GTK_WIDGET_CLASS (hdy_header_bar_parent_class)->realize (widget);
+  GtkAllocation allocation;
+  GdkWindowAttr attributes;
+  gint attributes_mask;
+  GdkWindow *window;
 
   settings = gtk_widget_get_settings (widget);
   g_signal_connect_swapped (settings, "notify::gtk-shell-shows-app-menu",
@@ -1976,6 +1985,25 @@ hdy_header_bar_realize (GtkWidget *widget)
                             G_CALLBACK (hdy_header_bar_update_window_buttons), widget);
   update_is_mobile_window (HDY_HEADER_BAR (widget));
   hdy_header_bar_update_window_buttons (HDY_HEADER_BAR (widget));
+
+  gtk_widget_get_allocation (widget, &allocation);
+  gtk_widget_set_realized (widget, TRUE);
+
+  attributes.x = allocation.x;
+  attributes.y = allocation.y;
+  attributes.width = allocation.width;
+  attributes.height = allocation.height;
+  attributes.window_type = GDK_WINDOW_CHILD;
+  attributes.event_mask = gtk_widget_get_events (widget);
+  attributes.visual = gtk_widget_get_visual (widget);
+  attributes.wclass = GDK_INPUT_OUTPUT;
+  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL;
+
+  window = gdk_window_new (gtk_widget_get_parent_window (widget),
+                           &attributes,
+                           attributes_mask);
+  gtk_widget_set_window (widget, window);
+  gtk_widget_register_window (widget, window);
 }
 
 static void
@@ -2222,8 +2250,6 @@ hdy_header_bar_init (HdyHeaderBar *self)
   HdyHeaderBarPrivate *priv;
 
   priv = hdy_header_bar_get_instance_private (self);
-
-  gtk_widget_set_has_window (GTK_WIDGET (self), FALSE);
 
   priv->title = NULL;
   priv->subtitle = NULL;
