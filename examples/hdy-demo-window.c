@@ -7,7 +7,6 @@ struct _HdyDemoWindow
 {
   HdyApplicationWindow parent_instance;
 
-  HdyLeaflet *header_box;
   HdyLeaflet *content_box;
   GtkImage *theme_variant_image;
   GtkButton *back;
@@ -24,7 +23,6 @@ struct _HdyDemoWindow
   GtkListBox *lists_listbox;
   HdyComboRow *combo_row;
   HdyComboRow *enum_combo_row;
-  HdyHeaderGroup *header_group;
   HdyCarousel *carousel;
   GtkListBox *carousel_listbox;
   HdyComboRow *carousel_orientation_row;
@@ -83,12 +81,6 @@ hdy_demo_window_key_pressed_cb (GtkWidget     *sender,
 static void
 update (HdyDemoWindow *self)
 {
-  GtkWidget *header_child = hdy_leaflet_get_visible_child (self->header_box);
-  gboolean folded = hdy_leaflet_get_folded (self->header_box);
-
-  g_assert (header_child == NULL || GTK_IS_HEADER_BAR (header_child));
-
-  hdy_header_group_set_focus (self->header_group, folded ? GTK_HEADER_BAR (header_child) : NULL);
 }
 
 static void
@@ -434,7 +426,6 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   object_class->constructed = hdy_demo_window_constructed;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/sm/puri/Handy/Demo/ui/hdy-demo-window.ui");
-  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, header_box);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, content_box);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, theme_variant_image);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, back);
@@ -451,7 +442,6 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, lists_listbox);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, combo_row);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, enum_combo_row);
-  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, header_group);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, carousel);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, carousel_listbox);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, carousel_orientation_row);
