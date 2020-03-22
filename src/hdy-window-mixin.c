@@ -8,6 +8,14 @@
 
 #include "hdy-window-mixin-private.h"
 
+typedef enum {
+  HDY_CORNER_TOP_LEFT,
+  HDY_CORNER_TOP_RIGHT,
+  HDY_CORNER_BOTTOM_LEFT,
+  HDY_CORNER_BOTTOM_RIGHT,
+  HDY_N_CORNERS,
+} HdyCorner;
+
 struct _HdyWindowMixin
 {
   GObject parent;
@@ -16,9 +24,7 @@ struct _HdyWindowMixin
   GtkWindowClass *klass;
 
   GtkWidget *content;
-  cairo_surface_t *mask;
-  gint last_width;
-  gint last_height;
+  cairo_surface_t *masks[HDY_N_CORNERS];
   gint last_border_radius;
 
   GtkStyleContext *decoration_context;
@@ -197,47 +203,45 @@ rounded_rectangle (cairo_t *cr,
   cairo_close_path (cr);
 }
 
-static cairo_surface_t *
-prepare_mask (HdyWindowMixin *self,
-              cairo_t        *cr,
-              gint            width,
-              gint            height,
-              gint            border_radius)
+static void
+create_masks (HdyWindowMixin *self,
+               cairo_t        *cr,
+               gint            border_radius)
 {
-  cairo_t *mask_cr;
-  gint scale_factor;
+  gint scale_factor, i;
 
   scale_factor = gtk_widget_get_scale_factor (GTK_WIDGET (self->window));
 
-  if (self->last_width == width * scale_factor &&
-      self->last_height == height * scale_factor &&
-      self->last_border_radius == border_radius)
-    return self->mask;
-
-  self->last_width = width * scale_factor;
-  self->last_height = height * scale_factor;
-  self->last_border_radius = border_radius;
-
-  g_clear_pointer (&self->mask, cairo_surface_destroy);
+  for (i = 0; i < HDY_N_CORNERS; i++)
+    g_clear_pointer (&self->masks[i], cairo_surface_destroy);
 
   if (border_radius == 0)
-      return NULL;
+      return;
 
-  self->mask = cairo_surface_create_similar_image (cairo_get_target (cr),
-                                                   CAIRO_FORMAT_A8,
-                                                   width * scale_factor,
-                                                   height * scale_factor);
+  for (i = 0; i < HDY_N_CORNERS; i++) {
+    cairo_surface_t *mask;
+    cairo_t *mask_cr;
 
-  mask_cr = cairo_create (self->mask);
+    mask = cairo_surface_create_similar_image (cairo_get_target (cr),
+                                               CAIRO_FORMAT_A8,
+                                               border_radius * scale_factor,
+                                               border_radius * scale_factor);
 
-  cairo_scale (mask_cr, scale_factor, scale_factor);
-  cairo_set_source_rgb (mask_cr, 0, 0, 0);
-  rounded_rectangle (mask_cr, 0, 0, width, height, border_radius - 0.5 / scale_factor);
-  cairo_fill (mask_cr);
+    mask_cr = cairo_create (mask);
 
-  cairo_destroy (mask_cr);
+    cairo_scale (mask_cr, scale_factor, scale_factor);
+    cairo_set_source_rgb (mask_cr, 0, 0, 0);
+    cairo_arc (mask_cr,
+               border_radius * (1 - i % 2),
+               border_radius * (1 - i / 2),
+               border_radius,
+               0, G_PI * 2);
+    cairo_fill (mask_cr);
 
-  return self->mask;
+    cairo_destroy (mask_cr);
+
+    self->masks[i] = mask;
+  }
 }
 
 void
@@ -327,7 +331,6 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
   if (gtk_cairo_should_draw_window (cr, gtk_widget_get_window (widget))) {
     GtkStyleContext *context;
     gboolean can_mask_corners;
-    cairo_surface_t *mask = NULL;
     GdkRectangle clip = { 0 };
     gint width, height, x, y, w, h, r;
     GtkWidget *titlebar;
@@ -367,30 +370,31 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
 
     cairo_save (cr);
 
-    if (gdk_cairo_get_clip_rectangle (cr, &clip)) {
-      clip.x -= x;
-      clip.y -= y;
-    } else {
-      clip.x = 0;
-      clip.y = 0;
-      clip.width = w;
-      clip.height = h;
-    }
-
     gtk_style_context_get (self->decoration_context,
                            gtk_style_context_get_state (self->decoration_context),
                            GTK_STYLE_PROPERTY_BORDER_RADIUS, &r,
                            NULL);
 
-    if (can_mask_corners &&
-        ((clip.x              <     r && clip.y               <     r) ||
-         (clip.x              <     r && clip.y + clip.height > h - r) ||
-         (clip.x + clip.width > w - r && clip.y + clip.height > h - r) ||
-         (clip.x + clip.width > w - r && clip.y               <     r)))
-      mask = prepare_mask (self, cr, w, h, r);
+    can_mask_corners &= (r != 0);
 
-    gdouble s = (gdouble) gtk_widget_get_scale_factor (widget);
-    if (mask)
+    if (can_mask_corners) {
+      if (gdk_cairo_get_clip_rectangle (cr, &clip)) {
+        clip.x -= x;
+        clip.y -= y;
+      } else {
+        clip.x = 0;
+        clip.y = 0;
+        clip.width = w;
+        clip.height = h;
+      }
+
+      if (r != self->last_border_radius) {
+        create_masks (self, cr, r);
+        self->last_border_radius = r;
+      }
+    }
+
+    if (can_mask_corners)
       cairo_push_group (cr);
 
     if (!gtk_widget_get_app_paintable (widget)) {
@@ -404,14 +408,55 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
     gtk_render_background (self->overlay_context, cr, x, y, w, h);
     gtk_render_frame (self->overlay_context, cr, x, y, w, h);
 
-    if (mask) {
+    if (can_mask_corners) {
         gint scale_factor = gtk_widget_get_scale_factor (widget);
+        cairo_pattern_t *group;
 
-        cairo_pop_group_to_source (cr);
+        group = cairo_pop_group (cr);
 
         cairo_save (cr);
+
+        cairo_set_source (cr, group);
+        cairo_rectangle (cr, x + r, y, w - r * 2, r);
+        cairo_rectangle (cr, x + r, y + h - r, w - r * 2, r);
+        cairo_rectangle (cr, x, y + r, w, h - r * 2);
+        cairo_fill (cr);
+
         cairo_scale (cr, 1.0 / scale_factor, 1.0 / scale_factor);
-        cairo_mask_surface (cr, self->mask, x * scale_factor, y * scale_factor);
+
+        if (clip.x < r && clip.y < r) {
+          cairo_set_source (cr, group);
+          cairo_mask_surface (cr,
+                              self->masks[HDY_CORNER_TOP_LEFT],
+                              x * scale_factor,
+                              y * scale_factor);
+        }
+
+        if (clip.x + clip.width > w - r && clip.y < r) {
+          cairo_set_source (cr, group);
+          cairo_mask_surface (cr,
+                              self->masks[HDY_CORNER_TOP_RIGHT],
+                              (x + w - r) * scale_factor,
+                              y * scale_factor);
+        }
+
+        if (clip.x < r && clip.y + clip.height > h - r) {
+          cairo_set_source (cr, group);
+          cairo_mask_surface (cr,
+                              self->masks[HDY_CORNER_BOTTOM_LEFT],
+                              x * scale_factor,
+                              (y + h - r) * scale_factor);
+        }
+
+        if (clip.x + clip.width > w - r && clip.y + clip.height > h - r) {
+          cairo_set_source (cr, group);
+          cairo_mask_surface (cr,
+                              self->masks[HDY_CORNER_BOTTOM_RIGHT],
+                              (x + w - r) * scale_factor,
+                              (y + h - r) * scale_factor);
+        }
+
+        cairo_pattern_destroy (group);
         cairo_restore (cr);
     }
 
@@ -445,8 +490,10 @@ static void
 hdy_window_mixin_finalize (GObject *object)
 {
   HdyWindowMixin *self = (HdyWindowMixin *)object;
+  gint i;
 
-  g_clear_pointer (&self->mask, cairo_surface_destroy);
+  for (i = 0; i < HDY_N_CORNERS; i++)
+    g_clear_pointer (&self->masks[i], cairo_surface_destroy);
   g_clear_object (&self->decoration_context);
   g_clear_object (&self->overlay_context);
 
