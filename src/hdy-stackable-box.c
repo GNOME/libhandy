@@ -2746,10 +2746,11 @@ hdy_stackable_box_remove (HdyStackableBox *self,
 
   self->children = g_list_remove (self->children, child_info);
   self->children_reversed = g_list_remove (self->children_reversed, child_info);
-  free_child_info (child_info);
 
   if (hdy_stackable_box_get_visible_child (self) == widget)
     set_visible_child_info (self, NULL, self->transition_type, self->child_transition.duration, TRUE);
+
+  free_child_info (child_info);
 
   if (gtk_widget_get_visible (widget))
     gtk_widget_queue_resize (GTK_WIDGET (self->container));
