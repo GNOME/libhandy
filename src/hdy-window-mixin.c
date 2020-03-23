@@ -391,6 +391,8 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
                            GTK_STYLE_PROPERTY_BORDER_RADIUS, &r,
                            NULL);
 
+    r = CLAMP (r, 0, MIN (w / 2, h / 2));
+
     should_mask_corners &= (r != 0);
 
     scale_factor = gtk_widget_get_scale_factor (widget);
