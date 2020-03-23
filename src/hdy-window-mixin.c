@@ -348,6 +348,8 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
     GdkRectangle clip = { 0 };
     gint width, height, x, y, w, h, r, scale_factor;
     GtkWidget *titlebar;
+    cairo_surface_t *surface;
+    cairo_t *surface_cr;
 
     titlebar = gtk_window_get_titlebar (self->window);
     if (!titlebar)
@@ -412,22 +414,30 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
                            (clip.x + clip.width > x + w - r && clip.y + clip.height > y + h - r) ||
                            (clip.x + clip.width > x + w - r && clip.y               < y +     r);
 
-    if (should_mask_corners)
-      cairo_push_group (cr);
-
-    if (!gtk_widget_get_app_paintable (widget)) {
-        gtk_render_background (context, cr, x, y, w, h);
-        gtk_render_frame (context, cr, x, y, w, h);
+    if (should_mask_corners) {
+      surface = gdk_window_create_similar_surface (window,
+                                                   CAIRO_CONTENT_COLOR_ALPHA,
+                                                   MAX (clip.width, 1),
+                                                   MAX (clip.height, 1));
+      surface_cr = cairo_create (surface);
+      cairo_surface_set_device_offset (surface, -clip.x * scale_factor, -clip.y * scale_factor);
+    } else {
+      surface_cr = cr;
     }
 
-    gtk_container_propagate_draw (GTK_CONTAINER (self->window), self->content, cr);
-    gtk_container_propagate_draw (GTK_CONTAINER (self->window), titlebar, cr);
+    if (!gtk_widget_get_app_paintable (widget)) {
+        gtk_render_background (context, surface_cr, x, y, w, h);
+        gtk_render_frame (context, surface_cr, x, y, w, h);
+    }
 
-    gtk_render_background (self->overlay_context, cr, x, y, w, h);
-    gtk_render_frame (self->overlay_context, cr, x, y, w, h);
+    gtk_container_propagate_draw (GTK_CONTAINER (self->window), self->content, surface_cr);
+    gtk_container_propagate_draw (GTK_CONTAINER (self->window), titlebar, surface_cr);
+
+    gtk_render_background (self->overlay_context, surface_cr, x, y, w, h);
+    gtk_render_frame (self->overlay_context, surface_cr, x, y, w, h);
 
     if (should_mask_corners) {
-      cairo_pop_group_to_source (cr);
+      cairo_set_source_surface (cr, surface, 0, 0);
 
       cairo_rectangle (cr, x + r, y, w - r * 2, r);
       cairo_rectangle (cr, x + r, y + h - r, w - r * 2, r);
@@ -449,6 +459,11 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
       if (clip.x + clip.width > x + w - r && clip.y + clip.height > y + h - r)
         mask_corner (self, cr, scale_factor,
                      HDY_CORNER_BOTTOM_RIGHT, x + w - r, y + h - r);
+
+      cairo_destroy (surface_cr);
+
+      cairo_surface_flush (surface);
+      cairo_surface_destroy (surface);
     }
 
     cairo_restore (cr);
