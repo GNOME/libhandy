@@ -317,13 +317,11 @@ draw_popover_cb (GtkWidget              *child,
 static inline void
 mask_corner (HdyWindowMixin  *self,
              cairo_t         *cr,
-             cairo_pattern_t *group,
              gint             scale_factor,
              gint             corner,
              gint             x,
              gint             y)
 {
-  cairo_set_source (cr, group);
   cairo_save (cr);
   cairo_scale (cr, 1.0 / scale_factor, 1.0 / scale_factor);
   cairo_mask_surface (cr,
@@ -339,10 +337,12 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
 {
   HdyWindowMixinDrawData data;
   GtkWidget *widget;
+  GdkWindow *window;
 
   widget = GTK_WIDGET (self->window);
+  window = gtk_widget_get_window (widget);
 
-  if (gtk_cairo_should_draw_window (cr, gtk_widget_get_window (widget))) {
+  if (gtk_cairo_should_draw_window (cr, window)) {
     GtkStyleContext *context;
     gboolean should_mask_corners;
     GdkRectangle clip = { 0 };
@@ -394,10 +394,7 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
     scale_factor = gtk_widget_get_scale_factor (widget);
 
     if (should_mask_corners) {
-      if (gdk_cairo_get_clip_rectangle (cr, &clip)) {
-        clip.x -= x;
-        clip.y -= y;
-      } else {
+      if (!gdk_cairo_get_clip_rectangle (cr, &clip)) {
         clip.x = 0;
         clip.y = 0;
         clip.width = w;
@@ -410,10 +407,10 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
       }
     }
 
-    should_mask_corners &= (clip.x              <     r && clip.y               <     r) ||
-                           (clip.x              <     r && clip.y + clip.height > h - r) ||
-                           (clip.x + clip.width > w - r && clip.y + clip.height > h - r) ||
-                           (clip.x + clip.width > w - r && clip.y               <     r);
+    should_mask_corners &= (clip.x              < x +     r && clip.y               < y +     r) ||
+                           (clip.x              < x +     r && clip.y + clip.height > y + h - r) ||
+                           (clip.x + clip.width > x + w - r && clip.y + clip.height > y + h - r) ||
+                           (clip.x + clip.width > x + w - r && clip.y               < y +     r);
 
     if (should_mask_corners)
       cairo_push_group (cr);
@@ -430,36 +427,28 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
     gtk_render_frame (self->overlay_context, cr, x, y, w, h);
 
     if (should_mask_corners) {
-        cairo_pattern_t *group;
+      cairo_pop_group_to_source (cr);
 
-        group = cairo_pop_group (cr);
+      cairo_rectangle (cr, x + r, y, w - r * 2, r);
+      cairo_rectangle (cr, x + r, y + h - r, w - r * 2, r);
+      cairo_rectangle (cr, x, y + r, w, h - r * 2);
+      cairo_fill (cr);
 
-        cairo_save (cr);
+      if (clip.x < x + r && clip.y < y + r)
+        mask_corner (self, cr, scale_factor,
+                     HDY_CORNER_TOP_LEFT, x, y);
 
-        cairo_set_source (cr, group);
-        cairo_rectangle (cr, x + r, y, w - r * 2, r);
-        cairo_rectangle (cr, x + r, y + h - r, w - r * 2, r);
-        cairo_rectangle (cr, x, y + r, w, h - r * 2);
-        cairo_fill (cr);
+      if (clip.x + clip.width > x + w - r && clip.y < y + r)
+        mask_corner (self, cr, scale_factor,
+                     HDY_CORNER_TOP_RIGHT, x + w - r, y);
 
-        if (clip.x < r && clip.y < r)
-          mask_corner (self, cr, group, scale_factor,
-                       HDY_CORNER_TOP_LEFT, x, y);
+      if (clip.x < x + r && clip.y + clip.height > y + h - r)
+        mask_corner (self, cr, scale_factor,
+                     HDY_CORNER_BOTTOM_LEFT, x, y + h - r);
 
-        if (clip.x + clip.width > w - r && clip.y < r)
-          mask_corner (self, cr, group, scale_factor,
-                       HDY_CORNER_TOP_RIGHT, x + w - r, y);
-
-        if (clip.x < r && clip.y + clip.height > h - r)
-          mask_corner (self, cr, group, scale_factor,
-                       HDY_CORNER_BOTTOM_LEFT, x, y + h - r);
-
-        if (clip.x + clip.width > w - r && clip.y + clip.height > h - r)
-          mask_corner (self, cr, group, scale_factor,
-                       HDY_CORNER_BOTTOM_RIGHT, x + w - r, y + h - r);
-
-        cairo_pattern_destroy (group);
-        cairo_restore (cr);
+      if (clip.x + clip.width > x + w - r && clip.y + clip.height > y + h - r)
+        mask_corner (self, cr, scale_factor,
+                     HDY_CORNER_BOTTOM_RIGHT, x + w - r, y + h - r);
     }
 
     cairo_restore (cr);
