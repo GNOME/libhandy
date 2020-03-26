@@ -7,6 +7,9 @@
     <property name="can_focus">False</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
+    <child type="titlebar">
+      <object class="GtkBox"/>
+    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>

@@ -17,6 +17,9 @@
     <property name="default_width">360</property>
     <property name="default_height">576</property>
     <signal name="key-press-event" handler="key_pressed_cb" after="yes" swapped="no"/>
+    <child type="titlebar">
+      <object class="GtkBox"/>
+    </child>
     <child>
       <object class="HdyLeaflet" id="content_box">
         <property name="visible">True</property>
