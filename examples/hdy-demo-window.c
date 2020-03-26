@@ -7,11 +7,9 @@ struct _HdyDemoWindow
 {
   HdyApplicationWindow parent_instance;
 
-  HdyLeaflet *header_box;
   HdyLeaflet *content_box;
   GtkStack *header_stack;
   GtkImage *theme_variant_image;
-  GtkButton *back;
   GtkStackSidebar *sidebar;
   GtkStack *stack;
   HdyComboRow *leaflet_transition_row;
@@ -386,11 +384,9 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   object_class->constructed = hdy_demo_window_constructed;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/sm/puri/Handy/Demo/ui/hdy-demo-window.ui");
-  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, header_box);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, content_box);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, header_stack);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, theme_variant_image);
-  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, back);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, sidebar);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, stack);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, leaflet_transition_row);
