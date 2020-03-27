@@ -133,7 +133,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="right_box">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
@@ -1969,6 +1969,7 @@
                                   <object class="GtkBox">
                                     <property name="visible">True</property>
                                     <property name="orientation">vertical</property>
+                                    <property name="spacing">6</property>
                                     <child>
                                       <object class="GtkLabel">
                                         <property name="visible">True</property>
@@ -1977,7 +1978,7 @@
                                         <property name="label" translatable="yes">Window</property>
                                         <property name="halign">center</property>
                                         <property name="xalign">0</property>
-                                        <property name="margin-bottom">12</property>
+                                        <property name="margin-bottom">6</property>
                                         <attributes>
                                           <attribute name="weight" value="bold"/>
                                           <attribute name="scale" value="2"/>
@@ -1994,6 +1995,36 @@
                                         <property name="opacity">0.5</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">A window that masks window corners.</property>
+                                        <property name="justify">center</property>
+                                        <property name="use_markup">true</property>
+                                        <property name="wrap">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="opacity">0.5</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">This allows for rounded bottom corners and headerbar above the content.</property>
+                                        <property name="justify">center</property>
+                                        <property name="use_markup">true</property>
+                                        <property name="wrap">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="opacity">0.5</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">This window is an example, try hiding the titlebar.</property>
                                         <property name="justify">center</property>
                                         <property name="use_markup">true</property>
                                         <property name="wrap">True</property>
@@ -2045,6 +2076,32 @@
                                         <property name="can_focus">True</property>
                                         <property name="state">True</property>
                                         <property name="valign">center</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="HdyWindowHandle">
+                                <property name="visible">True</property>
+                                <property name="margin-top">12</property>
+                                <child>
+                                  <object class="GtkListBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="expand">True</property>
+                                    <property name="selection-mode">none</property>
+                                    <style>
+                                      <class name="preferences"/>
+                                    </style>
+                                    <child>
+                                      <object class="HdyActionRow">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="activatable">False</property>
+                                        <property name="title" translatable="yes">This row acts as a titlebar</property>
+                                        <property name="subtitle" translatable="yes">Try dragging or right clicking it.</property>
                                       </object>
                                     </child>
                                   </object>
