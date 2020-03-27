@@ -15,7 +15,7 @@
 
 #include "hdy-avatar.h"
 
-#define NUMBER_OF_COLORS 8
+#define NUMBER_OF_COLORS 10
 /**
  * SECTION:hdy-avatar
  * @short_description: A widget displaying an image, with a generated fallback.

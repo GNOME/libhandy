@@ -43,20 +43,24 @@ deck > shadow.down, leaflet > shadow.down { background-image: linear-gradient(to
 
 avatar { border-radius: 9999px; -gtk-outline-radius: 9999px; font-weight: bold; }
 
-avatar.color1 { background-image: linear-gradient(#ffbe6f, #ed6f00); color: #ffe5c5; }
+avatar.color1 { background-image: linear-gradient(#f9eaaf, #e5d475); color: #d99d0a; }
 
-avatar.color2 { background-image: linear-gradient(#f8e45c, #e5a50a); color: #f9f4e1; }
+avatar.color2 { background-image: linear-gradient(#ffdcb2, #ffbb69); color: #e5763a; }
 
-avatar.color3 { background-image: linear-gradient(#dc8add, #8a3ea3); color: #e7c2e8; }
+avatar.color3 { background-image: linear-gradient(#f6cac7, #f6968c); color: #db4651; }
 
-avatar.color4 { background-image: linear-gradient(#99c1f1, #337fdc); color: #cfe1f5; }
+avatar.color4 { background-image: linear-gradient(#fedae9, #fda7c5); color: #cf5d95; }
 
-avatar.color5 { background-image: linear-gradient(#c0bfbc, #6e6d71); color: #d8d7d3; }
+avatar.color5 { background-image: linear-gradient(#d2e6fa, #9ec5f7); color: #4583cc; }
 
-avatar.color6 { background-image: linear-gradient(#8de6ae, #29ae71); color: #cbf7d5; }
+avatar.color6 { background-image: linear-gradient(#e7c8e8, #d291d2); color: #9552b0; }
 
-avatar.color7 { background-image: linear-gradient(#f67365, #d91a23); color: #f6c8c4; }
+avatar.color7 { background-image: linear-gradient(#e5d6ca, #cdab8f); color: #916949; }
 
-avatar.color8 { background-image: linear-gradient(#cdab8f, #865d3c); color: #e5d6ca; }
+avatar.color8 { background-image: linear-gradient(#d8d7d3, #aeada8); color: #64626b; }
+
+avatar.color9 { background-image: linear-gradient(#c4f0fe, #82daf6); color: #11a0cf; }
+
+avatar.color10 { background-image: linear-gradient(#c4f2cf, #82d49f); color: #28ab6f; }
 
 avatar.contrasted { color: #fff; }

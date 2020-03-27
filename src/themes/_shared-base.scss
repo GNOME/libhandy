@@ -113,20 +113,37 @@ avatar {
 
   // The list of colors to generate avatars.
   // Each avatar color is rapresented by a font color, a gradient start color and a gradient stop color.
-  // There are 8 differnt colors for avtars in the list if you change the number of them you 
+  // There are 10 differnt colors for avtars in the list if you change the number of them you 
   // need to update the NUMBER_OF_COLORS in src/hdy-avatar.c.
   // The 2D list has this form: ((font-color, gradient-top-color, gradient-bottom-color)).
+
   $avatarcolorlist: (
-   (#ffe5c5, #ffbe6f, #ed6f00), // orange
-   (#f9f4e1, #f8e45c, #e5a50a), // gold
-   (#e7c2e8, #dc8add, #8a3ea3), // purple
-   (#cfe1f5, #99c1f1, #337fdc), // blue
-   (#d8d7d3, #c0bfbc, #6e6d71), // gray
-   (#cbf7d5, #8de6ae, #29ae71), // green
-   (#f6c8c4, #f67365, #d91a23), // red
-   (#e5d6ca, #cdab8f, #865d3c), // brown
+    (#d99d0a, #f9eaaf, #e5d475)
+    (#e5763a, #ffdcb2, #ffbb69)
+    (#db4651, #f6cac7, #f6968c)
+    (#cf5d95, #fedae9, #fda7c5)
+    (#4583cc, #d2e6fa, #9ec5f7)
+    (#9552b0, #e7c8e8, #d291d2)
+    (#916949, #e5d6ca, #cdab8f)
+    (#64626b, #d8d7d3, #aeada8)
+    (#11a0cf, #c4f0fe, #82daf6)
+    (#28ab6f, #c4f2cf, #82d49f)
   );
 
+  @if $variant == 'dark' {
+    $avatarcolorlist: (
+      (#f9f4e1, #f5ca35, #ce8d09)
+      (#ffe5c5, #ff8c26, #cf4900)
+      (#f6c8c4, #ed333b, #b01f30)
+      (#fad1df, #ec86a9, #bf4e86)
+      (#cfe1f5, #62a0ea, #1a5fb4)
+      (#e7c2e8, #b154bb, #76419e)
+      (#e5d6ca, #b5835a, #704f32)
+      (#d8d7d3, #9a9996, #5e5c64)
+      (#b9eefe, #0bbaf4, #098ab2)
+      (#cbf7d5, #57e389, #26a269)
+    );
+  }
   @for $i from 1 through length($avatarcolorlist) {
     &.color#{$i} {
       $avatarcolor: nth($avatarcolorlist, $i);
