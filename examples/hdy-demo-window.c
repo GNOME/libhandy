@@ -34,6 +34,7 @@ struct _HdyDemoWindow
   HdyComboRow *carousel_indicator_style_row;
   HdyAvatar *avatar;
   GtkFileChooserButton *avatar_filechooser;
+  HdyPasswordEntry *password_entry;
 };
 
 G_DEFINE_TYPE (HdyDemoWindow, hdy_demo_window, GTK_TYPE_APPLICATION_WINDOW)
@@ -332,6 +333,15 @@ avatar_file_remove_cb (HdyDemoWindow *self)
   hdy_avatar_set_image_load_func (self->avatar, NULL, NULL, NULL);
 }
 
+static void
+spin_button_value_changed_cb (HdyDemoWindow  *self,
+                              GtkSpinButton *spin_button)
+{
+  gdouble peek_duration = gtk_spin_button_get_value (spin_button);
+
+  hdy_password_entry_set_peek_duration (self->password_entry, (guint) peek_duration);
+}
+
 static GdkPixbuf *
 avatar_load_file (gint size, HdyDemoWindow *self)
 {
@@ -413,6 +423,7 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, carousel_indicator_style_row);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, avatar);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, avatar_filechooser);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, password_entry);
   gtk_widget_class_bind_template_callback_full (widget_class, "key_pressed_cb", G_CALLBACK(hdy_demo_window_key_pressed_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "notify_visible_child_cb", G_CALLBACK(hdy_demo_window_notify_visible_child_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "notify_deck_visible_child_cb", G_CALLBACK(hdy_demo_window_notify_deck_visible_child_cb));
@@ -429,6 +440,7 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_callback_full (widget_class, "carousel_return_clicked_cb", G_CALLBACK(carousel_return_clicked_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "avatar_file_remove_cb", G_CALLBACK(avatar_file_remove_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "avatar_file_set_cb", G_CALLBACK(avatar_file_set_cb));
+  gtk_widget_class_bind_template_callback_full (widget_class, "spin_button_value_changed_cb", G_CALLBACK(spin_button_value_changed_cb));
 }
 
 static void
