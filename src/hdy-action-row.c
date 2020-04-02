@@ -784,7 +784,7 @@ hdy_action_row_set_use_underline (HdyActionRow *self,
  *
  * Returns: a #gint using gtk_label_get_width_chars of the title label.
  *
- * Since: 0.9.91
+ * Since: 0.9.90
  */
 gint 
 hdy_action_row_get_title_width_chars (HdyActionRow *self) 
@@ -805,7 +805,7 @@ hdy_action_row_get_title_width_chars (HdyActionRow *self)
  *
  * Sets the width of the title label of the row.
  *
- * Since: 0.9.91
+ * Since: 0.9.90
  */
 void 
 hdy_action_row_set_title_width_chars (HdyActionRow *self,
@@ -828,7 +828,7 @@ hdy_action_row_set_title_width_chars (HdyActionRow *self,
  *
  * Returns: a #gint using gtk_label_get_max_width_chars of the title label.
  *
- * Since: 0.9.91
+ * Since: 0.9.90
  */
 gint 
 hdy_action_row_get_title_max_width_chars (HdyActionRow *self)
@@ -849,7 +849,7 @@ hdy_action_row_get_title_max_width_chars (HdyActionRow *self)
  *
  * Sets the max width of the title label of the row.
  *
- * Since: 0.9.91
+ * Since: 0.9.90
  */
 void 
 hdy_action_row_set_title_max_width_chars (HdyActionRow *self,
@@ -872,7 +872,7 @@ hdy_action_row_set_title_max_width_chars (HdyActionRow *self,
  *
  * Returns: a #PangoEllipsizeMode using gtk_label_get_ellipsize of the title label.
  *
- * Since: 0.9.91
+ * Since: 0.9.90
  */
 PangoEllipsizeMode 
 hdy_action_row_get_title_ellipsize (HdyActionRow *self)
@@ -893,7 +893,7 @@ hdy_action_row_get_title_ellipsize (HdyActionRow *self)
  *
  * Sets the text ellipsize mode of the title of the row.
  *
- * Since: 0.9.91
+ * Since: 0.9.90
  */
 void               
 hdy_action_row_set_title_ellipsize (HdyActionRow *self,
@@ -916,7 +916,7 @@ hdy_action_row_set_title_ellipsize (HdyActionRow *self,
  *
  * Returns: a #GtkJustification using gtk_label_get_justify of the title label.
  *
- * Since: 0.9.91
+ * Since: 0.9.90
  */
 GtkJustification 
 hdy_action_row_get_title_justify (HdyActionRow *self)
@@ -937,7 +937,7 @@ hdy_action_row_get_title_justify (HdyActionRow *self)
  *
  * Sets the text justification of the title of the row.
  *
- * Since: 0.9.91
+ * Since: 0.9.90
  */
 void             
 hdy_action_row_set_title_justify (HdyActionRow *self,
