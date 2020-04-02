@@ -52,6 +52,22 @@ gboolean hdy_action_row_get_use_underline (HdyActionRow *self);
 void     hdy_action_row_set_use_underline (HdyActionRow *self,
                                            gboolean      use_underline);
 
+gint hdy_action_row_get_title_width_chars (HdyActionRow *self);
+void hdy_action_row_set_title_width_chars (HdyActionRow *self,
+                                           gint n_chars);
+
+gint hdy_action_row_get_title_max_width_chars (HdyActionRow *self);
+void hdy_action_row_set_title_max_width_chars (HdyActionRow *self,
+                                               gint n_chars);
+
+PangoEllipsizeMode hdy_action_row_get_title_ellipsize (HdyActionRow *self);
+void               hdy_action_row_set_title_ellipsize (HdyActionRow *self,
+                                                       PangoEllipsizeMode mode);
+
+GtkJustification hdy_action_row_get_title_justify (HdyActionRow *self);
+void             hdy_action_row_set_title_justify (HdyActionRow *self,
+                                                   GtkJustification jtype);
+
 void hdy_action_row_add_prefix (HdyActionRow *self,
                                 GtkWidget    *widget);
 

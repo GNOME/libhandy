@@ -777,6 +777,195 @@ hdy_action_row_set_use_underline (HdyActionRow *self,
 }
 
 /**
+ * hdy_action_row_get_title_width_chars:
+ * @self: a #HdyActionRow
+ *
+ * Gets the title label's width char property.
+ *
+ * Returns: a #gint using gtk_label_get_width_chars of the title label.
+ *
+ * Since: 1.0
+ */
+gint 
+hdy_action_row_get_title_width_chars (HdyActionRow *self) 
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_ACTION_ROW (self), 0);
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  return gtk_label_get_width_chars(priv->title);
+}
+
+/**
+ * hdy_action_row_set_title_width_chars:
+ * @self: a #HdyActionRow
+ * @n_chars: the number of characters to set as width
+ *
+ * Sets the width of the title label of the row.
+ *
+ * Since: 1.0
+ */
+void 
+hdy_action_row_set_title_width_chars (HdyActionRow *self,
+                                      gint n_chars)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  gtk_label_set_width_chars(priv->title, n_chars);
+}
+
+/**
+ * hdy_action_row_get_title_max_width_chars:
+ * @self: a #HdyActionRow
+ *
+ * Gets the title label's max-width char property.
+ *
+ * Returns: a #gint using gtk_label_get_max_width_chars of the title label.
+ *
+ * Since: 1.0
+ */
+gint 
+hdy_action_row_get_title_max_width_chars (HdyActionRow *self)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_ACTION_ROW (self), 0);
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  return gtk_label_get_max_width_chars(priv->title);
+}
+
+/**
+ * hdy_action_row_set_title_max_width_chars:
+ * @self: a #HdyActionRow
+ * @n_chars: the number of characters to set as max width
+ *
+ * Sets the max width of the title label of the row.
+ *
+ * Since: 1.0
+ */
+void 
+hdy_action_row_set_title_max_width_chars (HdyActionRow *self,
+                                          gint n_chars)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  gtk_label_set_max_width_chars(priv->title, n_chars);
+}
+
+/**
+ * hdy_action_row_get_title_ellipsize:
+ * @self: a #HdyActionRow
+ *
+ * Gets the title label's ellipsize property.
+ *
+ * Returns: a #PangoEllipsizeMode using gtk_label_get_ellipsize of the title label.
+ *
+ * Since: 1.0
+ */
+PangoEllipsizeMode 
+hdy_action_row_get_title_ellipsize (HdyActionRow *self)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_ACTION_ROW (self), 0);
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  return gtk_label_get_ellipsize(priv->title);
+}
+
+/**
+ * hdy_action_row_set_title_ellipsize:
+ * @self: a #HdyActionRow
+ * @mode: the #PangoEllipsizeMode mode of the title text
+ *
+ * Sets the text ellipsize mode of the title of the row.
+ *
+ * Since: 1.0
+ */
+void               
+hdy_action_row_set_title_ellipsize (HdyActionRow *self,
+                                    PangoEllipsizeMode mode)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  gtk_label_set_ellipsize(priv->title, mode);
+}
+
+/**
+ * hdy_action_row_get_title_justify:
+ * @self: a #HdyActionRow
+ *
+ * Gets the title label's justification property.
+ *
+ * Returns: a #GtkJustification using gtk_label_get_justify of the title label.
+ *
+* Since: 1.0
+ */
+GtkJustification 
+hdy_action_row_get_title_justify (HdyActionRow *self)
+{
+  HdyActionRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_ACTION_ROW (self), 0);
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  return gtk_label_get_justify(priv->title);
+}
+
+/**
+ * hdy_action_row_set_title_justify:
+ * @self: a #HdyActionRow
+ * @jtype: the #GtkJustification justification of the title text
+ *
+ * Sets the text justification of the title of the row.
+ *
+ * Since: 1.0
+ */
+void             
+hdy_action_row_set_title_justify (HdyActionRow *self,
+                                  GtkJustification jtype)
+{
+  HdyActionRowPrivate *priv;
+  double x;
+
+  g_return_if_fail (HDY_IS_ACTION_ROW (self));
+
+  priv = hdy_action_row_get_instance_private (self);
+
+  gtk_label_set_justify(priv->title, jtype);
+
+  /*HAXXX: workaround the gtk label justify bug by also setting xalign */
+  x = 0.0;
+  switch(jtype) {
+    case GTK_JUSTIFY_LEFT: x = 0.0; break;
+    case GTK_JUSTIFY_RIGHT: x = 1.0; break;
+    case GTK_JUSTIFY_CENTER: x = 0.5; break;
+    case GTK_JUSTIFY_FILL: x= 0.0; break;
+    default: g_debug("Unknown GtkJustification: %d", jtype);
+  }
+
+  gtk_label_set_xalign(priv->title, x);
+}
+
+/**
  * hdy_action_row_add_prefix:
  * @self: a #HdyActionRow
  * @widget: (allow-none): the prefix widget
