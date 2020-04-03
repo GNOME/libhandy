@@ -88,7 +88,7 @@
       </para>
       <para>
         Affected widgets:
-        #HdyActionRow, #HdyColumn, #HdyComboRow, #HdyExpanderRow,
+        #HdyActionRow, #HdyComboRow, #HdyExpanderRow,
         #HdyPreferencesGroup, #HdyPreferencesPage, #HdyPreferencesRow,
         #HdyPreferencesWindow, #HdySqueezer, #HdyTitleBar, #HdyViewSwitcherBar,
         #HdyViewSwitcher
