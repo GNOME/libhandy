@@ -13,11 +13,11 @@
 #include "hdy-animation-private.h"
 
 /**
- * SECTION:hdy-column
+ * SECTION:hdy-clamp
  * @short_description: A container letting its child grow up to a given width.
- * @Title: HdyColumn
+ * @Title: HdyClamp
  *
- * The #HdyColumn widget limits the size of the widget it contains to a given
+ * The #HdyClamp widget limits the size of the widget it contains to a given
  * maximum width. The expansion of the child from its minimum to its maximum
  * size is eased out for a smooth transition.
  *
@@ -26,9 +26,9 @@
  *
  * # CSS nodes
  *
- * #HdyColumn has a single CSS node with name column. The node will get the
+ * #HdyClamp has a single CSS node with name clamp. The node will get the
  * style classes .wide when its child reached its maximum width, .narrow when
- * the column allocates its full width to its child, .medium in-between, or none
+ * the clamp allocates its full width to its child, .medium in-between, or none
  * if it didn't compute its size yet.
  */
 
@@ -41,7 +41,7 @@ enum {
   LAST_PROP,
 };
 
-struct _HdyColumn
+struct _HdyClamp
 {
   GtkBin parent_instance;
 
@@ -51,22 +51,22 @@ struct _HdyColumn
 
 static GParamSpec *props[LAST_PROP];
 
-G_DEFINE_TYPE (HdyColumn, hdy_column, GTK_TYPE_BIN)
+G_DEFINE_TYPE (HdyClamp, hdy_clamp, GTK_TYPE_BIN)
 
 static void
-hdy_column_get_property (GObject    *object,
+hdy_clamp_get_property (GObject    *object,
                                   guint       prop_id,
                                   GValue     *value,
                                   GParamSpec *pspec)
 {
-  HdyColumn *self = HDY_COLUMN (object);
+  HdyClamp *self = HDY_CLAMP (object);
 
   switch (prop_id) {
   case PROP_MAXIMUM_WIDTH:
-    g_value_set_int (value, hdy_column_get_maximum_width (self));
+    g_value_set_int (value, hdy_clamp_get_maximum_width (self));
     break;
   case PROP_LINEAR_GROWTH_WIDTH:
-    g_value_set_int (value, hdy_column_get_linear_growth_width (self));
+    g_value_set_int (value, hdy_clamp_get_linear_growth_width (self));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -74,19 +74,19 @@ hdy_column_get_property (GObject    *object,
 }
 
 static void
-hdy_column_set_property (GObject      *object,
+hdy_clamp_set_property (GObject      *object,
                                   guint         prop_id,
                                   const GValue *value,
                                   GParamSpec   *pspec)
 {
-  HdyColumn *self = HDY_COLUMN (object);
+  HdyClamp *self = HDY_CLAMP (object);
 
   switch (prop_id) {
   case PROP_MAXIMUM_WIDTH:
-    hdy_column_set_maximum_width (self, g_value_get_int (value));
+    hdy_clamp_set_maximum_width (self, g_value_get_int (value));
     break;
   case PROP_LINEAR_GROWTH_WIDTH:
-    hdy_column_set_linear_growth_width (self, g_value_get_int (value));
+    hdy_clamp_set_linear_growth_width (self, g_value_get_int (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -95,18 +95,18 @@ hdy_column_set_property (GObject      *object,
 
 /**
  * get_child_width:
- * @self: a #HdyColumn
- * @for_width: the width of the column
+ * @self: a #HdyClamp
+ * @for_width: the width of the clamp
  * @child_minimum: the minimum width reachable by the child, and hence by @self
  * @child_maximum: the maximum width @self will ever allocate its child
  * @lower_threshold: the threshold below which @self will allocate its full width to its child
  * @upper_threshold: the threshold up from which @self will allocate its maximum size to its child
  *
- * Measures the child's extremes, the column's thresholds, and returns size to
+ * Measures the child's extremes, the clamp's thresholds, and returns size to
  * allocate to the child.
  */
 static gint
-get_child_width (HdyColumn *self,
+get_child_width (HdyClamp *self,
                  gint       for_width,
                  gint      *child_minimum,
                  gint      *child_maximum,
@@ -157,7 +157,7 @@ get_child_width (HdyColumn *self,
  * method in GTK 4.
  */
 static void
-hdy_column_measure (GtkWidget      *widget,
+hdy_clamp_measure (GtkWidget      *widget,
                     GtkOrientation  orientation,
                     int             for_size,
                     int            *minimum,
@@ -184,7 +184,7 @@ hdy_column_measure (GtkWidget      *widget,
   if (orientation == GTK_ORIENTATION_HORIZONTAL)
     gtk_widget_get_preferred_width (child, minimum, natural);
   else {
-    gint child_width = get_child_width (HDY_COLUMN (widget), for_size, NULL, NULL, NULL, NULL);
+    gint child_width = get_child_width (HDY_CLAMP (widget), for_size, NULL, NULL, NULL, NULL);
 
     gtk_widget_get_preferred_height_and_baseline_for_width (child,
                                                             child_width,
@@ -196,40 +196,40 @@ hdy_column_measure (GtkWidget      *widget,
 }
 
 static void
-hdy_column_get_preferred_width (GtkWidget *widget,
+hdy_clamp_get_preferred_width (GtkWidget *widget,
                                 gint      *minimum,
                                 gint      *natural)
 {
-  hdy_column_measure (widget, GTK_ORIENTATION_HORIZONTAL, -1,
+  hdy_clamp_measure (widget, GTK_ORIENTATION_HORIZONTAL, -1,
                       minimum, natural, NULL, NULL);
 }
 
 static void
-hdy_column_get_preferred_height_and_baseline_for_width (GtkWidget *widget,
+hdy_clamp_get_preferred_height_and_baseline_for_width (GtkWidget *widget,
                                                         gint       width,
                                                         gint      *minimum,
                                                         gint      *natural,
                                                         gint      *minimum_baseline,
                                                         gint      *natural_baseline)
 {
-  hdy_column_measure (widget, GTK_ORIENTATION_VERTICAL, width,
+  hdy_clamp_measure (widget, GTK_ORIENTATION_VERTICAL, width,
                       minimum, natural, minimum_baseline, natural_baseline);
 }
 
 static void
-hdy_column_get_preferred_height (GtkWidget *widget,
+hdy_clamp_get_preferred_height (GtkWidget *widget,
                                  gint      *minimum,
                                  gint      *natural)
 {
-  hdy_column_measure (widget, GTK_ORIENTATION_VERTICAL, -1,
+  hdy_clamp_measure (widget, GTK_ORIENTATION_VERTICAL, -1,
                       minimum, natural, NULL, NULL);
 }
 
 static void
-hdy_column_size_allocate (GtkWidget     *widget,
+hdy_clamp_size_allocate (GtkWidget     *widget,
                           GtkAllocation *allocation)
 {
-  HdyColumn *self = HDY_COLUMN (widget);
+  HdyClamp *self = HDY_CLAMP (widget);
   GtkBin *bin = GTK_BIN (widget);
   GtkAllocation child_allocation;
   gint baseline;
@@ -280,24 +280,24 @@ hdy_column_size_allocate (GtkWidget     *widget,
 }
 
 static void
-hdy_column_class_init (HdyColumnClass *klass)
+hdy_clamp_class_init (HdyClampClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
 
-  object_class->get_property = hdy_column_get_property;
-  object_class->set_property = hdy_column_set_property;
+  object_class->get_property = hdy_clamp_get_property;
+  object_class->set_property = hdy_clamp_set_property;
 
-  widget_class->get_preferred_width = hdy_column_get_preferred_width;
-  widget_class->get_preferred_height = hdy_column_get_preferred_height;
-  widget_class->get_preferred_height_and_baseline_for_width = hdy_column_get_preferred_height_and_baseline_for_width;
-  widget_class->size_allocate = hdy_column_size_allocate;
+  widget_class->get_preferred_width = hdy_clamp_get_preferred_width;
+  widget_class->get_preferred_height = hdy_clamp_get_preferred_height;
+  widget_class->get_preferred_height_and_baseline_for_width = hdy_clamp_get_preferred_height_and_baseline_for_width;
+  widget_class->size_allocate = hdy_clamp_size_allocate;
 
   gtk_container_class_handle_border_width (container_class);
 
   /**
-   * HdyColumn:maximum_width:
+   * HdyClamp:maximum_width:
    *
    * The maximum width to allocate to the child.
    */
@@ -309,7 +309,7 @@ hdy_column_class_init (HdyColumnClass *klass)
                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyColumn:linear_growth_width:
+   * HdyClamp:linear_growth_width:
    *
    * The width up to which the child will be allocated all the width.
    */
@@ -322,55 +322,55 @@ hdy_column_class_init (HdyColumnClass *klass)
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
 
-  gtk_widget_class_set_css_name (widget_class, "column");
+  gtk_widget_class_set_css_name (widget_class, "clamp");
 }
 
 static void
-hdy_column_init (HdyColumn *self)
+hdy_clamp_init (HdyClamp *self)
 {
 }
 
 /**
- * hdy_column_new:
+ * hdy_clamp_new:
  *
- * Creates a new #HdyColumn.
+ * Creates a new #HdyClamp.
  *
- * Returns: a new #HdyColumn
+ * Returns: a new #HdyClamp
  */
 GtkWidget *
-hdy_column_new (void)
+hdy_clamp_new (void)
 {
-  return g_object_new (HDY_TYPE_COLUMN, NULL);
+  return g_object_new (HDY_TYPE_CLAMP, NULL);
 }
 
 /**
- * hdy_column_get_maximum_width:
- * @self: a #HdyColumn
+ * hdy_clamp_get_maximum_width:
+ * @self: a #HdyClamp
  *
  * Gets the maximum width to allocate to the contained child.
  *
  * Returns: the maximum width to allocate to the contained child.
  */
 gint
-hdy_column_get_maximum_width (HdyColumn *self)
+hdy_clamp_get_maximum_width (HdyClamp *self)
 {
-  g_return_val_if_fail (HDY_IS_COLUMN (self), 0);
+  g_return_val_if_fail (HDY_IS_CLAMP (self), 0);
 
   return self->maximum_width;
 }
 
 /**
- * hdy_column_set_maximum_width:
- * @self: a #HdyColumn
+ * hdy_clamp_set_maximum_width:
+ * @self: a #HdyClamp
  * @maximum_width: the maximum width
  *
  * Sets the maximum width to allocate to the contained child.
  */
 void
-hdy_column_set_maximum_width (HdyColumn *self,
+hdy_clamp_set_maximum_width (HdyClamp *self,
                               gint       maximum_width)
 {
-  g_return_if_fail (HDY_IS_COLUMN (self));
+  g_return_if_fail (HDY_IS_CLAMP (self));
 
   self->maximum_width = maximum_width;
 
@@ -378,8 +378,8 @@ hdy_column_set_maximum_width (HdyColumn *self,
 }
 
 /**
- * hdy_column_get_linear_growth_width:
- * @self: a #HdyColumn
+ * hdy_clamp_get_linear_growth_width:
+ * @self: a #HdyClamp
  *
  * Gets the width up to which the child will be allocated all the available
  * width and starting from which it will be allocated a portion of the available
@@ -389,16 +389,16 @@ hdy_column_set_maximum_width (HdyColumn *self,
  * width.
  */
 gint
-hdy_column_get_linear_growth_width (HdyColumn *self)
+hdy_clamp_get_linear_growth_width (HdyClamp *self)
 {
-  g_return_val_if_fail (HDY_IS_COLUMN (self), 0);
+  g_return_val_if_fail (HDY_IS_CLAMP (self), 0);
 
   return self->linear_growth_width;
 }
 
 /**
- * hdy_column_set_linear_growth_width:
- * @self: a #HdyColumn
+ * hdy_clamp_set_linear_growth_width:
+ * @self: a #HdyClamp
  * @linear_growth_width: the linear growth width
  *
  * Sets the width up to which the child will be allocated all the available
@@ -407,10 +407,10 @@ hdy_column_get_linear_growth_width (HdyColumn *self)
  *
  */
 void
-hdy_column_set_linear_growth_width (HdyColumn *self,
+hdy_clamp_set_linear_growth_width (HdyClamp *self,
                               gint       linear_growth_width)
 {
-  g_return_if_fail (HDY_IS_COLUMN (self));
+  g_return_if_fail (HDY_IS_CLAMP (self));
 
   self->linear_growth_width = linear_growth_width;
 
