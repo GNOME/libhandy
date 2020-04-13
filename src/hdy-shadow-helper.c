@@ -351,11 +351,8 @@ hdy_shadow_helper_draw_shadow (HdyShadowHelper *self,
 
   cairo_save (cr);
 
-  cairo_save (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
   cairo_set_source (cr, self->dimming_pattern);
   cairo_paint_with_alpha (cr, 1 - progress);
-  cairo_restore (cr);
 
   switch (direction) {
   case GTK_PAN_DIRECTION_RIGHT:
@@ -371,11 +368,8 @@ hdy_shadow_helper_draw_shadow (HdyShadowHelper *self,
     g_assert_not_reached ();
   }
 
-  cairo_save (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
   cairo_set_source (cr, self->shadow_pattern);
   cairo_paint_with_alpha (cr, shadow_opacity);
-  cairo_restore (cr);
 
   switch (direction) {
   case GTK_PAN_DIRECTION_RIGHT:
@@ -391,11 +385,8 @@ hdy_shadow_helper_draw_shadow (HdyShadowHelper *self,
     g_assert_not_reached ();
   }
 
-  cairo_save (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
   cairo_set_source (cr, self->border_pattern);
   cairo_paint (cr);
-  cairo_restore (cr);
 
   cairo_restore (cr);
 }
