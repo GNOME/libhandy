@@ -21,7 +21,7 @@ struct _HdyViewSwitcherClass {
   GtkBoxClass parent_class;
 };
 
-G_DECLARE_DERIVABLE_TYPE (HdyViewSwitcher, hdy_view_switcher, HDY, VIEW_SWITCHER, GtkBox)
+G_DECLARE_DERIVABLE_TYPE (HdyViewSwitcher, hdy_view_switcher, HDY, VIEW_SWITCHER, GtkBin)
 
 typedef enum {
   HDY_VIEW_SWITCHER_POLICY_AUTO,
