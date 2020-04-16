@@ -16,7 +16,7 @@ G_BEGIN_DECLS
 
 #define HDY_TYPE_PREFERENCES_GROUP (hdy_preferences_group_get_type())
 
-G_DECLARE_DERIVABLE_TYPE (HdyPreferencesGroup, hdy_preferences_group, HDY, PREFERENCES_GROUP, GtkBox)
+G_DECLARE_DERIVABLE_TYPE (HdyPreferencesGroup, hdy_preferences_group, HDY, PREFERENCES_GROUP, GtkBin)
 
 /**
  * HdyPreferencesGroupClass
