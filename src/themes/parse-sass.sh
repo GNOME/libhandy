@@ -34,5 +34,9 @@ sassc $SASSC_OPT -I${GTK_SOURCE_PATH}/gtk/theme/Adwaita \
 	Adwaita.scss Adwaita.css
 sassc $SASSC_OPT -I${GTK_SOURCE_PATH}/gtk/theme/Adwaita \
 	Adwaita-dark.scss Adwaita-dark.css
+sassc $SASSC_OPT -I${GTK_SOURCE_PATH}/gtk/theme/Adwaita -I${GTK_SOURCE_PATH}/gtk/theme/HighContrast \
+	HighContrast.scss HighContrast.css
+sassc $SASSC_OPT -I${GTK_SOURCE_PATH}/gtk/theme/Adwaita -I${GTK_SOURCE_PATH}/gtk/theme/HighContrast \
+	HighContrastInverse.scss HighContrastInverse.css
 sassc $SASSC_OPT -I${GTK_SOURCE_PATH}/gtk/theme/Adwaita \
 	shared.scss shared.css
