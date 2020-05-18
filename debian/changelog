@@ -1,8 +1,353 @@
-libhandy (0.9.90) UNRELEASED; urgency=medium
+libhandy (0.9.90) amber-phone; urgency=medium
 
+  [ Guido Günther ]
   * Bump API version to 1.0.0
+  * bug template: Use API version 1
+  * examples: Require API major version 1
+  * spec: Bump version to 0.9.90
 
- -- Guido Günther <agx@sigxcpu.org>  Tue, 21 Jan 2020 10:49:54 +0100
+  [ Adrien Plazas ]
+  * flatpak: Update the example command name
+  * leaflet: Add the .folded and .unfolded style classes
+  * column: Add the .narrow, .medium and .wide style classes
+  * debian: Remove 0.0 symbols
+  * doc: Add the Handy 0.0 to Handy 1 migration guide
+  * doc: Tell to stop using deprecated symbols
+  * Remove the deprecated HdyArrows
+  * Remove the deprecated HdyDialer
+  * Remove the deprecated HdyDialerCycleButton
+  * Remove the deprecated HdyDialerButton
+  * leaflet: Drop the deprecated transition props
+  * leaflet: Drop usage of the deprecated transition types
+  * leaflet: Drop the deprecated transition types
+  * gitlab: Updates classes in the issue template
+
+  [ Alexander Mikhaylenko ]
+  * shadow-helper: Don't set style context parent
+
+  [ Adrien Plazas ]
+  * main: Don't explicitely load resources in hdy_init()
+  * meson: Unconditionally install
+  * gitlab-ci: Drop static library support
+  * meson: Don't allow to build as a static library
+  * doc: Tell to stop using the static build option
+  * main: Automatically init libhandy
+  * examples: Drop calls to the removed hdy_init()
+  * tests: Drop calls to the removed hdy_init()
+  * doc: Tell to stop using hdy_init()
+  * debian: Don't use hdy_init() in build test programs
+  * doc: Add the libhandy 1.0 API index
+  * Rename paginator files to carousel
+  * Rename HdyPaginatorBox into HdyCarouselBox
+  * Rename HdyPaginator into HdyCarousel
+  * doc: Document we renamed HdyPaginator into HdyCarousel
+  * gitlab: Rename HdyPaginator into HdyCarousel
+  * leaflet: Drop usage of HdyFold
+  * tests: Drop usage of HdyFold
+  * Drop HdyFold
+  * doc: Tell about HdyFold being removed
+
+  [ Guido Günther ]
+  * gitlab-ci: Allow flatpak build to fail
+
+  [ Alexander Mikhaylenko ]
+  * leaflet: Remove 'todo' vfunc
+  * example: Use a menu model for primary menu
+  * leaflet: Fix some typos in docs
+  * leaflet: Document visible child functions
+  * Introduce HdyNavigationDirection
+  * swipeable: Use HdyNavigationDirection for begin_swipe() direction
+  * leaflet: Add a function for moving back/forward programmatically
+  * example: Use hdy_leaflet_navigate() for back button
+  * leaflet: Allow hdy_leaflet_navigate() regardless of swipe properties
+  * example: Use hdy_leaflet_navigate() for clicking rows as well
+
+  [ Adrien Plazas ]
+  * leaflet: Don't include the deprecation macros header
+  * swipe-tracker: Use g_clear_pointer() where possible
+  * swipe-tracker: Fix a leak in …_confirm_swipe()
+  * leaflet: Default to the 'over' transition type
+  * doc: Tell about HdyLeaflet transition-type changes
+  * leaflet: Don't implement GtkBuildableIface
+  * Add global CSS files
+  * style: Add hdy_style_init()
+  * main: Initialize the global styles when the main loop starts
+  * Move dedicated styles to global CSS files
+  * style: Add _OVERRIDE to the style name
+  * Drop the hdy prefix from CSS node names
+  * doc: Document the CSS node name changes
+  * Document CSS nodes and style classes
+
+  [ Alexander Mikhaylenko ]
+  * swipe-tracker: Fix crash in confirm_swipe()
+
+  [ Adrien Plazas ]
+  * leaflet: Init the style class for the default fold
+  * css: Drop a useless empty line in the CSS
+  * column: Fix the CSS node name documentation
+  * example: Vertically align the radio buttons
+  * example: Make the radio buttons non-focusable
+  * leaflet: Avoid divisions by 0
+  * Make hdy_style_init() static
+  * Move HDY_STYLE_PROVIDER_PRIORITY_OVERRIDE to hdy-main.c
+  * action-row: Add the 'activated' signal
+  * debian: Add missing symbols
+
+  [ Alexander Mikhaylenko ]
+  * example: Stop using "fold" HdyLeaflet property
+  * leaflet: Fix hdy_leaflet_get_can_swipe_forward() docs
+  * Introduce HdyStackableBox
+  * leaflet: Make HdyLeaflet a wrapper around HdyStackableBox
+  * Introduce HdyDeck
+  * example: Use HdyDeck in complex dialog demo
+  * Cross-reference HdyDeck in documentation comments
+  * stackable-box: Only count allow-visible=true children for index
+
+  [ Adrien Plazas ]
+  * debian: Add missing symbols
+  * header-bar: Use gender neutral pronouns
+  * flatpak: Drop useless build options
+
+  [ Alexander Mikhaylenko ]
+  * stackable-box: Remove an extra line in a doc comment
+
+  [ Adrien Plazas ]
+  * debian: Use HdyKeypad in the Python GI test
+  * Drop UTF-8 string functions
+  * main: Make the style init priority super high
+  * examples: Move the expanders' children to the next row
+  * expander-row: Drop the internal revealer
+  * action-row: Drop adding widgets below
+  * action-row: Drop the 'action' buildable child type
+  * action-row: Pack actions from the start
+  * action-row: Remove hdy_action_row_add_action()
+  * action-row: Style the title and subtitle with CSS
+  * action-row: Rename the .row-header style class to .header
+  * action-row: Define the sizes with CSS
+  * action-row: Document the CSS nodes
+  * doc: Tell to pack action items from start to end
+  * doc: Tell about the box.header CSS node rename
+  * combo-row: Popover style overhaul
+  * combo-row: Add a checkmark at the end of the selected row
+  * combo-row: Document the CSS nodes
+  * main: Load icon resources on startup
+  * icons: Add hdy-expander-arrow-symbolic
+  * expander-row: Widget overhaul
+  * doc: Tell about the HdyExpanderRow API changes
+  * style: Add the list.preferences CSS style class
+  * Use the list.preferences CSS style class
+  * style: Add the button.list-button CSS style class
+  * examples: Use the button.list-button CSS style class
+
+  [ Ujjwal Kumar ]
+  * preferences-window: Cancel search from keyboard
+
+  [ Alexander Mikhaylenko ]
+  * style: Remove an extra comma
+
+  [ Adrien Plazas ]
+  * preferences-window: Add the 'search-enabled' property
+  * style: Rename and move style files to the themes/ directory
+  * themes: Move to SASS
+  * themes: Ship the compiled CSS
+  * themes: Handle different themes and variants
+  * themes: Simplify shadows definition
+
+  [ Alexander Mikhaylenko ]
+  * preferences-window: Use gtk_search_entry_handle_event()
+  * preferences-window: Name signal callbacks _cb
+  * preferences-window: Erase search terms after hiding search bar
+  * preferences-window: Use GDK_EVENT_* constants
+
+  [ Ujjwal Kumar ]
+  * Return GtkWidget* with _new()
+  * Coding style fixes
+  * doc: Tell about widget constructor changes
+
+  [ Adrien Plazas ]
+  * view-switcher-bar: Fix a typo in the docs
+  * view-switcher-bar: Don't reveal for less than two pages
+  * Add HdyViewSwitcherTitle
+  * view-switcher-bar: Document relation with HdyViewSwitcherTitle
+  * preferences-window: Use HdyViewSwitcherTitle
+  * examples: Use HdyViewSwitcherTitle
+
+  [ Julian Sparber ]
+  * Add HdyAvatar widget
+  * example: Add HdyAvatar
+  * docs: Add HdyAvatar
+  * CI: Add libgdk-pixbuf2.0-doc
+  * test: Add test for HdyAvatar
+
+  [ Adrien Plazas ]
+  * demo: Make the resource path match the app ID
+  * demo: Add a dark theme toggle button
+  * shared: Make the HdyActionRow style idiomatic SASS
+  * shared: Make the HdyExpanderRow style idiomatic SASS
+  * themes: Add the rounded() mixin
+  * adwaita: Make the HdyComboRow popover style idiomatic SASS
+  * adwaita: Make the HdyKeypad style idiomatic SASS
+  * adwaita: Make the HdyViewSwitcher style idiomatic SASS
+  * adwaita: Fix the dark HdyViewSwitcher background
+  * adwaita: Make the preferences list style idiomatic SASS
+  * adwaita: Make the HdyActionRow style idiomatic SASS
+  * preferences-window: Hide filtered-out rows
+  * column: Fix checking the child width
+  * column: Ensure the column is at least as whide as its child
+
+  [ Felix Pojtinger ]
+  * doc: Add macOS build instructions
+
+  [ Alexander Mikhaylenko ]
+  * stackable-box: Avoid use-after-free in remove()
+  * view-switcher-title: Unset stack before destroying
+  * glade-hdy-carousel: Add a missing assignment
+  * header-bar: Remove some unused variables
+
+  [ Julian Sparber ]
+  * avatar: Add a missing transfer annotation
+  * avatar: Allow NULL in HdyAvatarImageLoadFunc
+  * avatar: Add test for when the image load function returns NULL
+  * avatar: Fix typo in usage example
+  * avatar: Reset font description before calculating the font size
+  * avatar: Use a better linear function for padding around the initials
+
+  [ Adrien Plazas ]
+  * demo: Drop setting the header group focus
+  * demo: Put the right header bar in a GtkStack
+  * demo: Give its own header to the search bar demo
+  * demo: Add a HdyDeck example
+  * Drop HdyDialog
+
+  [ Ujjwal Kumar ]
+  * example: Resize demo window
+
+  [ Alexander Mikhaylenko ]
+  * swipe-tracker: Reject drags in window's draggable areas
+  * stackable-box: Check is visible child exists in folded mode
+  * Introduce hdy-cairo-private.h
+  * Introduce HdyNothing
+  * Add HdyWindowMixin
+  * Add HdyWindow
+  * Add HdyApplicationWindow
+  * gtk-window: Add hdy_gtk_window_get_state()
+  * Add HdyWindowHandleController
+  * Add HdyWindowHandle
+  * header-bar: Register its own window
+  * header-bar: Add a window handle controller
+  * tests: Add a HdyWindow test
+  * tests: Add a HdyApplicationWindow test
+  * tests: Add a HdyWindowHandle test
+  * preferences-window: Port to HdyWindow
+  * example: Port view switcher window to HdyWindow
+  * example: Port main window to HdyApplicationWindow
+  * example: Add a HdyWindow demo
+
+  [ Adrien Plazas ]
+  * combo-row: Code style fix
+  * combo-row: Make it activatable when it has a bound model
+  * action-row: Fix the activatable widget precondition
+  * action-row: Make it activatable when it has an activatable widget
+  * demo: Don't set action rows as unactivatable
+  * demo: Bind the switch-rows to their switches
+
+  [ Alexander Mikhaylenko ]
+  * example: Fix a typo on the HdyWindow page
+
+  [ Adrien Plazas ]
+  * meson: Fix disabling the Glade catalog
+  * glade: Add a Glade+libhandy flatpak manifest
+  * ci: Build Glade with Handy
+
+  [ Alexander Mikhaylenko ]
+  * window-mixin: Set no_show_all for the titlebar box
+  * window-mixin: Only allow one child
+  * window-mixin: Don't include the titlebar into foreach()
+  * stackable-box: Skip mode transitions for deck
+  * glade: Add get-children-function to the dtd
+  * glade: Fix HdyCarousel sorting
+  * glade: List HdyAvatar
+  * glade: List HdyKeypad
+  * glade: List HdyViewSwitcherTitle
+  * glade: List HdyDeck
+  * glade: List HdyWindow
+  * glade: List HdyApplicationWindow
+  * glade: List HdyWindowHandle
+  * example: Make the "Go to the next page" row activatable
+  * example: Don't leave an empty autoptr declaration
+  * main: Don't use G_SOURCE_FUNC() macro
+  * preferences-window: Add .titlebar to the headerbar
+  * example: Add .titlebar to all headerbars
+  * example: Fix leaflet/deck typos
+  * preferences-window: Use crossfade transition
+  * stackable-box: Fix a typo in a comment
+
+  [ louib ]
+  * Fix acknowledge typo in build doc
+
+  [ Adrien Plazas ]
+  * expander-row: Simplify boolean parameter sanitization
+  * expander-row: Prevent gtk_widget_show_all()
+
+  [ Alexander Mikhaylenko ]
+  * view-switcher: Extend bin instead of box
+  * column: Queue resize after changing maximum width
+  * stackable-box: Disconnect the signal handler after removing a child
+  * stackable-box: Unset last_visible_child after removing or hiding
+  * stackable-box: Only hide last visible child when folded
+  * preferences-window: Implement remove() and forall()
+  * preferences-page: Subclass GtkBin instead of GtkScrolledWindow
+  * preferences-page: Implement remove() and forall()
+  * preferences-group: Subclass GtkBin
+  * preferences-group: Implement remove()
+  * action-row: Implement remove()
+  * action-row: Don't allow adding null prefixes
+  * expander-row: Implement remove()
+  * expander-row: Fix forall()
+  * glade: Update dtd
+  * glade: Add GladeHdyUtils
+  * glade: Use utils in HdyCarousel adaptor
+  * glade: Add a synthetic position child property for HdyCarousel
+  * glade: Properly support HdyHeaderBar
+  * glade: Have proper names for HdyViewSwitcherTitle policy
+  * glade: Properly support HdySearchBar
+  * glade: Set better default values for HdyColumn
+  * glade: Support HdyLeaflet and HdyDeck
+  * glade: Support HdyPreferencesWindow
+  * glade: Support HdyPreferencesPage
+  * glade: Mark HdyPreferencessGroup properties as translatable
+  * glade: Support HdyExpanderRow
+
+  [ Adrien Plazas ]
+  * debian: Drop handy-1-examples's dep on libhandy-0.0-0
+
+  [ Ujjwal Kumar ]
+  * example: Replace deprecated Dialer with Keypad in example.py
+  * example: Add some spacing between widgets
+
+  [ Adrien Plazas ]
+  * Separate public and private enums
+
+  [ louib ]
+  * Adding new example apps using libhandy.
+
+  [ Stelios Milidonis ]
+  * Update .gitlab-ci.yml
+  * Update .gitlab-ci.yml
+  * Update .gitlab-ci.yml
+
+  [ Adrien Plazas ]
+  * glade: Make the Flatpak manifest use Glade 3.36
+
+  [ Alberto Fanjul ]
+  * glade: Adapt to Glade 3.36 API changes
+
+  [ Adrien Plazas ]
+  * glade: Support both 3.24 and 3.36
+  * Bump the version to 0.80.0
+  * Release libhandy 0.80.0
+
+ -- Adrien Plazas <kekun@localhost.localdomain>  Mon, 18 May 2020 12:25:39 +0200
 
 libhandy (0.0.13) amber-phone; urgency=medium
 
