@@ -46,3 +46,13 @@
     }
   }
 }
+
+@mixin margin-start($margin) {
+  &:dir(ltr) {
+    margin-left: $margin;
+  }
+
+  &:dir(rtl) {
+    margin-right: $margin;
+  }
+}
