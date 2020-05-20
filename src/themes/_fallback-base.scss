@@ -1,0 +1,64 @@
+@import 'definitions';
+
+// HdyActionRow
+
+row {
+  label.subtitle {
+    font-size: smaller;
+    opacity: 0.55;
+    text-shadow: none;
+  }
+}
+
+// Shadows
+
+deck,
+leaflet {
+  > dimming {
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  > border {
+    min-width: 1px;
+    min-height: 1px;
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  > shadow {
+    min-width: 56px;
+    min-height: 56px;
+
+    &.left  { @include background-shadow(to right); }
+    &.right { @include background-shadow(to left); }
+    &.up    { @include background-shadow(to bottom); }
+    &.down  { @include background-shadow(to top); }
+  }
+}
+
+// Preferences
+
+preferencespage label.h4 {
+  font-weight: bold;
+}
+
+// HdyExpanderRow
+
+row.expander {
+  list.nested > row {
+    background-color: hdyalpha($bg_color, 0.5);
+    border-color: hdyalpha($borders_color, 0.7);
+  }
+
+  &:not(:checked) image.expander-row-arrow {
+    opacity: 0.55;
+    text-shadow: none;
+  }
+
+  &:checked image.expander-row-arrow:not(:disabled) {
+    color: $selected_bg_color;
+  }
+
+  & image.expander-row-arrow:disabled {
+    color: $insensitive_fg_color;
+  }
+}
