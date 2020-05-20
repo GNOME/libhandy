@@ -35,4 +35,6 @@ sassc $SASSC_OPT -I${GTK_SOURCE_PATH}/gtk/theme/Adwaita \
 sassc $SASSC_OPT -I${GTK_SOURCE_PATH}/gtk/theme/Adwaita \
 	Adwaita-dark.scss Adwaita-dark.css
 sassc $SASSC_OPT -I${GTK_SOURCE_PATH}/gtk/theme/Adwaita \
+	fallback.scss fallback.css
+sassc $SASSC_OPT -I${GTK_SOURCE_PATH}/gtk/theme/Adwaita \
 	shared.scss shared.css
