@@ -5,7 +5,21 @@ row > box.header { margin-left: 12px; margin-right: 12px; min-height: 50px; }
 
 row > box.header > box.title { margin-top: 8px; margin-bottom: 8px; }
 
-popover.combo list { min-width: 200px; }
+deck > dimming, leaflet > dimming { background: rgba(0, 0, 0, 0.12); }
+
+deck > border, leaflet > border { min-width: 1px; min-height: 1px; background: rgba(0, 0, 0, 0.05); }
+
+deck > shadow, leaflet > shadow { min-width: 56px; min-height: 56px; }
+
+deck > shadow.left, leaflet > shadow.left { background-image: linear-gradient(to right, alpha(#000, 0.05), alpha(#000, 0.01) 40px, alpha(#000, 0) 56px), linear-gradient(to right, alpha(#000, 0.03), alpha(#000, 0.01) 7px, alpha(#000, 0) 24px); }
+
+deck > shadow.right, leaflet > shadow.right { background-image: linear-gradient(to left, alpha(#000, 0.05), alpha(#000, 0.01) 40px, alpha(#000, 0) 56px), linear-gradient(to left, alpha(#000, 0.03), alpha(#000, 0.01) 7px, alpha(#000, 0) 24px); }
+
+deck > shadow.up, leaflet > shadow.up { background-image: linear-gradient(to bottom, alpha(#000, 0.05), alpha(#000, 0.01) 40px, alpha(#000, 0) 56px), linear-gradient(to bottom, alpha(#000, 0.03), alpha(#000, 0.01) 7px, alpha(#000, 0) 24px); }
+
+deck > shadow.down, leaflet > shadow.down { background-image: linear-gradient(to top, alpha(#000, 0.05), alpha(#000, 0.01) 40px, alpha(#000, 0) 56px), linear-gradient(to top, alpha(#000, 0.03), alpha(#000, 0.01) 7px, alpha(#000, 0) 24px); }
+
+preferencespage label.h4 { font-weight: bold; }
 
 row.expander { background-color: transparent; }
 
@@ -24,22 +38,6 @@ row.expander:not(:checked) image.expander-row-arrow:dir(rtl) { -gtk-icon-transfo
 row.expander:checked image.expander-row-arrow:not(:disabled) { color: #15539e; }
 
 row.expander image.expander-row-arrow:disabled { color: #919190; }
-
-preferencespage label.h4 { font-weight: bold; }
-
-deck > dimming, leaflet > dimming { background: rgba(0, 0, 0, 0.12); }
-
-deck > border, leaflet > border { min-width: 1px; min-height: 1px; background: rgba(0, 0, 0, 0.05); }
-
-deck > shadow, leaflet > shadow { min-width: 56px; min-height: 56px; }
-
-deck > shadow.left, leaflet > shadow.left { background-image: linear-gradient(to right, alpha(#000, 0.05), alpha(#000, 0.01) 40px, alpha(#000, 0) 56px), linear-gradient(to right, alpha(#000, 0.03), alpha(#000, 0.01) 7px, alpha(#000, 0) 24px); }
-
-deck > shadow.right, leaflet > shadow.right { background-image: linear-gradient(to left, alpha(#000, 0.05), alpha(#000, 0.01) 40px, alpha(#000, 0) 56px), linear-gradient(to left, alpha(#000, 0.03), alpha(#000, 0.01) 7px, alpha(#000, 0) 24px); }
-
-deck > shadow.up, leaflet > shadow.up { background-image: linear-gradient(to bottom, alpha(#000, 0.05), alpha(#000, 0.01) 40px, alpha(#000, 0) 56px), linear-gradient(to bottom, alpha(#000, 0.03), alpha(#000, 0.01) 7px, alpha(#000, 0) 24px); }
-
-deck > shadow.down, leaflet > shadow.down { background-image: linear-gradient(to top, alpha(#000, 0.05), alpha(#000, 0.01) 40px, alpha(#000, 0) 56px), linear-gradient(to top, alpha(#000, 0.03), alpha(#000, 0.01) 7px, alpha(#000, 0) 24px); }
 
 avatar { border-radius: 9999px; -gtk-outline-radius: 9999px; font-weight: bold; }
 
@@ -60,6 +58,9 @@ avatar.color7 { background-image: linear-gradient(#f67365, #d91a23); color: #f6c
 avatar.color8 { background-image: linear-gradient(#cdab8f, #865d3c); color: #e5d6ca; }
 
 avatar.contrasted { color: #fff; }
+
+/*************************** Check and Radio buttons * */
+popover.combo list { min-width: 200px; }
 
 window.csd.unified:not(.solid-csd), window.csd.unified:not(.solid-csd) headerbar { border-radius: 0; }
 
