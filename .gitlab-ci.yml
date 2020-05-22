@@ -13,10 +13,6 @@ before_script:
   - apt-get -y install build-essential libgtk-3-doc libgdk-pixbuf2.0-doc lcov
   - apt-get -y build-dep .
 
-.tags: &tags
-  tags:
-    - librem5
-
 .build: &build_steps
     echo "BUILD_OPTS=${BUILD_OPTS}" &&
     export LC_ALL=C.UTF-8 &&
@@ -25,7 +21,6 @@ before_script:
 
 api-visibility:
   image: debian:buster
-  <<: *tags
   stage: build
   script:
     - lint/api-visibility.sh
@@ -110,7 +105,7 @@ package-debian-buster:
 
 package-debian-buster:arm64:
   tags:
-    - librem5:arm64
+    - arm64
   extends: .l5-build-debian-package
 
 autopkgtest-debian-buster-package:
@@ -182,8 +177,6 @@ publish-docs:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get -y update
     - apt-get -y install ssh rsync
-  tags:
-    - librem5
   script:
     # Don't publish in forks
     - '[ "$CI_PROJECT_NAMESPACE" == "Librem5" ] || exit 0'
