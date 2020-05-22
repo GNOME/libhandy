@@ -17,13 +17,13 @@
   <maintainer>
     <foaf:Person>
       <foaf:name>Guido Günther</foaf:name>
-      <foaf:mbox rdf:resource="mailto:guido.gunther@puri.sm" />
+      <foaf:mbox rdf:resource="mailto:agx@sigxcpu.org" />
     </foaf:Person>
   </maintainer>
   <maintainer>
     <foaf:Person>
       <foaf:name>Adrien Plazas</foaf:name>
-      <foaf:mbox rdf:resource="mailto:adrien.plazas@puri.sm" />
+      <foaf:mbox rdf:resource="mailto:kekun.plazas@laposte.net" />
     </foaf:Person>
   </maintainer>
 
