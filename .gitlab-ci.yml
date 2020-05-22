@@ -127,7 +127,6 @@ build-flatpak:
     FLATPAK_MODULE: 'libhandy'
     APP_ID: 'sm.puri.Handy.Demo'
     BUNDLE: 'sm.puri.Handy.Demo.flatpak'
-    MESON_ARGS: '-Dintrospection=enabled -Dtests=true -Dvapi=true'
 
 build-flatpak-glade:
   extends: '.flatpak'
