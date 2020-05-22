@@ -126,13 +126,16 @@ build-flatpak:
     RUNTIME_REPO: 'https://nightly.gnome.org/gnome-nightly.flatpakrepo'
     FLATPAK_MODULE: 'libhandy'
     APP_ID: 'sm.puri.Handy.Demo'
+    BUNDLE: 'sm.puri.Handy.Demo.flatpak'
+    MESON_ARGS: '-Dintrospection=enabled -Dtests=true -Dvapi=true'
 
 build-flatpak-glade:
   extends: '.flatpak'
   stage: build
   before_script: []
   variables:
-    MANIFEST_PATH: 'examples/sm.puri.Handy.Glade.json'
+    MANIFEST_PATH: 'glade/sm.puri.Handy.Glade.json'
     RUNTIME_REPO: 'https://nightly.gnome.org/gnome-nightly.flatpakrepo'
     FLATPAK_MODULE: 'libhandy'
     APP_ID: 'sm.puri.Handy.Glade'
+    BUNDLE: 'sm.puri.Handy.Glade.flatpak'
