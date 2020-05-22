@@ -26,6 +26,7 @@
         <property name="wrap">False</property>
         <property name="single-line-mode">True</property>
         <property name="visible">True</property>
+        <property name="no-show-all">True</property>
         <style>
           <class name="subtitle"/>
         </style>
@@ -58,6 +59,7 @@
                 <property name="single-line-mode">True</property>
                 <property name="visible">True</property>
                 <property name="width-chars">5</property>
+                <property name="no-show-all">True</property>
                 <style>
                   <class name="title"/>
                 </style>
@@ -70,6 +72,7 @@
                 <property name="wrap">False</property>
                 <property name="single-line-mode">True</property>
                 <property name="visible">True</property>
+                <property name="no-show-all">True</property>
                 <style>
                   <class name="subtitle"/>
                 </style>
