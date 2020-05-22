@@ -7,6 +7,7 @@ stages:
   - test+docs
   - package
   - test-package
+  - deploy
 
 before_script:
   - echo "man-db man-db/auto-update boolean false" | debconf-set-selections
@@ -138,3 +139,11 @@ build-flatpak-glade:
     FLATPAK_MODULE: 'libhandy'
     APP_ID: 'sm.puri.Handy.Glade'
     BUNDLE: 'sm.puri.Handy.Glade.flatpak'
+
+pages:
+  stage: deploy
+  script:
+    - mv _build/doc/html/ public/
+  artifacts:
+    paths:
+      - public
