@@ -120,6 +120,7 @@ lintian-debian-buster-package:
 build-flatpak:
   extends: '.flatpak'
   stage: build
+  before_script: []
   variables:
     MANIFEST_PATH: 'examples/sm.puri.Handy.Demo.json'
     RUNTIME_REPO: 'https://nightly.gnome.org/gnome-nightly.flatpakrepo'
@@ -129,6 +130,7 @@ build-flatpak:
 build-flatpak-glade:
   extends: '.flatpak'
   stage: build
+  before_script: []
   variables:
     MANIFEST_PATH: 'examples/sm.puri.Handy.Glade.json'
     RUNTIME_REPO: 'https://nightly.gnome.org/gnome-nightly.flatpakrepo'
