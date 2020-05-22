@@ -117,18 +117,18 @@ lintian-debian-buster-package:
     - package-debian-buster
   extends: .l5-lintian-debian-package
 
-package-flatpak:
+build-flatpak:
   extends: '.flatpak'
-  stage: package
+  stage: build
   variables:
     MANIFEST_PATH: 'examples/sm.puri.Handy.Demo.json'
     RUNTIME_REPO: 'https://nightly.gnome.org/gnome-nightly.flatpakrepo'
     FLATPAK_MODULE: 'libhandy'
     APP_ID: 'sm.puri.Handy.Demo'
 
-package-flatpak-glade:
+build-flatpak-glade:
   extends: '.flatpak'
-  stage: package
+  stage: build
   variables:
     MANIFEST_PATH: 'examples/sm.puri.Handy.Glade.json'
     RUNTIME_REPO: 'https://nightly.gnome.org/gnome-nightly.flatpakrepo'
