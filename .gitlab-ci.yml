@@ -24,6 +24,7 @@ before_script:
     ninja -C _build
 
 api-visibility:
+  image: debian:buster
   <<: *tags
   stage: build
   script:
