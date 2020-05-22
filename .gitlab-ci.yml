@@ -8,11 +8,6 @@ stages:
   - test-package
   - deploy
 
-before_script:
-  - apt-get -y update
-  - apt-get -y install build-essential libgtk-3-doc libgdk-pixbuf2.0-doc lcov
-  - apt-get -y build-dep .
-
 .build: &build_steps
     echo "BUILD_OPTS=${BUILD_OPTS}" &&
     export LC_ALL=C.UTF-8 &&
@@ -20,14 +15,19 @@ before_script:
     ninja -C _build
 
 api-visibility:
-  image: debian:buster
   stage: build
+  before_script:
+    - dnf install -y find
   script:
     - lint/api-visibility.sh
 
 build-debian-gcc:
   image: debian:buster
   stage: build
+  before_script:
+    - apt-get -y update
+    - apt-get -y install build-essential libgtk-3-doc libgdk-pixbuf2.0-doc lcov
+    - apt-get -y build-dep .
   variables:
     BUILD_OPTS: -Dgtk_doc=true -Db_coverage=true --werror
   script:
@@ -71,6 +71,10 @@ build-fedora-gcc:
 build-gtkdoc:
   image: debian:buster
   stage: test+docs
+  before_script:
+    - apt-get -y update
+    - apt-get -y install build-essential libgtk-3-doc libgdk-pixbuf2.0-doc lcov
+    - apt-get -y build-dep .
   dependencies:
     - build-debian-gcc
   script:
@@ -84,6 +88,10 @@ build-gtkdoc:
 unit-test:
   image: debian:buster
   stage: test+docs
+  before_script:
+    - apt-get -y update
+    - apt-get -y install build-essential libgtk-3-doc libgdk-pixbuf2.0-doc lcov
+    - apt-get -y build-dep .
   dependencies:
     - build-debian-gcc
   script:
