@@ -160,15 +160,15 @@ list.preferences > row, list.preferences > row list > row { border-color: alpha(
 
 list.preferences > row:not(:last-child) { border-width: 1px 1px 0px 1px; }
 
-list.preferences > row:first-child, list.preferences > row.expander:first-child row.header, list.preferences > row.expander:checked, list.preferences > row.expander:checked row.header, list.preferences > row.expander:checked + row, list.preferences > row.expander:checked + row.expander row.header { border-top-left-radius: 8px; -gtk-outline-top-left-radius: 7px; border-top-right-radius: 8px; -gtk-outline-top-right-radius: 7px; }
+list.preferences > row:first-child, list.preferences > row.isolated, list.preferences > row.expander:first-child row.header, list.preferences > row.expander.isolated row.header, list.preferences > row.isolated + row, list.preferences > row.isolated + row.expander row.header { border-top-left-radius: 8px; -gtk-outline-top-left-radius: 7px; border-top-right-radius: 8px; -gtk-outline-top-right-radius: 7px; }
 
-list.preferences > row:last-child, list.preferences > row.checked-expander-row-previous-sibling, list.preferences > row.expander:checked { border-width: 1px; }
+list.preferences > row:last-child, list.preferences > row.isolated-row-previous-sibling, list.preferences > row.isolated { border-width: 1px; }
 
-list.preferences > row:last-child, list.preferences > row.checked-expander-row-previous-sibling, list.preferences > row.expander:checked, list.preferences > row.expander:not(:checked):last-child row.header, list.preferences > row.expander:not(:checked).checked-expander-row-previous-sibling row.header, list.preferences > row.expander.empty:checked row.header, list.preferences > row.expander list.nested > row:last-child { border-bottom-left-radius: 8px; -gtk-outline-bottom-left-radius: 7px; border-bottom-right-radius: 8px; -gtk-outline-bottom-right-radius: 7px; }
+list.preferences > row:last-child, list.preferences > row.isolated-row-previous-sibling, list.preferences > row.isolated, list.preferences > row.expander:not(:checked):last-child row.header, list.preferences > row.expander:not(:checked).isolated row.header, list.preferences > row.expander:not(:checked).isolated-row-previous-sibling row.header, list.preferences > row.expander.empty.isolated row.header, list.preferences > row.expander list.nested > row:last-child { border-bottom-left-radius: 8px; -gtk-outline-bottom-left-radius: 7px; border-bottom-right-radius: 8px; -gtk-outline-bottom-right-radius: 7px; }
 
-list.preferences > row.expander:checked:not(:first-child), list.preferences > row.expander:checked + row { margin-top: 6px; }
+list.preferences > row.isolated:not(:first-child), list.preferences > row.isolated + row { margin-top: 6px; }
 
-button.list-button:not(:active):not(:checked):not(:hover) { background: none; border: 1px solid alpha(#686868, 0.5); box-shadow: none; }
+button.list-button:not(:active):not(.isolated):not(:hover) { background: none; border: 1px solid alpha(#686868, 0.5); box-shadow: none; }
 
 window.csd.unified:not(.solid-csd):not(.fullscreen) headerbar { box-shadow: none; }
 
