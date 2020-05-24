@@ -22,6 +22,17 @@
  * they take care of presenting the preference's title while letting you compose
  * the inputs of the preference around it.
  *
+ * #HdyPreferencesRow can be made to look separate from the rest of the list by
+ * using the #HdyPreferencesRow:isolated property, that can be used, for
+ * example, with expanding rows.
+ *
+ * # CSS nodes
+ *
+ * #HdyPreferencesRow has a main CSS node with name row.
+ * When #HdyPreferencesRow:isolated is %TRUE, #HdyPreferencesRow will have the
+ * .isolated style class, and also will add the .isolated-row-previous-sibling
+ * style class to its previous sibling, and remove it when not isolated.
+ *
  * Since: 0.0.10
  */
 
@@ -30,6 +41,7 @@ typedef struct
   gchar *title;
 
   gboolean use_underline;
+  gboolean isolated;
 } HdyPreferencesRowPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (HdyPreferencesRow, hdy_preferences_row, GTK_TYPE_LIST_BOX_ROW)
@@ -38,16 +50,53 @@ enum {
   PROP_0,
   PROP_TITLE,
   PROP_USE_UNDERLINE,
+  PROP_ISOLATED,
   LAST_PROP,
 };
 
 static GParamSpec *props[LAST_PROP];
 
 static void
+toggle_style_class (GtkWidget   *widget,
+                    const gchar *style_class,
+                    gboolean     enable)
+{
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
+
+  if (enable)
+    gtk_style_context_add_class (context, style_class);
+  else
+    gtk_style_context_remove_class (context, style_class);
+}
+
+static void
+update_style_classes (HdyPreferencesRow *self)
+{
+  HdyPreferencesRowPrivate *priv = hdy_preferences_row_get_instance_private (self);
+  GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (self));
+  GtkWidget *previous_sibling = NULL;
+
+  if (parent) {
+    g_autoptr (GList) siblings = gtk_container_get_children (GTK_CONTAINER (parent));
+    GList *l;
+
+    for (l = siblings; l != NULL && l->next != NULL && l->next->data != self; l = l->next);
+
+    if (l && l->next && l->next->data == self)
+      previous_sibling = l->data;
+  }
+
+  toggle_style_class (GTK_WIDGET (self), "isolated", priv->isolated);
+
+  if (previous_sibling)
+    toggle_style_class (previous_sibling, "isolated-row-previous-sibling", priv->isolated);
+}
+
+static void
 hdy_preferences_row_get_property (GObject    *object,
-                             guint       prop_id,
-                             GValue     *value,
-                             GParamSpec *pspec)
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   HdyPreferencesRow *self = HDY_PREFERENCES_ROW (object);
 
@@ -58,6 +107,9 @@ hdy_preferences_row_get_property (GObject    *object,
   case PROP_USE_UNDERLINE:
     g_value_set_boolean (value, hdy_preferences_row_get_use_underline (self));
     break;
+  case PROP_ISOLATED:
+    g_value_set_boolean (value, hdy_preferences_row_get_isolated (self));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -65,9 +117,9 @@ hdy_preferences_row_get_property (GObject    *object,
 
 static void
 hdy_preferences_row_set_property (GObject      *object,
-                             guint         prop_id,
-                             const GValue *value,
-                             GParamSpec   *pspec)
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   HdyPreferencesRow *self = HDY_PREFERENCES_ROW (object);
 
@@ -77,6 +129,9 @@ hdy_preferences_row_set_property (GObject      *object,
     break;
   case PROP_USE_UNDERLINE:
     hdy_preferences_row_set_use_underline (self, g_value_get_boolean (value));
+    break;
+  case PROP_ISOLATED:
+    hdy_preferences_row_set_isolated (self, g_value_get_boolean (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -129,6 +184,21 @@ hdy_preferences_row_class_init (HdyPreferencesRowClass *klass)
     g_param_spec_boolean ("use-underline",
                           _("Use underline"),
                           _("If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key"),
+                          FALSE,
+                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyPreferencesRow:isolated:
+   *
+   * Whether the row looks separated from the other rows in the #GtkListBox it's
+   * in.
+   *
+   * Since: 1.0
+   */
+  props[PROP_ISOLATED] =
+    g_param_spec_boolean ("isolated",
+                          _("Isolated"),
+                          _("Whether the row looks separated from the other rows in the #GtkListBox it's in."),
                           FALSE,
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -256,4 +326,60 @@ hdy_preferences_row_set_use_underline (HdyPreferencesRow *self,
   priv->use_underline = !!use_underline;
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_USE_UNDERLINE]);
+}
+
+/**
+ * hdy_preferences_row_get_isolated:
+ * @self: a #HdyPreferencesRow
+ *
+ * Gets whether the row looks separated from the other rows in the #GtkListBox
+ * it's in.
+ *
+ * Returns: %TRUE if the row looks separated from the other rows in the
+ * #GtkListBox it's in.
+ *
+ * Since: 1.0
+ */
+gboolean
+hdy_preferences_row_get_isolated (HdyPreferencesRow *self)
+{
+  HdyPreferencesRowPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_PREFERENCES_ROW (self), FALSE);
+
+  priv = hdy_preferences_row_get_instance_private (self);
+
+  return priv->isolated;
+}
+
+/**
+ * hdy_preferences_row_set_isolated:
+ * @self: a #HdyPreferencesRow
+ * @isolated: whether the row is isolated
+ *
+ * If %TRUE, the row looks separated from the other rows in the #GtkListBox
+ * it's in.
+ *
+ * Since: 1.0
+ */
+void
+hdy_preferences_row_set_isolated (HdyPreferencesRow *self,
+                                  gboolean           isolated)
+{
+  HdyPreferencesRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_PREFERENCES_ROW (self));
+
+  priv = hdy_preferences_row_get_instance_private (self);
+
+  isolated = !!isolated;
+
+  if (priv->isolated == isolated)
+    return;
+
+  priv->isolated = isolated;
+
+  update_style_classes (self);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ISOLATED]);
 }

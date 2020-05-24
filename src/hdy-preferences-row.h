@@ -37,4 +37,8 @@ gboolean hdy_preferences_row_get_use_underline (HdyPreferencesRow *self);
 void     hdy_preferences_row_set_use_underline (HdyPreferencesRow *self,
                                                 gboolean           use_underline);
 
+gboolean hdy_preferences_row_get_isolated (HdyPreferencesRow *self);
+void     hdy_preferences_row_set_isolated (HdyPreferencesRow *self,
+                                           gboolean           isolated);
+
 G_END_DECLS
