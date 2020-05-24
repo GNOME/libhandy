@@ -22,6 +22,9 @@
  * It also supports adding a child as an action widget by specifying “action” as
  * the “type” attribute of a &lt;child&gt; element.
  *
+ * When expanded, the #HdyPreferencesRow:isolated property will be set to %TRUE
+ * and vice versa.
+ *
  * # CSS nodes
  *
  * #HdyExpanderRow has a main CSS node with name row, and the .expander style
@@ -30,9 +33,9 @@
  * It contains the subnodes row.header for its main embedded row, list.nested
  * for the list it can expand, and image.expander-row-arrow for its arrow.
  *
- * When expanded, #HdyExpanderRow will add the
- * .checked-expander-row-previous-sibling style class to its previous sibling,
- * and remove it when retracted.
+ * When expanded, the main node will have the .isolated style class and the row
+ * before it will have the .isolated-row-previous-sibling style class. See
+ * #HdyPreferencesRow for more details.
  *
  * Since: 0.0.6
  */
@@ -78,32 +81,11 @@ static void
 update_arrow (HdyExpanderRow *self)
 {
   HdyExpanderRowPrivate *priv = hdy_expander_row_get_instance_private (self);
-  GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (self));
-  GtkWidget *previous_sibling = NULL;
-
-  if (parent) {
-    g_autoptr (GList) siblings = gtk_container_get_children (GTK_CONTAINER (parent));
-    GList *l;
-
-    for (l = siblings; l != NULL && l->next != NULL && l->next->data != self; l = l->next);
-
-    if (l && l->next && l->next->data == self)
-      previous_sibling = l->data;
-  }
 
   if (priv->expanded)
     gtk_widget_set_state_flags (GTK_WIDGET (self), GTK_STATE_FLAG_CHECKED, FALSE);
   else
     gtk_widget_unset_state_flags (GTK_WIDGET (self), GTK_STATE_FLAG_CHECKED);
-
-  if (previous_sibling) {
-    GtkStyleContext *previous_sibling_context = gtk_widget_get_style_context (previous_sibling);
-
-    if (priv->expanded)
-      gtk_style_context_add_class (previous_sibling_context, "checked-expander-row-previous-sibling");
-    else
-      gtk_style_context_remove_class (previous_sibling_context, "checked-expander-row-previous-sibling");
-  }
 }
 
 static void
@@ -405,6 +387,10 @@ hdy_expander_row_init (HdyExpanderRow *self)
   g_signal_connect_object (priv->action_row, "notify::subtitle", G_CALLBACK (notify_subtitle_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->action_row, "notify::use-underline", G_CALLBACK (notify_use_underline_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->action_row, "notify::icon-name", G_CALLBACK (notify_icon_name_cb), self, G_CONNECT_SWAPPED);
+
+  g_object_bind_property (self, "isolated",
+                          self, "expanded",
+                          G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
 }
 
 static void
