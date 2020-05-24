@@ -265,35 +265,36 @@ list.preferences {
 
     // Rounded top
     &:first-child,
+    &.isolated,
     &.expander:first-child row.header,
-    &.expander:checked,
-    &.expander:checked row.header,
-    &.expander:checked + row,
-    &.expander:checked + row.expander row.header {
+    &.expander.isolated row.header,
+    &.isolated + row,
+    &.isolated + row.expander row.header {
       @include rounded-border(top);
     }
 
     // Bottom border
     &:last-child,
-    &.checked-expander-row-previous-sibling,
-    &.expander:checked {
+    &.isolated-row-previous-sibling,
+    &.isolated {
       border-width: 1px;
     }
 
     // Rounded bottom
     &:last-child,
-    &.checked-expander-row-previous-sibling,
-    &.expander:checked,
+    &.isolated-row-previous-sibling,
+    &.isolated,
     &.expander:not(:checked):last-child row.header,
-    &.expander:not(:checked).checked-expander-row-previous-sibling row.header,
-    &.expander.empty:checked row.header,
+    &.expander:not(:checked).isolated row.header,
+    &.expander:not(:checked).isolated-row-previous-sibling row.header,
+    &.expander.empty.isolated row.header,
     &.expander list.nested > row:last-child {
       @include rounded-border(bottom);
     }
 
     // Add space around expanded rows
-    &.expander:checked:not(:first-child),
-    &.expander:checked + row {
+    &.isolated:not(:first-child),
+    &.isolated + row {
       margin-top: 6px;
     }
   }
@@ -301,7 +302,7 @@ list.preferences {
 
 // List button
 
-button.list-button:not(:active):not(:checked):not(:hover) {
+button.list-button:not(:active):not(.isolated):not(:hover) {
   background: none;
   border: 1px solid hdyalpha($borders_color, 0.5);
   box-shadow: none;

@@ -44,6 +44,25 @@ test_hdy_preferences_row_use_undeline (void)
 }
 
 
+
+static void
+test_hdy_preferences_row_isolated (void)
+{
+  g_autoptr (HdyPreferencesRow) row = NULL;
+
+  row = g_object_ref_sink (HDY_PREFERENCES_ROW (hdy_preferences_row_new ()));
+  g_assert_nonnull (row);
+
+  g_assert_false (hdy_preferences_row_get_isolated (row));
+
+  hdy_preferences_row_set_isolated (row, TRUE);
+  g_assert_true (hdy_preferences_row_get_isolated (row));
+
+  hdy_preferences_row_set_isolated (row, FALSE);
+  g_assert_false (hdy_preferences_row_get_isolated (row));
+}
+
+
 gint
 main (gint argc,
       gchar *argv[])
@@ -52,6 +71,7 @@ main (gint argc,
 
   g_test_add_func("/Handy/PreferencesRow/title", test_hdy_preferences_row_title);
   g_test_add_func("/Handy/PreferencesRow/use_underline", test_hdy_preferences_row_use_undeline);
+  g_test_add_func("/Handy/PreferencesRow/isolated", test_hdy_preferences_row_isolated);
 
   return g_test_run();
 }
