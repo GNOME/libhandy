@@ -1,5 +1,13 @@
 @import 'definitions';
 
+// General Typography
+
+// This was added in GTK 3.24.14.
+.heading {
+   font-weight: 700;
+   font-size: 11pt;
+}
+
 // HdyActionRow
 
 row {
@@ -65,12 +73,6 @@ row.expander {
   & image.expander-row-arrow:disabled {
     color: $insensitive_fg_color;
   }
-}
-
-// Preferences
-
-preferencespage label.h4 {
-  font-weight: bold;
 }
 
 // Shadows
