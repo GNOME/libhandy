@@ -1,4 +1,6 @@
 /*************************** Check and Radio buttons * */
+.heading { font-weight: 700; font-size: 11pt; }
+
 row label.subtitle { font-size: smaller; opacity: 0.55; text-shadow: none; }
 
 row > box.header { margin-left: 12px; margin-right: 12px; min-height: 50px; }
@@ -22,8 +24,6 @@ row.expander:not(:checked) image.expander-row-arrow:dir(rtl) { -gtk-icon-transfo
 row.expander:checked image.expander-row-arrow:not(:disabled) { color: #15539e; }
 
 row.expander image.expander-row-arrow:disabled { color: #919190; }
-
-preferencespage label.h4 { font-weight: bold; }
 
 deck > dimming, leaflet > dimming { background: rgba(0, 0, 0, 0.24); }
 
