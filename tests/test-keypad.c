@@ -43,24 +43,25 @@ static void
 test_hdy_keypad_set_actions (void)
 {
   HdyKeypad *keypad = HDY_KEYPAD (hdy_keypad_new (FALSE, TRUE));
+  GtkGrid *grid = GTK_GRID (gtk_bin_get_child (GTK_BIN (keypad)));
   GtkWidget *button_right = gtk_button_new ();
   GtkWidget *button_left = gtk_button_new ();
 
   // Right extra button
-  g_assert (gtk_grid_get_child_at (GTK_GRID (keypad), 2, 3) != NULL);
+  g_assert (gtk_grid_get_child_at (grid, 2, 3) != NULL);
   // Left extra button
-  g_assert (gtk_grid_get_child_at (GTK_GRID (keypad), 0, 3) != NULL);
+  g_assert (gtk_grid_get_child_at (grid, 0, 3) != NULL);
 
   hdy_keypad_set_right_action (keypad, button_right);
   hdy_keypad_set_left_action (keypad, button_left);
-  g_assert (button_right == gtk_grid_get_child_at (GTK_GRID (keypad), 2, 3));
-  g_assert (button_left == gtk_grid_get_child_at (GTK_GRID (keypad), 0, 3));
+  g_assert (button_right == gtk_grid_get_child_at (grid, 2, 3));
+  g_assert (button_left == gtk_grid_get_child_at (grid, 0, 3));
 
   hdy_keypad_set_right_action (keypad, NULL);
-  g_assert (gtk_grid_get_child_at (GTK_GRID (keypad), 2, 3) == NULL);
+  g_assert (gtk_grid_get_child_at (grid, 2, 3) == NULL);
 
   hdy_keypad_set_left_action (keypad, NULL);
-  g_assert (gtk_grid_get_child_at (GTK_GRID (keypad), 0, 3) == NULL);
+  g_assert (gtk_grid_get_child_at (grid, 0, 3) == NULL);
 }
 
 
