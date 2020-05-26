@@ -4,16 +4,18 @@
   <template class="HdyKeypad" parent="GtkBin">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="show_symbols">True</property>
+    <property name="only_digits">False</property>
     <child>
       <object class="GtkGrid" id="grid">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="hexpand">False</property>
         <property name="vexpand">False</property>
+        <property name="row-spacing" bind-source="HdyKeypad" bind-property="row-spacing" bind-flags="sync-create"/>
+        <property name="column-spacing" bind-source="HdyKeypad" bind-property="column-spacing" bind-flags="sync-create"/>
         <property name="column_homogeneous">True</property>
         <property name="column_homogeneous">True</property>
-        <property name="show_symbols">True</property>
-        <property name="only_digits">False</property>
         <child>
           <object class="HdyKeypadButton" id="btn_1">
             <property name="symbols">1</property>
