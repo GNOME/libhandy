@@ -974,13 +974,20 @@ hdy_header_bar_measure (GtkWidget      *widget,
   GtkStyleContext *style_context;
   GtkStateFlags state_flags;
   GtkBorder border, margin, padding;
+  gint css_width, css_height;
+
+  gtk_style_context_get (gtk_widget_get_style_context (widget),
+                         gtk_widget_get_state_flags (widget),
+                         "min-width", &css_width,
+                         "min-height", &css_height,
+                         NULL);
 
   if (for_size < 0)
     hdy_header_bar_get_size (widget, orientation, minimum, natural);
   else if (orientation == GTK_ORIENTATION_HORIZONTAL)
-    hdy_header_bar_compute_size_for_orientation (widget, for_size, minimum, natural);
+    hdy_header_bar_compute_size_for_orientation (widget, MAX (for_size, css_height), minimum, natural);
   else
-    hdy_header_bar_compute_size_for_opposing_orientation (widget, for_size, minimum, natural);
+    hdy_header_bar_compute_size_for_opposing_orientation (widget, MAX (for_size, css_width), minimum, natural);
 
   /* Manually apply the border, the padding and the margin as we can't use the
    * private GtkGagdet.
@@ -995,11 +1002,17 @@ hdy_header_bar_measure (GtkWidget      *widget,
                 border.bottom + margin.bottom + padding.bottom;
     *natural += border.top + margin.top + padding.top +
                 border.bottom + margin.bottom + padding.bottom;
+
+    *minimum = MAX (*minimum, css_height);
+    *natural = MAX (*natural, css_height);
   } else {
     *minimum += border.left + margin.left + padding.left +
                 border.right + margin.right + padding.right;
     *natural += border.left + margin.left + padding.left +
                 border.right + margin.right + padding.right;
+
+    *minimum = MAX (*minimum, css_width);
+    *natural = MAX (*natural, css_width);
   }
 }
 
@@ -1431,6 +1444,7 @@ hdy_header_bar_size_allocate (GtkWidget     *widget,
   HdyHeaderBarPrivate *priv = hdy_header_bar_get_instance_private (self);
   GtkAllocation *allocations;
   GtkAllocation title_allocation;
+  GtkAllocation clip;
   gint nvis_children;
   GList *l;
   gint i;
@@ -1442,6 +1456,13 @@ hdy_header_bar_size_allocate (GtkWidget     *widget,
   GtkBorder border, margin, padding;
   GtkWidget *decoration_box[2] = { priv->titlebar_start_box, priv->titlebar_end_box };
   gint decoration_width[2] = { 0 };
+
+  gtk_render_background_get_clip (gtk_widget_get_style_context (widget),
+                                  allocation->x,
+                                  allocation->y,
+                                  allocation->width,
+                                  allocation->height,
+                                  &clip);
 
   gtk_widget_set_allocation (widget, allocation);
 
@@ -1557,6 +1578,8 @@ hdy_header_bar_size_allocate (GtkWidget     *widget,
     gtk_widget_size_allocate (priv->custom_title, &title_allocation);
   else if (priv->label_box != NULL)
     gtk_widget_size_allocate (priv->label_box, &title_allocation);
+
+  gtk_widget_set_clip (widget, &clip);
 }
 
 static void
