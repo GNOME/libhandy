@@ -36,11 +36,7 @@ void             hdy_swipe_tracker_set_allow_mouse_drag (HdySwipeTracker *self,
 gboolean         hdy_swipe_tracker_captured_event (HdySwipeTracker *self,
                                                    GdkEvent        *event);
 
-void             hdy_swipe_tracker_confirm_swipe (HdySwipeTracker *self,
-                                                  gdouble          distance,
-                                                  gdouble         *snap_points,
-                                                  gint             n_snap_points,
-                                                  gdouble          current_progress,
-                                                  gdouble          cancel_progress);
+void             hdy_swipe_tracker_shift_position (HdySwipeTracker *self,
+                                                   gdouble          delta);
 
 G_END_DECLS
