@@ -16,7 +16,7 @@ G_BEGIN_DECLS
 
 #define HDY_TYPE_KEYPAD (hdy_keypad_get_type())
 
-G_DECLARE_DERIVABLE_TYPE (HdyKeypad, hdy_keypad, HDY, KEYPAD, GtkGrid)
+G_DECLARE_DERIVABLE_TYPE (HdyKeypad, hdy_keypad, HDY, KEYPAD, GtkBin)
 
 /**
  * HdyKeypadClass:
@@ -24,11 +24,17 @@ G_DECLARE_DERIVABLE_TYPE (HdyKeypad, hdy_keypad, HDY, KEYPAD, GtkGrid)
  */
 struct _HdyKeypadClass
 {
-  GtkGridClass parent_class;
+  GtkBinClass parent_class;
 };
 
 GtkWidget       *hdy_keypad_new                     (gboolean only_digits,
                                                      gboolean show_symbols);
+void             hdy_keypad_set_row_spacing         (HdyKeypad *self,
+                                                     guint      spacing);
+guint            hdy_keypad_get_row_spacing         (HdyKeypad *self);
+void             hdy_keypad_set_column_spacing      (HdyKeypad *self,
+                                                     guint      spacing);
+guint            hdy_keypad_get_column_spacing      (HdyKeypad *self);
 void             hdy_keypad_show_symbols            (HdyKeypad *self,
                                                      gboolean   visible);
 void             hdy_keypad_set_entry               (HdyKeypad *self,
