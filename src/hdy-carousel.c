@@ -304,7 +304,8 @@ position_shifted_cb (HdyCarousel    *self,
                      gdouble         delta,
                      HdyCarouselBox *box)
 {
-  hdy_swipe_tracker_shift_position (self->tracker, delta);
+  if (self->tracker)
+    hdy_swipe_tracker_shift_position (self->tracker, delta);
 }
 
 static GdkRGBA
