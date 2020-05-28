@@ -70,6 +70,11 @@ enum {
   LAST_PROP,
 };
 
+enum {
+  SIGNAL_CHILD_NOTIFY_VISIBLE,
+  SIGNAL_LAST_SIGNAL,
+};
+
 #define HDY_FOLD_UNFOLDED FALSE
 #define HDY_FOLD_FOLDED TRUE
 #define HDY_FOLD_MAX 2
@@ -162,6 +167,7 @@ struct _HdyStackableBox
 };
 
 static GParamSpec *props[LAST_PROP];
+static guint signals[SIGNAL_LAST_SIGNAL];
 
 static gint HOMOGENEOUS_PROP[HDY_FOLD_MAX][GTK_ORIENTATION_MAX] = {
   { PROP_HHOMOGENEOUS_UNFOLDED, PROP_VHOMOGENEOUS_UNFOLDED},
@@ -318,6 +324,26 @@ get_child_window_y (HdyStackableBox          *self,
 }
 
 static void
+set_child_visible (HdyStackableBox          *self,
+                   HdyStackableBoxChildInfo *child_info,
+                   gboolean                  visible)
+{
+  GtkWidget *widget;
+
+  if (!child_info || !child_info->widget)
+    return;
+
+  widget = child_info->widget;
+
+  if (gtk_widget_get_child_visible (widget) == visible)
+    return;
+
+  gtk_widget_set_child_visible (widget, visible);
+
+  g_signal_emit (self, signals[SIGNAL_CHILD_NOTIFY_VISIBLE], 0, widget);
+}
+
+static void
 hdy_stackable_box_child_progress_updated (HdyStackableBox *self)
 {
   gtk_widget_queue_draw (GTK_WIDGET (self->container));
@@ -333,8 +359,8 @@ hdy_stackable_box_child_progress_updated (HdyStackableBox *self)
     if (self->child_transition.is_cancelled) {
       if (self->last_visible_child != NULL) {
         if (self->folded) {
-          gtk_widget_set_child_visible (self->last_visible_child->widget, TRUE);
-          gtk_widget_set_child_visible (self->visible_child->widget, FALSE);
+          set_child_visible (self, self->last_visible_child, TRUE);
+          set_child_visible (self, self->visible_child, FALSE);
         }
         self->visible_child = self->last_visible_child;
         self->last_visible_child = NULL;
@@ -349,7 +375,7 @@ hdy_stackable_box_child_progress_updated (HdyStackableBox *self)
     } else {
       if (self->last_visible_child != NULL) {
         if (self->folded)
-          gtk_widget_set_child_visible (self->last_visible_child->widget, FALSE);
+          set_child_visible (self, self->last_visible_child, FALSE);
         self->last_visible_child = NULL;
       }
     }
@@ -423,7 +449,7 @@ hdy_stackable_box_stop_child_transition (HdyStackableBox *self)
   hdy_stackable_box_unschedule_child_ticks (self);
   gtk_progress_tracker_finish (&self->child_transition.tracker);
   if (self->last_visible_child != NULL) {
-    gtk_widget_set_child_visible (self->last_visible_child->widget, FALSE);
+    set_child_visible (self, self->last_visible_child, FALSE);
     self->last_visible_child = NULL;
   }
 
@@ -522,7 +548,7 @@ set_visible_child_info (HdyStackableBox               *self,
   /* } */
 
   if (self->last_visible_child)
-    gtk_widget_set_child_visible (self->last_visible_child->widget, !self->folded);
+    set_child_visible (self, self->last_visible_child, !self->folded);
   self->last_visible_child = NULL;
 
   hdy_shadow_helper_clear_cache (self->shadow_helper);
@@ -531,7 +557,7 @@ set_visible_child_info (HdyStackableBox               *self,
     if (gtk_widget_is_visible (widget))
       self->last_visible_child = self->visible_child;
     else
-      gtk_widget_set_child_visible (self->visible_child->widget, !self->folded);
+      set_child_visible (self, self->visible_child, !self->folded);
   }
 
   /* FIXME This comes from GtkStack and should be adapted. */
@@ -542,7 +568,7 @@ set_visible_child_info (HdyStackableBox               *self,
   self->visible_child = new_visible_child;
 
   if (new_visible_child) {
-    gtk_widget_set_child_visible (new_visible_child->widget, TRUE);
+    set_child_visible (self, new_visible_child, TRUE);
 
     /* FIXME This comes from GtkStack and should be adapted. */
     /* if (contains_focus) { */
@@ -2024,7 +2050,7 @@ hdy_stackable_box_size_allocate (HdyStackableBox *self,
 
     child_info = children->data;
 
-    gtk_widget_set_child_visible (child_info->widget, child_info->visible);
+    set_child_visible (self, child_info, child_info->visible);
 
     if (child_info->window &&
         child_info->visible != gdk_window_is_visible (child_info->window)) {
@@ -2224,7 +2250,7 @@ hdy_stackable_box_child_visibility_notify_cb (GObject    *obj,
     set_visible_child_info (self, NULL, self->transition_type, self->child_transition.duration, TRUE);
 
   if (child_info == self->last_visible_child) {
-    gtk_widget_set_child_visible (self->last_visible_child->widget, !self->folded);
+    set_child_visible (self, self->last_visible_child, !self->folded);
     self->last_visible_child = NULL;
   }
 }
@@ -2915,6 +2941,13 @@ hdy_stackable_box_set_child_navigatable (HdyStackableBox *self,
     set_visible_child_info (self, NULL, self->transition_type, self->child_transition.duration, TRUE);
 }
 
+gboolean
+hdy_stackable_box_get_child_visible (HdyStackableBox *self,
+                                     GtkWidget       *widget)
+{
+  return gtk_widget_get_child_visible (widget);
+}
+
 static void
 hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
 {
@@ -3088,6 +3121,25 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
+
+  /**
+   * HdyStackableBox::child-notify-visible
+   * @self: The #HdyStackableBox instance
+   * @child: The child
+   *
+   * This signal is emitted after a child has been shown or hidden.
+   *
+   * Since: 1.0
+   */
+  signals[SIGNAL_CHILD_NOTIFY_VISIBLE] =
+    g_signal_new ("child-notify-visible",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  1,
+                  GTK_TYPE_WIDGET);
 }
 
 HdyStackableBox *

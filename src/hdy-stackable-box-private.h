@@ -88,6 +88,9 @@ void             hdy_stackable_box_set_child_navigatable (HdyStackableBox *self,
                                                           GtkWidget       *widget,
                                                           gboolean         navigatable);
 
+gboolean         hdy_stackable_box_get_child_visible (HdyStackableBox *self,
+                                                      GtkWidget       *widget);
+
 void             hdy_stackable_box_switch_child (HdyStackableBox *self,
                                                  guint            index,
                                                  gint64           duration);
