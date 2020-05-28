@@ -67,6 +67,11 @@ enum {
   LAST_CHILD_PROP,
 };
 
+enum {
+  SIGNAL_CHILD_VISIBLE_CHANGED,
+  SIGNAL_LAST_SIGNAL,
+};
+
 typedef struct
 {
   HdyStackableBox *box;
@@ -74,6 +79,7 @@ typedef struct
 
 static GParamSpec *props[LAST_PROP];
 static GParamSpec *child_props[LAST_CHILD_PROP];
+static guint signals[SIGNAL_LAST_SIGNAL];
 
 static void hdy_deck_swipeable_init (HdySwipeableInterface *iface);
 
@@ -979,6 +985,27 @@ hdy_deck_class_init (HdyDeckClass *klass)
 
   gtk_container_class_install_child_properties (container_class, LAST_CHILD_PROP, child_props);
 
+  /**
+   * HdyDeck::child-visible-changed:
+   * @self: The #HdyDeck instance
+   * @child: The child
+   * @visible: The new value
+   *
+   * This signal is emitted after a child has been shown or hidden.
+   *
+   * Since: 1.0
+   */
+  signals[SIGNAL_CHILD_VISIBLE_CHANGED] =
+    g_signal_new ("child-visible-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  2,
+                  GTK_TYPE_WIDGET,
+                  G_TYPE_BOOLEAN);
+
   gtk_widget_class_set_accessible_role (widget_class, ATK_ROLE_PANEL);
   gtk_widget_class_set_css_name (widget_class, "deck");
 }
@@ -1013,6 +1040,18 @@ notify_orientation_cb (HdyDeck *self)
 }
 
 static void
+child_visible_changed_cb (HdyDeck   *self,
+                          GtkWidget *child,
+                          gboolean   visible)
+{
+  g_signal_emit (G_OBJECT (self),
+                 signals[SIGNAL_CHILD_VISIBLE_CHANGED],
+                 0,
+                 child,
+                 visible);
+}
+
+static void
 hdy_deck_init (HdyDeck *self)
 {
   HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
@@ -1032,6 +1071,7 @@ hdy_deck_init (HdyDeck *self)
   g_signal_connect_object (priv->box, "notify::can-swipe-back", G_CALLBACK (notify_can_swipe_back_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::can-swipe-forward", G_CALLBACK (notify_can_swipe_forward_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::orientation", G_CALLBACK (notify_orientation_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "child-visible-changed", G_CALLBACK (child_visible_changed_cb), self, G_CONNECT_SWAPPED);
 
   /*
    * HACK: GTK3 has no other way to get events on capture phase.
