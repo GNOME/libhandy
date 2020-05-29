@@ -63,6 +63,7 @@ enum {
   PROP_VISIBLE_CHILD_NAME,
   PROP_TRANSITION_TYPE,
   PROP_MODE_TRANSITION_DURATION,
+  PROP_MODE_TRANSITION_PROGRESS,
   PROP_CHILD_TRANSITION_DURATION,
   PROP_CHILD_TRANSITION_RUNNING,
   PROP_INTERPOLATE_SIZE,
@@ -686,6 +687,8 @@ hdy_stackable_box_set_position (HdyStackableBox *self,
     gtk_widget_queue_resize (GTK_WIDGET (self->container));
   /* } */
 
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_MODE_TRANSITION_PROGRESS]);
+
   /* if (self->mode_transition.current_pos == self->mode_transition.target_pos) */
   /*   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_CHILD_REVEALED]); */
 }
@@ -965,6 +968,25 @@ hdy_stackable_box_set_mode_transition_duration (HdyStackableBox *self,
   self->mode_transition.duration = duration;
   g_object_notify_by_pspec (G_OBJECT (self),
                             props[PROP_MODE_TRANSITION_DURATION]);
+}
+
+/**
+ * hdy_stackable_box_get_mode_transition_progress:
+ * @self: a #HdyStackableBox
+ *
+ * Returns the current animation progress value of the mode transition. 0 means
+ * folded, 1 means unfolded.
+ *
+ * Returns: the mode transition progress
+ *
+ * Since: 1.0
+ */
+gdouble
+hdy_stackable_box_get_mode_transition_progress (HdyStackableBox *self)
+{
+  g_return_val_if_fail (HDY_IS_STACKABLE_BOX (self), 0);
+
+  return self->mode_transition.current_pos;
 }
 
 /**
@@ -2456,6 +2478,9 @@ hdy_stackable_box_get_property (GObject    *object,
   case PROP_MODE_TRANSITION_DURATION:
     g_value_set_uint (value, hdy_stackable_box_get_mode_transition_duration (self));
     break;
+  case PROP_MODE_TRANSITION_PROGRESS:
+    g_value_set_double (value, hdy_stackable_box_get_mode_transition_progress (self));
+    break;
   case PROP_CHILD_TRANSITION_DURATION:
     g_value_set_uint (value, hdy_stackable_box_get_child_transition_duration (self));
     break;
@@ -3033,6 +3058,21 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
                        _("The mode transition animation duration, in milliseconds"),
                        0, G_MAXUINT, 250,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * HdyStackableBox:mode-transition-progress:
+   *
+   * The mode transition animation progress value. 0 means folded, 1 means
+   * unfolded.
+   *
+   * Since: 1.0
+   */
+  props[PROP_MODE_TRANSITION_PROGRESS] =
+    g_param_spec_double ("mode-transition-progress",
+                         _("Mode transition progress"),
+                         _("The mode transition animation progress value"),
+                         0.0, 1.0, 1.0,
+                         G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_CHILD_TRANSITION_DURATION] =
     g_param_spec_uint ("child-transition-duration",
