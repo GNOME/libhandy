@@ -59,6 +59,8 @@ guint            hdy_leaflet_get_mode_transition_duration (HdyLeaflet *self);
 void             hdy_leaflet_set_mode_transition_duration (HdyLeaflet *self,
                                                            guint       duration);
 
+gdouble          hdy_leaflet_get_mode_transition_progress (HdyLeaflet *self);
+
 guint            hdy_leaflet_get_child_transition_duration (HdyLeaflet *self);
 void             hdy_leaflet_set_child_transition_duration (HdyLeaflet *self,
                                                             guint       duration);
