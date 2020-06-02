@@ -63,11 +63,17 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    * HdySwipeable::begin-swipe:
    * @self: The #HdySwipeable instance
    * @direction: The direction of the swipe, can be 1 or -1
+   * @direct: %TRUE if the swipe is directly triggered by a gesture,
+   *   %FALSE if it's triggered via a #HdySwipeGroup
    *
    * This signal is emitted when a possible swipe is detected. This is used by
    * #HdySwipeGroup, applications should not connect to it.
    * The @direction value can be used to restrict the swipe to a certain
    * direction.
+   *
+   * The @direct parameter can be used to have widgets that aren't swipeable, but
+   * can still animate in sync with other widgets in a #HdySwipeGroup by only
+   * applying restrictions if @direct is %TRUE.
    *
    * Since: 0.0.12
    */
@@ -78,8 +84,8 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE,
-                  1,
-                  HDY_TYPE_NAVIGATION_DIRECTION);
+                  2,
+                  HDY_TYPE_NAVIGATION_DIRECTION, G_TYPE_BOOLEAN);
 
   /**
    * HdySwipeable::update-swipe:
@@ -181,7 +187,7 @@ hdy_swipeable_begin_swipe (HdySwipeable           *self,
 
   (* iface->begin_swipe) (self, direction, direct);
 
-  g_signal_emit (self, signals[SIGNAL_BEGIN_SWIPE], 0, direction);
+  g_signal_emit (self, signals[SIGNAL_BEGIN_SWIPE], 0, direction, direct);
 }
 
 /**
