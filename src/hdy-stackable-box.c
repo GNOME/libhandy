@@ -391,6 +391,8 @@ hdy_stackable_box_child_progress_updated (HdyStackableBox *self)
         self->last_visible_child = NULL;
       }
 
+      self->child_transition.is_cancelled = FALSE;
+
       g_object_freeze_notify (G_OBJECT (self));
       g_object_notify_by_pspec (G_OBJECT (self), props[PROP_VISIBLE_CHILD]);
       g_object_notify_by_pspec (G_OBJECT (self), props[PROP_VISIBLE_CHILD_NAME]);
@@ -497,9 +499,10 @@ hdy_stackable_box_start_child_transition (HdyStackableBox               *self,
   GtkWidget *widget = GTK_WIDGET (self->container);
 
   if (gtk_widget_get_mapped (widget) &&
-      (hdy_get_enable_animations (widget) || self->child_transition.is_gesture_active) &&
+      ((hdy_get_enable_animations (widget) &&
+        transition_duration != 0) ||
+       self->child_transition.is_gesture_active) &&
       transition_type != HDY_STACKABLE_BOX_TRANSITION_TYPE_NONE &&
-      transition_duration != 0 &&
       self->last_visible_child != NULL &&
       /* Don't animate child transition when a mode transition is ongoing. */
       self->mode_transition.tick_id == 0) {
@@ -3196,6 +3199,8 @@ hdy_stackable_box_begin_swipe (HdyStackableBox        *self,
   self->child_transition.swipe_direction = direction;
 
   if (self->child_transition.tick_id > 0) {
+    gtk_widget_remove_tick_callback (GTK_WIDGET (self->container),
+                                     self->child_transition.tick_id);
     self->child_transition.tick_id = 0;
     self->child_transition.is_gesture_active = TRUE;
     self->child_transition.is_cancelled = FALSE;
