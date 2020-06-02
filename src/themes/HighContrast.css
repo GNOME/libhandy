@@ -23,8 +23,6 @@ row.expander:checked image.expander-row-arrow:not(:disabled) { color: #1b6acb; }
 
 row.expander image.expander-row-arrow:disabled { color: #929495; }
 
-preferencespage label.h4 { font-weight: bold; }
-
 deck > dimming, leaflet > dimming { background: rgba(0, 0, 0, 0.12); }
 
 deck > border, leaflet > border { min-width: 1px; min-height: 1px; background: #877b6e; }
@@ -89,6 +87,10 @@ popover.combo scrollbar.vertical:dir(ltr) { border-top-right-radius: 8px; -gtk-o
 popover.combo scrollbar.vertical:dir(rtl) { border-top-left-radius: 8px; -gtk-outline-top-left-radius: 7px; border-bottom-left-radius: 8px; -gtk-outline-bottom-left-radius: 7px; }
 
 row.expander { padding: 0px; }
+
+row.expander image.expander-row-arrow:dir(ltr) { margin-left: 6px; }
+
+row.expander image.expander-row-arrow:dir(rtl) { margin-right: 6px; }
 
 keypad .digit { font-size: 200%; font-weight: bold; }
 
