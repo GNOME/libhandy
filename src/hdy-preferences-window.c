@@ -165,6 +165,7 @@ search_result_activated_cb (HdyPreferencesWindow *self,
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
   HdyPreferencesPage *page;
   HdyPreferencesRow *row;
+  GtkScrolledWindow *scrolled_window;
   GtkAdjustment *adjustment;
   GtkAllocation allocation;
   gint y = 0;
@@ -176,7 +177,8 @@ search_result_activated_cb (HdyPreferencesWindow *self,
   g_assert (page != NULL);
   g_assert (row != NULL);
 
-  adjustment = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (page));
+  scrolled_window = hdy_preferences_page_get_scrolled_window (page);
+  adjustment = gtk_scrolled_window_get_vadjustment (scrolled_window);
 
   g_assert (adjustment != NULL);
 
