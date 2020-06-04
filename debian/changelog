@@ -1,3 +1,36 @@
+libhandy-1 (0.81.0) amber-phone; urgency=medium
+
+  [ Alexander Mikhaylenko ]
+  * glade: Make parallel-installable with 0.x
+  * debian: Update Glade module soname
+  * stackable-box: Add get_adjacent_child()
+  * leaflet: Add get_adjacent_child()
+  * deck: Add get_adjacent_child()
+  * tests: Test hdy_leaflet_get_adjacent_child() and navigate()
+  * tests: Test hdy_deck_get_adjacent_child() and navigate()
+  * swipe-tracker: Add checks to hdy_swipe_tracker_shift_position()
+  * stackable-box: Reset cancel status after ending a transition
+  * stackable-box: Don't skip the gesture with 0 transition duration
+  * stackable-box: Stop transition when starting a swipe
+  * view-switcher-title: Remove has-subtitle property
+
+  [ Adrien Plazas ]
+  * themes: Recompile themes
+  * preferences-group: Use the heading style class
+  * themes: Drop the h4 fallback
+  * carousel-box: Don't animate child removal during destruction
+  * preferences-page: Add a private vertical adjustment getter
+  * preferences-window: Fix setting the page's vertical adjustment
+  * preferences-window: Make search rows activatable
+  * Add .gitattributes to ignore files in git archive
+  * editorconfig: Specify indentation for NEWS
+  * Version 0.81.0
+
+  [ Felix Häcker ]
+  * Update doc link to Gitlab pages
+
+ -- Adrien Plazas <adrien.plazas@puri.sm>  Fri, 05 Jun 2020 13:08:25 +0200
+
 libhandy-1 (0.80.0) amber-phone; urgency=medium
 
   [ Guido Günther ]
