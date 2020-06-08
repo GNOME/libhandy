@@ -10,6 +10,8 @@
 #error "Only <handy.h> can be included directly."
 #endif
 
+#include "hdy-version.h"
+
 #include <gtk/gtk.h>
 #include "hdy-navigation-direction.h"
 
@@ -17,6 +19,7 @@ G_BEGIN_DECLS
 
 #define HDY_TYPE_SWIPEABLE (hdy_swipeable_get_type ())
 
+HDY_AVAILABLE_IN_ALL
 G_DECLARE_INTERFACE (HdySwipeable, hdy_swipeable, HDY, SWIPEABLE, GtkWidget)
 
 /**
