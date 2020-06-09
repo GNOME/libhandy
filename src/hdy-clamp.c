@@ -38,12 +38,12 @@
 enum {
   PROP_0,
   PROP_MAXIMUM_SIZE,
-  PROP_LINEAR_GROWTH_WIDTH,
+  PROP_EASE_OUT_THRESHOLD,
 
   /* Overridden properties */
   PROP_ORIENTATION,
 
-  LAST_PROP = PROP_LINEAR_GROWTH_WIDTH + 1,
+  LAST_PROP = PROP_EASE_OUT_THRESHOLD + 1,
 };
 
 struct _HdyClamp
@@ -51,7 +51,7 @@ struct _HdyClamp
   GtkBin parent_instance;
 
   gint maximum_size;
-  gint linear_growth_width;
+  gint ease_out_threshold;
 
   GtkOrientation orientation;
 };
@@ -85,8 +85,8 @@ hdy_clamp_get_property (GObject    *object,
   case PROP_MAXIMUM_SIZE:
     g_value_set_int (value, hdy_clamp_get_maximum_size (self));
     break;
-  case PROP_LINEAR_GROWTH_WIDTH:
-    g_value_set_int (value, hdy_clamp_get_linear_growth_width (self));
+  case PROP_EASE_OUT_THRESHOLD:
+    g_value_set_int (value, hdy_clamp_get_ease_out_threshold (self));
     break;
   case PROP_ORIENTATION:
     g_value_set_enum (value, self->orientation);
@@ -108,8 +108,8 @@ hdy_clamp_set_property (GObject      *object,
   case PROP_MAXIMUM_SIZE:
     hdy_clamp_set_maximum_size (self, g_value_get_int (value));
     break;
-  case PROP_LINEAR_GROWTH_WIDTH:
-    hdy_clamp_set_linear_growth_width (self, g_value_get_int (value));
+  case PROP_EASE_OUT_THRESHOLD:
+    hdy_clamp_set_ease_out_threshold (self, g_value_get_int (value));
     break;
   case PROP_ORIENTATION:
     set_orientation (self, g_value_get_enum (value));
@@ -158,7 +158,7 @@ get_child_size (HdyClamp *self,
       gtk_widget_get_preferred_height (child, &min, NULL);
   }
 
-  lower = MAX (MIN (self->linear_growth_width, self->maximum_size), min);
+  lower = MAX (MIN (self->ease_out_threshold, self->maximum_size), min);
   max = MAX (lower, self->maximum_size);
   amplitude = max - lower;
   upper = HDY_EASE_OUT_TAN_CUBIC * amplitude + lower;
@@ -416,14 +416,18 @@ hdy_clamp_class_init (HdyClampClass *klass)
                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyClamp:linear_growth_width:
+   * HdyClamp:ease_out_threshold:
    *
-   * The width up to which the child will be allocated all the width.
+   * The size starting from which the size allocated to the child will be
+   * eased-out, up to the maximum allocated size. If the threshold is greater
+   * than the maximum size to allocate to the child, the allocation won't be
+   * eased-out. If the minimum requested size is greater, it will be used
+   * instead.
    */
-  props[PROP_LINEAR_GROWTH_WIDTH] =
-      g_param_spec_int ("linear-growth-width",
-                        _("Linear growth width"),
-                        _("The width up to which the child will be allocated all the width"),
+  props[PROP_EASE_OUT_THRESHOLD] =
+      g_param_spec_int ("ease-out-threshold",
+                        _("Ease-out threshold"),
+                        _("The size from which the size should be eased-out to the maximum"),
                         0, G_MAXINT, 0,
                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -492,46 +496,45 @@ hdy_clamp_set_maximum_size (HdyClamp *self,
 }
 
 /**
- * hdy_clamp_get_linear_growth_width:
+ * hdy_clamp_get_ease_out_threshold:
  * @self: a #HdyClamp
  *
- * Gets the width up to which the child will be allocated all the available
- * width and starting from which it will be allocated a portion of the available
- * width. In bith cases the allocated width won't exceed the declared maximum.
+ * Gets the size starting from which the size allocated to the child will be
+ * eased-out, up to the maximum allocated size.
  *
- * Returns: the width up to which the child will be allocated all the available
- * width.
+ * Returns: the size starting from which the size allocated to the child will be
+ * eased-out.
  */
 gint
-hdy_clamp_get_linear_growth_width (HdyClamp *self)
+hdy_clamp_get_ease_out_threshold (HdyClamp *self)
 {
   g_return_val_if_fail (HDY_IS_CLAMP (self), 0);
 
-  return self->linear_growth_width;
+  return self->ease_out_threshold;
 }
 
 /**
- * hdy_clamp_set_linear_growth_width:
+ * hdy_clamp_set_ease_out_threshold:
  * @self: a #HdyClamp
- * @linear_growth_width: the linear growth width
+ * @ease_out_threshold: the ease-out threshold
  *
- * Sets the width up to which the child will be allocated all the available
- * width and starting from which it will be allocated a portion of the available
- * width. In bith cases the allocated width won't exceed the declared maximum.
- *
+ * Sets the size starting from which the size allocated to the child will be
+ * eased-out, up to the maximum allocated size. If the threshold is greater than
+ * the maximum size to allocate to the child, the allocation won't be eased-out.
+ * If the minimum requested size is greater, it will be used instead.
  */
 void
-hdy_clamp_set_linear_growth_width (HdyClamp *self,
-                                   gint      linear_growth_width)
+hdy_clamp_set_ease_out_threshold (HdyClamp *self,
+                                  gint      ease_out_threshold)
 {
   g_return_if_fail (HDY_IS_CLAMP (self));
 
-  if (self->linear_growth_width == linear_growth_width)
+  if (self->ease_out_threshold == ease_out_threshold)
     return;
 
-  self->linear_growth_width = linear_growth_width;
+  self->ease_out_threshold = ease_out_threshold;
 
   gtk_widget_queue_resize (GTK_WIDGET (self));
 
-  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_LINEAR_GROWTH_WIDTH]);
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_EASE_OUT_THRESHOLD]);
 }
