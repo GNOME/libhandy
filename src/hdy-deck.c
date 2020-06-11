@@ -509,7 +509,7 @@ hdy_deck_measure (GtkWidget      *widget,
                   int            *natural,
                   int            *minimum_baseline,
                   int            *natural_baseline)
-{
+{// g_warning ("hdy_deck_measure");
   hdy_stackable_box_measure (HDY_GET_HELPER (widget),
                              orientation, for_size,
                              minimum, natural,
@@ -557,14 +557,14 @@ hdy_deck_get_preferred_height_for_width (GtkWidget *widget,
 static void
 hdy_deck_size_allocate (GtkWidget     *widget,
                         GtkAllocation *allocation)
-{
+{// g_warning ("hdy_deck_size_allocate");
   hdy_stackable_box_size_allocate (HDY_GET_HELPER (widget), allocation);
 }
 
 static gboolean
 hdy_deck_draw (GtkWidget *widget,
                cairo_t   *cr)
-{
+{// g_warning ("hdy_deck_draw");
   return hdy_stackable_box_draw (HDY_GET_HELPER (widget), cr);
 }
 
@@ -578,7 +578,7 @@ hdy_deck_direction_changed (GtkWidget        *widget,
 static void
 hdy_deck_add (GtkContainer *container,
               GtkWidget    *widget)
-{
+{// g_warning ("hdy_deck_add");
   hdy_stackable_box_add (HDY_GET_HELPER (container), widget);
 }
 
@@ -594,7 +594,7 @@ hdy_deck_forall (GtkContainer *container,
                  gboolean      include_internals,
                  GtkCallback   callback,
                  gpointer      callback_data)
-{
+{// g_warning ("hdy_deck_forall");
   hdy_stackable_box_forall (HDY_GET_HELPER (container), include_internals, callback, callback_data);
 }
 
@@ -739,7 +739,7 @@ hdy_deck_set_child_property (GtkContainer *container,
 
 static void
 hdy_deck_realize (GtkWidget *widget)
-{
+{// g_warning ("hdy_deck_realize");
   hdy_stackable_box_realize (HDY_GET_HELPER (widget));
 }
 
@@ -751,7 +751,7 @@ hdy_deck_unrealize (GtkWidget *widget)
 
 static void
 hdy_deck_map (GtkWidget *widget)
-{
+{// g_warning ("hdy_deck_map");
   hdy_stackable_box_map (HDY_GET_HELPER (widget));
 }
 
@@ -797,7 +797,7 @@ hdy_deck_get_cancel_progress (HdySwipeable *swipeable)
 
 static void
 hdy_deck_class_init (HdyDeckClass *klass)
-{
+{// g_warning ("hdy_deck_class");
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = (GtkWidgetClass*) klass;
   GtkContainerClass *container_class = (GtkContainerClass*) klass;
@@ -1022,7 +1022,7 @@ notify_orientation_cb (HdyDeck *self)
 
 static void
 hdy_deck_init (HdyDeck *self)
-{
+{// g_warning ("hdy_deck_init");
   HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
 
   priv->box = hdy_stackable_box_new (GTK_CONTAINER (self),
