@@ -19,7 +19,7 @@
  * implemented by #HdyCarousel, #HdyDeck and #HdyLeaflet. It should not be
  * implemented by applications.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 
 G_DEFINE_INTERFACE (HdySwipeable, hdy_swipeable, GTK_TYPE_WIDGET)
@@ -131,7 +131,7 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
  *
  * See HdySwipeable::child-switched.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_swipeable_switch_child (HdySwipeable *self,
@@ -165,7 +165,7 @@ hdy_swipeable_switch_child (HdySwipeable *self,
  * can still animate in sync with other widgets in a #HdySwipeGroup by only
  * applying restrictions if @direct is %TRUE.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_swipeable_begin_swipe (HdySwipeable           *self,
@@ -192,7 +192,7 @@ hdy_swipeable_begin_swipe (HdySwipeable           *self,
  * This function is called by #HdySwipeTracker every time the progress value
  * changes. The widget must redraw the widget to reflect the change.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_swipeable_update_swipe (HdySwipeable *self,
@@ -228,7 +228,7 @@ hdy_swipeable_update_swipe (HdySwipeable *self,
  * @duration can be 0, in that case the widget must immediately set the
  * progress value to @to.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_swipeable_end_swipe (HdySwipeable *self,
