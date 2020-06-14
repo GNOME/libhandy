@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1+
  */
 
-#include "hdy-swipeable-private.h"
+#include "hdy-swipeable.h"
 
 /**
  * SECTION:hdy-swipeable
