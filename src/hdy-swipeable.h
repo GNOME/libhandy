@@ -23,7 +23,7 @@ G_DECLARE_INTERFACE (HdySwipeable, hdy_swipeable, HDY, SWIPEABLE, GtkWidget)
  * HdySwipeableInterface:
  * @parent: The parent interface.
  * @switch_child: Switches visible child.
- * @begin_swipe: Starts a swipe gesture.
+ * @start_swipe: Starts a swipe gesture.
  * @update_swipe: Updates swipe progress value.
  * @end_swipe: Ends a swipe gesture.
  * @get_distance: Gets the swipe distance.
@@ -43,7 +43,7 @@ struct _HdySwipeableInterface
   void (*switch_child) (HdySwipeable *self,
                         guint         index,
                         gint64        duration);
-  void (*begin_swipe)  (HdySwipeable           *self,
+  void (*start_swipe)  (HdySwipeable           *self,
                         HdyNavigationDirection  direction,
                         gboolean                direct);
   void (*update_swipe) (HdySwipeable *self,

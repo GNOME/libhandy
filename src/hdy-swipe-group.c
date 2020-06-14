@@ -118,7 +118,7 @@ switch_child_cb (HdySwipeGroup *self,
 }
 
 static void
-begin_swipe_cb (HdySwipeGroup          *self,
+start_swipe_cb (HdySwipeGroup          *self,
                 HdyNavigationDirection  direction,
                 HdySwipeable           *swipeable)
 {
@@ -131,7 +131,7 @@ begin_swipe_cb (HdySwipeGroup          *self,
 
   for (swipeables = self->swipeables; swipeables != NULL; swipeables = swipeables->next)
     if (swipeables->data != swipeable)
-      hdy_swipeable_begin_swipe (swipeables->data, direction, FALSE);
+      hdy_swipeable_start_swipe (swipeables->data, direction, FALSE);
 }
 
 static void
@@ -185,7 +185,7 @@ hdy_swipe_group_add_swipeable (HdySwipeGroup *self,
   g_return_if_fail (HDY_IS_SWIPEABLE (swipeable));
 
   g_signal_connect_swapped (swipeable, "switch-child", G_CALLBACK (switch_child_cb), self);
-  g_signal_connect_swapped (swipeable, "begin-swipe", G_CALLBACK (begin_swipe_cb), self);
+  g_signal_connect_swapped (swipeable, "start-swipe", G_CALLBACK (start_swipe_cb), self);
   g_signal_connect_swapped (swipeable, "update-swipe", G_CALLBACK (update_swipe_cb), self);
   g_signal_connect_swapped (swipeable, "end-swipe", G_CALLBACK (end_swipe_cb), self);
 
