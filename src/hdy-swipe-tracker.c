@@ -8,7 +8,7 @@
 #include <glib/gi18n-lib.h>
 
 #include "hdy-leaflet.h"
-#include "hdy-swipe-tracker-private.h"
+#include "hdy-swipe-tracker.h"
 #include "hdy-navigation-direction.h"
 
 #include <math.h>
