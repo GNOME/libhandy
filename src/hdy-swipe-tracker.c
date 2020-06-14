@@ -535,6 +535,23 @@ handle_event_cb (HdySwipeTracker *self,
   return retval;
 }
 
+static gboolean
+captured_event_cb (HdySwipeable *swipeable,
+                   GdkEvent     *event)
+{
+  HdySwipeTracker *self = g_object_get_data (G_OBJECT (swipeable), "swipe-tracker");
+
+  g_assert (HDY_IS_SWIPE_TRACKER (self));
+
+  if (!self->enabled && self->state != HDY_SWIPE_TRACKER_STATE_SCROLLING)
+    return GDK_EVENT_PROPAGATE;
+
+  if (event->type != GDK_SCROLL)
+    return GDK_EVENT_PROPAGATE;
+
+  return handle_scroll_event (self, event, TRUE);
+}
+
 static void
 hdy_swipe_tracker_constructed (GObject *object)
 {
@@ -564,6 +581,14 @@ hdy_swipe_tracker_constructed (GObject *object)
 
   g_object_set_data (G_OBJECT (self->swipeable), "swipe-tracker", self);
 
+  /*
+   * HACK: GTK3 has no other way to get events on capture phase.
+   * This is a reimplementation of _gtk_widget_set_captured_event_handler(),
+   * which is private. In GTK4 it can be replaced with GtkEventControllerLegacy
+   * with capture propagation phase
+   */
+  g_object_set_data (G_OBJECT (self->swipeable), "captured-event-handler", captured_event_cb);
+
   G_OBJECT_CLASS (hdy_swipe_tracker_parent_class)->constructed (object);
 }
 
@@ -578,7 +603,8 @@ hdy_swipe_tracker_dispose (GObject *object)
   if (self->touch_gesture)
     g_signal_handlers_disconnect_by_data (self->touch_gesture, self);
 
-  g_object_steal_data (G_OBJECT (self->swipeable), "swipe-tracker");
+  g_object_set_data (G_OBJECT (self->swipeable), "swipe-tracker", NULL);
+  g_object_set_data (G_OBJECT (self->swipeable), "captured-event-handler", NULL);
 
   g_clear_object (&self->touch_gesture);
   g_clear_object (&self->swipeable);
@@ -906,33 +932,6 @@ hdy_swipe_tracker_set_allow_mouse_drag (HdySwipeTracker *self,
     g_object_set (self->touch_gesture, "touch-only", !allow_mouse_drag, NULL);
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ALLOW_MOUSE_DRAG]);
-}
-
-/**
- * hdy_swipe_tracker_captured_event:
- * @self: a #HdySwipeTracker
- * @event: a captured #GdkEvent
- *
- * Handles an event. This must be called for events received at capture phase
- * only.
- *
- * Returns: %TRUE is the event was handled and must not be propagated
- *
- * Since: 0.0.11
- */
-gboolean
-hdy_swipe_tracker_captured_event (HdySwipeTracker *self,
-                                  GdkEvent        *event)
-{
-  g_return_val_if_fail (HDY_IS_SWIPE_TRACKER (self), GDK_EVENT_PROPAGATE);
-
-  if (!self->enabled && self->state != HDY_SWIPE_TRACKER_STATE_SCROLLING)
-    return GDK_EVENT_PROPAGATE;
-
-  if (event->type != GDK_SCROLL)
-    return GDK_EVENT_PROPAGATE;
-
-  return handle_scroll_event (self, event, TRUE);
 }
 
 void
