@@ -8,7 +8,7 @@
 #include <glib/gi18n-lib.h>
 
 #include "hdy-leaflet.h"
-#include "hdy-swipe-tracker-private.h"
+#include "hdy-swipe-tracker.h"
 #include "hdy-navigation-direction.h"
 
 #include <math.h>
@@ -24,11 +24,10 @@
 #define DRAG_THRESHOLD_DISTANCE 5
 
 /**
- * PRIVATE:hdy-swipe-tracker
+ * SECTION:hdy-swipe-tracker
  * @short_description: Swipe tracker used in #HdyCarousel and #HdyLeaflet
  * @title: HdySwipeTracker
  * @See_also: #HdyCarousel, #HdyDeck, #HdyLeaflet, #HdySwipeable
- * @stability: Private
  *
  * The HdySwipeTracker object can be used for implementing widgets with swipe
  * gestures. It supports touch-based swipes, pointer dragging, and touchpad
