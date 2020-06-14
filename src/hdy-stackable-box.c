@@ -3191,7 +3191,7 @@ hdy_stackable_box_switch_child (HdyStackableBox *self,
 }
 
 void
-hdy_stackable_box_begin_swipe (HdyStackableBox        *self,
+hdy_stackable_box_start_swipe (HdyStackableBox        *self,
                                HdyNavigationDirection  direction,
                                gboolean                direct)
 {
