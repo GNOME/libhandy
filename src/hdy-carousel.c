@@ -180,7 +180,7 @@ hdy_carousel_switch_child (HdySwipeable *swipeable,
 }
 
 static void
-hdy_carousel_begin_swipe (HdySwipeable           *swipeable,
+hdy_carousel_start_swipe (HdySwipeable           *swipeable,
                           HdyNavigationDirection  direction,
                           gboolean                direct)
 {
@@ -917,7 +917,7 @@ static void
 hdy_carousel_swipeable_init (HdySwipeableInterface *iface)
 {
   iface->switch_child = hdy_carousel_switch_child;
-  iface->begin_swipe = hdy_carousel_begin_swipe;
+  iface->start_swipe = hdy_carousel_start_swipe;
   iface->update_swipe = hdy_carousel_update_swipe;
   iface->end_swipe = hdy_carousel_end_swipe;
   iface->get_distance = hdy_carousel_get_distance;

@@ -770,11 +770,11 @@ hdy_deck_switch_child (HdySwipeable *swipeable,
 }
 
 static void
-hdy_deck_begin_swipe (HdySwipeable           *swipeable,
+hdy_deck_start_swipe (HdySwipeable           *swipeable,
                       HdyNavigationDirection  direction,
                       gboolean                direct)
 {
-  hdy_stackable_box_begin_swipe (HDY_GET_HELPER (swipeable), direction, direct);
+  hdy_stackable_box_start_swipe (HDY_GET_HELPER (swipeable), direction, direct);
 }
 
 static void
@@ -1069,7 +1069,7 @@ static void
 hdy_deck_swipeable_init (HdySwipeableInterface *iface)
 {
   iface->switch_child = hdy_deck_switch_child;
-  iface->begin_swipe = hdy_deck_begin_swipe;
+  iface->start_swipe = hdy_deck_start_swipe;
   iface->update_swipe = hdy_deck_update_swipe;
   iface->end_swipe = hdy_deck_end_swipe;
   iface->get_distance = hdy_deck_get_distance;
