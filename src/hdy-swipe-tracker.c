@@ -79,6 +79,9 @@ struct _HdySwipeTracker
   gboolean allow_mouse_drag;
   GtkOrientation orientation;
 
+  int start_x;
+  int start_y;
+
   guint32 prev_time;
   gdouble velocity;
 
@@ -116,6 +119,9 @@ reset (HdySwipeTracker *self)
 {
   self->state = HDY_SWIPE_TRACKER_STATE_NONE;
 
+  self->start_x = 0;
+  self->start_y = 0;
+
   self->prev_offset = 0;
 
   self->initial_progress = 0;
@@ -137,7 +143,7 @@ gesture_prepare (HdySwipeTracker        *self,
   if (self->state != HDY_SWIPE_TRACKER_STATE_NONE)
     return;
 
-  hdy_swipeable_start_swipe (self->swipeable, direction, TRUE);
+  hdy_swipeable_start_swipe (self->swipeable, direction, TRUE, self->start_x, self->start_y);
 
   self->initial_progress = hdy_swipeable_get_progress (self->swipeable);
   self->progress = self->initial_progress;
@@ -290,6 +296,9 @@ drag_begin_cb (HdySwipeTracker *self,
 {
   if (self->state != HDY_SWIPE_TRACKER_STATE_NONE)
     gtk_gesture_set_state (self->touch_gesture, GTK_EVENT_SEQUENCE_DENIED);
+
+  self->start_x = start_x;
+  self->start_y = start_y;
 }
 
 static void
@@ -424,8 +433,19 @@ handle_scroll_event (HdySwipeTracker *self,
       return GDK_EVENT_PROPAGATE;
 
     if (is_vertical == is_delta_vertical) {
-      if (!capture)
+      if (!capture) {
+        GtkWidget *widget;
+        gdouble event_x, event_y;
+
+        widget = gtk_get_event_widget (event);
+
+        gdk_event_get_coords (event, &event_x, &event_y);
+        gtk_widget_translate_coordinates (widget, GTK_WIDGET (self->swipeable),
+                                          event_x, event_y,
+                                          &self->start_x, &self->start_y);
+
         gesture_prepare (self, delta > 0 ? HDY_NAVIGATION_DIRECTION_FORWARD : HDY_NAVIGATION_DIRECTION_BACK);
+      }
     } else {
       self->is_scrolling = TRUE;
       return GDK_EVENT_PROPAGATE;

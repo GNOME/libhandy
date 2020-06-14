@@ -853,9 +853,11 @@ hdy_leaflet_switch_child (HdySwipeable *swipeable,
 static void
 hdy_leaflet_start_swipe (HdySwipeable           *swipeable,
                          HdyNavigationDirection  direction,
-                         gboolean                direct)
+                         gboolean                direct,
+                         gint                    start_x,
+                         gint                    start_y)
 {
-  hdy_stackable_box_start_swipe (HDY_GET_HELPER (swipeable), direction, direct);
+  hdy_stackable_box_start_swipe (HDY_GET_HELPER (swipeable), direction, direct, start_x, start_y);
 }
 
 static void
