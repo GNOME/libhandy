@@ -89,7 +89,9 @@ void             hdy_stackable_box_switch_child (HdyStackableBox *self,
                                                  gint64           duration);
 void             hdy_stackable_box_begin_swipe (HdyStackableBox        *self,
                                                 HdyNavigationDirection  direction,
-                                                gboolean                direct);
+                                                gboolean                direct,
+                                                gint                    start_x,
+                                                gint                    start_y);
 void             hdy_stackable_box_update_swipe (HdyStackableBox *self,
                                                  gdouble          value);
 void             hdy_stackable_box_end_swipe (HdyStackableBox *self,

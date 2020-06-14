@@ -16,7 +16,9 @@ void hdy_swipeable_switch_child (HdySwipeable *self,
                                  gint64        duration);
 void hdy_swipeable_begin_swipe  (HdySwipeable           *self,
                                  HdyNavigationDirection  direction,
-                                 gboolean                direct);
+                                 gboolean                direct,
+                                 gint                    start_x,
+                                 gint                    start_y);
 void hdy_swipeable_update_swipe (HdySwipeable *self,
                                  gdouble       value);
 void hdy_swipeable_end_swipe    (HdySwipeable *self,

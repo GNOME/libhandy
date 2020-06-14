@@ -63,6 +63,8 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    * HdySwipeable::swipe-began:
    * @self: The #HdySwipeable instance
    * @direction: The direction of the swipe, can be 1 or -1
+   * @start_x: The X coordinate relative to the widget
+   * @start_y: The Y coordinate relative to the widget
    *
    * This signal is emitted when a possible swipe is detected. This is used by
    * #HdySwipeGroup, applications should not connect to it.
@@ -78,8 +80,9 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE,
-                  1,
-                  HDY_TYPE_NAVIGATION_DIRECTION);
+                  3,
+                  HDY_TYPE_NAVIGATION_DIRECTION,
+                  G_TYPE_INT, G_TYPE_INT);
 
   /**
    * HdySwipeable::swipe-updated:
@@ -154,6 +157,8 @@ hdy_swipeable_switch_child (HdySwipeable *self,
  * @direction: The direction of the swipe
  * @direct: %TRUE if the swipe is directly triggered by a gesture,
  *   %FALSE if it's triggered via a #HdySwipeGroup
+ * @start_x: The X coordinate relative to the widget
+ * @start_y: The Y coordinate relative to the widget
  *
  * This function is called by #HdySwipeTracker when a possible swipe is detected.
  * The implementation should check whether a swipe is possible, and if it is,
@@ -165,12 +170,18 @@ hdy_swipeable_switch_child (HdySwipeable *self,
  * can still animate in sync with other widgets in a #HdySwipeGroup by only
  * applying restrictions if @direct is %TRUE.
  *
+ * If the swipe was initiated by #HdySwipeGroup, @start_x and/or @start_y may
+ * be out of the widget bounds depending on how the widgets are placed relative
+ * to each other.
+ *
  * Since: 0.0.12
  */
 void
 hdy_swipeable_begin_swipe (HdySwipeable           *self,
                            HdyNavigationDirection  direction,
-                           gboolean                direct)
+                           gboolean                direct,
+                           gint                    start_x,
+                           gint                    start_y)
 {
   HdySwipeableInterface *iface;
 
@@ -179,9 +190,9 @@ hdy_swipeable_begin_swipe (HdySwipeable           *self,
   iface = HDY_SWIPEABLE_GET_IFACE (self);
   g_return_if_fail (iface->begin_swipe != NULL);
 
-  (* iface->begin_swipe) (self, direction, direct);
+  (* iface->begin_swipe) (self, direction, direct, start_x, start_y);
 
-  g_signal_emit (self, signals[SIGNAL_SWIPE_BEGAN], 0, direction);
+  g_signal_emit (self, signals[SIGNAL_SWIPE_BEGAN], 0, direction, start_x, start_y);
 }
 
 /**

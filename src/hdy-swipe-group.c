@@ -120,6 +120,8 @@ child_switched_cb (HdySwipeGroup *self,
 static void
 swipe_began_cb (HdySwipeGroup          *self,
                 HdyNavigationDirection  direction,
+                gint                    start_x,
+                gint                    start_y,
                 HdySwipeable           *swipeable)
 {
   GSList *swipeables;
@@ -130,8 +132,15 @@ swipe_began_cb (HdySwipeGroup          *self,
   self->current = swipeable;
 
   for (swipeables = self->swipeables; swipeables != NULL; swipeables = swipeables->next)
-    if (swipeables->data != swipeable)
-      hdy_swipeable_begin_swipe (swipeables->data, direction, FALSE);
+    if (swipeables->data != swipeable) {
+      gint x, y;
+
+      gtk_widget_translate_coordinates (GTK_WIDGET (swipeable),
+                                        GTK_WIDGET (swipeables->data),
+                                        start_x, start_y,
+                                        &x, &y);
+      hdy_swipeable_begin_swipe (swipeables->data, direction, FALSE, x, y);
+    }
 }
 
 static void
