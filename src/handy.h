@@ -48,6 +48,7 @@ G_BEGIN_DECLS
 #include "hdy-search-bar.h"
 #include "hdy-squeezer.h"
 #include "hdy-swipe-group.h"
+#include "hdy-swipe-tracker.h"
 #include "hdy-swipeable.h"
 #include "hdy-title-bar.h"
 #include "hdy-value-object.h"
