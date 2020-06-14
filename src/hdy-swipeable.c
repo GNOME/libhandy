@@ -26,7 +26,7 @@ G_DEFINE_INTERFACE (HdySwipeable, hdy_swipeable, GTK_TYPE_WIDGET)
 
 enum {
   SIGNAL_SWITCH_CHILD,
-  SIGNAL_BEGIN_SWIPE,
+  SIGNAL_START_SWIPE,
   SIGNAL_UPDATE_SWIPE,
   SIGNAL_END_SWIPE,
   SIGNAL_LAST_SIGNAL,
@@ -60,7 +60,7 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
                   G_TYPE_UINT, G_TYPE_INT64);
 
   /**
-   * HdySwipeable::begin-swipe:
+   * HdySwipeable::start-swipe:
    * @self: The #HdySwipeable instance
    * @direction: The direction of the swipe, can be 1 or -1
    *
@@ -71,8 +71,8 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    *
    * Since: 0.0.12
    */
-  signals[SIGNAL_BEGIN_SWIPE] =
-    g_signal_new ("begin-swipe",
+  signals[SIGNAL_START_SWIPE] =
+    g_signal_new ("start-swipe",
                   G_TYPE_FROM_INTERFACE (iface),
                   G_SIGNAL_RUN_FIRST,
                   0,
@@ -149,7 +149,7 @@ hdy_swipeable_switch_child (HdySwipeable *self,
 }
 
 /**
- * hdy_swipeable_begin_swipe:
+ * hdy_swipeable_start_swipe:
  * @self: a #HdySwipeable
  * @direction: The direction of the swipe
  * @direct: %TRUE if the swipe is directly triggered by a gesture,
@@ -168,7 +168,7 @@ hdy_swipeable_switch_child (HdySwipeable *self,
  * Since: 0.0.12
  */
 void
-hdy_swipeable_begin_swipe (HdySwipeable           *self,
+hdy_swipeable_start_swipe (HdySwipeable           *self,
                            HdyNavigationDirection  direction,
                            gboolean                direct)
 {
@@ -177,11 +177,11 @@ hdy_swipeable_begin_swipe (HdySwipeable           *self,
   g_return_if_fail (HDY_IS_SWIPEABLE (self));
 
   iface = HDY_SWIPEABLE_GET_IFACE (self);
-  g_return_if_fail (iface->begin_swipe != NULL);
+  g_return_if_fail (iface->start_swipe != NULL);
 
-  (* iface->begin_swipe) (self, direction, direct);
+  (* iface->start_swipe) (self, direction, direct);
 
-  g_signal_emit (self, signals[SIGNAL_BEGIN_SWIPE], 0, direction);
+  g_signal_emit (self, signals[SIGNAL_START_SWIPE], 0, direction);
 }
 
 /**
