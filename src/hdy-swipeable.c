@@ -19,7 +19,7 @@
  * implemented by #HdyCarousel, #HdyDeck and #HdyLeaflet. It should not be
  * implemented by applications.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 
 G_DEFINE_INTERFACE (HdySwipeable, hdy_swipeable, GTK_TYPE_WIDGET)
@@ -67,7 +67,7 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
  *
  * See HdySwipeable::child-switched.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_swipeable_switch_child (HdySwipeable *self,
