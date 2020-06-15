@@ -47,6 +47,8 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    *
    * @duration can be 0 if the child is switched without animation.
    *
+   * This is used by #HdySwipeGroup, applications should not connect to it.
+   *
    * Since: 1.0
    */
   signals[SIGNAL_CHILD_SWITCHED] =
@@ -70,6 +72,8 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    * #HdySwipeGroup, applications should not connect to it.
    * The @direction value can be used to restrict the swipe to a certain
    * direction.
+   *
+   * This is used by #HdySwipeGroup, applications should not connect to it.
    *
    * Since: 1.0
    */
