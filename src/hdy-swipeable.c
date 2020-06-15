@@ -164,12 +164,8 @@ hdy_swipeable_switch_child (HdySwipeable *self,
  * @start_x: The X coordinate relative to the widget
  * @start_y: The Y coordinate relative to the widget
  *
- * This function is called by #HdySwipeTracker when a possible swipe is detected.
- * The implementation should check whether a swipe is possible, and if it is,
- * it must call hdy_swipe_tracker_confirm_swipe() to provide details about the
- * swipe, see that function for details.
  * The @direction value can be used to restrict the swipe to a certain direction.
-*
+ *
  * The @direct parameter can be used to have widgets that aren't swipeable, but
  * can still animate in sync with other widgets in a #HdySwipeGroup by only
  * applying restrictions if @direct is %TRUE.
@@ -237,8 +233,7 @@ hdy_swipeable_update_swipe (HdySwipeable *self,
  * milliseconds.
  *
  * @to will always match either one of the provided snap points if the swipe was
- * completed successfully, or @cancel_progress value passed in
- * hdy_swipe_tracker_confirm_swipe() call if the swipe was cancelled.
+ * completed successfully, or the cancel progress otherwise.
  *
  * @duration can be 0, in that case the widget must immediately set the
  * progress value to @to.
