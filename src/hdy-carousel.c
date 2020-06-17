@@ -722,6 +722,47 @@ captured_event_cb (HdyCarousel *self,
   return handle_discrete_scroll_event (self, event);
 }
 
+static gboolean
+key_press_event_cb (GtkWidget     *widget,
+                    GdkEventKey   *event,
+                    gpointer       user_data)
+{
+  HdyCarousel *self = HDY_CAROUSEL (user_data);
+  guint duration;
+  gint index, page_count;
+
+  if (!self->can_scroll)
+    return GDK_EVENT_PROPAGATE;
+
+  if (!hdy_carousel_get_interactive (self))
+    return GDK_EVENT_PROPAGATE;
+
+  page_count = (gint) hdy_carousel_get_n_pages (self);
+  index = 0;
+
+  if (event->keyval == GDK_KEY_Page_Down)
+    index = (gint) round (hdy_carousel_get_position (self)) + 1;
+  else if (event->keyval == GDK_KEY_Page_Up)
+    index = (gint) round (hdy_carousel_get_position (self)) - 1;
+  else if (event->keyval == GDK_KEY_End)
+    index = page_count - 1;
+
+  if (index == 0 && event->keyval != GDK_KEY_Home && event->keyval != GDK_KEY_Page_Up)
+    return GDK_EVENT_PROPAGATE;
+
+  index = CLAMP (index, 0, page_count - 1);
+
+  hdy_carousel_scroll_to (self, hdy_carousel_box_get_nth_child (self->scrolling_box, index));
+
+  /* Don't allow the delay to go lower than 250ms */
+  duration = MIN (self->animation_duration, DEFAULT_DURATION);
+
+  self->can_scroll = FALSE;
+  g_timeout_add (duration, (GSourceFunc) scroll_timeout_cb, self);
+
+  return GDK_EVENT_STOP;
+}
+
 static void
 hdy_carousel_destroy (GtkWidget *widget)
 {
@@ -1176,6 +1217,7 @@ hdy_carousel_init (HdyCarousel *self)
   hdy_swipe_tracker_set_allow_mouse_drag (self->tracker, TRUE);
   self->can_scroll = TRUE;
 
+  g_signal_connect (self, "key-press-event", G_CALLBACK (key_press_event_cb), self);
   /*
    * HACK: GTK3 has no other way to get events on capture phase.
    * This is a reimplementation of _gtk_widget_set_captured_event_handler(),
