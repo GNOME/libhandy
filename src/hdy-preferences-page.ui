@@ -11,13 +11,11 @@
             <property name="shadow-type">none</property>
             <property name="visible">True</property>
             <child>
-              <object class="HdyColumn">
-                <property name="linear-growth-width">400</property>
+              <object class="HdyClamp">
                 <property name="margin-bottom">18</property>
                 <property name="margin-end">12</property>
                 <property name="margin-start">12</property>
                 <property name="margin-top">18</property>
-                <property name="maximum-width">600</property>
                 <property name="visible">True</property>
                 <child>
                   <object class="GtkBox" id="box">

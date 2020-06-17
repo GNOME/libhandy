@@ -75,12 +75,7 @@
         <property id="visible-window" disabled="True" />
       </properties>
     </glade-widget-class>
-    <glade-widget-class name="HdyColumn" generic-name="column" title="Column">
-      <properties>
-        <property id="maximum-width" default="650"/>
-        <property id="linear-growth-width" default="400"/>
-      </properties>
-    </glade-widget-class>
+    <glade-widget-class name="HdyClamp" generic-name="clamp" title="Clamp" since="1.0"/>
     <glade-widget-class name="HdyComboRow" generic-name="comborow" title="Combo Row" since="0.0.6"/>
     <glade-widget-class name="HdyDeck" generic-name="deck" title="Deck" since="1.0">
       <post-create-function>glade_hdy_leaflet_post_create</post-create-function>
@@ -409,7 +404,7 @@
     <glade-widget-class-ref name="HdyApplicationWindow"/>
     <glade-widget-class-ref name="HdyAvatar"/>
     <glade-widget-class-ref name="HdyCarousel"/>
-    <glade-widget-class-ref name="HdyColumn"/>
+    <glade-widget-class-ref name="HdyClamp"/>
     <glade-widget-class-ref name="HdyComboRow"/>
     <glade-widget-class-ref name="HdyDeck"/>
     <glade-widget-class-ref name="HdyExpanderRow"/>

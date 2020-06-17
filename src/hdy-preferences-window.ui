@@ -38,9 +38,9 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="HdyColumn">
-                    <property name="linear-growth-width">300</property>
-                    <property name="maximum-width">400</property>
+                  <object class="HdyClamp">
+                    <property name="tightening-threshold">300</property>
+                    <property name="maximum-size">400</property>
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkSearchEntry" id="search_entry">
@@ -128,13 +128,11 @@
                     <property name="hscrollbar_policy">never</property>
                     <property name="visible">True</property>
                     <child>
-                      <object class="HdyColumn">
-                        <property name="linear_growth_width">400</property>
+                      <object class="HdyClamp">
                         <property name="margin_bottom">18</property>
                         <property name="margin_end">12</property>
                         <property name="margin_start">12</property>
                         <property name="margin_top">18</property>
-                        <property name="maximum_width">600</property>
                         <property name="visible">True</property>
                         <child>
                           <object class="GtkListBox" id="search_results">
