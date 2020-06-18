@@ -30,10 +30,9 @@
 
 /**
  * HdyDeckTransitionType:
- * @HDY_DECK_TRANSITION_TYPE_NONE: No transition
- * @HDY_DECK_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
  * @HDY_DECK_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
  * @HDY_DECK_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
+ * @HDY_DECK_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
  *
  * This enumeration value describes the possible transitions between children
  * in a #HdyDeck widget.
@@ -145,22 +144,19 @@ hdy_deck_get_transition_type (HdyDeck *self)
 {
   HdyStackableBoxTransitionType type;
 
-  g_return_val_if_fail (HDY_IS_DECK (self), HDY_DECK_TRANSITION_TYPE_NONE);
+  g_return_val_if_fail (HDY_IS_DECK (self), HDY_DECK_TRANSITION_TYPE_OVER);
 
   type = hdy_stackable_box_get_transition_type (HDY_GET_HELPER (self));
 
   switch (type) {
-  case HDY_STACKABLE_BOX_TRANSITION_TYPE_NONE:
-    return HDY_DECK_TRANSITION_TYPE_NONE;
-
-  case HDY_STACKABLE_BOX_TRANSITION_TYPE_SLIDE:
-    return HDY_DECK_TRANSITION_TYPE_SLIDE;
-
   case HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER:
     return HDY_DECK_TRANSITION_TYPE_OVER;
 
   case HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER:
     return HDY_DECK_TRANSITION_TYPE_UNDER;
+
+  case HDY_STACKABLE_BOX_TRANSITION_TYPE_SLIDE:
+    return HDY_DECK_TRANSITION_TYPE_SLIDE;
 
   default:
     g_assert_not_reached ();
@@ -188,23 +184,19 @@ hdy_deck_set_transition_type (HdyDeck               *self,
   HdyStackableBoxTransitionType type;
 
   g_return_if_fail (HDY_IS_DECK (self));
-  g_return_if_fail (transition <= HDY_DECK_TRANSITION_TYPE_UNDER);
+  g_return_if_fail (transition <= HDY_DECK_TRANSITION_TYPE_SLIDE);
 
   switch (transition) {
-  case HDY_DECK_TRANSITION_TYPE_NONE:
-    type = HDY_STACKABLE_BOX_TRANSITION_TYPE_NONE;
-    break;
-
-  case HDY_DECK_TRANSITION_TYPE_SLIDE:
-    type = HDY_STACKABLE_BOX_TRANSITION_TYPE_SLIDE;
-    break;
-
   case HDY_DECK_TRANSITION_TYPE_OVER:
     type = HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER;
     break;
 
   case HDY_DECK_TRANSITION_TYPE_UNDER:
     type = HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER;
+    break;
+
+  case HDY_DECK_TRANSITION_TYPE_SLIDE:
+    type = HDY_STACKABLE_BOX_TRANSITION_TYPE_SLIDE;
     break;
 
   default:
@@ -941,7 +933,7 @@ hdy_deck_class_init (HdyDeckClass *klass)
     g_param_spec_enum ("transition-type",
                        _("Transition type"),
                        _("The type of animation used to transition between children"),
-                       HDY_TYPE_DECK_TRANSITION_TYPE, HDY_DECK_TRANSITION_TYPE_NONE,
+                       HDY_TYPE_DECK_TRANSITION_TYPE, HDY_DECK_TRANSITION_TYPE_OVER,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**

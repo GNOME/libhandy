@@ -120,13 +120,11 @@
         <property id="transition-type">
           <displayable-values>
             <!-- HdyDeckTransitionType enumeration value -->
-            <value id="HDY_DECK_TRANSITION_TYPE_NONE" name="None"/>
-            <!-- HdyDeckTransitionType enumeration value -->
-            <value id="HDY_DECK_TRANSITION_TYPE_SLIDE" name="Slide"/>
-            <!-- HdyDeckTransitionType enumeration value -->
             <value id="HDY_DECK_TRANSITION_TYPE_OVER" name="Over"/>
             <!-- HdyDeckTransitionType enumeration value -->
             <value id="HDY_DECK_TRANSITION_TYPE_UNDER" name="Under"/>
+            <!-- HdyDeckTransitionType enumeration value -->
+            <value id="HDY_DECK_TRANSITION_TYPE_SLIDE" name="Slide"/>
           </displayable-values>
         </property>
       </properties>
@@ -265,13 +263,11 @@
         <property id="transition-type">
           <displayable-values>
             <!-- HdyLeafletTransitionType enumeration value -->
-            <value id="HDY_LEAFLET_TRANSITION_TYPE_NONE" name="None"/>
-            <!-- HdyLeafletTransitionType enumeration value -->
-            <value id="HDY_LEAFLET_TRANSITION_TYPE_SLIDE" name="Slide"/>
-            <!-- HdyLeafletTransitionType enumeration value -->
             <value id="HDY_LEAFLET_TRANSITION_TYPE_OVER" name="Over"/>
             <!-- HdyLeafletTransitionType enumeration value -->
             <value id="HDY_LEAFLET_TRANSITION_TYPE_UNDER" name="Under"/>
+            <!-- HdyLeafletTransitionType enumeration value -->
+            <value id="HDY_LEAFLET_TRANSITION_TYPE_SLIDE" name="Slide"/>
           </displayable-values>
         </property>
       </properties>
