@@ -47,6 +47,8 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    *
    * @duration can be 0 if the child is switched without animation.
    *
+   * This is used by #HdySwipeGroup, applications should not connect to it.
+   *
    * Since: 1.0
    */
   signals[SIGNAL_CHILD_SWITCHED] =
@@ -68,6 +70,8 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    * #HdySwipeGroup, applications should not connect to it.
    * The @direction value can be used to restrict the swipe to a certain
    * direction.
+   *
+   * This is used by #HdySwipeGroup, applications should not connect to it.
    *
    * Since: 1.0
    */
@@ -155,12 +159,8 @@ hdy_swipeable_switch_child (HdySwipeable *self,
  * @direct: %TRUE if the swipe is directly triggered by a gesture,
  *   %FALSE if it's triggered via a #HdySwipeGroup
  *
- * This function is called by #HdySwipeTracker when a possible swipe is detected.
- * The implementation should check whether a swipe is possible, and if it is,
- * it must call hdy_swipe_tracker_confirm_swipe() to provide details about the
- * swipe, see that function for details.
  * The @direction value can be used to restrict the swipe to a certain direction.
-*
+ *
  * The @direct parameter can be used to have widgets that aren't swipeable, but
  * can still animate in sync with other widgets in a #HdySwipeGroup by only
  * applying restrictions if @direct is %TRUE.
@@ -222,8 +222,7 @@ hdy_swipeable_update_swipe (HdySwipeable *self,
  * milliseconds.
  *
  * @to will always match either one of the provided snap points if the swipe was
- * completed successfully, or @cancel_progress value passed in
- * hdy_swipe_tracker_confirm_swipe() call if the swipe was cancelled.
+ * completed successfully, or the cancel progress otherwise.
  *
  * @duration can be 0, in that case the widget must immediately set the
  * progress value to @to.
@@ -341,9 +340,9 @@ get_snap_points_from_range (HdySwipeable *self,
 }
 
 /**
- * hdy_swipeable_get_snap_points:
+ * hdy_swipeable_get_snap_points: (virtual get_snap_points)
  * @self: a #HdySwipeable
- * @n_snap_points: (out)
+ * @n_snap_points: (out): location to return the number of the snap points
  *
  * Gets the snap points of @self. Each snap point represents a progress value
  * that is considered acceptable to end the swipe on.
@@ -351,7 +350,8 @@ get_snap_points_from_range (HdySwipeable *self,
  * If not implemented, the default implementation returns one snap point for
  * each end of the range, or just one snap point if they are equal.
  *
- * Returns: (array length=n_snap_points) (transfer full): the snap points of @self
+ * Returns: (array length=n_snap_points) (transfer full): the snap points of
+ *     @self. The array must be freed with g_free().
  *
  * Since: 1.0
  */
