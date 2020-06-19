@@ -25,10 +25,10 @@
 G_DEFINE_INTERFACE (HdySwipeable, hdy_swipeable, GTK_TYPE_WIDGET)
 
 enum {
-  SIGNAL_SWITCH_CHILD,
-  SIGNAL_BEGIN_SWIPE,
-  SIGNAL_UPDATE_SWIPE,
-  SIGNAL_END_SWIPE,
+  SIGNAL_CHILD_SWITCHED,
+  SIGNAL_SWIPE_BEGAN,
+  SIGNAL_SWIPE_UPDATED,
+  SIGNAL_SWIPE_ENDED,
   SIGNAL_LAST_SIGNAL,
 };
 
@@ -38,7 +38,7 @@ static void
 hdy_swipeable_default_init (HdySwipeableInterface *iface)
 {
   /**
-   * HdySwipeable::switch-child:
+   * HdySwipeable::child-switched:
    * @self: The #HdySwipeable instance
    * @index: the index of the child to switch to
    * @duration: Animation duration in milliseconds
@@ -47,10 +47,10 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    *
    * @duration can be 0 if the child is switched without animation.
    *
-   * Since: 0.0.12
+   * Since: 1.0
    */
-  signals[SIGNAL_SWITCH_CHILD] =
-    g_signal_new ("switch-child",
+  signals[SIGNAL_CHILD_SWITCHED] =
+    g_signal_new ("child-switched",
                   G_TYPE_FROM_INTERFACE (iface),
                   G_SIGNAL_RUN_FIRST,
                   0,
@@ -60,7 +60,7 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
                   G_TYPE_UINT, G_TYPE_INT64);
 
   /**
-   * HdySwipeable::begin-swipe:
+   * HdySwipeable::swipe-began:
    * @self: The #HdySwipeable instance
    * @direction: The direction of the swipe, can be 1 or -1
    *
@@ -69,10 +69,10 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    * The @direction value can be used to restrict the swipe to a certain
    * direction.
    *
-   * Since: 0.0.12
+   * Since: 1.0
    */
-  signals[SIGNAL_BEGIN_SWIPE] =
-    g_signal_new ("begin-swipe",
+  signals[SIGNAL_SWIPE_BEGAN] =
+    g_signal_new ("swipe-began",
                   G_TYPE_FROM_INTERFACE (iface),
                   G_SIGNAL_RUN_FIRST,
                   0,
@@ -82,17 +82,17 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
                   HDY_TYPE_NAVIGATION_DIRECTION);
 
   /**
-   * HdySwipeable::update-swipe:
+   * HdySwipeable::swipe-updated:
    * @self: The #HdySwipeable instance
    * @value: The current animation progress value
    *
    * This signal is emitted every time the progress value changes. This is used
    * by #HdySwipeGroup, applications should not connect to it.
    *
-   * Since: 0.0.12
+   * Since: 1.0
    */
-  signals[SIGNAL_UPDATE_SWIPE] =
-    g_signal_new ("update-swipe",
+  signals[SIGNAL_SWIPE_UPDATED] =
+    g_signal_new ("swipe-updated",
                   G_TYPE_FROM_INTERFACE (iface),
                   G_SIGNAL_RUN_FIRST,
                   0,
@@ -102,7 +102,7 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
                   G_TYPE_DOUBLE);
 
   /**
-   * HdySwipeable::end-swipe:
+   * HdySwipeable::swipe-ended:
    * @self: The #HdySwipeable instance
    * @duration: Snap-back animation duration in milliseconds
    * @to: The progress value to animate to
@@ -110,10 +110,10 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
    * This signal is emitted as soon as the gesture has stopped. This is used by
    * #HdySwipeGroup, applications should not connect to it.
    *
-   * Since: 0.0.12
+   * Since: 1.0
    */
-  signals[SIGNAL_END_SWIPE] =
-    g_signal_new ("end-swipe",
+  signals[SIGNAL_SWIPE_ENDED] =
+    g_signal_new ("swipe-ended",
                   G_TYPE_FROM_INTERFACE (iface),
                   G_SIGNAL_RUN_FIRST,
                   0,
@@ -129,7 +129,7 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
  * @index: the index of the child to switch to
  * @duration: Animation duration in milliseconds
  *
- * See HdySwipeable::switch-child.
+ * See HdySwipeable::child-switched.
  *
  * Since: 0.0.12
  */
@@ -181,7 +181,7 @@ hdy_swipeable_begin_swipe (HdySwipeable           *self,
 
   (* iface->begin_swipe) (self, direction, direct);
 
-  g_signal_emit (self, signals[SIGNAL_BEGIN_SWIPE], 0, direction);
+  g_signal_emit (self, signals[SIGNAL_SWIPE_BEGAN], 0, direction);
 }
 
 /**
@@ -207,7 +207,7 @@ hdy_swipeable_update_swipe (HdySwipeable *self,
 
   (* iface->update_swipe) (self, value);
 
-  g_signal_emit (self, signals[SIGNAL_UPDATE_SWIPE], 0, value);
+  g_signal_emit (self, signals[SIGNAL_SWIPE_UPDATED], 0, value);
 }
 
 /**
@@ -244,30 +244,30 @@ hdy_swipeable_end_swipe (HdySwipeable *self,
 
   (* iface->end_swipe) (self, duration, to);
 
-  g_signal_emit (self, signals[SIGNAL_END_SWIPE], 0, duration, to);
+  g_signal_emit (self, signals[SIGNAL_SWIPE_ENDED], 0, duration, to);
 }
 
 /**
- * hdy_swipeable_emit_switch_child:
+ * hdy_swipeable_emit_child_switched:
  * @self: a #HdySwipeable
  * @index: the index of the child to switch to
  * @duration: Animation duration in milliseconds
  *
- * Emits HdySwipeable::switch-child signal. This should be called when the
+ * Emits HdySwipeable::child-switched signal. This should be called when the
  * widget switches visible child widget.
  *
  * @duration can be 0 if the child is switched without animation.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
-hdy_swipeable_emit_switch_child (HdySwipeable *self,
-                                 guint         index,
-                                 gint64        duration)
+hdy_swipeable_emit_child_switched (HdySwipeable *self,
+                                   guint         index,
+                                   gint64        duration)
 {
   g_return_if_fail (HDY_IS_SWIPEABLE (self));
 
-  g_signal_emit (self, signals[SIGNAL_SWITCH_CHILD], 0, index, duration);
+  g_signal_emit (self, signals[SIGNAL_CHILD_SWITCHED], 0, index, duration);
 }
 
 /**
