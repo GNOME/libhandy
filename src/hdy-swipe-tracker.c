@@ -973,3 +973,26 @@ hdy_swipe_tracker_shift_position (HdySwipeTracker *self,
   self->progress += delta;
   self->initial_progress += delta;
 }
+
+/**
+ * hdy_swipe_tracker_emit_switch_child:
+ * @self: a #HdySwipeTracker
+ * @index: the index of the child to switch to
+ * @duration: Animation duration in milliseconds
+ *
+ * Emits HdySwipeTracker::switch-child signal. This should be called when the
+ * widget switches visible child widget.
+ *
+ * @duration can be 0 if the child is switched without animation.
+ *
+ * Since: 1.0
+ */
+void
+hdy_swipe_tracker_emit_switch_child (HdySwipeTracker *self,
+                                     guint            index,
+                                     gint64           duration)
+{
+  g_return_if_fail (HDY_IS_SWIPE_TRACKER (self));
+
+  g_signal_emit (self, signals[SIGNAL_SWITCH_CHILD], 0, index, duration);
+}
