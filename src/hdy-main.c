@@ -203,18 +203,6 @@ hdy_icons_init (void)
   g_once_init_leave (&guard, 1);
 }
 
-        /* var theme = Gtk.IconTheme.get_default (); */
-        /* theme.add_resource_path ("/org/gnome/clocks/icons"); */
-
-static gboolean
-init_theme_cb (void)
-{
-  hdy_style_init ();
-  hdy_icons_init ();
-
-  return G_SOURCE_REMOVE;
-}
-
 /**
  * hdy_init:
  *
@@ -235,10 +223,8 @@ hdy_init (void)
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   hdy_init_public_types ();
 
- /* Initializes the style and icons when the main loop starts, which should be
-  * before any window shows up but after GTK is initialized.
-  */
-  g_idle_add_full (HDY_PRIORITY_STYLE, (GSourceFunc) init_theme_cb, NULL, NULL);
+  hdy_style_init ();
+  hdy_icons_init ();
 
   hdy_initialized = TRUE;
 }
