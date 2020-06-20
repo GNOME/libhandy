@@ -44,5 +44,7 @@ void             hdy_swipe_tracker_emit_switch_child (HdySwipeTracker *self,
 void            hdy_swipe_tracker_emit_begin_swipe (HdySwipeTracker        *self,
                                                     HdyNavigationDirection  direction,
                                                     gboolean                direct);
+void            hdy_swipe_tracker_emit_update_swipe (HdySwipeTracker *self,
+                                                     gdouble          progress);
 
 G_END_DECLS
