@@ -126,7 +126,6 @@ gesture_prepare (HdySwipeTracker        *self,
   if (self->state != HDY_SWIPE_TRACKER_STATE_NONE)
     return;
 
-  hdy_swipeable_begin_swipe (self->swipeable, direction, TRUE);
   hdy_swipe_tracker_emit_begin_swipe (self, direction, TRUE);
 
   self->initial_progress = hdy_swipeable_get_progress (self->swipeable);
@@ -177,7 +176,6 @@ gesture_update (HdySwipeTracker *self,
 
   self->progress = progress;
 
-  hdy_swipeable_update_swipe (self->swipeable, progress);
   hdy_swipe_tracker_emit_update_swipe (self, progress);
 
   self->prev_time = time;
@@ -253,7 +251,6 @@ gesture_end (HdySwipeTracker *self,
   if (self->progress != end_progress)
     duration = CLAMP (duration, MIN_ANIMATION_DURATION, MAX_ANIMATION_DURATION);
 
-  hdy_swipeable_end_swipe (self->swipeable, duration, end_progress);
   hdy_swipe_tracker_emit_end_swipe (self, duration, end_progress);
 
   if (self->cancelled)
