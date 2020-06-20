@@ -92,6 +92,7 @@ static GParamSpec *props[LAST_PROP];
 
 enum {
   SIGNAL_SWITCH_CHILD,
+  SIGNAL_BEGIN_SWIPE,
   SIGNAL_LAST_SIGNAL,
 };
 
@@ -124,6 +125,7 @@ gesture_prepare (HdySwipeTracker        *self,
     return;
 
   hdy_swipeable_begin_swipe (self->swipeable, direction, TRUE);
+  hdy_swipe_tracker_emit_begin_swipe (self, direction, TRUE);
 
   self->initial_progress = hdy_swipeable_get_progress (self->swipeable);
   self->progress = self->initial_progress;
@@ -768,6 +770,30 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
                   G_TYPE_NONE,
                   2,
                   G_TYPE_UINT, G_TYPE_INT64);
+
+  /**
+   * HdySwipeTracker::begin-swipe:
+   * @self: The #HdySwipeTracker instance
+   * @direction: The direction of the swipe, can be 1 or -1
+   * @direct: %TRUE if the swipe is directly triggered by a gesture,
+   *   %FALSE if it's triggered via a #HdySwipeGroup
+   *
+   * This signal is emitted when a possible swipe is detected.
+   *
+   * The @direction value can be used to restrict the swipe to a certain
+   * direction.
+   *
+   * Since: 1.0
+   */
+  signals[SIGNAL_BEGIN_SWIPE] =
+    g_signal_new ("begin-swipe",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  2,
+                  HDY_TYPE_NAVIGATION_DIRECTION, G_TYPE_BOOLEAN);
 }
 
 static void
@@ -995,4 +1021,14 @@ hdy_swipe_tracker_emit_switch_child (HdySwipeTracker *self,
   g_return_if_fail (HDY_IS_SWIPE_TRACKER (self));
 
   g_signal_emit (self, signals[SIGNAL_SWITCH_CHILD], 0, index, duration);
+}
+
+void
+hdy_swipe_tracker_emit_begin_swipe (HdySwipeTracker        *self,
+                                    HdyNavigationDirection  direction,
+                                    gboolean                direct)
+{
+  g_return_if_fail (HDY_IS_SWIPE_TRACKER (self));
+
+  g_signal_emit (self, signals[SIGNAL_BEGIN_SWIPE], 0, direction, direct);
 }
