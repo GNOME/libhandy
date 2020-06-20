@@ -90,6 +90,13 @@ enum {
 
 static GParamSpec *props[LAST_PROP];
 
+enum {
+  SIGNAL_SWITCH_CHILD,
+  SIGNAL_LAST_SIGNAL,
+};
+
+static guint signals[SIGNAL_LAST_SIGNAL];
+
 static void
 reset (HdySwipeTracker *self)
 {
@@ -739,6 +746,28 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
                                     "orientation");
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
+
+  /**
+   * HdySwipeTracker::switch-child:
+   * @self: The #HdySwipeTracker instance
+   * @index: the index of the child to switch to
+   * @duration: Animation duration in milliseconds
+   *
+   * This signal should be emitted when the widget's visible child is changed.
+   *
+   * @duration can be 0 if the child is switched without animation.
+   *
+   * Since: 1.0
+   */
+  signals[SIGNAL_SWITCH_CHILD] =
+    g_signal_new ("switch-child",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  2,
+                  G_TYPE_UINT, G_TYPE_INT64);
 }
 
 static void
