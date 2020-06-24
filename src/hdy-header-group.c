@@ -12,7 +12,7 @@
 typedef struct
 {
   GSList *header_bars;
-  GtkHeaderBar *focus;
+  guint depth;
 
 } HdyHeaderGroupPrivate;
 
@@ -36,7 +36,7 @@ G_DEFINE_TYPE_WITH_CODE (HdyHeaderGroup, hdy_header_group, G_TYPE_OBJECT,
 
 enum {
   PROP_0,
-  PROP_FOCUS,
+  PROP_DEPTH,
   N_PROPS
 };
 
@@ -84,13 +84,9 @@ update_decoration_layouts (HdyHeaderGroup *self)
   if (layout == NULL)
     layout = g_strdup (":");
 
-  if (priv->focus != NULL) {
+  if (priv->depth != 0) {
     for (; header_bars != NULL; header_bars = header_bars->next)
-      if (header_bars->data == priv->focus &&
-          gtk_widget_get_mapped (header_bars->data))
-        gtk_header_bar_set_decoration_layout (header_bars->data, layout);
-      else
-        gtk_header_bar_set_decoration_layout (header_bars->data, ":");
+      gtk_header_bar_set_decoration_layout (header_bars->data, layout);
 
     return;
   }
@@ -156,8 +152,8 @@ hdy_header_group_new (void)
  * widgets will be edited depending on their position in the composite header
  * bar, the start widget displaying only the start of the user's decoration
  * layout and the end widget displaying only its end while widgets in the middle
- * won't display anything. A header bar can be set as having the focus to
- * display all the decorations. See gtk_header_bar_set_decoration_layout().
+ * won't display anything. A depth can be set depth before which the header bars
+ * will display all the decorations. See gtk_header_bar_set_decoration_layout().
  *
  * When the widget is destroyed or no longer referenced elsewhere, it will
  * be removed from the header group.
@@ -205,9 +201,6 @@ hdy_header_group_remove_header_bar (HdyHeaderGroup *self,
   priv = hdy_header_group_get_instance_private (self);
   priv->header_bars = g_slist_remove (priv->header_bars, header_bar);
 
-  if (priv->focus == header_bar)
-    hdy_header_group_set_focus (self, NULL);
-
   g_signal_handlers_disconnect_by_data (header_bar, self);
 
   g_object_unref (self);
@@ -235,41 +228,39 @@ hdy_header_group_get_header_bars (HdyHeaderGroup *self)
 
 
 /**
- * hdy_header_group_set_focus:
+ * hdy_header_group_set_depth:
  * @self: a #HdyHeaderGroup
- * @header_bar: (nullable): a #GtkHeaderBar of @self, or %NULL
+ * @depth: the depth before which the header bars display all the decorations
  *
- * Sets the the currently focused header bar. If @header_bar is %NULL, the
- * decoration will be spread as if the header bars of the group were only one,
- * otherwise @header_bar will be the only one to receive the decoration.
+ * Sets the depth before which the header bars display all the decorations.
  */
 void
-hdy_header_group_set_focus (HdyHeaderGroup *self,
-                            GtkHeaderBar   *header_bar)
+hdy_header_group_set_depth (HdyHeaderGroup *self,
+                            guint           depth)
 {
   HdyHeaderGroupPrivate *priv;
 
   g_return_if_fail (HDY_IS_HEADER_GROUP (self));
-  g_return_if_fail (header_bar == NULL || GTK_IS_HEADER_BAR (header_bar));
-  g_return_if_fail (header_bar == NULL || contains (self, header_bar));
 
   priv = hdy_header_group_get_instance_private (self);
 
-  priv->focus = header_bar;
+  priv->depth = depth;
 
   update_decoration_layouts (self);
 
-  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_FOCUS]);
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_DEPTH]);
 }
 
 /**
- * hdy_header_group_get_focus:
+ * hdy_header_group_get_depth:
  * @self: a #HdyHeaderGroup
  *
- * Returns: (nullable) (transfer none): The currently focused header bar
+ * Gets the depth before which the header bars display all the decorations.
+ *
+ * Returns:: The depth before which the header bars display all the decorations
  */
-GtkHeaderBar *
-hdy_header_group_get_focus (HdyHeaderGroup *self)
+guint
+hdy_header_group_get_depth (HdyHeaderGroup *self)
 {
   HdyHeaderGroupPrivate *priv;
 
@@ -277,7 +268,7 @@ hdy_header_group_get_focus (HdyHeaderGroup *self)
 
   priv = hdy_header_group_get_instance_private (self);
 
-  return priv->focus;
+  return priv->depth;
 }
 
 
@@ -310,7 +301,6 @@ hdy_header_group_dispose (GObject *object)
 
   g_slist_free_full (priv->header_bars, (GDestroyNotify) g_object_unref);
   priv->header_bars = NULL;
-  priv->focus = NULL;
 
   G_OBJECT_CLASS (hdy_header_group_parent_class)->dispose (object);
 }
@@ -324,8 +314,8 @@ hdy_header_group_get_property (GObject    *object,
   HdyHeaderGroup *self = HDY_HEADER_GROUP (object);
 
   switch (prop_id) {
-  case PROP_FOCUS:
-    g_value_set_object (value, hdy_header_group_get_focus (self));
+  case PROP_DEPTH:
+    g_value_set_uint (value, hdy_header_group_get_depth (self));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -341,8 +331,8 @@ hdy_header_group_set_property (GObject      *object,
   HdyHeaderGroup *self = HDY_HEADER_GROUP (object);
 
   switch (prop_id) {
-  case PROP_FOCUS:
-    hdy_header_group_set_focus (self, g_value_get_object (value));
+  case PROP_DEPTH:
+    hdy_header_group_set_depth (self, g_value_get_uint (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -579,16 +569,14 @@ hdy_header_group_class_init (HdyHeaderGroupClass *klass)
   object_class->set_property = hdy_header_group_set_property;
 
   /**
-   * HdyHeaderGroup:focus:
+   * HdyHeaderGroup:depth:
    *
-   * The the currently focused header bar. If %NULL, the decoration will be
-   * spread as if the header bars of the group were only one, otherwise the
-   * focused header bar will be the only one to receive the decoration.
+   * The depth before which the header bars display all the decorations.
    */
-  props[PROP_FOCUS] =
-    g_param_spec_object ("focus",
-                         _("Focus"),
-                         _("The header bar that should have the focus"),
+  props[PROP_DEPTH] =
+    g_param_spec_object ("depth",
+                         _("Depth"),
+                         _("The depth before which the header bars display all the decorations"),
                          GTK_TYPE_HEADER_BAR,
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
