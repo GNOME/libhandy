@@ -80,6 +80,7 @@ src_headers = [
   'hdy-header-group.h',
   'hdy-keypad.h',
   'hdy-leaflet.h',
+  'hdy-main.h',
   'hdy-navigation-direction.h',
   'hdy-preferences-group.h',
   'hdy-preferences-page.h',
@@ -252,13 +253,6 @@ if introspection
      )
 
    endif
-
-   python = import('python')
-   python3 = python.find_installation('python3')
-
-   python3.install_sources('Handy.py',
-                   subdir: 'gi/overrides',
-   )
 endif
 
 pkgg = import('pkgconfig')

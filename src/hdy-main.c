@@ -8,31 +8,19 @@
 #include <gio/gio.h>
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
-#include "gconstructorprivate.h"
+
+static gint hdy_initialized = FALSE;
 
 /**
- * PRIVATE:hdy-main
+ * SECTION:hdy-main
  * @short_description: Library initialization.
  * @Title: hdy-main
- * @stability: Private
  *
- * Before using the Handy library you should initialize it. This makes
- * sure translations for the Handy library are set up properly.
+ * Before using the Handy library you should initialize it by calling the
+ * hdy_init() function.
+ * This makes sure translations, types, themes, and icons for the Handy library
+ * are set up properly.
  */
-
-#if defined (G_HAS_CONSTRUCTORS)
-
-#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
-#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(hdy_constructor)
-#endif
-G_DEFINE_CONSTRUCTOR(hdy_constructor)
-
-/* A stupidly high priority used to load the styles before anything else
- * happens.
- *
- * See https://gitlab.gnome.org/GNOME/libhandy/issues/214.
- */
-#define HDY_PRIORITY_STYLE -1000
 
 /* The style provider priority to use for libhandy widgets custom styling. It is
  * higher than themes and settings, allowing to override theme defaults, but
@@ -210,36 +198,29 @@ hdy_icons_init (void)
   g_once_init_leave (&guard, 1);
 }
 
-        /* var theme = Gtk.IconTheme.get_default (); */
-        /* theme.add_resource_path ("/org/gnome/clocks/icons"); */
-
-static gboolean
-init_theme_cb (void)
-{
-  hdy_style_init ();
-  hdy_icons_init ();
-
-  return G_SOURCE_REMOVE;
-}
-
 /**
- * hdy_constructor:
+ * hdy_init:
  *
- * Automatically initializes libhandy.
+ * Call this function just after initializing GTK, if you are using
+ * #GtkApplication it means it must be called when the #GApplication::startup
+ * signal is emitted. If libhandy has already been initialized, the function
+ * will simply return.
+ *
+ * This makes sure translations, types, themes, and icons for the Handy library
+ * are set up properly.
  */
-static void
-hdy_constructor (void)
+void
+hdy_init (void)
 {
+  if (hdy_initialized)
+    return;
+
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   hdy_init_public_types ();
 
- /* Initializes the style and icons when the main loop starts, which should be
-  * before any window shows up but after GTK is initialized.
-  */
-  g_idle_add_full (HDY_PRIORITY_STYLE, (GSourceFunc) init_theme_cb, NULL, NULL);
-}
+  hdy_style_init ();
+  hdy_icons_init ();
 
-#else
-# error Your platform/compiler is missing constructor support
-#endif
+  hdy_initialized = TRUE;
+}
