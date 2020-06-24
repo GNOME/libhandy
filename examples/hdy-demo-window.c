@@ -30,6 +30,7 @@ struct _HdyDemoWindow
   HdyComboRow *carousel_indicator_style_row;
   HdyAvatar *avatar;
   GtkFileChooserButton *avatar_filechooser;
+  HdyHeaderGroup *header_group;
 };
 
 G_DEFINE_TYPE (HdyDemoWindow, hdy_demo_window, HDY_TYPE_APPLICATION_WINDOW)
@@ -77,6 +78,13 @@ hdy_demo_window_key_pressed_cb (GtkWidget     *sender,
   }
 
   return FALSE;
+}
+
+static void
+hdy_demo_window_leaflet_folded_cb (HdyDemoWindow *self)
+{
+  hdy_header_group_set_depth (self->header_group,
+                              hdy_leaflet_get_folded (self->content_box) ? 1 : 0);
 }
 
 static void
@@ -379,7 +387,9 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, carousel_indicator_style_row);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, avatar);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, avatar_filechooser);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, header_group);
   gtk_widget_class_bind_template_callback_full (widget_class, "key_pressed_cb", G_CALLBACK(hdy_demo_window_key_pressed_cb));
+  gtk_widget_class_bind_template_callback_full (widget_class, "leaflet_folded_cb", G_CALLBACK(hdy_demo_window_leaflet_folded_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "notify_visible_child_cb", G_CALLBACK(hdy_demo_window_notify_visible_child_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "notify_deck_visible_child_cb", G_CALLBACK(hdy_demo_window_notify_deck_visible_child_cb));
   gtk_widget_class_bind_template_callback_full (widget_class, "back_clicked_cb", G_CALLBACK(hdy_demo_window_back_clicked_cb));
