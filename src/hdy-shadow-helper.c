@@ -334,7 +334,7 @@ hdy_shadow_helper_draw_shadow (HdyShadowHelper *self,
                                GtkPanDirection  direction)
 {
   gdouble remaining_distance, shadow_opacity;
-  gint shadow_size, border_size, distance;
+  gint shadow_size, border_size, outline_size, distance;
 
   if (progress <= 0 || progress >= 1)
     return;
@@ -343,6 +343,7 @@ hdy_shadow_helper_draw_shadow (HdyShadowHelper *self,
 
   shadow_size = self->shadow_size;
   border_size = self->border_size;
+  outline_size = self->outline_size;
 
   switch (direction) {
   case GTK_PAN_DIRECTION_LEFT:
@@ -364,11 +365,27 @@ hdy_shadow_helper_draw_shadow (HdyShadowHelper *self,
 
   cairo_save (cr);
 
-  cairo_save (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
+  switch (direction) {
+  case GTK_PAN_DIRECTION_LEFT:
+    cairo_rectangle (cr, -outline_size, 0, width + outline_size, height);
+    break;
+  case GTK_PAN_DIRECTION_RIGHT:
+    cairo_rectangle (cr, 0, 0, width + outline_size, height);
+    break;
+  case GTK_PAN_DIRECTION_UP:
+    cairo_rectangle (cr, 0, -outline_size, width, height + outline_size);
+    break;
+  case GTK_PAN_DIRECTION_DOWN:
+    cairo_rectangle (cr, 0, 0, width, height + outline_size);
+    break;
+  default:
+    g_assert_not_reached ();
+  }
+  cairo_clip (cr);
+  gdk_window_mark_paint_from_clip (gtk_widget_get_window (self->widget), cr);
+
   cairo_set_source (cr, self->dimming_pattern);
   cairo_paint_with_alpha (cr, 1 - progress);
-  cairo_restore (cr);
 
   switch (direction) {
   case GTK_PAN_DIRECTION_RIGHT:
@@ -384,11 +401,8 @@ hdy_shadow_helper_draw_shadow (HdyShadowHelper *self,
     g_assert_not_reached ();
   }
 
-  cairo_save (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
   cairo_set_source (cr, self->shadow_pattern);
   cairo_paint_with_alpha (cr, shadow_opacity);
-  cairo_restore (cr);
 
   switch (direction) {
   case GTK_PAN_DIRECTION_RIGHT:
@@ -404,11 +418,8 @@ hdy_shadow_helper_draw_shadow (HdyShadowHelper *self,
     g_assert_not_reached ();
   }
 
-  cairo_save (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
   cairo_set_source (cr, self->border_pattern);
   cairo_paint (cr);
-  cairo_restore (cr);
 
   switch (direction) {
   case GTK_PAN_DIRECTION_RIGHT:
@@ -418,20 +429,17 @@ hdy_shadow_helper_draw_shadow (HdyShadowHelper *self,
     cairo_translate (cr, 0, border_size);
     break;
   case GTK_PAN_DIRECTION_LEFT:
-    cairo_translate (cr, -border_size, 0);
+    cairo_translate (cr, -outline_size, 0);
     break;
   case GTK_PAN_DIRECTION_UP:
-    cairo_translate (cr, 0, -border_size);
+    cairo_translate (cr, 0, -outline_size);
     break;
   default:
     g_assert_not_reached ();
   }
 
-  cairo_save (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_ATOP);
   cairo_set_source (cr, self->outline_pattern);
   cairo_paint (cr);
-  cairo_restore (cr);
 
   cairo_restore (cr);
 }
