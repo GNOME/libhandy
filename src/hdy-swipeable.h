@@ -23,12 +23,12 @@ G_DECLARE_INTERFACE (HdySwipeable, hdy_swipeable, HDY, SWIPEABLE, GtkWidget)
  * HdySwipeableInterface:
  * @parent: The parent interface.
  * @switch_child: Switches visible child.
- * @get_swipe_area: Gets the swipeable rectangle.
  * @get_distance: Gets the swipe distance.
  * @get_range: Gets the range of progress values.
  * @get_snap_points: Gets the snap points
  * @get_progress: Gets the current progress.
  * @get_cancel_progress: Gets the cancel progress.
+ * @get_swipe_area: Gets the swipeable rectangle.
  *
  * An interface for swipeable widgets.
  *
