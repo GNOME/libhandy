@@ -15,6 +15,8 @@
 
 G_BEGIN_DECLS
 
+typedef struct _HdySwipeTracker HdySwipeTracker;
+
 #define HDY_TYPE_SWIPEABLE (hdy_swipeable_get_type ())
 
 G_DECLARE_INTERFACE (HdySwipeable, hdy_swipeable, HDY, SWIPEABLE, GtkWidget)
@@ -23,6 +25,7 @@ G_DECLARE_INTERFACE (HdySwipeable, hdy_swipeable, HDY, SWIPEABLE, GtkWidget)
  * HdySwipeableInterface:
  * @parent: The parent interface.
  * @switch_child: Switches visible child.
+ * @get_swipe_tracker: Gets the swipe tracker.
  * @get_distance: Gets the swipe distance.
  * @get_range: Gets the range of progress values.
  * @get_snap_points: Gets the snap points
@@ -42,16 +45,17 @@ struct _HdySwipeableInterface
                         guint         index,
                         gint64        duration);
 
-  gdouble   (*get_distance)        (HdySwipeable *self);
-  void      (*get_range)           (HdySwipeable *self,
-                                    gdouble      *lower,
-                                    gdouble      *upper);
-  gdouble * (*get_snap_points)     (HdySwipeable *self,
-                                    gint         *n_snap_points);
-  gdouble   (*get_progress)        (HdySwipeable *self);
-  gdouble   (*get_cancel_progress) (HdySwipeable *self);
-  void      (*get_swipe_area)      (HdySwipeable *self,
-                                    GdkRectangle *rect);
+  HdySwipeTracker * (*get_swipe_tracker)   (HdySwipeable *self);
+  gdouble           (*get_distance)        (HdySwipeable *self);
+  void              (*get_range)           (HdySwipeable *self,
+                                            gdouble      *lower,
+                                            gdouble      *upper);
+  gdouble *         (*get_snap_points)     (HdySwipeable *self,
+                                            gint         *n_snap_points);
+  gdouble           (*get_progress)        (HdySwipeable *self);
+  gdouble           (*get_cancel_progress) (HdySwipeable *self);
+  void              (*get_swipe_area)      (HdySwipeable *self,
+                                            GdkRectangle *rect);
 };
 
 void hdy_swipeable_switch_child (HdySwipeable *self,
@@ -62,15 +66,16 @@ void hdy_swipeable_emit_child_switched (HdySwipeable *self,
                                         guint         index,
                                         gint64        duration);
 
-gdouble  hdy_swipeable_get_distance        (HdySwipeable *self);
-void     hdy_swipeable_get_range           (HdySwipeable *self,
-                                            gdouble      *lower,
-                                            gdouble      *upper);
-gdouble *hdy_swipeable_get_snap_points     (HdySwipeable *self,
-                                            gint         *n_snap_points);
-gdouble  hdy_swipeable_get_progress        (HdySwipeable *self);
-gdouble  hdy_swipeable_get_cancel_progress (HdySwipeable *self);
-void     hdy_swipeable_get_swipe_area      (HdySwipeable *self,
-                                            GdkRectangle *rect);
+HdySwipeTracker *hdy_swipeable_get_swipe_tracker   (HdySwipeable *self);
+gdouble          hdy_swipeable_get_distance        (HdySwipeable *self);
+void             hdy_swipeable_get_range           (HdySwipeable *self,
+                                                    gdouble      *lower,
+                                                    gdouble      *upper);
+gdouble         *hdy_swipeable_get_snap_points     (HdySwipeable *self,
+                                                    gint         *n_snap_points);
+gdouble          hdy_swipeable_get_progress        (HdySwipeable *self);
+gdouble          hdy_swipeable_get_cancel_progress (HdySwipeable *self);
+void             hdy_swipeable_get_swipe_area      (HdySwipeable *self,
+                                                    GdkRectangle *rect);
 
 G_END_DECLS
