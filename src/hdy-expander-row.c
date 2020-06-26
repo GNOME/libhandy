@@ -20,7 +20,8 @@
  * all that the row contains.
  *
  * It also supports adding a child as an action widget by specifying “action” as
- * the “type” attribute of a &lt;child&gt; element.
+ * the “type” attribute of a &lt;child&gt; element or as a prefix widget by
+ * specifying “prefix” for this same attribute.
  *
  * # CSS nodes
  *
@@ -191,6 +192,8 @@ hdy_expander_row_forall (GtkContainer *container,
                                                                  callback,
                                                                  callback_data);
   else {
+    if (priv->action_row)
+      gtk_container_foreach (GTK_CONTAINER (priv->action_row), callback, callback_data);
     if (priv->actions)
       gtk_container_foreach (GTK_CONTAINER (priv->actions), callback, callback_data);
     if (priv->list)
@@ -255,8 +258,10 @@ hdy_expander_row_remove (GtkContainer *container,
     GTK_CONTAINER_CLASS (hdy_expander_row_parent_class)->remove (container, child);
   else if (gtk_widget_get_parent (child) == GTK_WIDGET (priv->actions))
     gtk_container_remove (GTK_CONTAINER (priv->actions), child);
-  else
+  else if (gtk_widget_get_parent (child) == GTK_WIDGET (priv->list))
     gtk_container_remove (GTK_CONTAINER (priv->list), child);
+  else
+    gtk_container_remove (GTK_CONTAINER (priv->action_row), child);
 }
 
 static void
@@ -420,6 +425,8 @@ hdy_expander_row_buildable_add_child (GtkBuildable *buildable,
     gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (child));
   else if (type && strcmp (type, "action") == 0)
     hdy_expander_row_add_action (self, GTK_WIDGET (child));
+  else if (type && strcmp (type, "prefix") == 0)
+    hdy_expander_row_add_prefix (self, GTK_WIDGET (child));
   else
     GTK_BUILDER_WARN_INVALID_CHILD_TYPE (self, type);
 }
@@ -785,4 +792,28 @@ hdy_expander_row_add_action (HdyExpanderRow *self,
 
   gtk_box_pack_start (priv->actions, widget, FALSE, TRUE, 0);
   gtk_widget_show (GTK_WIDGET (priv->actions));
+}
+
+/**
+ * hdy_expander_row_add_prefix:
+ * @self: a #HdyExpanderRow
+ * @widget: the prefix widget
+ *
+ * Adds a prefix widget to @self
+ *
+ * Since: 1.0
+ */
+void
+hdy_expander_row_add_prefix (HdyExpanderRow *self,
+                             GtkWidget      *widget)
+{
+  HdyExpanderRowPrivate *priv;
+
+  g_return_if_fail (HDY_IS_EXPANDER_ROW (self));
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+
+  priv = hdy_expander_row_get_instance_private (self);
+
+  hdy_action_row_add_prefix (priv->action_row, widget);
+  gtk_container_remove (GTK_CONTAINER (self), widget);
 }
