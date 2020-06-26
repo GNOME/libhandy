@@ -803,7 +803,7 @@ hdy_expander_row_add_action (HdyExpanderRow *self,
  * @self: a #HdyExpanderRow
  * @widget: the prefix widget
  *
- * Adds a prefix widget to @self
+ * Adds a prefix widget to @self.
  *
  * Since: 1.0
  */
