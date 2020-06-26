@@ -685,7 +685,7 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
   object_class->set_property = hdy_swipe_tracker_set_property;
 
   /**
-   * HdySwipeTracker:widget:
+   * HdySwipeTracker:swipeable:
    *
    * The widget the swipe tracker is attached to. Must not be %NULL.
    *
