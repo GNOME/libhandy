@@ -90,6 +90,15 @@ enum {
 
 static GParamSpec *props[LAST_PROP];
 
+enum {
+  SIGNAL_BEGIN_SWIPE,
+  SIGNAL_UPDATE_SWIPE,
+  SIGNAL_END_SWIPE,
+  SIGNAL_LAST_SIGNAL,
+};
+
+static guint signals[SIGNAL_LAST_SIGNAL];
+
 static void
 reset (HdySwipeTracker *self)
 {
@@ -116,7 +125,7 @@ gesture_prepare (HdySwipeTracker        *self,
   if (self->state != HDY_SWIPE_TRACKER_STATE_NONE)
     return;
 
-  hdy_swipeable_begin_swipe (self->swipeable, direction, TRUE);
+  hdy_swipe_tracker_emit_begin_swipe (self, direction, TRUE);
 
   self->initial_progress = hdy_swipeable_get_progress (self->swipeable);
   self->progress = self->initial_progress;
@@ -166,7 +175,7 @@ gesture_update (HdySwipeTracker *self,
 
   self->progress = progress;
 
-  hdy_swipeable_update_swipe (self->swipeable, progress);
+  hdy_swipe_tracker_emit_update_swipe (self, progress);
 
   self->prev_time = time;
 }
@@ -241,7 +250,7 @@ gesture_end (HdySwipeTracker *self,
   if (self->progress != end_progress)
     duration = CLAMP (duration, MIN_ANIMATION_DURATION, MAX_ANIMATION_DURATION);
 
-  hdy_swipeable_end_swipe (self->swipeable, duration, end_progress);
+  hdy_swipe_tracker_emit_end_swipe (self, duration, end_progress);
 
   if (self->cancelled)
     reset (self);
@@ -601,7 +610,7 @@ hdy_swipe_tracker_get_property (GObject    *object,
 
   switch (prop_id) {
   case PROP_SWIPEABLE:
-    g_value_set_object (value, self->swipeable);
+    g_value_set_object (value, hdy_swipe_tracker_get_swipeable (self));
     break;
 
   case PROP_ENABLED:
@@ -739,6 +748,69 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
                                     "orientation");
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
+
+  /**
+   * HdySwipeTracker::begin-swipe:
+   * @self: The #HdySwipeTracker instance
+   * @direction: The direction of the swipe
+   * @direct: %TRUE if the swipe is directly triggered by a gesture,
+   *   %FALSE if it's triggered via a #HdySwipeGroup
+   *
+   * This signal is emitted when a possible swipe is detected.
+   *
+   * The @direction value can be used to restrict the swipe to a certain
+   * direction.
+   *
+   * Since: 1.0
+   */
+  signals[SIGNAL_BEGIN_SWIPE] =
+    g_signal_new ("begin-swipe",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  2,
+                  HDY_TYPE_NAVIGATION_DIRECTION, G_TYPE_BOOLEAN);
+
+  /**
+   * HdySwipeTracker::update-swipe:
+   * @self: The #HdySwipeTracker instance
+   * @progress: The current animation progress value
+   *
+   * This signal is emitted every time the progress value changes.
+   *
+   * Since: 1.0
+   */
+  signals[SIGNAL_UPDATE_SWIPE] =
+    g_signal_new ("update-swipe",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  1,
+                  G_TYPE_DOUBLE);
+
+  /**
+   * HdySwipeTracker::end-swipe:
+   * @self: The #HdySwipeTracker instance
+   * @duration: Snap-back animation duration in milliseconds
+   * @to: The progress value to animate to
+   *
+   * This signal is emitted as soon as the gesture has stopped.
+   *
+   * Since: 1.0
+   */
+  signals[SIGNAL_END_SWIPE] =
+    g_signal_new ("end-swipe",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  2,
+                  G_TYPE_INT64, G_TYPE_DOUBLE);
 }
 
 static void
@@ -773,6 +845,24 @@ hdy_swipe_tracker_new (HdySwipeable *swipeable)
   return g_object_new (HDY_TYPE_SWIPE_TRACKER,
                        "swipeable", swipeable,
                        NULL);
+}
+
+/**
+ * hdy_swipe_tracker_get_swipeable:
+ * @self: a #HdySwipeTracker
+ *
+ * Get @self's swipeable widget.
+ *
+ * Returns: the swipeable widget
+ *
+ * Since: 1.0
+ */
+HdySwipeable *
+hdy_swipe_tracker_get_swipeable (HdySwipeTracker *self)
+{
+  g_return_val_if_fail (HDY_IS_SWIPE_TRACKER (self), NULL);
+
+  return self->swipeable;
 }
 
 /**
@@ -925,4 +1015,33 @@ hdy_swipe_tracker_shift_position (HdySwipeTracker *self,
 
   self->progress += delta;
   self->initial_progress += delta;
+}
+
+void
+hdy_swipe_tracker_emit_begin_swipe (HdySwipeTracker        *self,
+                                    HdyNavigationDirection  direction,
+                                    gboolean                direct)
+{
+  g_return_if_fail (HDY_IS_SWIPE_TRACKER (self));
+
+  g_signal_emit (self, signals[SIGNAL_BEGIN_SWIPE], 0, direction, direct);
+}
+
+void
+hdy_swipe_tracker_emit_update_swipe (HdySwipeTracker *self,
+                                     gdouble          progress)
+{
+  g_return_if_fail (HDY_IS_SWIPE_TRACKER (self));
+
+  g_signal_emit (self, signals[SIGNAL_UPDATE_SWIPE], 0, progress);
+}
+
+void
+hdy_swipe_tracker_emit_end_swipe (HdySwipeTracker *self,
+                                  gint64           duration,
+                                  gdouble          to)
+{
+  g_return_if_fail (HDY_IS_SWIPE_TRACKER (self));
+
+  g_signal_emit (self, signals[SIGNAL_END_SWIPE], 0, duration, to);
 }

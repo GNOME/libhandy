@@ -21,6 +21,8 @@ G_DECLARE_FINAL_TYPE (HdySwipeTracker, hdy_swipe_tracker, HDY, SWIPE_TRACKER, GO
 
 HdySwipeTracker *hdy_swipe_tracker_new (HdySwipeable *swipeable);
 
+HdySwipeable    *hdy_swipe_tracker_get_swipeable (HdySwipeTracker *self);
+
 gboolean         hdy_swipe_tracker_get_enabled (HdySwipeTracker *self);
 void             hdy_swipe_tracker_set_enabled (HdySwipeTracker *self,
                                                 gboolean         enabled);
@@ -35,5 +37,14 @@ void             hdy_swipe_tracker_set_allow_mouse_drag (HdySwipeTracker *self,
 
 void             hdy_swipe_tracker_shift_position (HdySwipeTracker *self,
                                                    gdouble          delta);
+
+void             hdy_swipe_tracker_emit_begin_swipe (HdySwipeTracker        *self,
+                                                     HdyNavigationDirection  direction,
+                                                     gboolean                direct);
+void             hdy_swipe_tracker_emit_update_swipe (HdySwipeTracker *self,
+                                                      gdouble          progress);
+void             hdy_swipe_tracker_emit_end_swipe (HdySwipeTracker *self,
+                                                   gint64           duration,
+                                                   gdouble          to);
 
 G_END_DECLS
