@@ -685,17 +685,17 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
   object_class->set_property = hdy_swipe_tracker_set_property;
 
   /**
-   * HdySwipeTracker:widget:
+   * HdySwipeTracker:swipeable:
    *
    * The widget the swipe tracker is attached to. Must not be %NULL.
    *
-   * Since: 0.0.11
+   * Since: 0.0.13
    */
   props[PROP_SWIPEABLE] =
     g_param_spec_object ("swipeable",
                          _("Swipeable"),
                          _("The swipeable the swipe tracker is attached to"),
-                         GTK_TYPE_WIDGET,
+                         HDY_TYPE_SWIPEABLE,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
   /**
@@ -823,7 +823,7 @@ hdy_swipe_tracker_init (HdySwipeTracker *self)
 
 /**
  * hdy_swipe_tracker_new:
- * @widget: a #GtkWidget to add the tracker on
+ * @swipeable: a #GtkWidget to add the tracker on
  *
  * Create a new #HdySwipeTracker object on @widget.
  *
@@ -836,7 +836,7 @@ hdy_swipe_tracker_new (HdySwipeable *swipeable)
 {
   gpointer swipe_tracker;
 
-  g_return_val_if_fail (swipeable != NULL, NULL);
+  g_return_val_if_fail (HDY_IS_SWIPEABLE (swipeable), NULL);
 
   swipe_tracker = g_object_get_data (G_OBJECT (swipeable), "swipe-tracker");
 
@@ -853,7 +853,7 @@ hdy_swipe_tracker_new (HdySwipeable *swipeable)
  *
  * Get @self's swipeable widget.
  *
- * Returns: the swipeable widget
+ * Returns: (transfer none): the swipeable widget
  *
  * Since: 1.0
  */
@@ -1003,6 +1003,16 @@ hdy_swipe_tracker_set_allow_mouse_drag (HdySwipeTracker *self,
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ALLOW_MOUSE_DRAG]);
 }
 
+/**
+ * hdy_swipe_tracker_shift_position:
+ * @self: a #HdySwipeTracker
+ * @delta: the position delta
+ *
+ * Move the current progress value by @delta. This can be used to adjust the
+ * current position if snap points move during the gesture.
+ *
+ * Since: 1.0
+ */
 void
 hdy_swipe_tracker_shift_position (HdySwipeTracker *self,
                                   gdouble          delta)
