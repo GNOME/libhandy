@@ -125,6 +125,20 @@ reset (HdySwipeTracker *self)
 }
 
 static void
+get_range (HdySwipeTracker *self,
+           gdouble         *first,
+           gdouble         *last)
+{
+  g_autofree gdouble *points = NULL;
+  gint n;
+
+  points = hdy_swipeable_get_snap_points (self->swipeable, &n);
+
+  *first = points[0];
+  *last = points[n - 1];
+}
+
+static void
 gesture_prepare (HdySwipeTracker        *self,
                  HdyNavigationDirection  direction)
 {
@@ -171,7 +185,7 @@ gesture_update (HdySwipeTracker *self,
   if (time != self->prev_time)
     self->velocity = delta / (time - self->prev_time);
 
-  hdy_swipeable_get_range (self->swipeable, &first_point, &last_point);
+  get_range (self, &first_point, &last_point);
 
   progress = self->progress + delta;
   progress = CLAMP (progress, first_point, last_point);
@@ -324,7 +338,7 @@ drag_update_cb (HdySwipeTracker *self,
     gdouble first_point, last_point;
     gboolean is_overshooting;
 
-    hdy_swipeable_get_range (self->swipeable, &first_point, &last_point);
+    get_range (self, &first_point, &last_point);
 
     drag_distance = sqrt (offset_x * offset_x + offset_y * offset_y);
     is_overshooting = (offset < 0 && self->progress <= first_point) ||
@@ -442,7 +456,7 @@ handle_scroll_event (HdySwipeTracker *self,
     gboolean is_overshooting;
     gdouble first_point, last_point;
 
-    hdy_swipeable_get_range (self->swipeable, &first_point, &last_point);
+    get_range (self, &first_point, &last_point);
 
     is_overshooting = (delta < 0 && self->progress <= first_point) ||
                       (delta > 0 && self->progress >= last_point);
