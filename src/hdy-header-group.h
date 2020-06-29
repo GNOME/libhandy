@@ -27,15 +27,18 @@ typedef enum {
   HDY_HEADER_GROUP_CHILD_TYPE_INVALID,
   HDY_HEADER_GROUP_CHILD_TYPE_HEADER_BAR,
   HDY_HEADER_GROUP_CHILD_TYPE_GTK_HEADER_BAR,
+  HDY_HEADER_GROUP_CHILD_TYPE_HEADER_GROUP,
 } HdyHeaderGroupChildType;
 
 HdyHeaderGroupChild *hdy_header_group_child_new (void);
 
 HdyHeaderGroupChild *hdy_header_group_child_new_for_header_bar     (HdyHeaderBar *header_bar);
 HdyHeaderGroupChild *hdy_header_group_child_new_for_gtk_header_bar (GtkHeaderBar *header_bar);
+HdyHeaderGroupChild *hdy_header_group_child_new_for_header_group   (HdyHeaderGroup *header_group);
 
 HdyHeaderBar   *hdy_header_group_child_get_header_bar     (HdyHeaderGroupChild *self);
 GtkHeaderBar   *hdy_header_group_child_get_gtk_header_bar (HdyHeaderGroupChild *self);
+HdyHeaderGroup *hdy_header_group_child_get_header_group   (HdyHeaderGroupChild *self);
 
 HdyHeaderGroupChildType hdy_header_group_child_get_child_type (HdyHeaderGroupChild *self);
 
@@ -45,6 +48,8 @@ void hdy_header_group_add_header_bar     (HdyHeaderGroup *self,
                                           HdyHeaderBar   *header_bar);
 void hdy_header_group_add_gtk_header_bar (HdyHeaderGroup *self,
                                           GtkHeaderBar   *header_bar);
+void hdy_header_group_add_header_group   (HdyHeaderGroup *self,
+                                          HdyHeaderGroup *header_group);
 void hdy_header_group_add_child          (HdyHeaderGroup      *self,
                                           HdyHeaderGroupChild *child);
 
@@ -54,6 +59,8 @@ void hdy_header_group_remove_header_bar     (HdyHeaderGroup *self,
                                              HdyHeaderBar   *header_bar);
 void hdy_header_group_remove_gtk_header_bar (HdyHeaderGroup *self,
                                              GtkHeaderBar   *header_bar);
+void hdy_header_group_remove_header_group   (HdyHeaderGroup *self,
+                                             HdyHeaderGroup *header_group);
 void hdy_header_group_remove_child          (HdyHeaderGroup      *self,
                                              HdyHeaderGroupChild *child);
 
