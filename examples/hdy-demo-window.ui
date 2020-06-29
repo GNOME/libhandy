@@ -156,7 +156,7 @@
                         <property name="vexpand">False</property>
                         <property name="transition-type" bind-source="stack" bind-property="transition-type" bind-flags="sync-create"/>
                         <child>
-                          <object class="GtkHeaderBar" id="default_header_bar">
+                          <object class="HdyHeaderBar" id="default_header_bar">
                             <property name="visible">True</property>
                             <property name="expand">True</property>
                             <property name="show_close_button">True</property>
@@ -2205,10 +2205,15 @@
       <widget name="header_stack"/>
     </widgets>
   </object>
+  <object class="HdyHeaderGroup" id="header_group2">
+    <headerbars>
+      <headerbar name="header_bar"/>
+    </headerbars>
+  </object>
   <object class="HdyHeaderGroup" id="header_group">
     <property name="decorate-all" bind-source="content_box" bind-property="folded" bind-flags="sync-create"/>
     <headerbars>
-      <headerbar name="header_bar"/>
+      <headerbar name="header_group2"/>
       <headerbar name="default_header_bar"/>
       <headerbar name="search_bar_header_bar"/>
       <headerbar name="deck_header_bar"/>
