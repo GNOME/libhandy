@@ -11,6 +11,7 @@
 #endif
 
 #include <gtk/gtk.h>
+#include "hdy-header-bar.h"
 
 G_BEGIN_DECLS
 
@@ -24,19 +25,24 @@ G_DECLARE_FINAL_TYPE (HdyHeaderGroup, hdy_header_group, HDY, HEADER_GROUP, GObje
 
 typedef enum {
   HDY_HEADER_GROUP_CHILD_TYPE_INVALID,
+  HDY_HEADER_GROUP_CHILD_TYPE_HEADER_BAR,
   HDY_HEADER_GROUP_CHILD_TYPE_GTK_HEADER_BAR,
 } HdyHeaderGroupChildType;
 
 HdyHeaderGroupChild *hdy_header_group_child_new (void);
 
+HdyHeaderGroupChild *hdy_header_group_child_new_for_header_bar     (HdyHeaderBar *header_bar);
 HdyHeaderGroupChild *hdy_header_group_child_new_for_gtk_header_bar (GtkHeaderBar *header_bar);
 
+HdyHeaderBar   *hdy_header_group_child_get_header_bar     (HdyHeaderGroupChild *self);
 GtkHeaderBar   *hdy_header_group_child_get_gtk_header_bar (HdyHeaderGroupChild *self);
 
 HdyHeaderGroupChildType hdy_header_group_child_get_child_type (HdyHeaderGroupChild *self);
 
 HdyHeaderGroup *hdy_header_group_new (void);
 
+void hdy_header_group_add_header_bar     (HdyHeaderGroup *self,
+                                          HdyHeaderBar   *header_bar);
 void hdy_header_group_add_gtk_header_bar (HdyHeaderGroup *self,
                                           GtkHeaderBar   *header_bar);
 void hdy_header_group_add_child          (HdyHeaderGroup      *self,
@@ -44,6 +50,8 @@ void hdy_header_group_add_child          (HdyHeaderGroup      *self,
 
 GSList *hdy_header_group_get_children (HdyHeaderGroup *self);
 
+void hdy_header_group_remove_header_bar     (HdyHeaderGroup *self,
+                                             HdyHeaderBar   *header_bar);
 void hdy_header_group_remove_gtk_header_bar (HdyHeaderGroup *self,
                                              GtkHeaderBar   *header_bar);
 void hdy_header_group_remove_child          (HdyHeaderGroup      *self,
