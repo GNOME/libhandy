@@ -24,11 +24,10 @@
 #define DRAG_THRESHOLD_DISTANCE 5
 
 /**
- * PRIVATE:hdy-swipe-tracker
+ * SECTION:hdy-swipe-tracker
  * @short_description: Swipe tracker used in #HdyCarousel and #HdyLeaflet
  * @title: HdySwipeTracker
  * @See_also: #HdyCarousel, #HdyDeck, #HdyLeaflet, #HdySwipeable
- * @stability: Private
  *
  * The HdySwipeTracker object can be used for implementing widgets with swipe
  * gestures. It supports touch-based swipes, pointer dragging, and touchpad
@@ -38,7 +37,7 @@
  * If they expect to use horizontal orientation, #HdySwipeTracker:reversed
  * property can be used for supporting RTL text direction.
  *
- * Since: 0.0.11
+ * Since: 1.0
  */
 
 typedef enum {
@@ -592,7 +591,7 @@ static gboolean
 captured_event_cb (HdySwipeable *swipeable,
                    GdkEvent     *event)
 {
-  HdySwipeTracker *self = g_object_get_data (G_OBJECT (swipeable), "swipe-tracker");
+  HdySwipeTracker *self = hdy_swipeable_get_swipe_tracker (swipeable);
 
   g_assert (HDY_IS_SWIPE_TRACKER (self));
 
@@ -632,8 +631,6 @@ hdy_swipe_tracker_constructed (GObject *object)
 
   g_signal_connect_object (self->swipeable, "event", G_CALLBACK (handle_event_cb), self, G_CONNECT_SWAPPED);
 
-  g_object_set_data (G_OBJECT (self->swipeable), "swipe-tracker", self);
-
   /*
    * HACK: GTK3 has no other way to get events on capture phase.
    * This is a reimplementation of _gtk_widget_set_captured_event_handler(),
@@ -656,7 +653,6 @@ hdy_swipe_tracker_dispose (GObject *object)
   if (self->touch_gesture)
     g_signal_handlers_disconnect_by_data (self->touch_gesture, self);
 
-  g_object_set_data (G_OBJECT (self->swipeable), "swipe-tracker", NULL);
   g_object_set_data (G_OBJECT (self->swipeable), "captured-event-handler", NULL);
 
   g_clear_object (&self->touch_gesture);
@@ -754,7 +750,7 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
    *
    * The widget the swipe tracker is attached to. Must not be %NULL.
    *
-   * Since: 0.0.13
+   * Since: 1.0
    */
   props[PROP_SWIPEABLE] =
     g_param_spec_object ("swipeable",
@@ -769,7 +765,7 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
    * Whether the swipe tracker is enabled. When it's not enabled, no events
    * will be processed. Usually widgets will want to expose this via a property.
    *
-   * Since: 0.0.11
+   * Since: 1.0
    */
   props[PROP_ENABLED] =
     g_param_spec_boolean ("enabled",
@@ -784,7 +780,7 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
    * Whether to reverse the swipe direction. If the swipe tracker is horizontal,
    * it can be used for supporting RTL text direction.
    *
-   * Since: 0.0.11
+   * Since: 1.0
    */
   props[PROP_REVERSED] =
     g_param_spec_boolean ("reversed",
@@ -799,7 +795,7 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
    * Whether to allow dragging with mouse pointer. This should usually be
    * %FALSE.
    *
-   * Since: 0.0.11
+   * Since: 1.0
    */
   props[PROP_ALLOW_MOUSE_DRAG] =
     g_param_spec_boolean ("allow-mouse-drag",
@@ -894,18 +890,12 @@ hdy_swipe_tracker_init (HdySwipeTracker *self)
  *
  * Returns: the newly created #HdySwipeTracker object
  *
- * Since: 0.0.11
+ * Since: 1.0
  */
 HdySwipeTracker *
 hdy_swipe_tracker_new (HdySwipeable *swipeable)
 {
-  gpointer swipe_tracker;
-
   g_return_val_if_fail (HDY_IS_SWIPEABLE (swipeable), NULL);
-
-  swipe_tracker = g_object_get_data (G_OBJECT (swipeable), "swipe-tracker");
-
-  g_return_val_if_fail (swipe_tracker == NULL, NULL);
 
   return g_object_new (HDY_TYPE_SWIPE_TRACKER,
                        "swipeable", swipeable,
@@ -939,7 +929,7 @@ hdy_swipe_tracker_get_swipeable (HdySwipeTracker *self)
  *
  * Returns: %TRUE if @self is enabled
  *
- * Since: 0.0.11
+ * Since: 1.0
  */
 gboolean
 hdy_swipe_tracker_get_enabled (HdySwipeTracker *self)
@@ -957,7 +947,7 @@ hdy_swipe_tracker_get_enabled (HdySwipeTracker *self)
  * Set whether @self is enabled. When it's not enabled, no events will be
  * processed. Usually widgets will want to expose this via a property.
  *
- * Since: 0.0.11
+ * Since: 1.0
  */
 void
 hdy_swipe_tracker_set_enabled (HdySwipeTracker *self,
@@ -986,7 +976,7 @@ hdy_swipe_tracker_set_enabled (HdySwipeTracker *self,
  *
  * Returns: %TRUE is the direction is reversed
  *
- * Since: 0.0.11
+ * Since: 1.0
  */
 gboolean
 hdy_swipe_tracker_get_reversed (HdySwipeTracker *self)
@@ -1004,7 +994,7 @@ hdy_swipe_tracker_get_reversed (HdySwipeTracker *self)
  * Set whether to reverse the swipe direction. If @self is horizontal,
  * can be used for supporting RTL text direction.
  *
- * Since: 0.0.11
+ * Since: 1.0
  */
 void
 hdy_swipe_tracker_set_reversed (HdySwipeTracker *self,
@@ -1029,7 +1019,7 @@ hdy_swipe_tracker_set_reversed (HdySwipeTracker *self,
  *
  * Returns: %TRUE is mouse dragging is allowed
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 gboolean
 hdy_swipe_tracker_get_allow_mouse_drag (HdySwipeTracker *self)
@@ -1047,7 +1037,7 @@ hdy_swipe_tracker_get_allow_mouse_drag (HdySwipeTracker *self)
  * Set whether @self can be dragged with mouse pointer. This should usually be
  * %FALSE.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_swipe_tracker_set_allow_mouse_drag (HdySwipeTracker *self,

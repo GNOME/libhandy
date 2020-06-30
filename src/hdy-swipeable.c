@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LGPL-2.1+
  */
 
-#include "hdy-swipeable-private.h"
+#include "hdy-swipeable.h"
 
 /**
  * SECTION:hdy-swipeable
@@ -15,9 +15,7 @@
  * The #HdySwipeable interface is implemented by all swipeable widgets. They
  * can be synced using #HdySwipeGroup.
  *
- * #HdySwipeable is only meant to be used by libhandy widgets and is currently
- * implemented by #HdyCarousel, #HdyDeck and #HdyLeaflet. It should not be
- * implemented by applications.
+ * See #HdySwipeTracker for details about implementing it.
  *
  * Since: 0.0.12
  */
@@ -67,7 +65,7 @@ hdy_swipeable_default_init (HdySwipeableInterface *iface)
  *
  * See HdySwipeable::child-switched.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_swipeable_switch_child (HdySwipeable *self,
@@ -105,6 +103,29 @@ hdy_swipeable_emit_child_switched (HdySwipeable *self,
   g_return_if_fail (HDY_IS_SWIPEABLE (self));
 
   g_signal_emit (self, signals[SIGNAL_CHILD_SWITCHED], 0, index, duration);
+}
+
+/**
+ * hdy_swipeable_get_swipe_tracker:
+ * @self: a #HdySwipeable
+ *
+ * Gets the #HdySwipeTracker used by this swipeable widget.
+ *
+ * Returns: (transfer none): the swipe tracker
+ *
+ * Since: 1.0
+ */
+HdySwipeTracker *
+hdy_swipeable_get_swipe_tracker (HdySwipeable *self)
+{
+  HdySwipeableInterface *iface;
+
+  g_return_val_if_fail (HDY_IS_SWIPEABLE (self), NULL);
+
+  iface = HDY_SWIPEABLE_GET_IFACE (self);
+  g_return_val_if_fail (iface->get_swipe_tracker != NULL, NULL);
+
+  return (* iface->get_swipe_tracker) (self);
 }
 
 /**
