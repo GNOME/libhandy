@@ -329,6 +329,17 @@ hdy_action_row_activate_real (HdyActionRow *self)
   g_signal_emit (self, signals[SIGNAL_ACTIVATED], 0);
 }
 
+static gboolean
+hdy_action_row_focus(GtkWidget *widget, GtkDirectionType direction)
+{
+  HdyActionRow *self = HDY_ACTION_ROW (widget);
+  HdyActionRowPrivate *priv = hdy_action_row_get_instance_private (self);
+  if (priv->activatable_widget != NULL)
+    return GTK_WIDGET_GET_CLASS(priv->activatable_widget)->focus(priv->activatable_widget, direction);
+  return FALSE;
+}
+
+
 static void
 hdy_action_row_class_init (HdyActionRowClass *klass)
 {
@@ -342,6 +353,7 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
 
   widget_class->destroy = hdy_action_row_destroy;
   widget_class->show_all = hdy_action_row_show_all;
+  widget_class->focus = hdy_action_row_focus;
 
   container_class->add = hdy_action_row_add;
   container_class->remove = hdy_action_row_remove;
