@@ -35,6 +35,10 @@ gboolean         hdy_swipe_tracker_get_allow_mouse_drag (HdySwipeTracker *self);
 void             hdy_swipe_tracker_set_allow_mouse_drag (HdySwipeTracker *self,
                                                          gboolean         allow_mouse_drag);
 
+gboolean         hdy_swipe_tracker_get_allow_long_swipes (HdySwipeTracker *self);
+void             hdy_swipe_tracker_set_allow_long_swipes (HdySwipeTracker *self,
+                                                          gboolean         allow_long_swipes);
+
 void             hdy_swipe_tracker_shift_position (HdySwipeTracker *self,
                                                    gdouble          delta);
 
