@@ -349,6 +349,7 @@ hdy_action_row_focus (GtkWidget *widget,
   // If unsuccessful, grab the focus for ourselves.
   if (!gtk_widget_has_focus (widget)) {
     gtk_widget_grab_focus (widget);
+
     return TRUE;
   }
 
