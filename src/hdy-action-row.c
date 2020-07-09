@@ -330,26 +330,26 @@ hdy_action_row_activate_real (HdyActionRow *self)
 }
 
 static gboolean
-hdy_action_row_focus(GtkWidget *widget, GtkDirectionType direction)
+hdy_action_row_focus (GtkWidget *widget,
+                      GtkDirectionType direction)
 {
   HdyActionRow *self = HDY_ACTION_ROW (widget);
   HdyActionRowPrivate *priv = hdy_action_row_get_instance_private (self);
 
   // Assume that if row can't get focused, then neither can its children.
-  if (!gtk_widget_get_can_focus(widget))
+  if (!gtk_widget_get_can_focus (widget))
     return FALSE;
 
   // First try to give focus to activatable subwidget.
-  if (priv->activatable_widget != NULL && gtk_widget_get_can_focus(priv->activatable_widget))
-  {
-    GtkWidgetClass *klass = GTK_WIDGET_GET_CLASS(priv->activatable_widget);
-    return klass->focus(priv->activatable_widget, direction);
+  if (priv->activatable_widget != NULL && gtk_widget_get_can_focus (priv->activatable_widget)) {
+    GtkWidgetClass *klass = GTK_WIDGET_GET_CLASS (priv->activatable_widget);
+    return klass->focus (priv->activatable_widget, direction);
   }
 
   // If unsuccessful, grab the focus for ourselves.
-  if (!gtk_widget_has_focus(widget))
+  if (!gtk_widget_has_focus (widget))
   {
-    gtk_widget_grab_focus(widget);
+    gtk_widget_grab_focus (widget);
     return TRUE;
   }
   return FALSE;
