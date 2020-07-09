@@ -597,6 +597,7 @@ hdy_action_row_set_subtitle (HdyActionRow *self,
     return;
 
   gtk_label_set_text (priv->subtitle, subtitle);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (priv->subtitle), subtitle);
   gtk_widget_set_visible (GTK_WIDGET (priv->subtitle),
                           subtitle != NULL && g_strcmp0 (subtitle, "") != 0);
 
