@@ -352,6 +352,7 @@ hdy_action_row_focus (GtkWidget *widget,
     gtk_widget_grab_focus (widget);
     return TRUE;
   }
+
   return FALSE;
 }
 
