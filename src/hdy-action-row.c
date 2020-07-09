@@ -356,7 +356,6 @@ hdy_action_row_focus (GtkWidget *widget,
   return FALSE;
 }
 
-
 static void
 hdy_action_row_class_init (HdyActionRowClass *klass)
 {
