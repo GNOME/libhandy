@@ -140,12 +140,12 @@ glade_hdy_header_group_set_property (GladeWidgetAdaptor *adaptor,
 
     /* remove old widgets */
     if ((sg_widgets =
-         hdy_header_group_get_header_bars (HDY_HEADER_GROUP (object))) != NULL) {
+         hdy_header_group_get_children (HDY_HEADER_GROUP (object))) != NULL) {
       /* copy since we are modifying an internal list */
       sg_widgets = g_slist_copy (sg_widgets);
       for (slist = sg_widgets; slist; slist = slist->next)
-        hdy_header_group_remove_header_bar (HDY_HEADER_GROUP (object),
-                                            GTK_HEADER_BAR (slist->data));
+        hdy_header_group_remove_child (HDY_HEADER_GROUP (object),
+                                       HDY_HEADER_GROUP_CHILD (slist->data));
       g_slist_free (sg_widgets);
     }
 
@@ -153,7 +153,7 @@ glade_hdy_header_group_set_property (GladeWidgetAdaptor *adaptor,
     if ((widgets = g_value_get_boxed (value)) != NULL) {
       for (list = widgets; list; list = list->next)
         hdy_header_group_add_header_bar (HDY_HEADER_GROUP (object),
-                                         GTK_HEADER_BAR (list->data));
+                                         HDY_HEADER_BAR (list->data));
     }
   } else {
     GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object,
