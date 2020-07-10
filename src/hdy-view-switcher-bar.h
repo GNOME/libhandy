@@ -11,6 +11,8 @@
 #error "Only <handy.h> can be included directly."
 #endif
 
+#include "hdy-version.h"
+
 #include <gtk/gtk.h>
 
 #include "hdy-view-switcher.h"
@@ -23,23 +25,33 @@ struct _HdyViewSwitcherBarClass {
   GtkBinClass parent_class;
 };
 
+HDY_AVAILABLE_IN_ALL
 G_DECLARE_DERIVABLE_TYPE (HdyViewSwitcherBar, hdy_view_switcher_bar, HDY, VIEW_SWITCHER_BAR, GtkBin)
 
+HDY_AVAILABLE_IN_ALL
 GtkWidget *hdy_view_switcher_bar_new (void);
 
+HDY_AVAILABLE_IN_ALL
 HdyViewSwitcherPolicy hdy_view_switcher_bar_get_policy (HdyViewSwitcherBar *self);
+HDY_AVAILABLE_IN_ALL
 void                  hdy_view_switcher_bar_set_policy (HdyViewSwitcherBar    *self,
                                                         HdyViewSwitcherPolicy  policy);
 
+HDY_AVAILABLE_IN_ALL
 GtkIconSize hdy_view_switcher_bar_get_icon_size (HdyViewSwitcherBar *self);
+HDY_AVAILABLE_IN_ALL
 void        hdy_view_switcher_bar_set_icon_size (HdyViewSwitcherBar *self,
                                                  GtkIconSize         icon_size);
 
+HDY_AVAILABLE_IN_ALL
 GtkStack *hdy_view_switcher_bar_get_stack (HdyViewSwitcherBar *self);
+HDY_AVAILABLE_IN_ALL
 void      hdy_view_switcher_bar_set_stack (HdyViewSwitcherBar *self,
                                            GtkStack           *stack);
 
+HDY_AVAILABLE_IN_ALL
 gboolean hdy_view_switcher_bar_get_reveal (HdyViewSwitcherBar *self);
+HDY_AVAILABLE_IN_ALL
 void     hdy_view_switcher_bar_set_reveal (HdyViewSwitcherBar *self,
                                            gboolean            reveal);
 

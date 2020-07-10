@@ -11,6 +11,8 @@
 #error "Only <handy.h> can be included directly."
 #endif
 
+#include "hdy-version.h"
+
 #include <gtk/gtk.h>
 
 #include "hdy-view-switcher.h"
@@ -23,34 +25,49 @@ struct _HdyViewSwitcherTitleClass {
   GtkBinClass parent_class;
 };
 
+HDY_AVAILABLE_IN_ALL
 G_DECLARE_DERIVABLE_TYPE (HdyViewSwitcherTitle, hdy_view_switcher_title, HDY, VIEW_SWITCHER_TITLE, GtkBin)
 
+HDY_AVAILABLE_IN_ALL
 HdyViewSwitcherTitle *hdy_view_switcher_title_new (void);
 
+HDY_AVAILABLE_IN_ALL
 HdyViewSwitcherPolicy hdy_view_switcher_title_get_policy (HdyViewSwitcherTitle *self);
+HDY_AVAILABLE_IN_ALL
 void                  hdy_view_switcher_title_set_policy (HdyViewSwitcherTitle  *self,
                                                           HdyViewSwitcherPolicy  policy);
 
+HDY_AVAILABLE_IN_ALL
 GtkIconSize hdy_view_switcher_title_get_icon_size (HdyViewSwitcherTitle *self);
+HDY_AVAILABLE_IN_ALL
 void        hdy_view_switcher_title_set_icon_size (HdyViewSwitcherTitle *self,
                                                    GtkIconSize           icon_size);
 
+HDY_AVAILABLE_IN_ALL
 GtkStack *hdy_view_switcher_title_get_stack (HdyViewSwitcherTitle *self);
+HDY_AVAILABLE_IN_ALL
 void      hdy_view_switcher_title_set_stack (HdyViewSwitcherTitle *self,
                                              GtkStack             *stack);
 
+HDY_AVAILABLE_IN_ALL
 const gchar *hdy_view_switcher_title_get_title (HdyViewSwitcherTitle *self);
+HDY_AVAILABLE_IN_ALL
 void         hdy_view_switcher_title_set_title (HdyViewSwitcherTitle *self,
                                                 const gchar          *title);
 
+HDY_AVAILABLE_IN_ALL
 const gchar *hdy_view_switcher_title_get_subtitle (HdyViewSwitcherTitle *self);
+HDY_AVAILABLE_IN_ALL
 void         hdy_view_switcher_title_set_subtitle (HdyViewSwitcherTitle *self,
                                                    const gchar          *subtitle);
 
+HDY_AVAILABLE_IN_ALL
 gboolean hdy_view_switcher_title_get_view_switcher_enabled (HdyViewSwitcherTitle *self);
+HDY_AVAILABLE_IN_ALL
 void     hdy_view_switcher_title_set_view_switcher_enabled (HdyViewSwitcherTitle *self,
                                                             gboolean              enabled);
 
+HDY_AVAILABLE_IN_ALL
 gboolean hdy_view_switcher_title_get_title_visible (HdyViewSwitcherTitle *self);
 
 G_END_DECLS
