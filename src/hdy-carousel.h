@@ -73,7 +73,12 @@ gboolean        hdy_carousel_get_allow_mouse_drag (HdyCarousel *self);
 void            hdy_carousel_set_allow_mouse_drag (HdyCarousel *self,
                                                    gboolean     allow_mouse_drag);
 
+gboolean        hdy_carousel_get_allow_long_swipes (HdyCarousel *self);
+void            hdy_carousel_set_allow_long_swipes (HdyCarousel *self,
+                                                    gboolean     allow_long_swipes);
+
 guint           hdy_carousel_get_reveal_duration (HdyCarousel *self);
 void            hdy_carousel_set_reveal_duration (HdyCarousel *self,
                                                   guint        reveal_duration);
+
 G_END_DECLS
