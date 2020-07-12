@@ -1733,6 +1733,7 @@
                         <property name="visible">True</property>
                         <property name="center_content">True</property>
                         <property name="indicator_spacing">6</property>
+                        <property name="allow-long-swipes" bind-source="carousel_long_swipes" bind-property="active" bind-flags="sync-create|bidirectional"/>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
@@ -1824,6 +1825,19 @@
                                     <property name="title" translatable="yes">Page Indicators</property>
                                     <property name="visible">True</property>
                                     <signal name="notify::selected-index" handler="notify_carousel_indicator_style_cb" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="HdyActionRow">
+                                    <property name="visible">True</property>
+                                    <property name="title" translatable="yes">Long swipes</property>
+                                    <property name="activatable_widget">carousel_long_swipes</property>
+                                    <child>
+                                      <object class="GtkSwitch" id="carousel_long_swipes">
+                                        <property name="visible">True</property>
+                                        <property name="valign">center</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
