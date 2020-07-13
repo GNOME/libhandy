@@ -24,6 +24,7 @@ test_names = [
   'test-avatar',
   'test-carousel',
   'test-carousel-page-dots',
+  'test-carousel-page-lines',
   'test-combo-row',
   'test-deck',
   'test-expander-row',
