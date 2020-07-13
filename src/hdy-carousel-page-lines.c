@@ -25,7 +25,7 @@
  * SECTION:hdy-carousel-page-lines
  * @short_description: A lines indicator for #HdyCarousel
  * @title: HdyCarouselPageLines
- * @See_also: #HdyCarousel
+ * @See_also: #HdyCarousel, #HdyCarouselPageDots
  *
  * The #HdyCarouselPageLines widget can be used to show a set of thin and long
  * lines for each page of a given #HdyCarousel. Active page is shown with

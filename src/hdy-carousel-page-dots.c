@@ -25,7 +25,7 @@
  * SECTION:hdy-carousel-page-dots
  * @short_description: A dots indicator for #HdyCarousel
  * @title: HdyCarouselPageDots
- * @See_also: #HdyCarousel
+ * @See_also: #HdyCarousel, #HdyCarouselPageLines
  *
  * The #HdyCarouselPageDots widget can be used to show a set of dots for each
  * page of a given #HdyCarousel. Active dot gradually becomes larger and more
