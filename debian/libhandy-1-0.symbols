@@ -60,6 +60,10 @@ libhandy-1.so.0 libhandy-1-0 #MINVER#
  hdy_carousel_indicator_style_get_type@LIBHANDY_1_0 0.80.0
  hdy_carousel_insert@LIBHANDY_1_0 0.80.0
  hdy_carousel_new@LIBHANDY_1_0 0.80.0
+ hdy_carousel_page_dots_get_type@LIBHANDY_1_0 0.83.0
+ hdy_carousel_page_dots_get_carousel@LIBHANDY_1_0 0.83.0
+ hdy_carousel_page_dots_new@LIBHANDY_1_0 0.83.0
+ hdy_carousel_page_dots_set_carousel@LIBHANDY_1_0 0.83.0
  hdy_carousel_prepend@LIBHANDY_1_0 0.80.0
  hdy_carousel_reorder@LIBHANDY_1_0 0.80.0
  hdy_carousel_scroll_to@LIBHANDY_1_0 0.80.0
