@@ -51,10 +51,13 @@ guint            hdy_stackable_box_get_mode_transition_duration (HdyStackableBox
 void             hdy_stackable_box_set_mode_transition_duration (HdyStackableBox *self,
                                                                  guint            duration);
 
+gdouble          hdy_stackable_box_get_mode_transition_progress (HdyStackableBox *self);
+
 guint            hdy_stackable_box_get_child_transition_duration (HdyStackableBox *self);
 void             hdy_stackable_box_set_child_transition_duration (HdyStackableBox *self,
                                                                   guint            duration);
 gboolean         hdy_stackable_box_get_child_transition_running (HdyStackableBox *self);
+
 gboolean         hdy_stackable_box_get_interpolate_size (HdyStackableBox *self);
 void             hdy_stackable_box_set_interpolate_size (HdyStackableBox *self,
                                                          gboolean         interpolate_size);

@@ -63,6 +63,7 @@ enum {
   PROP_VISIBLE_CHILD_NAME,
   PROP_TRANSITION_TYPE,
   PROP_MODE_TRANSITION_DURATION,
+  PROP_MODE_TRANSITION_PROGRESS,
   PROP_CHILD_TRANSITION_DURATION,
   PROP_CHILD_TRANSITION_RUNNING,
   PROP_INTERPOLATE_SIZE,
@@ -81,6 +82,11 @@ enum {
   LAST_CHILD_PROP,
 };
 
+enum {
+  SIGNAL_CHILD_VISIBLE_CHANGED,
+  SIGNAL_LAST_SIGNAL,
+};
+
 typedef struct
 {
   HdyStackableBox *box;
@@ -88,6 +94,7 @@ typedef struct
 
 static GParamSpec *props[LAST_PROP];
 static GParamSpec *child_props[LAST_CHILD_PROP];
+static guint signals[SIGNAL_LAST_SIGNAL];
 
 static void hdy_leaflet_swipeable_init (HdySwipeableInterface *iface);
 
@@ -269,6 +276,25 @@ hdy_leaflet_set_mode_transition_duration (HdyLeaflet *self,
   g_return_if_fail (HDY_IS_LEAFLET (self));
 
   hdy_stackable_box_set_mode_transition_duration (HDY_GET_HELPER (self), duration);
+}
+
+/**
+ * hdy_leaflet_get_mode_transition_progress:
+ * @self: a #HdyLeaflet
+ *
+ * Returns the current animation progress value of the mode transition. 0 means
+ * folded, 1 means unfolded.
+ *
+ * Returns: the mode transition progress
+ *
+ * Since: 1.0
+ */
+gdouble
+hdy_leaflet_get_mode_transition_progress (HdyLeaflet *self)
+{
+  g_return_val_if_fail (HDY_IS_LEAFLET (self), 0);
+
+  return hdy_stackable_box_get_mode_transition_progress (HDY_GET_HELPER (self));
 }
 
 /**
@@ -683,6 +709,9 @@ hdy_leaflet_get_property (GObject    *object,
   case PROP_MODE_TRANSITION_DURATION:
     g_value_set_uint (value, hdy_leaflet_get_mode_transition_duration (self));
     break;
+  case PROP_MODE_TRANSITION_PROGRESS:
+    g_value_set_double (value, hdy_leaflet_get_mode_transition_progress (self));
+    break;
   case PROP_CHILD_TRANSITION_DURATION:
     g_value_set_uint (value, hdy_leaflet_get_child_transition_duration (self));
     break;
@@ -1016,6 +1045,21 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                        0, G_MAXUINT, 250,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyLeaflet:mode-transition-progress:
+   *
+   * The mode transition animation progress value. 0 means folded, 1 means
+   * unfolded.
+   *
+   * Since: 1.0
+   */
+  props[PROP_MODE_TRANSITION_PROGRESS] =
+    g_param_spec_double ("mode-transition-progress",
+                         _("Mode transition progress"),
+                         _("The mode transition animation progress value"),
+                         0.0, 1.0, 1.0,
+                         G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
+
   props[PROP_CHILD_TRANSITION_DURATION] =
     g_param_spec_uint ("child-transition-duration",
                        _("Child transition duration"),
@@ -1095,6 +1139,27 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
 
   gtk_container_class_install_child_properties (container_class, LAST_CHILD_PROP, child_props);
 
+  /**
+   * HdyLeaflet::child-visible-changed:
+   * @self: The #HdyLeaflet instance
+   * @child: The child
+   * @visible: The new value
+   *
+   * This signal is emitted after a child has been shown or hidden.
+   *
+   * Since: 1.0
+   */
+  signals[SIGNAL_CHILD_VISIBLE_CHANGED] =
+    g_signal_new ("child-visible-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  2,
+                  GTK_TYPE_WIDGET,
+                  G_TYPE_BOOLEAN);
+
   gtk_widget_class_set_accessible_role (widget_class, ATK_ROLE_PANEL);
   gtk_widget_class_set_css_name (widget_class, "leaflet");
 }
@@ -1120,16 +1185,28 @@ NOTIFY (notify_visible_child_cb, PROP_VISIBLE_CHILD);
 NOTIFY (notify_visible_child_name_cb, PROP_VISIBLE_CHILD_NAME);
 NOTIFY (notify_transition_type_cb, PROP_TRANSITION_TYPE);
 NOTIFY (notify_mode_transition_duration_cb, PROP_MODE_TRANSITION_DURATION);
+NOTIFY (notify_mode_transition_progress_cb, PROP_MODE_TRANSITION_PROGRESS);
 NOTIFY (notify_child_transition_duration_cb, PROP_CHILD_TRANSITION_DURATION);
 NOTIFY (notify_child_transition_running_cb, PROP_CHILD_TRANSITION_RUNNING);
 NOTIFY (notify_interpolate_size_cb, PROP_INTERPOLATE_SIZE);
 NOTIFY (notify_can_swipe_back_cb, PROP_CAN_SWIPE_BACK);
 NOTIFY (notify_can_swipe_forward_cb, PROP_CAN_SWIPE_FORWARD);
-
 static void
 notify_orientation_cb (HdyLeaflet *self)
 {
   g_object_notify (G_OBJECT (self), "orientation");
+}
+
+static void
+child_visible_changed_cb (HdyLeaflet *self,
+                          GtkWidget  *child,
+                          gboolean    visible)
+{
+  g_signal_emit (G_OBJECT (self),
+                 signals[SIGNAL_CHILD_VISIBLE_CHANGED],
+                 0,
+                 child,
+                 visible);
 }
 
 static void
@@ -1150,12 +1227,14 @@ hdy_leaflet_init (HdyLeaflet *self)
   g_signal_connect_object (priv->box, "notify::visible-child-name", G_CALLBACK (notify_visible_child_name_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::transition-type", G_CALLBACK (notify_transition_type_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::mode-transition-duration", G_CALLBACK (notify_mode_transition_duration_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "notify::mode-transition-progress", G_CALLBACK (notify_mode_transition_progress_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::child-transition-duration", G_CALLBACK (notify_child_transition_duration_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::child-transition-running", G_CALLBACK (notify_child_transition_running_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::interpolate-size", G_CALLBACK (notify_interpolate_size_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::can-swipe-back", G_CALLBACK (notify_can_swipe_back_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::can-swipe-forward", G_CALLBACK (notify_can_swipe_forward_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::orientation", G_CALLBACK (notify_orientation_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "child-visible-changed", G_CALLBACK (child_visible_changed_cb), self, G_CONNECT_SWAPPED);
 }
 
 static void
