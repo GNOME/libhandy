@@ -880,6 +880,15 @@ hdy_leaflet_get_cancel_progress (HdySwipeable *swipeable)
 }
 
 static void
+hdy_leaflet_get_swipe_area (HdySwipeable           *swipeable,
+                            HdyNavigationDirection  navigation_direction,
+                            gboolean                is_drag,
+                            GdkRectangle           *rect)
+{
+  hdy_stackable_box_get_swipe_area (HDY_GET_HELPER (swipeable), navigation_direction, is_drag, rect);
+}
+
+static void
 hdy_leaflet_class_init (HdyLeafletClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -1167,4 +1176,5 @@ hdy_leaflet_swipeable_init (HdySwipeableInterface *iface)
   iface->get_snap_points = hdy_leaflet_get_snap_points;
   iface->get_progress = hdy_leaflet_get_progress;
   iface->get_cancel_progress = hdy_leaflet_get_cancel_progress;
+  iface->get_swipe_area = hdy_leaflet_get_swipe_area;
 }
