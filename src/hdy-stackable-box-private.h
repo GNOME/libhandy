@@ -95,6 +95,9 @@ gdouble         *hdy_stackable_box_get_snap_points (HdyStackableBox *self,
                                                     gint            *n_snap_points);
 gdouble          hdy_stackable_box_get_progress (HdyStackableBox *self);
 gdouble          hdy_stackable_box_get_cancel_progress (HdyStackableBox *self);
+void             hdy_stackable_box_get_swipe_area (HdyStackableBox        *self,
+                                                   HdyNavigationDirection  navigation_direction,
+                                                   GdkRectangle           *rect);
 
 void             hdy_stackable_box_add (HdyStackableBox *self,
                                         GtkWidget       *widget);
