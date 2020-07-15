@@ -46,6 +46,7 @@ libhandy-1.so.0 libhandy-1-0 #MINVER#
  hdy_carousel_box_set_reveal_duration@LIBHANDY_1_0 0.81.0
  hdy_carousel_box_set_spacing@LIBHANDY_1_0 0.80.0
  hdy_carousel_box_stop_animation@LIBHANDY_1_0 0.80.0
+ hdy_carousel_get_allow_long_swipes@LIBHANDY_1_0 0.83.0
  hdy_carousel_get_allow_mouse_drag@LIBHANDY_1_0 0.80.0
  hdy_carousel_get_animation_duration@LIBHANDY_1_0 0.80.0
  hdy_carousel_get_center_content@LIBHANDY_1_0 0.80.0
@@ -64,6 +65,7 @@ libhandy-1.so.0 libhandy-1-0 #MINVER#
  hdy_carousel_reorder@LIBHANDY_1_0 0.80.0
  hdy_carousel_scroll_to@LIBHANDY_1_0 0.80.0
  hdy_carousel_scroll_to_full@LIBHANDY_1_0 0.80.0
+ hdy_carousel_set_allow_long_swipes@LIBHANDY_1_0 0.83.0
  hdy_carousel_set_allow_mouse_drag@LIBHANDY_1_0 0.80.0
  hdy_carousel_set_animation_duration@LIBHANDY_1_0 0.80.0
  hdy_carousel_set_center_content@LIBHANDY_1_0 0.80.0
@@ -337,12 +339,14 @@ libhandy-1.so.0 libhandy-1-0 #MINVER#
  hdy_swipe_tracker_emit_begin_swipe@LIBHANDY_1_0 0.82.0
  hdy_swipe_tracker_emit_end_swipe@LIBHANDY_1_0 0.82.0
  hdy_swipe_tracker_emit_update_swipe@LIBHANDY_1_0 0.82.0
+ hdy_swipe_tracker_get_allow_long_swipes@LIBHANDY_1_0 0.83.0
  hdy_swipe_tracker_get_allow_mouse_drag@LIBHANDY_1_0 0.0.12
  hdy_swipe_tracker_get_enabled@LIBHANDY_1_0 0.0.11
  hdy_swipe_tracker_get_reversed@LIBHANDY_1_0 0.0.11
  hdy_swipe_tracker_get_swipeable@LIBHANDY_1_0 0.82.0
  hdy_swipe_tracker_get_type@LIBHANDY_1_0 0.0.11
  hdy_swipe_tracker_new@LIBHANDY_1_0 0.0.11
+ hdy_swipe_tracker_set_allow_long_swipes@LIBHANDY_1_0 0.83.0
  hdy_swipe_tracker_set_allow_mouse_drag@LIBHANDY_1_0 0.0.12
  hdy_swipe_tracker_set_enabled@LIBHANDY_1_0 0.0.11
  hdy_swipe_tracker_set_reversed@LIBHANDY_1_0 0.0.11

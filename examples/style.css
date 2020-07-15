@@ -6,3 +6,19 @@ stacksidebar list {
 carousel.horizontal .carousel-icon {
   -gtk-icon-transform: rotate(90deg);
 }
+
+#carousel3 .card {
+  min-width: 300px;
+}
+
+carousel .card {
+  background: @theme_base_color;
+  color: @theme_text_color;
+  border-radius: 8px;
+  margin: 20px;
+  min-width: 150px;
+  box-shadow: 0 5px 10px -5px alpha(black, .3),
+              0 0 0 1px alpha(black, .1),
+              inset 0 0 0 1px alpha(white, .1);
+}
+
