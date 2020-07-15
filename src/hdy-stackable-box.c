@@ -81,6 +81,7 @@ enum {
 #define HDY_FOLD_FOLDED TRUE
 #define HDY_FOLD_MAX 2
 #define GTK_ORIENTATION_MAX 2
+#define HDY_SWIPE_BORDER 16
 
 typedef struct _HdyStackableBoxChildInfo HdyStackableBoxChildInfo;
 
@@ -2645,6 +2646,44 @@ gdouble
 hdy_stackable_box_get_cancel_progress (HdyStackableBox *self)
 {
   return 0;
+}
+
+void
+hdy_stackable_box_get_swipe_area (HdyStackableBox        *self,
+                                  HdyNavigationDirection  navigation_direction,
+                                  GdkRectangle           *rect)
+{
+  gint width = gtk_widget_get_allocated_width (GTK_WIDGET (self->container));
+  gint height = gtk_widget_get_allocated_height (GTK_WIDGET (self->container));
+
+  rect->x = 0;
+  rect->y = 0;
+  rect->width = width;
+  rect->height = height;
+
+  if (self->orientation == GTK_ORIENTATION_HORIZONTAL) {
+    gboolean is_rtl = gtk_widget_get_direction (GTK_WIDGET (self->container)) == GTK_TEXT_DIR_RTL;
+
+    if (self->transition_type == HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER &&
+         navigation_direction == HDY_NAVIGATION_DIRECTION_FORWARD) {
+      rect->width = MAX (self->child_transition.progress * width, HDY_SWIPE_BORDER);
+      rect->x = is_rtl ? 0 : width - rect->width;
+    } else if (self->transition_type == HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER &&
+               navigation_direction == HDY_NAVIGATION_DIRECTION_BACK) {
+      rect->width = MAX (self->child_transition.progress * width, HDY_SWIPE_BORDER);
+      rect->x = is_rtl ? width - rect->width : 0;
+    }
+  } else {
+    if (self->transition_type == HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER &&
+        navigation_direction == HDY_NAVIGATION_DIRECTION_FORWARD) {
+      rect->height = MAX (self->child_transition.progress * height, HDY_SWIPE_BORDER);
+      rect->y = height - rect->height;
+    } else if (self->transition_type == HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER &&
+               navigation_direction == HDY_NAVIGATION_DIRECTION_BACK) {
+      rect->height = MAX (self->child_transition.progress * height, HDY_SWIPE_BORDER);
+      rect->y = 0;
+    }
+  }
 }
 
 void
