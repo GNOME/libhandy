@@ -81,6 +81,7 @@ enum {
 #define HDY_FOLD_FOLDED TRUE
 #define HDY_FOLD_MAX 2
 #define GTK_ORIENTATION_MAX 2
+#define HDY_SWIPE_BORDER 40
 
 typedef struct _HdyStackableBoxChildInfo HdyStackableBoxChildInfo;
 
@@ -2648,6 +2649,44 @@ hdy_stackable_box_get_cancel_progress (HdyStackableBox *self)
 }
 
 void
+hdy_stackable_box_get_swipe_area (HdyStackableBox        *self,
+                                  HdyNavigationDirection  navigation_direction,
+                                  GdkRectangle           *rect)
+{
+  gint width = gtk_widget_get_allocated_width (GTK_WIDGET (self->container));
+  gint height = gtk_widget_get_allocated_height (GTK_WIDGET (self->container));
+
+  rect->x = 0;
+  rect->y = 0;
+  rect->width = width;
+  rect->height = height;
+
+  if (self->orientation == GTK_ORIENTATION_HORIZONTAL) {
+    gboolean is_rtl = gtk_widget_get_direction (GTK_WIDGET (self->container)) == GTK_TEXT_DIR_RTL;
+
+    if (self->transition_type == HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER &&
+         navigation_direction == HDY_NAVIGATION_DIRECTION_FORWARD) {
+      rect->x = is_rtl ? 0 : width - HDY_SWIPE_BORDER;
+      rect->width = HDY_SWIPE_BORDER;
+    } else if (self->transition_type == HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER &&
+               navigation_direction == HDY_NAVIGATION_DIRECTION_BACK) {
+      rect->x = is_rtl ? width - HDY_SWIPE_BORDER : 0;
+      rect->width = HDY_SWIPE_BORDER;
+    }
+  } else {
+    if (self->transition_type == HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER &&
+        navigation_direction == HDY_NAVIGATION_DIRECTION_FORWARD) {
+      rect->y = height - HDY_SWIPE_BORDER;
+      rect->height = HDY_SWIPE_BORDER;
+    } else if (self->transition_type == HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER &&
+               navigation_direction == HDY_NAVIGATION_DIRECTION_BACK) {
+      rect->y = 0;
+      rect->height = HDY_SWIPE_BORDER;
+    }
+  }
+}
+
+void
 hdy_stackable_box_switch_child (HdyStackableBox *self,
                                 guint            index,
                                 gint64           duration)
@@ -2694,6 +2733,8 @@ begin_swipe_cb (HdySwipeTracker        *tracker,
     self->child_transition.is_cancelled = FALSE;
   } else {
     HdyStackableBoxChildInfo *child;
+
+    /* FIXME */
 
     if ((can_swipe_in_direction (self, direction) || !direct) && self->folded)
       child = find_swipeable_child (self, direction);
