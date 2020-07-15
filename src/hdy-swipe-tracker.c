@@ -147,7 +147,7 @@ gesture_prepare (HdySwipeTracker        *self,
   if (self->state != HDY_SWIPE_TRACKER_STATE_NONE)
     return;
 
-  hdy_swipeable_get_swipe_area (self->swipeable, &rect);
+  hdy_swipeable_get_swipe_area (self->swipeable, direction, &rect);
 
   if (self->start_x < rect.x ||
       self->start_x >= rect.x + rect.width ||
