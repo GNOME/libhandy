@@ -2651,6 +2651,7 @@ hdy_stackable_box_get_cancel_progress (HdyStackableBox *self)
 void
 hdy_stackable_box_get_swipe_area (HdyStackableBox        *self,
                                   HdyNavigationDirection  navigation_direction,
+                                  GdkInputSource          input_source,
                                   GdkRectangle           *rect)
 {
   gint width = gtk_widget_get_allocated_width (GTK_WIDGET (self->container));
@@ -2660,6 +2661,14 @@ hdy_stackable_box_get_swipe_area (HdyStackableBox        *self,
   rect->y = 0;
   rect->width = width;
   rect->height = height;
+
+  g_message ("input_source %d", input_source);
+
+  if (input_source != GDK_SOURCE_TOUCHSCREEN)
+    return;
+
+  if (self->transition_type == HDY_STACKABLE_BOX_TRANSITION_TYPE_SLIDE)
+    return;
 
   if (self->orientation == GTK_ORIENTATION_HORIZONTAL) {
     gboolean is_rtl = gtk_widget_get_direction (GTK_WIDGET (self->container)) == GTK_TEXT_DIR_RTL;
@@ -2684,8 +2693,6 @@ hdy_stackable_box_get_swipe_area (HdyStackableBox        *self,
       rect->y = 0;
     }
   }
-
-  g_message ("progress %lf, %d:%d %dx%d", self->child_transition.progress, rect->x, rect->y, rect->width, rect->height);
 }
 
 void
@@ -2735,8 +2742,6 @@ begin_swipe_cb (HdySwipeTracker        *tracker,
     self->child_transition.is_cancelled = FALSE;
   } else {
     HdyStackableBoxChildInfo *child;
-
-    /* FIXME */
 
     if ((can_swipe_in_direction (self, direction) || !direct) && self->folded)
       child = find_swipeable_child (self, direction);

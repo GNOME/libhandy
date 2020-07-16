@@ -809,9 +809,10 @@ hdy_deck_get_cancel_progress (HdySwipeable *swipeable)
 static void
 hdy_deck_get_swipe_area (HdySwipeable           *swipeable,
                          HdyNavigationDirection  navigation_direction,
+                         GdkInputSource          input_source,
                          GdkRectangle           *rect)
 {
-  hdy_stackable_box_get_swipe_area (HDY_GET_HELPER (swipeable), navigation_direction, rect);
+  hdy_stackable_box_get_swipe_area (HDY_GET_HELPER (swipeable), navigation_direction, input_source, rect);
 }
 
 static void

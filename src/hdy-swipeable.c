@@ -229,6 +229,7 @@ hdy_swipeable_get_cancel_progress (HdySwipeable *self)
  * hdy_swipeable_get_swipe_area:
  * @self: a #HdySwipeable
  * @navigation_direction: the direction of the swipe area
+ * @input_source: the input source of the swipe area
  * @rect: (out): a pointer to a #GdkRectangle to store the swipe area
  *
  * Gets the area @self can start a swipe from for the given direction.
@@ -247,6 +248,7 @@ hdy_swipeable_get_cancel_progress (HdySwipeable *self)
 void
 hdy_swipeable_get_swipe_area (HdySwipeable           *self,
                               HdyNavigationDirection  navigation_direction,
+                              GdkInputSource          input_source,
                               GdkRectangle           *rect)
 {
   HdySwipeableInterface *iface;
@@ -257,7 +259,7 @@ hdy_swipeable_get_swipe_area (HdySwipeable           *self,
   iface = HDY_SWIPEABLE_GET_IFACE (self);
 
   if (iface->get_swipe_area) {
-    (* iface->get_swipe_area) (self, navigation_direction, rect);
+    (* iface->get_swipe_area) (self, navigation_direction, input_source, rect);
     return;
   }
 

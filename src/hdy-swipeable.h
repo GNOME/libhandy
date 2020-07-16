@@ -52,6 +52,7 @@ struct _HdySwipeableInterface
   gdouble           (*get_cancel_progress) (HdySwipeable *self);
   void              (*get_swipe_area)      (HdySwipeable           *self,
                                             HdyNavigationDirection  navigation_direction,
+                                            GdkInputSource          input_source,
                                             GdkRectangle           *rect);
 };
 
@@ -71,6 +72,7 @@ gdouble          hdy_swipeable_get_progress        (HdySwipeable *self);
 gdouble          hdy_swipeable_get_cancel_progress (HdySwipeable *self);
 void             hdy_swipeable_get_swipe_area      (HdySwipeable           *self,
                                                     HdyNavigationDirection  navigation_direction,
+                                                    GdkInputSource          input_source,
                                                     GdkRectangle           *rect);
 
 G_END_DECLS
