@@ -23,6 +23,8 @@ test_names = [
   'test-application-window',
   'test-avatar',
   'test-carousel',
+  'test-carousel-page-dots',
+  'test-carousel-page-lines',
   'test-combo-row',
   'test-deck',
   'test-expander-row',

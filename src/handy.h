@@ -30,6 +30,8 @@ G_BEGIN_DECLS
 #include "hdy-application-window.h"
 #include "hdy-avatar.h"
 #include "hdy-carousel.h"
+#include "hdy-carousel-page-dots.h"
+#include "hdy-carousel-page-lines.h"
 #include "hdy-clamp.h"
 #include "hdy-combo-row.h"
 #include "hdy-deck.h"

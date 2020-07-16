@@ -8,7 +8,6 @@ libhandy_resources = gnome.compile_resources(
 )
 
 hdy_public_enum_headers = [
-  'hdy-carousel.h',
   'hdy-deck.h',
   'hdy-header-bar.h',
   'hdy-header-group.h',
@@ -71,6 +70,8 @@ src_headers = [
   'hdy-application-window.h',
   'hdy-avatar.h',
   'hdy-carousel.h',
+  'hdy-carousel-page-dots.h',
+  'hdy-carousel-page-lines.h',
   'hdy-clamp.h',
   'hdy-combo-row.h',
   'hdy-deck.h',
@@ -120,6 +121,8 @@ src_sources = [
   'hdy-avatar.c',
   'hdy-carousel.c',
   'hdy-carousel-box.c',
+  'hdy-carousel-page-dots.c',
+  'hdy-carousel-page-lines.c',
   'hdy-clamp.c',
   'hdy-combo-row.c',
   'hdy-deck.c',
