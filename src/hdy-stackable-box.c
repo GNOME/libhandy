@@ -73,6 +73,7 @@ enum {
 
 enum {
   SIGNAL_CHILD_NOTIFY_VISIBLE,
+  SIGNAL_CHILD_NOTIFY_PROGRESS,
   SIGNAL_LAST_SIGNAL,
 };
 
@@ -96,6 +97,7 @@ struct _HdyStackableBoxChildInfo
   GtkRequisition min;
   GtkRequisition nat;
   gboolean visible;
+  gdouble visible_progress;
 };
 
 struct _HdyStackableBox
@@ -345,6 +347,16 @@ set_child_visible (HdyStackableBox          *self,
 }
 
 static void
+notify_child_progress (HdyStackableBox          *self,
+                       HdyStackableBoxChildInfo *child_info)
+{
+  if (!child_info)
+    return;
+
+  g_signal_emit (self, signals[SIGNAL_CHILD_NOTIFY_PROGRESS], 0, child_info->widget);
+}
+
+static void
 hdy_stackable_box_child_progress_updated (HdyStackableBox *self)
 {
   gtk_widget_queue_draw (GTK_WIDGET (self->container));
@@ -355,9 +367,16 @@ hdy_stackable_box_child_progress_updated (HdyStackableBox *self)
   else
     gtk_widget_queue_allocate (GTK_WIDGET (self->container));
 
+  if (self->folded) {
+    notify_child_progress (self, self->visible_child);
+    notify_child_progress (self, self->last_visible_child);
+  }
+
   if (!self->child_transition.is_gesture_active &&
       gtk_progress_tracker_get_state (&self->child_transition.tracker) == GTK_PROGRESS_STATE_AFTER) {
     if (self->child_transition.is_cancelled) {
+      HdyStackableBoxChildInfo *prev_child = self->visible_child;
+
       if (self->last_visible_child != NULL) {
         if (self->folded) {
           set_child_visible (self, self->last_visible_child, TRUE);
@@ -366,6 +385,9 @@ hdy_stackable_box_child_progress_updated (HdyStackableBox *self)
         self->visible_child = self->last_visible_child;
         self->last_visible_child = NULL;
       }
+
+      notify_child_progress (self, self->visible_child);
+      notify_child_progress (self, prev_child);
 
       self->child_transition.is_cancelled = FALSE;
 
@@ -636,11 +658,17 @@ static void
 hdy_stackable_box_set_position (HdyStackableBox *self,
                                 gdouble          pos)
 {
+  GList *l;
+
   self->mode_transition.current_pos = pos;
 
   gtk_widget_queue_allocate (GTK_WIDGET (self->container));
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_MODE_TRANSITION_PROGRESS]);
+
+  for (l = self->children; l; l = l->next)
+    if (l->data != self->visible_child)
+      notify_child_progress (self, l->data);
 }
 
 static void
@@ -2973,6 +3001,34 @@ hdy_stackable_box_get_child_visible (HdyStackableBox *self,
   return gtk_widget_get_child_visible (widget);
 }
 
+gdouble
+hdy_stackable_box_get_child_progress (HdyStackableBox *self,
+                                      GtkWidget       *widget)
+{
+  HdyStackableBoxChildInfo *child_info;
+
+  child_info = find_child_info_for_widget (self, widget);
+
+  g_return_val_if_fail (child_info != NULL, 0.0);
+
+  if (self->child_transition.is_gesture_active ||
+      gtk_progress_tracker_get_state (&self->child_transition.tracker) != GTK_PROGRESS_STATE_AFTER) {
+
+    if (child_info == self->visible_child)
+      return self->child_transition.progress;
+
+    if (child_info == self->last_visible_child)
+      return 1 - self->child_transition.progress;
+
+    return 0;
+  }
+
+  if (child_info == self->visible_child)
+    return 1;
+
+  return self->mode_transition.current_pos;
+}
+
 static void
 hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
 {
@@ -3173,6 +3229,16 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
    */
   signals[SIGNAL_CHILD_NOTIFY_VISIBLE] =
     g_signal_new ("child-notify-visible",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  1,
+                  GTK_TYPE_WIDGET);
+
+  signals[SIGNAL_CHILD_NOTIFY_PROGRESS] =
+    g_signal_new ("child-notify-progress",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
