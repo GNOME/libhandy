@@ -75,6 +75,7 @@ enum {
 enum {
   CHILD_PROP_0,
   CHILD_PROP_NAME,
+  CHILD_PROP_VISIBLE,
   LAST_CHILD_PROP,
 };
 
@@ -745,6 +746,10 @@ hdy_deck_get_child_property (GtkContainer *container,
     g_value_set_string (value, hdy_stackable_box_get_child_name (HDY_GET_HELPER (container), widget));
     break;
 
+  case CHILD_PROP_VISIBLE:
+    g_value_set_boolean (value, hdy_stackable_box_get_child_visible (HDY_GET_HELPER (container), widget));
+    break;
+
   default:
     GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
     break;
@@ -1033,6 +1038,18 @@ hdy_deck_class_init (HdyDeckClass *klass)
                          NULL,
                          G_PARAM_READWRITE);
 
+  /**
+   * HdyDeck:visible:
+   *
+   * Since: 1.0
+   */
+  child_props[CHILD_PROP_VISIBLE] =
+    g_param_spec_boolean ("visible",
+                          _("Visible"),
+                          _("Whether the child is currently visible"),
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
+
   gtk_container_class_install_child_properties (container_class, LAST_CHILD_PROP, child_props);
 
   gtk_widget_class_set_accessible_role (widget_class, ATK_ROLE_PANEL);
@@ -1069,6 +1086,15 @@ notify_orientation_cb (HdyDeck *self)
 }
 
 static void
+child_notify_visible_cb (HdyDeck   *self,
+                         GtkWidget *child)
+{
+  gtk_container_child_notify_by_pspec (GTK_CONTAINER (self),
+                                       child,
+                                       child_props[CHILD_PROP_VISIBLE]);
+}
+
+static void
 hdy_deck_init (HdyDeck *self)
 {
   HdyDeckPrivate *priv = hdy_deck_get_instance_private (self);
@@ -1088,6 +1114,7 @@ hdy_deck_init (HdyDeck *self)
   g_signal_connect_object (priv->box, "notify::can-swipe-back", G_CALLBACK (notify_can_swipe_back_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::can-swipe-forward", G_CALLBACK (notify_can_swipe_forward_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (priv->box, "notify::orientation", G_CALLBACK (notify_orientation_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_object (priv->box, "child-notify-visible", G_CALLBACK (child_notify_visible_cb), self, G_CONNECT_SWAPPED);
 }
 
 static void
