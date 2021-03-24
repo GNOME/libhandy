@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2020-08-27 12:30+0000\n"
-"PO-Revision-Date: 2020-08-30 19:13+0700\n"
+"POT-Creation-Date: 2020-12-19 10:32+0000\n"
+"PO-Revision-Date: 2021-03-12 09:28+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: glade/glade-hdy-carousel.c:160 glade/glade-hdy-header-bar.c:118
 #: glade/glade-hdy-leaflet.c:184
@@ -30,21 +30,18 @@ msgid "Remove placeholder from %s"
 msgstr "Hapus placeholder dari %s"
 
 #: glade/glade-hdy-header-bar.c:18
-#, fuzzy
 msgid "This property does not apply when a custom title is set"
-msgstr "Properti ini tidak berlaku ketika judul kustom diatur"
+msgstr "Properti ini tidak berlaku ketika judul ubahan diatur"
 
 #: glade/glade-hdy-header-bar.c:289
-#, fuzzy
 msgid ""
 "The decoration layout does not apply to header bars which do no show window "
 "controls"
 msgstr ""
-"Tata letak dekorasi tidak berlaku untuk header bar yang tidak menunjukkan "
+"Tata letak dekorasi tidak berlaku untuk bilah kepala yang tidak menampilkan "
 "kontrol jendela"
 
 #: glade/glade-hdy-leaflet.c:19
-#, fuzzy
 msgid "This property only applies when the leaflet is folded"
 msgstr "Properti ini hanya berlaku saat selebaran dilipat"
 
@@ -59,12 +56,11 @@ msgid "Add page to %s"
 msgstr "Tambahkan halaman ke %s"
 
 #: glade/glade-hdy-search-bar.c:101
-#, fuzzy
 msgid "Search bar is already full"
 msgstr "Bilah pencarian sudah penuh"
 
 #: glade/glade-hdy-utils.h:13
-#, fuzzy, c-format
+#, c-format
 msgid "Only objects of type %s can be added to objects of type %s."
 msgstr "Hanya objek bertipe %s dapat ditambahkan ke objek bertipe %s."
 
@@ -75,12 +71,10 @@ msgid "Icon name"
 msgstr "Nama ikon"
 
 #: src/hdy-action-row.c:368
-#, fuzzy
 msgid "Activatable widget"
 msgstr "Widget yang dapat diaktifkan"
 
 #: src/hdy-action-row.c:369
-#, fuzzy
 msgid "The widget to be activated when the row is activated"
 msgstr "Widget yang akan diaktifkan saat baris diaktifkan"
 
@@ -91,59 +85,52 @@ msgstr "Subjudul"
 
 #: src/hdy-action-row.c:397 src/hdy-expander-row.c:300
 #: src/hdy-preferences-row.c:130
-#, fuzzy
 msgid "Use underline"
 msgstr "Gunakan garis bawah"
 
 #: src/hdy-action-row.c:398 src/hdy-expander-row.c:301
 #: src/hdy-preferences-row.c:131
-#, fuzzy
 msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
 msgstr ""
-"Jika diatur, garis bawah dalam teks menunjukkan karakter berikutnya harus "
-"digunakan untuk kunci akselerator mnemonik"
+"Jika diatur, garis bawah dalam teks menunjukkan karakter berikutnya yang "
+"harus digunakan untuk tombol akselerator mnemonik"
 
-#: src/hdy-carousel-box.c:1088 src/hdy-carousel-box.c:1089
+#: src/hdy-carousel-box.c:1089 src/hdy-carousel-box.c:1090
 #: src/hdy-carousel.c:575 src/hdy-carousel.c:576
 msgid "Number of pages"
 msgstr "Banyaknya halaman"
 
-#: src/hdy-carousel-box.c:1104 src/hdy-carousel.c:592 src/hdy-header-bar.c:2093
+#: src/hdy-carousel-box.c:1105 src/hdy-carousel.c:592 src/hdy-header-bar.c:2093
 msgid "Position"
 msgstr "Posisi"
 
-#: src/hdy-carousel-box.c:1105 src/hdy-carousel.c:593
-#, fuzzy
+#: src/hdy-carousel-box.c:1106 src/hdy-carousel.c:593
 msgid "Current scrolling position"
-msgstr "Posisi bergulir saat ini"
+msgstr "Posisi gulir saat ini"
 
-#: src/hdy-carousel-box.c:1120 src/hdy-carousel.c:623 src/hdy-header-bar.c:2121
+#: src/hdy-carousel-box.c:1121 src/hdy-carousel.c:623 src/hdy-header-bar.c:2121
 msgid "Spacing"
 msgstr "Jarak"
 
-#: src/hdy-carousel-box.c:1121 src/hdy-carousel.c:624
-#, fuzzy
+#: src/hdy-carousel-box.c:1122 src/hdy-carousel.c:624
 msgid "Spacing between pages"
 msgstr "Jarak antar halaman"
 
-#: src/hdy-carousel-box.c:1137 src/hdy-carousel.c:668
-#, fuzzy
+#: src/hdy-carousel-box.c:1138 src/hdy-carousel.c:668
 msgid "Reveal duration"
-msgstr "Mengungkapkan durasi"
+msgstr "Durasi pengungkapan"
 
-#: src/hdy-carousel-box.c:1138 src/hdy-carousel.c:669
-#, fuzzy
+#: src/hdy-carousel-box.c:1139 src/hdy-carousel.c:669
 msgid "Page reveal duration"
-msgstr "Durasi tampilan halaman"
+msgstr "Durasi prmgungkapan halaman"
 
 #: src/hdy-carousel.c:609
 msgid "Interactive"
 msgstr "Interaktif"
 
 #: src/hdy-carousel.c:610
-#, fuzzy
 msgid "Whether the widget can be swiped"
 msgstr "Apakah widget dapat digesek"
 
@@ -152,33 +139,28 @@ msgid "Animation duration"
 msgstr "Durasi animasi"
 
 #: src/hdy-carousel.c:640
-#, fuzzy
 msgid "Default animation duration"
-msgstr "Durasi animasi default"
+msgstr "Durasi animasi baku"
 
-#: src/hdy-carousel.c:654 src/hdy-swipe-tracker.c:803
-#, fuzzy
+#: src/hdy-carousel.c:654 src/hdy-swipe-tracker.c:888
 msgid "Allow mouse drag"
-msgstr "Izinkan seret mouse"
+msgstr "Izinkan seret tetikus"
 
-#: src/hdy-carousel.c:655 src/hdy-swipe-tracker.c:804
-#, fuzzy
+#: src/hdy-carousel.c:655 src/hdy-swipe-tracker.c:889
 msgid "Whether to allow dragging with mouse pointer"
-msgstr "Apakah mengizinkan menyeret dengan penunjuk mouse"
+msgstr "Apakah mengizinkan menyeret dengan penunjuk tetikus"
 
 #: src/hdy-carousel-indicator-dots.c:392 src/hdy-carousel-indicator-dots.c:393
 #: src/hdy-carousel-indicator-lines.c:391
 #: src/hdy-carousel-indicator-lines.c:392
-#, fuzzy
 msgid "Carousel"
-msgstr "Carousel"
+msgstr ""
 
 #: src/hdy-clamp.c:417
 msgid "Maximum size"
 msgstr "Ukuran maksimum"
 
 #: src/hdy-clamp.c:418
-#, fuzzy
 msgid "The maximum size allocated to the child"
 msgstr "Ukuran maksimum yang dialokasikan untuk anak"
 
@@ -192,23 +174,21 @@ msgstr "Ambang batas pengencangan"
 msgid "The size from which the clamp will tighten its grip on the child"
 msgstr "Ukuran penjepit akan mengencangkan cengkeramannya pada anak"
 
-#: src/hdy-combo-row.c:416
+#: src/hdy-combo-row.c:418
 msgid "Selected index"
 msgstr "Indeks yang dipilih"
 
-#: src/hdy-combo-row.c:417
+#: src/hdy-combo-row.c:419
 msgid "The index of the selected item"
 msgstr "Indeks item yang dipilih"
 
-#: src/hdy-combo-row.c:435
-#, fuzzy
+#: src/hdy-combo-row.c:437
 msgid "Use subtitle"
-msgstr "Menggunakan subtitle"
+msgstr "Menggunakan sub judul"
 
-#: src/hdy-combo-row.c:436
-#, fuzzy
+#: src/hdy-combo-row.c:438
 msgid "Set the current value as the subtitle"
-msgstr "Menetapkan nilai saat ini sebagai subtitle"
+msgstr "Menetapkan nilai saat ini sebagai sub judul"
 
 #: src/hdy-deck.c:888
 msgid "Horizontally homogeneous"
@@ -229,62 +209,54 @@ msgid "Vertically homogeneous sizing"
 msgstr "Ukuran homogen vertikal"
 
 #: src/hdy-deck.c:916 src/hdy-leaflet.c:1018 src/hdy-squeezer.c:1098
-#: src/hdy-stackable-box.c:2993
-#, fuzzy
+#: src/hdy-stackable-box.c:2995
 msgid "Visible child"
 msgstr "Anak yang terlihat"
 
 #: src/hdy-deck.c:917
-#, fuzzy
 msgid "The widget currently visible"
-msgstr "Widget saat ini terlihat"
+msgstr "Widget yang saat ini terlihat"
 
-#: src/hdy-deck.c:930 src/hdy-leaflet.c:1025 src/hdy-stackable-box.c:3000
-#, fuzzy
+#: src/hdy-deck.c:930 src/hdy-leaflet.c:1025 src/hdy-stackable-box.c:3002
 msgid "Name of visible child"
 msgstr "Nama anak yang terlihat"
 
 #: src/hdy-deck.c:931
-#, fuzzy
 msgid "The name of the widget currently visible"
 msgstr "Nama widget yang saat ini terlihat"
 
 #: src/hdy-deck.c:949 src/hdy-leaflet.c:1044 src/hdy-squeezer.c:1112
-#: src/hdy-stackable-box.c:3019
+#: src/hdy-stackable-box.c:3021
 msgid "Transition type"
 msgstr "Jenis transisi"
 
 #: src/hdy-deck.c:950
-#, fuzzy
 msgid "The type of animation used to transition between children"
-msgstr "Jenis animasi yang digunakan untuk transisi antara anak-anak"
+msgstr "Jenis animasi yang digunakan untuk transisi antar anak"
 
 #: src/hdy-deck.c:963 src/hdy-header-bar.c:2203 src/hdy-squeezer.c:1105
 msgid "Transition duration"
 msgstr "Durasi transisi"
 
 #: src/hdy-deck.c:964
-#, fuzzy
 msgid "The transition animation duration, in milliseconds"
 msgstr "Durasi animasi transisi, dalam milidetik"
 
 #: src/hdy-deck.c:977 src/hdy-header-bar.c:2210 src/hdy-squeezer.c:1120
-#, fuzzy
 msgid "Transition running"
-msgstr "Transisi berjalan"
+msgstr "Transisi sedang berjalan"
 
 #: src/hdy-deck.c:978 src/hdy-header-bar.c:2211 src/hdy-squeezer.c:1121
-#, fuzzy
 msgid "Whether or not the transition is currently running"
 msgstr "Apakah transisi saat ini sedang berjalan atau tidak"
 
 #: src/hdy-deck.c:992 src/hdy-header-bar.c:2217 src/hdy-leaflet.c:1072
-#: src/hdy-squeezer.c:1127 src/hdy-stackable-box.c:3047
+#: src/hdy-squeezer.c:1127 src/hdy-stackable-box.c:3049
 msgid "Interpolate size"
 msgstr "Ukuran interpolasi"
 
 #: src/hdy-deck.c:993 src/hdy-header-bar.c:2218 src/hdy-leaflet.c:1073
-#: src/hdy-squeezer.c:1128 src/hdy-stackable-box.c:3048
+#: src/hdy-squeezer.c:1128 src/hdy-stackable-box.c:3050
 #, fuzzy
 msgid ""
 "Whether or not the size should smoothly change when changing between "
@@ -293,13 +265,13 @@ msgstr ""
 "Apakah ukuran harus lancar berubah ketika berubah antara anak-anak berukuran "
 "berbeda"
 
-#: src/hdy-deck.c:1007 src/hdy-leaflet.c:1087 src/hdy-preferences-window.c:520
-#: src/hdy-stackable-box.c:3062
+#: src/hdy-deck.c:1007 src/hdy-leaflet.c:1087 src/hdy-preferences-window.c:571
+#: src/hdy-stackable-box.c:3064
 #, fuzzy
 msgid "Can swipe back"
 msgstr "Dapat menggesek ke belakang"
 
-#: src/hdy-deck.c:1008 src/hdy-leaflet.c:1088 src/hdy-stackable-box.c:3063
+#: src/hdy-deck.c:1008 src/hdy-leaflet.c:1088 src/hdy-stackable-box.c:3065
 #, fuzzy
 msgid ""
 "Whether or not swipe gesture can be used to switch to the previous child"
@@ -307,12 +279,12 @@ msgstr ""
 "Apakah gerakan gesek dapat digunakan untuk beralih ke anak sebelumnya atau "
 "tidak"
 
-#: src/hdy-deck.c:1022 src/hdy-leaflet.c:1102 src/hdy-stackable-box.c:3077
+#: src/hdy-deck.c:1022 src/hdy-leaflet.c:1102 src/hdy-stackable-box.c:3079
 #, fuzzy
 msgid "Can swipe forward"
 msgstr "Dapat menggesek ke depan"
 
-#: src/hdy-deck.c:1023 src/hdy-leaflet.c:1103 src/hdy-stackable-box.c:3078
+#: src/hdy-deck.c:1023 src/hdy-leaflet.c:1103 src/hdy-stackable-box.c:3080
 #, fuzzy
 msgid "Whether or not swipe gesture can be used to switch to the next child"
 msgstr ""
@@ -593,16 +565,16 @@ msgstr "Mulai tindakan"
 msgid "The start action widget"
 msgstr "Widget aksi awal"
 
-#: src/hdy-leaflet.c:963 src/hdy-stackable-box.c:2938
+#: src/hdy-leaflet.c:963 src/hdy-stackable-box.c:2940
 msgid "Folded"
 msgstr "Dilipat"
 
-#: src/hdy-leaflet.c:964 src/hdy-stackable-box.c:2939
+#: src/hdy-leaflet.c:964 src/hdy-stackable-box.c:2941
 #, fuzzy
 msgid "Whether the widget is folded"
 msgstr "Apakah widget dilipat"
 
-#: src/hdy-leaflet.c:975 src/hdy-stackable-box.c:2950
+#: src/hdy-leaflet.c:975 src/hdy-stackable-box.c:2952
 #, fuzzy
 msgid "Horizontally homogeneous folded"
 msgstr "Dilipat secara horizontal homogen"
@@ -612,7 +584,7 @@ msgstr "Dilipat secara horizontal homogen"
 msgid "Horizontally homogeneous sizing when the leaflet is folded"
 msgstr "Ukuran horizontal homogen ketika selebaran dilipat"
 
-#: src/hdy-leaflet.c:987 src/hdy-stackable-box.c:2962
+#: src/hdy-leaflet.c:987 src/hdy-stackable-box.c:2964
 #, fuzzy
 msgid "Vertically homogeneous folded"
 msgstr "Dilipat secara vertikal homogen"
@@ -622,7 +594,7 @@ msgstr "Dilipat secara vertikal homogen"
 msgid "Vertically homogeneous sizing when the leaflet is folded"
 msgstr "Ukuran homogen secara vertikal ketika selebaran dilipat"
 
-#: src/hdy-leaflet.c:999 src/hdy-stackable-box.c:2974
+#: src/hdy-leaflet.c:999 src/hdy-stackable-box.c:2976
 #, fuzzy
 msgid "Box horizontally homogeneous"
 msgstr "Kotak horizontal homogen"
@@ -632,7 +604,7 @@ msgstr "Kotak horizontal homogen"
 msgid "Horizontally homogeneous sizing when the leaflet is unfolded"
 msgstr "Ukuran horizontal homogen ketika selebaran terungkap"
 
-#: src/hdy-leaflet.c:1011 src/hdy-stackable-box.c:2986
+#: src/hdy-leaflet.c:1011 src/hdy-stackable-box.c:2988
 #, fuzzy
 msgid "Box vertically homogeneous"
 msgstr "Kotak homogen secara vertikal"
@@ -647,42 +619,42 @@ msgstr "Ukuran vertikal homogen ketika selebaran terungkap"
 msgid "The widget currently visible when the leaflet is folded"
 msgstr "Widget saat ini terlihat ketika selebaran dilipat"
 
-#: src/hdy-leaflet.c:1026 src/hdy-stackable-box.c:3001
+#: src/hdy-leaflet.c:1026 src/hdy-stackable-box.c:3003
 #, fuzzy
 msgid "The name of the widget currently visible when the children are stacked"
 msgstr "Nama widget saat ini terlihat ketika anak-anak ditumpuk"
 
-#: src/hdy-leaflet.c:1045 src/hdy-stackable-box.c:3020
+#: src/hdy-leaflet.c:1045 src/hdy-stackable-box.c:3022
 #, fuzzy
 msgid "The type of animation used to transition between modes and children"
 msgstr "Jenis animasi yang digunakan untuk transisi antara mode dan anak-anak"
 
-#: src/hdy-leaflet.c:1051 src/hdy-stackable-box.c:3026
+#: src/hdy-leaflet.c:1051 src/hdy-stackable-box.c:3028
 #, fuzzy
 msgid "Mode transition duration"
 msgstr "Durasi transisi mode"
 
-#: src/hdy-leaflet.c:1052 src/hdy-stackable-box.c:3027
+#: src/hdy-leaflet.c:1052 src/hdy-stackable-box.c:3029
 #, fuzzy
 msgid "The mode transition animation duration, in milliseconds"
 msgstr "Durasi animasi transisi mode, dalam milidetik"
 
-#: src/hdy-leaflet.c:1058 src/hdy-stackable-box.c:3033
+#: src/hdy-leaflet.c:1058 src/hdy-stackable-box.c:3035
 #, fuzzy
 msgid "Child transition duration"
 msgstr "Durasi transisi anak"
 
-#: src/hdy-leaflet.c:1059 src/hdy-stackable-box.c:3034
+#: src/hdy-leaflet.c:1059 src/hdy-stackable-box.c:3036
 #, fuzzy
 msgid "The child transition animation duration, in milliseconds"
 msgstr "Durasi animasi transisi anak, dalam milidetik"
 
-#: src/hdy-leaflet.c:1065 src/hdy-stackable-box.c:3040
+#: src/hdy-leaflet.c:1065 src/hdy-stackable-box.c:3042
 #, fuzzy
 msgid "Child transition running"
 msgstr "Transisi anak berjalan"
 
-#: src/hdy-leaflet.c:1066 src/hdy-stackable-box.c:3041
+#: src/hdy-leaflet.c:1066 src/hdy-stackable-box.c:3043
 #, fuzzy
 msgid "Whether or not the child transition is currently running"
 msgstr "Apakah transisi anak saat ini sedang berjalan atau tidak"
@@ -706,22 +678,22 @@ msgstr "Deskripsi"
 msgid "The title of the preference"
 msgstr "Judul preferensi"
 
-#: src/hdy-preferences-window.c:141
+#: src/hdy-preferences-window.c:192
 #, fuzzy
 msgid "Untitled page"
 msgstr "Halaman tanpa judul"
 
-#: src/hdy-preferences-window.c:506
+#: src/hdy-preferences-window.c:557
 #, fuzzy
 msgid "Search enabled"
 msgstr "Pencarian diaktifkan"
 
-#: src/hdy-preferences-window.c:507
+#: src/hdy-preferences-window.c:558
 #, fuzzy
 msgid "Whether search is enabled"
 msgstr "Apakah pencarian diaktifkan"
 
-#: src/hdy-preferences-window.c:521
+#: src/hdy-preferences-window.c:572
 #, fuzzy
 msgid ""
 "Whether or not swipe gesture can be used to switch from a subpage to the "
@@ -768,11 +740,11 @@ msgstr "Tampilkan Tombol Tutup"
 msgid "Whether to show the close button in the toolbar"
 msgstr "Apakah akan menampilkan tombol tutup di bar alat"
 
-#: src/hdy-shadow-helper.c:254
+#: src/hdy-shadow-helper.c:257
 msgid "Widget"
 msgstr "Widget"
 
-#: src/hdy-shadow-helper.c:255
+#: src/hdy-shadow-helper.c:258
 #, fuzzy
 msgid "The widget the shadow will be drawn for"
 msgstr "Widget bayangan akan ditarik untuk"
@@ -816,7 +788,7 @@ msgstr "Y sejajar"
 msgid "The vertical alignment, from 0 (top) to 1 (bottom)"
 msgstr "Perataan vertikal, dari 0 (atas) ke 1 (bawah)"
 
-#: src/hdy-squeezer.c:1180 src/hdy-swipe-tracker.c:773
+#: src/hdy-squeezer.c:1180 src/hdy-swipe-tracker.c:858
 msgid "Enabled"
 msgstr "Difungsikan"
 
@@ -829,55 +801,55 @@ msgstr ""
 "Apakah anak dapat dipilih atau harus diabaikan ketika mencari anak yang "
 "sesuai dengan ukuran yang tersedia terbaik"
 
-#: src/hdy-stackable-box.c:2951
+#: src/hdy-stackable-box.c:2953
 #, fuzzy
 msgid "Horizontally homogeneous sizing when the widget is folded"
 msgstr "Ukuran horizontal homogen ketika widget dilipat"
 
-#: src/hdy-stackable-box.c:2963
+#: src/hdy-stackable-box.c:2965
 #, fuzzy
 msgid "Vertically homogeneous sizing when the widget is folded"
 msgstr "Ukuran vertikal homogen ketika widget dilipat"
 
-#: src/hdy-stackable-box.c:2975
+#: src/hdy-stackable-box.c:2977
 #, fuzzy
 msgid "Horizontally homogeneous sizing when the widget is unfolded"
 msgstr "Ukuran horizontal homogen ketika widget terungkap"
 
-#: src/hdy-stackable-box.c:2987
+#: src/hdy-stackable-box.c:2989
 #, fuzzy
 msgid "Vertically homogeneous sizing when the widget is unfolded"
 msgstr "Ukuran vertikal homogen ketika widget terungkap"
 
-#: src/hdy-stackable-box.c:2994
+#: src/hdy-stackable-box.c:2996
 #, fuzzy
 msgid "The widget currently visible when the widget is folded"
 msgstr "Widget saat ini terlihat ketika widget dilipat"
 
-#: src/hdy-stackable-box.c:3084 src/hdy-stackable-box.c:3085
+#: src/hdy-stackable-box.c:3086 src/hdy-stackable-box.c:3087
 msgid "Orientation"
 msgstr "Orientasi"
 
-#: src/hdy-swipe-tracker.c:758
+#: src/hdy-swipe-tracker.c:843
 #, fuzzy
 msgid "Swipeable"
 msgstr "Dapat digesek"
 
-#: src/hdy-swipe-tracker.c:759
+#: src/hdy-swipe-tracker.c:844
 #, fuzzy
 msgid "The swipeable the swipe tracker is attached to"
 msgstr "Pelacak gesek diseks dilampirkan ke"
 
-#: src/hdy-swipe-tracker.c:774
+#: src/hdy-swipe-tracker.c:859
 #, fuzzy
 msgid "Whether the swipe tracker processes events"
 msgstr "Apakah pelacak gesek memproses peristiwa"
 
-#: src/hdy-swipe-tracker.c:788
+#: src/hdy-swipe-tracker.c:873
 msgid "Reversed"
 msgstr "Terbalik"
 
-#: src/hdy-swipe-tracker.c:789
+#: src/hdy-swipe-tracker.c:874
 #, fuzzy
 msgid "Whether swipe direction is reversed"
 msgstr "Apakah arah gesek dibalik"
@@ -903,19 +875,19 @@ msgctxt "HdyValueObjectClass"
 msgid "The contained value"
 msgstr "Nilai terkandung"
 
-#: src/hdy-view-switcher-bar.c:178 src/hdy-view-switcher.c:509
+#: src/hdy-view-switcher-bar.c:178 src/hdy-view-switcher.c:512
 #: src/hdy-view-switcher-title.c:230
 msgid "Policy"
 msgstr "Kebijakan"
 
-#: src/hdy-view-switcher-bar.c:179 src/hdy-view-switcher.c:510
+#: src/hdy-view-switcher-bar.c:179 src/hdy-view-switcher.c:513
 #: src/hdy-view-switcher-title.c:231
 #, fuzzy
 msgid "The policy to determine the mode to use"
 msgstr "Kebijakan untuk menentukan mode untuk"
 
 #: src/hdy-view-switcher-bar.c:192 src/hdy-view-switcher-bar.c:193
-#: src/hdy-view-switcher.c:544 src/hdy-view-switcher.c:545
+#: src/hdy-view-switcher.c:547 src/hdy-view-switcher.c:548
 #: src/hdy-view-switcher-title.c:244 src/hdy-view-switcher-title.c:245
 #, fuzzy
 msgid "Stack"
@@ -959,12 +931,12 @@ msgstr "Perlu perhatian"
 msgid "Hint the view needs attention"
 msgstr "Petunjuk tampilan membutuhkan perhatian"
 
-#: src/hdy-view-switcher.c:529
+#: src/hdy-view-switcher.c:532
 #, fuzzy
 msgid "Narrow ellipsize"
 msgstr "Elips sempit"
 
-#: src/hdy-view-switcher.c:530
+#: src/hdy-view-switcher.c:533
 #, fuzzy
 msgid ""
 "The preferred place to ellipsize the string, if the narrow mode label does "
