@@ -1002,6 +1002,7 @@ Try using it with a horizontally expanded clamp to make your search entry adapti
                     <child>
                       <object class="HdyCarousel" id="carousel">
                         <property name="visible">True</property>
+                        <property name="allow-scroll-wheel" bind-source="carousel_scroll_wheel" bind-property="active" bind-flags="sync-create|bidirectional"/>
                         <property name="allow-long-swipes" bind-source="carousel_long_swipes" bind-property="active" bind-flags="sync-create|bidirectional"/>
                         <child>
                           <object class="HdyStatusPage">
@@ -1044,6 +1045,20 @@ Try using it with a horizontally expanded clamp to make your search entry adapti
                                     <property name="title" translatable="yes">Page Indicators</property>
                                     <property name="visible">True</property>
                                     <signal name="notify::selected-index" handler="notify_carousel_indicators_cb" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="HdyActionRow">
+                                    <property name="visible">True</property>
+                                    <property name="title" translatable="yes">Scroll wheel</property>
+                                    <property name="activatable_widget">carousel_scroll_wheel</property>
+                                    <child>
+                                      <object class="GtkSwitch" id="carousel_scroll_wheel">
+                                        <property name="visible">True</property>
+                                        <property name="valign">center</property>
+                                        <property name="active">True</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                                 <child>
