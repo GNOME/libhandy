@@ -43,6 +43,8 @@ struct _HdyCarousel
 
   HdySwipeTracker *tracker;
 
+  gboolean allow_scroll_wheel;
+
   GtkOrientation orientation;
   guint animation_duration;
 
@@ -64,6 +66,7 @@ enum {
   PROP_SPACING,
   PROP_ANIMATION_DURATION,
   PROP_ALLOW_MOUSE_DRAG,
+  PROP_ALLOW_SCROLL_WHEEL,
   PROP_ALLOW_LONG_SWIPES,
   PROP_REVEAL_DURATION,
 
@@ -281,6 +284,9 @@ scroll_event_cb (HdyCarousel *self,
   GtkOrientation orientation;
   guint duration;
 
+  if (!self->allow_scroll_wheel)
+    return GDK_EVENT_PROPAGATE;
+
   if (!self->can_scroll)
     return GDK_EVENT_PROPAGATE;
 
@@ -474,6 +480,10 @@ hdy_carousel_get_property (GObject    *object,
     g_value_set_boolean (value, hdy_carousel_get_allow_mouse_drag (self));
     break;
 
+  case PROP_ALLOW_SCROLL_WHEEL:
+    g_value_set_boolean (value, hdy_carousel_get_allow_scroll_wheel (self));
+    break;
+
   case PROP_ALLOW_LONG_SWIPES:
     g_value_set_boolean (value, hdy_carousel_get_allow_long_swipes (self));
     break;
@@ -522,6 +532,10 @@ hdy_carousel_set_property (GObject      *object,
 
   case PROP_ALLOW_MOUSE_DRAG:
     hdy_carousel_set_allow_mouse_drag (self, g_value_get_boolean (value));
+    break;
+
+  case PROP_ALLOW_SCROLL_WHEEL:
+    hdy_carousel_set_allow_scroll_wheel (self, g_value_get_boolean (value));
     break;
 
   case PROP_ALLOW_LONG_SWIPES:
@@ -666,6 +680,21 @@ hdy_carousel_class_init (HdyCarouselClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
+   * HdyCarousel:allow-scroll-wheel:
+   *
+   * Whether the widget will respond to scroll wheel events. If the value is
+   * %FALSE, wheel events will be ignored.
+   *
+   * Since: 1.4
+   */
+  props[PROP_ALLOW_SCROLL_WHEEL] =
+    g_param_spec_boolean ("allow-scroll-wheel",
+                          _("Allow scroll wheel"),
+                          _("Whether the widget will respond to scroll wheel events"),
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
    * HdyCarousel:allow-long-swipes:
    *
    * Whether to allow swiping for more than one page at a time. If the value is
@@ -740,6 +769,8 @@ hdy_carousel_class_init (HdyCarouselClass *klass)
 static void
 hdy_carousel_init (HdyCarousel *self)
 {
+  self->allow_scroll_wheel = TRUE;
+
   g_type_ensure (HDY_TYPE_CAROUSEL_BOX);
   gtk_widget_init_template (GTK_WIDGET (self));
 
@@ -1082,6 +1113,50 @@ hdy_carousel_set_allow_mouse_drag (HdyCarousel *self,
   hdy_swipe_tracker_set_allow_mouse_drag (self->tracker, allow_mouse_drag);
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ALLOW_MOUSE_DRAG]);
+}
+
+/**
+ * hdy_carousel_get_allow_scroll_wheel:
+ * @self: a #HdyCarousel
+ *
+ * Gets whether @self will respond to scroll wheel events.
+ *
+ * Returns: %TRUE if @self will respond to scroll wheel events
+ *
+ * Since: 1.4
+ */
+gboolean
+hdy_carousel_get_allow_scroll_wheel (HdyCarousel *self)
+{
+  g_return_val_if_fail (HDY_IS_CAROUSEL (self), FALSE);
+
+  return self->allow_scroll_wheel;
+}
+
+/**
+ * hdy_carousel_set_allow_scroll_wheel:
+ * @self: a #HdyCarousel
+ * @allow_scroll_wheel: whether @self will respond to scroll wheel events.
+ *
+ * Sets whether @self will respond to scroll wheel events. If the value is
+ * %FALSE, wheel events will be ignored.
+ *
+ * Since: 1.4
+ */
+void
+hdy_carousel_set_allow_scroll_wheel (HdyCarousel *self,
+                                     gboolean     allow_scroll_wheel)
+{
+  g_return_if_fail (HDY_IS_CAROUSEL (self));
+
+  allow_scroll_wheel = !!allow_scroll_wheel;
+
+  if (self->allow_scroll_wheel == allow_scroll_wheel)
+    return;
+
+  self->allow_scroll_wheel = allow_scroll_wheel;
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_ALLOW_SCROLL_WHEEL]);
 }
 
 /**

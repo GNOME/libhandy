@@ -73,6 +73,12 @@ HDY_AVAILABLE_IN_ALL
 void            hdy_carousel_set_allow_mouse_drag (HdyCarousel *self,
                                                    gboolean     allow_mouse_drag);
 
+HDY_AVAILABLE_IN_1_4
+gboolean        hdy_carousel_get_allow_scroll_wheel (HdyCarousel *self);
+HDY_AVAILABLE_IN_1_4
+void            hdy_carousel_set_allow_scroll_wheel (HdyCarousel *self,
+                                                     gboolean     allow_scroll_wheel);
+
 HDY_AVAILABLE_IN_1_2
 gboolean        hdy_carousel_get_allow_long_swipes (HdyCarousel *self);
 HDY_AVAILABLE_IN_1_2

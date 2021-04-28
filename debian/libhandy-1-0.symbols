@@ -36,6 +36,7 @@ libhandy-1.so.0 libhandy-1-0 #MINVER#
  hdy_avatar_set_loadable_icon@LIBHANDY_1_0 1.2.0
  hdy_carousel_get_allow_long_swipes@LIBHANDY_1_0 1.2.0
  hdy_carousel_get_allow_mouse_drag@LIBHANDY_1_0 0.80.0
+ hdy_carousel_get_allow_scroll_wheel@LIBHANDY_1_0 1.2.0
  hdy_carousel_get_animation_duration@LIBHANDY_1_0 0.80.0
  hdy_carousel_get_interactive@LIBHANDY_1_0 0.80.0
  hdy_carousel_get_n_pages@LIBHANDY_1_0 0.80.0
@@ -59,6 +60,7 @@ libhandy-1.so.0 libhandy-1-0 #MINVER#
  hdy_carousel_scroll_to_full@LIBHANDY_1_0 0.80.0
  hdy_carousel_set_allow_long_swipes@LIBHANDY_1_0 1.2.0
  hdy_carousel_set_allow_mouse_drag@LIBHANDY_1_0 0.80.0
+ hdy_carousel_set_allow_scroll_wheel@LIBHANDY_1_0 1.2.0
  hdy_carousel_set_animation_duration@LIBHANDY_1_0 0.80.0
  hdy_carousel_set_interactive@LIBHANDY_1_0 0.80.0
  hdy_carousel_set_reveal_duration@LIBHANDY_1_0 0.81.0
