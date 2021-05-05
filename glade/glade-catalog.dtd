@@ -51,7 +51,8 @@
                              title        CDATA #REQUIRED
                              parent       CDATA #IMPLIED
                              get-type-function CDATA #IMPLIED
-                             adaptor      CDATA #IMPLIED>
+                             adaptor      CDATA #IMPLIED
+                             deprecated-since CDATA #IMPLIED>
 
 <!ELEMENT properties (property+)>
 

@@ -52,7 +52,9 @@ G_BEGIN_DECLS
 #include "hdy-swipeable.h"
 #include "hdy-tab-bar.h"
 #include "hdy-tab-view.h"
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 #include "hdy-title-bar.h"
+G_GNUC_END_IGNORE_DEPRECATIONS
 #include "hdy-types.h"
 #include "hdy-value-object.h"
 #include "hdy-view-switcher.h"

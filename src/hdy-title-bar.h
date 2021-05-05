@@ -21,12 +21,12 @@ G_BEGIN_DECLS
 HDY_AVAILABLE_IN_ALL
 G_DECLARE_FINAL_TYPE (HdyTitleBar, hdy_title_bar, HDY, TITLE_BAR, GtkBin)
 
-HDY_AVAILABLE_IN_ALL
+HDY_DEPRECATED_IN_1_4
 GtkWidget *hdy_title_bar_new (void);
 
-HDY_AVAILABLE_IN_ALL
+HDY_DEPRECATED_IN_1_4
 gboolean hdy_title_bar_get_selection_mode (HdyTitleBar *self);
-HDY_AVAILABLE_IN_ALL
+HDY_DEPRECATED_IN_1_4
 void hdy_title_bar_set_selection_mode (HdyTitleBar *self,
                                        gboolean     selection_mode);
 

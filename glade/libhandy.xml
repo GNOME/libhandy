@@ -403,7 +403,7 @@
         </property>
       </properties>
     </glade-widget-class>
-    <glade-widget-class name="HdyTitleBar" generic-name="titlebar" title="Title Bar"/>
+    <glade-widget-class name="HdyTitleBar" generic-name="titlebar" title="Title Bar" deprecated-since="1.4"/>
     <glade-widget-class name="HdyViewSwitcher" generic-name="viewswitcher" title="View Switcher" since="0.0.10"/>
     <glade-widget-class name="HdyViewSwitcherBar" generic-name="viewswitcherbar" title="View Switcher Bar" since="0.0.10"/>
     <glade-widget-class name="HdyViewSwitcherTitle" generic-name="viewswitchertitle" title="View Switcher Title" since="1.0">

@@ -9,6 +9,8 @@
 
 #include <glib/gi18n-lib.h>
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 /**
  * SECTION:hdy-title-bar
  * @short_description: A simple title bar container.
@@ -22,9 +24,14 @@
  * HdyTitleBar becomes really useful when you want to animate header bars, like
  * an adaptive application using #HdyLeaflet would do.
  *
+ * #HdyTitleBar has been deprecated, header bars can be animated without it
+ * when placed inside #HdyWindow or #HdyApplicationWindow.
+ *
  * # CSS nodes
  *
  * #HdyTitleBar has a single CSS node with name headerbar.
+ *
+ * Deprecated: 1.4
  */
 
 enum {
@@ -50,6 +57,8 @@ static GParamSpec *props[LAST_PROP];
  * @selection_mode: %TRUE to enable the selection mode
  *
  * Sets whether @self is in selection mode.
+ *
+ * Deprecated: 1.4
  */
 void
 hdy_title_bar_set_selection_mode (HdyTitleBar *self,
@@ -83,6 +92,8 @@ hdy_title_bar_set_selection_mode (HdyTitleBar *self,
  * Returns whether whether @self is in selection mode.
  *
  * Returns: %TRUE if the title bar is in selection mode
+ *
+ * Deprecated: 1.4
  */
 gboolean
 hdy_title_bar_get_selection_mode (HdyTitleBar *self)
@@ -302,13 +313,15 @@ hdy_title_bar_class_init (HdyTitleBarClass *klass)
    * HdyTitleBar:selection_mode:
    *
    * %TRUE if the title bar is in selection mode.
+   *
+   * Deprecated: 1.4
    */
   props[PROP_SELECTION_MODE] =
       g_param_spec_boolean ("selection-mode",
                             _("Selection mode"),
                             _("Whether or not the title bar is in selection mode"),
                             FALSE,
-                            G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+                            G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY | G_PARAM_DEPRECATED);
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
 
@@ -339,9 +352,13 @@ hdy_title_bar_init (HdyTitleBar *self)
  * Creates a new #HdyTitleBar.
  *
  * Returns: a new #HdyTitleBar
+ *
+ * Deprecated: 1.4
  */
 GtkWidget *
 hdy_title_bar_new (void)
 {
   return g_object_new (HDY_TYPE_TITLE_BAR, NULL);
 }
+
+G_GNUC_END_IGNORE_DEPRECATIONS
