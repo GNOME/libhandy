@@ -22,15 +22,15 @@ G_BEGIN_DECLS
 HDY_AVAILABLE_IN_ALL
 G_DECLARE_FINAL_TYPE (HdySwipeGroup, hdy_swipe_group, HDY, SWIPE_GROUP, GObject)
 
-HDY_AVAILABLE_IN_ALL
+HDY_DEPRECATED_IN_1_4
 HdySwipeGroup *hdy_swipe_group_new (void);
 
-HDY_AVAILABLE_IN_ALL
+HDY_DEPRECATED_IN_1_4
 void           hdy_swipe_group_add_swipeable    (HdySwipeGroup *self,
                                                  HdySwipeable  *swipeable);
-HDY_AVAILABLE_IN_ALL
+HDY_DEPRECATED_IN_1_4
 GSList *       hdy_swipe_group_get_swipeables   (HdySwipeGroup *self);
-HDY_AVAILABLE_IN_ALL
+HDY_DEPRECATED_IN_1_4
 void           hdy_swipe_group_remove_swipeable (HdySwipeGroup *self,
                                                  HdySwipeable  *swipeable);
 

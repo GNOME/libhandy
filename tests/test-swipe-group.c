@@ -6,6 +6,8 @@
 
 #include <handy.h>
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 static void
 test_hdy_swipe_group_add_remove (void)
 {
@@ -32,6 +34,8 @@ test_hdy_swipe_group_add_remove (void)
   hdy_swipe_group_remove_swipeable (group, swipeable1);
   g_assert_cmpint (g_slist_length (hdy_swipe_group_get_swipeables (group)), ==, 0);
 }
+
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 gint
 main (gint argc,

@@ -389,7 +389,7 @@
         <property id="icon-name" themed-icon="True" />
       </properties>
     </glade-widget-class>
-    <glade-widget-class name="HdySwipeGroup" generic-name="swipegroup" title="Swipe Group" toplevel="True">
+    <glade-widget-class name="HdySwipeGroup" generic-name="swipegroup" title="Swipe Group" toplevel="True" deprecated-since="1.4">
       <read-widget-function>glade_hdy_swipe_group_read_widget</read-widget-function>
       <write-widget-function>glade_hdy_swipe_group_write_widget</write-widget-function>
       <set-property-function>glade_hdy_swipe_group_set_property</set-property-function>

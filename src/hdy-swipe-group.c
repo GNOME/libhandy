@@ -16,6 +16,8 @@
 #define BUILDABLE_TAG_SWIPEABLES "swipeables"
 #define BUILDABLE_TAG_TEMPLATE "template"
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 /**
  * SECTION:hdy-swipe-group
  * @short_description: An object for syncing swipeable widgets.
@@ -45,7 +47,13 @@
  * </object>
  * ]|
  *
+ * #HdySwipeGroup has been deprecated, #HdyWindow and #HdyApplicationWindow
+ * allow using a single leaflet for both content and header bar, without the
+ * need to sync them.
+ *
  * Since: 0.0.12
+ *
+ * Deprecated: 1.4
  */
 
 struct _HdySwipeGroup
@@ -95,6 +103,8 @@ swipeable_destroyed (HdySwipeGroup *self,
  * Returns: The newly created #HdySwipeGroup object
  *
  * Since: 0.0.12
+ *
+ * Deprecated: 1.4
  */
 HdySwipeGroup *
 hdy_swipe_group_new (void)
@@ -218,6 +228,8 @@ end_swipe_cb (HdySwipeGroup   *self,
  * be removed from the swipe group.
  *
  * Since: 0.0.12
+ *
+ * Deprecated: 1.4
  */
 void
 hdy_swipe_group_add_swipeable (HdySwipeGroup *self,
@@ -253,6 +265,8 @@ hdy_swipe_group_add_swipeable (HdySwipeGroup *self,
  * Removes a widget from a #HdySwipeGroup.
  *
  * Since: 0.0.12
+ *
+ * Deprecated: 1.4
  **/
 void
 hdy_swipe_group_remove_swipeable (HdySwipeGroup *self,
@@ -285,6 +299,8 @@ hdy_swipe_group_remove_swipeable (HdySwipeGroup *self,
  *   swipeables. The list is owned by libhandy and should not be modified.
  *
  * Since: 0.0.12
+ *
+ * Deprecated: 1.4
  **/
 GSList *
 hdy_swipe_group_get_swipeables (HdySwipeGroup *self)
@@ -570,3 +586,5 @@ hdy_swipe_group_buildable_init (GtkBuildableIface *iface)
   iface->custom_tag_start = hdy_swipe_group_buildable_custom_tag_start;
   iface->custom_finished = hdy_swipe_group_buildable_custom_finished;
 }
+
+G_GNUC_END_IGNORE_DEPRECATIONS

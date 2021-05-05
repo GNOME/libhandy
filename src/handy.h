@@ -47,7 +47,9 @@ G_BEGIN_DECLS
 #include "hdy-search-bar.h"
 #include "hdy-squeezer.h"
 #include "hdy-status-page.h"
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 #include "hdy-swipe-group.h"
+G_GNUC_END_IGNORE_DEPRECATIONS
 #include "hdy-swipe-tracker.h"
 #include "hdy-swipeable.h"
 #include "hdy-tab-bar.h"
