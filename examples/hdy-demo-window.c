@@ -100,18 +100,10 @@ update (HdyDemoWindow *self)
 {
   const gchar *header_bar_name = "default";
 
-  if (g_strcmp0 (gtk_stack_get_visible_child_name (self->stack), "deck") == 0)
-    header_bar_name = "deck";
-  else if (g_strcmp0 (gtk_stack_get_visible_child_name (self->stack), "search-bar") == 0)
+  if (g_strcmp0 (gtk_stack_get_visible_child_name (self->stack), "search-bar") == 0)
     header_bar_name = "search-bar";
 
   gtk_stack_set_visible_child_name (self->header_stack, header_bar_name);
-}
-
-static void
-notify_deck_visible_child_cb (HdyDemoWindow *self)
-{
-  update (self);
 }
 
 static void
@@ -513,7 +505,6 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, avatar_contacts);
   gtk_widget_class_bind_template_callback (widget_class, key_pressed_cb);
   gtk_widget_class_bind_template_callback (widget_class, notify_visible_child_cb);
-  gtk_widget_class_bind_template_callback (widget_class, notify_deck_visible_child_cb);
   gtk_widget_class_bind_template_callback (widget_class, back_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, deck_back_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, notify_leaflet_transition_cb);
