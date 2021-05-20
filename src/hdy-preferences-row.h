@@ -30,6 +30,9 @@ struct _HdyPreferencesRowClass
   GtkListBoxRowClass parent_class;
 
   /*< private >*/
+  /* FIXME We can't use the padding because of an error in HdyActionRowClass
+   * that we can't fix without breaking the ABI.
+   */
   gpointer padding[4];
 };
 

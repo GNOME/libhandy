@@ -28,6 +28,9 @@ G_DECLARE_DERIVABLE_TYPE (HdyActionRow, hdy_action_row, HDY, ACTION_ROW, HdyPref
  */
 struct _HdyActionRowClass
 {
+  /* FIXME This should be HdyPreferencesRowClass but we can't change it without
+   * breaking the ABI.
+   */
   GtkListBoxRowClass parent_class;
 
   void (*activate) (HdyActionRow *self);
