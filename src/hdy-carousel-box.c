@@ -842,14 +842,14 @@ hdy_carousel_box_size_allocate (GtkWidget     *widget,
       if (gtk_widget_get_hexpand (child))
         child_size = MAX (min, allocation->width);
       else
-        child_size = MAX (min, nat);
+        child_size = CLAMP (nat, min, allocation->width);
     } else {
       gtk_widget_get_preferred_height_for_width (child, allocation->width,
                                                  &min, &nat);
       if (gtk_widget_get_vexpand (child))
         child_size = MAX (min, allocation->height);
       else
-        child_size = MAX (min, nat);
+        child_size = CLAMP (nat, min, allocation->height);
     }
 
     size = MAX (size, child_size);
