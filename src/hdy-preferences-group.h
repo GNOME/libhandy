@@ -48,4 +48,10 @@ HDY_AVAILABLE_IN_ALL
 void         hdy_preferences_group_set_description (HdyPreferencesGroup *self,
                                                     const gchar         *description);
 
+HDY_AVAILABLE_IN_1_4
+gboolean hdy_preferences_group_get_use_markup (HdyPreferencesGroup *self);
+HDY_AVAILABLE_IN_1_4
+void     hdy_preferences_group_set_use_markup (HdyPreferencesGroup *self,
+                                               gboolean             use_markup);
+
 G_END_DECLS

@@ -46,6 +46,7 @@ enum {
   PROP_0,
   PROP_DESCRIPTION,
   PROP_TITLE,
+  PROP_USE_MARKUP,
   LAST_PROP,
 };
 
@@ -160,6 +161,9 @@ hdy_preferences_group_get_property (GObject    *object,
   case PROP_TITLE:
     g_value_set_string (value, hdy_preferences_group_get_title (self));
     break;
+  case PROP_USE_MARKUP:
+    g_value_set_boolean (value, hdy_preferences_group_get_use_markup (self));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -179,6 +183,9 @@ hdy_preferences_group_set_property (GObject      *object,
     break;
   case PROP_TITLE:
     hdy_preferences_group_set_title (self, g_value_get_string (value));
+    break;
+  case PROP_USE_MARKUP:
+    hdy_preferences_group_set_use_markup (self, g_value_get_boolean (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -288,6 +295,20 @@ hdy_preferences_group_class_init (HdyPreferencesGroupClass *klass)
                          _("Title"),
                          "",
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+
+  /**
+   * HdyPreferencesGroup:use-markup:
+   *
+   * Whether to use markup for the title and description.
+   *
+   * Since: 1.4
+   */
+  props[PROP_USE_MARKUP] =
+    g_param_spec_boolean ("use-markup",
+                          _("Use markup"),
+                          _("Whether to uses markup"),
+                          FALSE,
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
 
@@ -425,6 +446,58 @@ hdy_preferences_group_set_description (HdyPreferencesGroup *self,
   update_description_visibility (self);
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_DESCRIPTION]);
+}
+
+/**
+ * hdy_preferences_group_get_use_markup:
+ * @self: a #HdyPreferencesGroup
+ *
+ * Gets whether @self uses markup for the title and description.
+ *
+ * Returns: Whether @self uses markup for its labels.
+ *
+ * Since: 1.4
+ */
+gboolean
+hdy_preferences_group_get_use_markup (HdyPreferencesGroup *self)
+{
+  HdyPreferencesGroupPrivate *priv;
+
+  g_return_val_if_fail (HDY_IS_PREFERENCES_GROUP (self), FALSE);
+
+  priv = hdy_preferences_group_get_instance_private (self);
+
+  return gtk_label_get_use_markup (priv->title);
+}
+
+/**
+ * hdy_preferences_group_set_use_markup:
+ * @self: a #HdyPreferencesGroup
+ * @use_markup: whether to use markup
+ *
+ * Sets whether @self uses markup for the title and description.
+ *
+ * Since: 1.4
+ */
+void
+hdy_preferences_group_set_use_markup (HdyPreferencesGroup *self,
+                                      gboolean             use_markup)
+{
+  HdyPreferencesGroupPrivate *priv;
+
+  g_return_if_fail (HDY_IS_PREFERENCES_GROUP (self));
+
+  priv = hdy_preferences_group_get_instance_private (self);
+
+  use_markup = !!use_markup;
+
+  if (gtk_label_get_use_markup (priv->title) == use_markup)
+    return;
+
+  gtk_label_set_use_markup (priv->title, use_markup);
+  gtk_label_set_use_markup (priv->description, use_markup);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_USE_MARKUP]);
 }
 
 static void

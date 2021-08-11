@@ -264,9 +264,11 @@ libhandy-1.so.0 libhandy-1-0 #MINVER#
  hdy_preferences_group_get_description@LIBHANDY_1_0 0.0.10
  hdy_preferences_group_get_title@LIBHANDY_1_0 0.0.10
  hdy_preferences_group_get_type@LIBHANDY_1_0 0.0.10
+ hdy_preferences_group_get_use_markup@LIBHANDY_1_0 1.4.0
  hdy_preferences_group_new@LIBHANDY_1_0 0.0.10
  hdy_preferences_group_set_description@LIBHANDY_1_0 0.0.10
  hdy_preferences_group_set_title@LIBHANDY_1_0 0.0.10
+ hdy_preferences_group_set_use_markup@LIBHANDY_1_0 1.4.0
  hdy_preferences_page_get_icon_name@LIBHANDY_1_0 0.0.10
  hdy_preferences_page_get_title@LIBHANDY_1_0 0.0.10
  hdy_preferences_page_get_type@LIBHANDY_1_0 0.0.10
