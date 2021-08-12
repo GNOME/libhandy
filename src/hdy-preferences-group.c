@@ -306,7 +306,7 @@ hdy_preferences_group_class_init (HdyPreferencesGroupClass *klass)
   props[PROP_USE_MARKUP] =
     g_param_spec_boolean ("use-markup",
                           _("Use markup"),
-                          _("Whether to uses markup"),
+                          _("Whether to use markup for the title and description"),
                           FALSE,
                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
