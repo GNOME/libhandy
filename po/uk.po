@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2021-08-11 13:52+0000\n"
-"PO-Revision-Date: 2021-08-11 19:21+0300\n"
+"POT-Creation-Date: 2021-08-12 12:05+0000\n"
+"PO-Revision-Date: 2021-08-12 15:15+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -773,13 +773,12 @@ msgstr "Опис"
 
 #: src/hdy-preferences-group.c:308
 msgid "Use markup"
-msgstr ""
-"Використовувати розмітку"
+msgstr "Використовувати розмітку"
 
 #: src/hdy-preferences-group.c:309
-msgid "Whether to uses markup"
-msgstr ""
-"Визначає, чи слід використовувати розмітку"
+#| msgid "Whether or not the title bar is in selection mode"
+msgid "Whether to use markup for the title and description"
+msgstr "Визначає, чи слід використовувати мову розмітки для заголовка і опису"
 
 #: src/hdy-preferences-row.c:116
 msgid "The title of the preference"
@@ -1293,6 +1292,9 @@ msgstr "Змінити розмір"
 #: src/hdy-window-handle-controller.c:298
 msgid "Always on Top"
 msgstr "Завжди зверху"
+
+#~ msgid "Whether to uses markup"
+#~ msgstr "Визначає, чи слід використовувати розмітку"
 
 #~ msgid "This property does not apply unless Show Indicators is set."
 #~ msgstr ""
