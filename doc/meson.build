@@ -19,6 +19,7 @@ private_headers = [
     'hdy-keypad-button-private.h',
     'hdy-preferences-group-private.h',
     'hdy-preferences-page-private.h',
+    'hdy-settings-private.h',
     'hdy-shadow-helper-private.h',
     'hdy-stackable-box-private.h',
     'hdy-swipe-tracker-private.h',

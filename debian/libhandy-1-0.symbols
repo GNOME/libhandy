@@ -72,6 +72,7 @@ libhandy-1.so.0 libhandy-1-0 #MINVER#
  hdy_clamp_new@LIBHANDY_1_0 0.82.0
  hdy_clamp_set_maximum_size@LIBHANDY_1_0 0.82.0
  hdy_clamp_set_tightening_threshold@LIBHANDY_1_0 0.82.0
+ hdy_color_scheme_get_type@LIBHANDY_1_0 1.6.0
  hdy_combo_row_bind_model@LIBHANDY_1_0 0.0.6
  hdy_combo_row_bind_name_model@LIBHANDY_1_0 0.0.6
  hdy_combo_row_get_model@LIBHANDY_1_0 0.0.6

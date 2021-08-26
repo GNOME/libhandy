@@ -21,6 +21,7 @@ hdy_public_enum_headers = [
 
 hdy_private_enum_headers = [
   'hdy-stackable-box-private.h',
+  'hdy-settings-private.h',
 ]
 
 version_data = configuration_data()
@@ -151,6 +152,7 @@ src_sources = [
   'hdy-preferences-row.c',
   'hdy-preferences-window.c',
   'hdy-search-bar.c',
+  'hdy-settings.c',
   'hdy-shadow-helper.c',
   'hdy-squeezer.c',
   'hdy-stackable-box.c',

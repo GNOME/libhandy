@@ -3,6 +3,7 @@
 #include "config.h"
 #include "hdy-enums-private.h"
 #include "hdy-stackable-box-private.h"
+#include "hdy-settings-private.h"
 
 /*** END file-header ***/
 
