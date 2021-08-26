@@ -15,6 +15,7 @@ hdy_public_enum_headers = [
   'hdy-leaflet.h',
   'hdy-navigation-direction.h',
   'hdy-squeezer.h',
+  'hdy-style-manager.h',
   'hdy-tab-bar.h',
   'hdy-view-switcher.h',
 ]
@@ -93,6 +94,7 @@ src_headers = [
   'hdy-search-bar.h',
   'hdy-squeezer.h',
   'hdy-status-page.h',
+  'hdy-style-manager.h',
   'hdy-swipe-group.h',
   'hdy-swipe-tracker.h',
   'hdy-swipeable.h',
@@ -157,6 +159,7 @@ src_sources = [
   'hdy-squeezer.c',
   'hdy-stackable-box.c',
   'hdy-status-page.c',
+  'hdy-style-manager.c',
   'hdy-swipe-group.c',
   'hdy-swipe-tracker.c',
   'hdy-swipeable.c',

@@ -40,6 +40,7 @@ test_names = [
   'test-search-bar',
   'test-squeezer',
   'test-status-page',
+  'test-style-manager',
   'test-swipe-group',
   'test-tab-bar',
   'test-tab-view',
