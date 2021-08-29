@@ -12,7 +12,8 @@ struct _HdyDemoWindow
   HdyLeaflet *content_box;
   GtkStack *header_revealer;
   GtkStack *header_stack;
-  GtkImage *theme_variant_image;
+  GtkWidget *color_scheme_button;
+  GtkImage *color_scheme_image;
   GtkStackSidebar *sidebar;
   GtkStack *stack;
   HdyComboRow *leaflet_transition_row;
@@ -42,20 +43,21 @@ struct _HdyDemoWindow
 G_DEFINE_TYPE (HdyDemoWindow, hdy_demo_window, HDY_TYPE_APPLICATION_WINDOW)
 
 static void
-theme_variant_button_clicked_cb (HdyDemoWindow *self)
+color_scheme_button_clicked_cb (HdyDemoWindow *self)
 {
-  GtkSettings *settings = gtk_settings_get_default ();
-  gboolean prefer_dark_theme;
+  HdyStyleManager *manager = hdy_style_manager_get_default ();
 
-  g_object_get (settings, "gtk-application-prefer-dark-theme", &prefer_dark_theme, NULL);
-  g_object_set (settings, "gtk-application-prefer-dark-theme", !prefer_dark_theme, NULL);
+  if (hdy_style_manager_get_dark (manager))
+    hdy_style_manager_set_color_scheme (manager, HDY_COLOR_SCHEME_FORCE_LIGHT);
+  else
+    hdy_style_manager_set_color_scheme (manager, HDY_COLOR_SCHEME_FORCE_DARK);
 }
 
 static gboolean
-prefer_dark_theme_to_icon_name_cb (GBinding     *binding,
-                                   const GValue *from_value,
-                                   GValue       *to_value,
-                                   gpointer      user_data)
+dark_to_icon_name_cb (GBinding     *binding,
+                      const GValue *from_value,
+                      GValue       *to_value,
+                      gpointer      user_data)
 {
   g_value_set_string (to_value,
                       g_value_get_boolean (from_value) ? "light-mode-symbolic" :
@@ -479,7 +481,8 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, content_box);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, header_revealer);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, header_stack);
-  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, theme_variant_image);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, color_scheme_button);
+  gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, color_scheme_image);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, sidebar);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, stack);
   gtk_widget_class_bind_template_child (widget_class, HdyDemoWindow, leaflet_transition_row);
@@ -510,7 +513,7 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, notify_leaflet_transition_cb);
   gtk_widget_class_bind_template_callback (widget_class, notify_deck_transition_cb);
   gtk_widget_class_bind_template_callback (widget_class, deck_go_next_row_activated_cb);
-  gtk_widget_class_bind_template_callback (widget_class, theme_variant_button_clicked_cb);
+  gtk_widget_class_bind_template_callback (widget_class, color_scheme_button_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, view_switcher_demo_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, notify_carousel_orientation_cb);
   gtk_widget_class_bind_template_callback (widget_class, notify_carousel_indicators_cb);
@@ -589,17 +592,20 @@ avatar_page_init (HdyDemoWindow *self)
 static void
 hdy_demo_window_init (HdyDemoWindow *self)
 {
-  GtkSettings *settings = gtk_settings_get_default ();
+  HdyStyleManager *manager = hdy_style_manager_get_default ();
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  g_object_bind_property_full (settings, "gtk-application-prefer-dark-theme",
-                               self->theme_variant_image, "icon-name",
+  g_object_bind_property_full (manager, "dark",
+                               self->color_scheme_image, "icon-name",
                                G_BINDING_SYNC_CREATE,
-                               prefer_dark_theme_to_icon_name_cb,
+                               dark_to_icon_name_cb,
                                NULL,
                                NULL,
                                NULL);
+
+  gtk_widget_set_visible (self->color_scheme_button,
+                          !hdy_style_manager_get_system_supports_color_schemes (manager));
 
   hdy_combo_row_set_for_enum (self->leaflet_transition_row, HDY_TYPE_LEAFLET_TRANSITION_TYPE, leaflet_transition_name, NULL, NULL);
   hdy_combo_row_set_selected_index (self->leaflet_transition_row, HDY_LEAFLET_TRANSITION_TYPE_OVER);
