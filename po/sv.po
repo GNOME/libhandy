@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2021-04-29 09:43+0000\n"
-"PO-Revision-Date: 2021-04-29 23:09+0200\n"
+"POT-Creation-Date: 2021-08-12 12:05+0000\n"
+"PO-Revision-Date: 2021-09-14 23:14+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 
 #: glade/glade-hdy-carousel.c:160 glade/glade-hdy-header-bar.c:118
 #: glade/glade-hdy-leaflet.c:184
@@ -65,8 +65,8 @@ msgid "Only objects of type %s can be added to objects of type %s."
 msgstr "Endast objekt av typen %s kan läggas till i objekt av typen %s."
 
 #: src/hdy-action-row.c:370 src/hdy-action-row.c:371 src/hdy-expander-row.c:314
-#: src/hdy-expander-row.c:315 src/hdy-preferences-page.c:179
-#: src/hdy-preferences-page.c:180 src/hdy-status-page.c:221
+#: src/hdy-expander-row.c:315 src/hdy-preferences-page.c:173
+#: src/hdy-preferences-page.c:174 src/hdy-status-page.c:221
 msgid "Icon name"
 msgstr "Ikonnamn"
 
@@ -239,7 +239,7 @@ msgid "Vertically homogeneous sizing"
 msgstr "Lodrätt homogen omformning"
 
 #: src/hdy-deck.c:977 src/hdy-leaflet.c:1079 src/hdy-squeezer.c:1115
-#: src/hdy-stackable-box.c:3087
+#: src/hdy-stackable-box.c:3091
 msgid "Visible child"
 msgstr "Synlig underordnad"
 
@@ -247,7 +247,7 @@ msgstr "Synlig underordnad"
 msgid "The widget currently visible"
 msgstr "Komponenten som för närvarande är synlig"
 
-#: src/hdy-deck.c:991 src/hdy-leaflet.c:1086 src/hdy-stackable-box.c:3094
+#: src/hdy-deck.c:991 src/hdy-leaflet.c:1086 src/hdy-stackable-box.c:3098
 msgid "Name of visible child"
 msgstr "Namn på synlig underordnad"
 
@@ -256,7 +256,7 @@ msgid "The name of the widget currently visible"
 msgstr "Namnet på gränssnittskomponenten som för närvarande är synlig"
 
 #: src/hdy-deck.c:1010 src/hdy-leaflet.c:1105 src/hdy-squeezer.c:1129
-#: src/hdy-stackable-box.c:3113
+#: src/hdy-stackable-box.c:3117
 msgid "Transition type"
 msgstr "Övergångstyp"
 
@@ -281,12 +281,12 @@ msgid "Whether or not the transition is currently running"
 msgstr "Huruvida övergången körs för närvarande"
 
 #: src/hdy-deck.c:1053 src/hdy-header-bar.c:2214 src/hdy-leaflet.c:1133
-#: src/hdy-squeezer.c:1144 src/hdy-stackable-box.c:3141
+#: src/hdy-squeezer.c:1144 src/hdy-stackable-box.c:3145
 msgid "Interpolate size"
 msgstr "Interpolera storlek"
 
 #: src/hdy-deck.c:1054 src/hdy-header-bar.c:2215 src/hdy-leaflet.c:1134
-#: src/hdy-squeezer.c:1145 src/hdy-stackable-box.c:3142
+#: src/hdy-squeezer.c:1145 src/hdy-stackable-box.c:3146
 msgid ""
 "Whether or not the size should smoothly change when changing between "
 "differently sized children"
@@ -295,21 +295,21 @@ msgstr ""
 "storlekar"
 
 #: src/hdy-deck.c:1068 src/hdy-leaflet.c:1148 src/hdy-preferences-window.c:561
-#: src/hdy-stackable-box.c:3156
+#: src/hdy-stackable-box.c:3160
 msgid "Can swipe back"
 msgstr "Kan svepa bakåt"
 
-#: src/hdy-deck.c:1069 src/hdy-leaflet.c:1149 src/hdy-stackable-box.c:3157
+#: src/hdy-deck.c:1069 src/hdy-leaflet.c:1149 src/hdy-stackable-box.c:3161
 msgid ""
 "Whether or not swipe gesture can be used to switch to the previous child"
 msgstr ""
 "Huruvida en svepgest kan användas för att växla till föregående underordnade"
 
-#: src/hdy-deck.c:1083 src/hdy-leaflet.c:1163 src/hdy-stackable-box.c:3171
+#: src/hdy-deck.c:1083 src/hdy-leaflet.c:1163 src/hdy-stackable-box.c:3175
 msgid "Can swipe forward"
 msgstr "Kan svepa framåt"
 
-#: src/hdy-deck.c:1084 src/hdy-leaflet.c:1164 src/hdy-stackable-box.c:3172
+#: src/hdy-deck.c:1084 src/hdy-leaflet.c:1164 src/hdy-stackable-box.c:3176
 msgid "Whether or not swipe gesture can be used to switch to the next child"
 msgstr ""
 "Huruvida en svepgest kan användas för att växla till nästa underordnade"
@@ -358,127 +358,127 @@ msgstr "Etikett"
 msgid "Align"
 msgstr "Justering"
 
-#: src/hdy-flap.c:1528
+#: src/hdy-flap.c:1527
 msgid "Content"
 msgstr "Innehåll"
 
-#: src/hdy-flap.c:1529
+#: src/hdy-flap.c:1528
 msgid "The content Widget"
 msgstr "Innehållskomponenten"
 
 # https://gitlab.gnome.org/GNOME/libhandy/-/issues/202
 # Som en sidopanel, men kan även vara högst upp/längst ner.
-#: src/hdy-flap.c:1543
+#: src/hdy-flap.c:1542
 msgid "Flap"
 msgstr "Flikpanel"
 
-#: src/hdy-flap.c:1544
+#: src/hdy-flap.c:1543
 msgid "The flap widget"
 msgstr "Flikpanelskomponenten"
 
-#: src/hdy-flap.c:1559
+#: src/hdy-flap.c:1558
 msgid "Separator"
 msgstr "Avgränsare"
 
-#: src/hdy-flap.c:1560
+#: src/hdy-flap.c:1559
 msgid "The separator widget"
 msgstr "Avgränsarkomponenten"
 
-#: src/hdy-flap.c:1574
+#: src/hdy-flap.c:1573
 msgid "Flap Position"
 msgstr "Flikpanelsposition"
 
-#: src/hdy-flap.c:1575
+#: src/hdy-flap.c:1574
 msgid "The flap position"
 msgstr "Flikpanelspositionen"
 
-#: src/hdy-flap.c:1589
+#: src/hdy-flap.c:1588
 msgid "Reveal Flap"
 msgstr "Visa flikpanel"
 
-#: src/hdy-flap.c:1590
+#: src/hdy-flap.c:1589
 msgid "Whether the flap is revealed"
 msgstr "Huruvida flikpanelen visas"
 
-#: src/hdy-flap.c:1603
+#: src/hdy-flap.c:1602
 msgid "Reveal Duration"
 msgstr "Visningslängd"
 
-#: src/hdy-flap.c:1604
+#: src/hdy-flap.c:1603
 msgid "The reveal transition animation duration, in milliseconds"
 msgstr "Längd på visningsövergångsanimeringen i millisekunder"
 
-#: src/hdy-flap.c:1619
+#: src/hdy-flap.c:1618
 msgid "Reveal Progress"
 msgstr "Visningsförlopp"
 
 # 0 means fully hidden,
 #  * 1 means fully revealed
-#: src/hdy-flap.c:1620
+#: src/hdy-flap.c:1619
 msgid "The current reveal transition progress"
 msgstr "Det aktuella visningsövergångsförloppet"
 
-#: src/hdy-flap.c:1634
+#: src/hdy-flap.c:1633
 msgid "Fold Policy"
 msgstr "Vikningspolicy"
 
-#: src/hdy-flap.c:1635
+#: src/hdy-flap.c:1634
 msgid "The current fold policy"
 msgstr "Aktuell vikningspolicy"
 
-#: src/hdy-flap.c:1649
+#: src/hdy-flap.c:1648
 msgid "Fold Duration"
 msgstr "Vikningslängd"
 
-#: src/hdy-flap.c:1650
+#: src/hdy-flap.c:1649
 msgid "The fold transition animation duration, in milliseconds"
 msgstr "Längd på vikningsövergångsanimeringen i millisekunder"
 
-#: src/hdy-flap.c:1666 src/hdy-leaflet.c:1024 src/hdy-stackable-box.c:3032
+#: src/hdy-flap.c:1665 src/hdy-leaflet.c:1024 src/hdy-stackable-box.c:3036
 msgid "Folded"
 msgstr "Ihopvikt"
 
-#: src/hdy-flap.c:1667
+#: src/hdy-flap.c:1666
 msgid "Whether the flap is currently folded"
 msgstr "Huruvida flikpanelen är ihopvikt"
 
-#: src/hdy-flap.c:1684
+#: src/hdy-flap.c:1683
 msgid "Locked"
 msgstr "Låst"
 
-#: src/hdy-flap.c:1685
+#: src/hdy-flap.c:1684
 msgid "Whether the flap is locked"
 msgstr "Huruvida flikpanelen är låst"
 
-#: src/hdy-flap.c:1703
+#: src/hdy-flap.c:1702
 msgid "Transition Type"
 msgstr "Övergångstyp"
 
-#: src/hdy-flap.c:1704
+#: src/hdy-flap.c:1703
 msgid "The type of animation used for reveal and fold transitions"
 msgstr "Den typ av animering som används vid visnings- och vikningsövergångar"
 
-#: src/hdy-flap.c:1722
+#: src/hdy-flap.c:1721
 msgid "Modal"
 msgstr "Modal"
 
-#: src/hdy-flap.c:1723
+#: src/hdy-flap.c:1722
 msgid "Whether the flap is modal"
 msgstr "Huruvida flikpanelen är modal"
 
-#: src/hdy-flap.c:1738
+#: src/hdy-flap.c:1737
 msgid "Swipe to Open"
 msgstr "Svep för att öppna"
 
-#: src/hdy-flap.c:1739
+#: src/hdy-flap.c:1738
 msgid "Whether the flap can be opened with a swipe gesture"
 msgstr "Huruvida flikpanelen kan öppnas med en svepgest"
 
-#: src/hdy-flap.c:1754
+#: src/hdy-flap.c:1753
 msgid "Swipe to Close"
 msgstr "Svep för att stänga"
 
-#: src/hdy-flap.c:1755
+#: src/hdy-flap.c:1754
 msgid "Whether the flap can be closed with a swipe gesture"
 msgstr "Huruvida flikpanelen kan stängas med en svepgest"
 
@@ -522,9 +522,9 @@ msgstr ""
 msgid "The index of the child in the parent"
 msgstr "Indexet för den underordnade i den överordnade"
 
-#: src/hdy-header-bar.c:2097 src/hdy-preferences-group.c:287
-#: src/hdy-preferences-group.c:288 src/hdy-preferences-page.c:193
-#: src/hdy-preferences-page.c:194 src/hdy-preferences-row.c:115
+#: src/hdy-header-bar.c:2097 src/hdy-preferences-group.c:294
+#: src/hdy-preferences-group.c:295 src/hdy-preferences-page.c:187
+#: src/hdy-preferences-page.c:188 src/hdy-preferences-row.c:115
 #: src/hdy-status-page.c:235 src/hdy-tab-view.c:432
 #: src/hdy-view-switcher-title.c:258
 msgid "Title"
@@ -686,11 +686,11 @@ msgstr "Startåtgärd"
 msgid "The start action widget"
 msgstr "Åtgärdskomponenten i början"
 
-#: src/hdy-leaflet.c:1025 src/hdy-stackable-box.c:3033
+#: src/hdy-leaflet.c:1025 src/hdy-stackable-box.c:3037
 msgid "Whether the widget is folded"
 msgstr "Huruvida komponenten är ihopvikt"
 
-#: src/hdy-leaflet.c:1036 src/hdy-stackable-box.c:3044
+#: src/hdy-leaflet.c:1036 src/hdy-stackable-box.c:3048
 msgid "Horizontally homogeneous folded"
 msgstr "Vågrätt homogent ihopvikt"
 
@@ -698,7 +698,7 @@ msgstr "Vågrätt homogent ihopvikt"
 msgid "Horizontally homogeneous sizing when the leaflet is folded"
 msgstr "Vågrätt homogen omformning när broschyren är ihopvikt"
 
-#: src/hdy-leaflet.c:1048 src/hdy-stackable-box.c:3056
+#: src/hdy-leaflet.c:1048 src/hdy-stackable-box.c:3060
 msgid "Vertically homogeneous folded"
 msgstr "Lodrätt homogent ihopvikt"
 
@@ -707,7 +707,7 @@ msgid "Vertically homogeneous sizing when the leaflet is folded"
 msgstr "Lodrätt homogen omformning när broschyren är ihopvikt"
 
 # #HdyLeaflet widget can display its children like a #GtkBox does or like a #GtkStack does, when unfolded respectively folded
-#: src/hdy-leaflet.c:1060 src/hdy-stackable-box.c:3068
+#: src/hdy-leaflet.c:1060 src/hdy-stackable-box.c:3072
 msgid "Box horizontally homogeneous"
 msgstr "Vågrätt homogent utfälld"
 
@@ -718,7 +718,7 @@ msgstr "Vågrätt homogen omformning när broschyren är utfälld"
 # #HdyLeaflet widget can display its children like a
 # #GtkBox does or like a #GtkStack does, when
 # unfolded respectively folded
-#: src/hdy-leaflet.c:1072 src/hdy-stackable-box.c:3080
+#: src/hdy-leaflet.c:1072 src/hdy-stackable-box.c:3084
 msgid "Box vertically homogeneous"
 msgstr "Lodrätt homogent utfälld"
 
@@ -730,38 +730,38 @@ msgstr "Lodrätt homogen omformning när broschyren är utfälld"
 msgid "The widget currently visible when the leaflet is folded"
 msgstr "Komponenten som för närvarande är synlig när broschyren är ihopvikt"
 
-#: src/hdy-leaflet.c:1087 src/hdy-stackable-box.c:3095
+#: src/hdy-leaflet.c:1087 src/hdy-stackable-box.c:3099
 msgid "The name of the widget currently visible when the children are stacked"
 msgstr ""
 "Namnet på komponenten som för närvarande är synlig när de underordnade är "
 "staplade"
 
-#: src/hdy-leaflet.c:1106 src/hdy-stackable-box.c:3114
+#: src/hdy-leaflet.c:1106 src/hdy-stackable-box.c:3118
 msgid "The type of animation used to transition between modes and children"
 msgstr ""
 "Den typ av animering som används vid övergång mellan lägen och underordnade"
 
-#: src/hdy-leaflet.c:1112 src/hdy-stackable-box.c:3120
+#: src/hdy-leaflet.c:1112 src/hdy-stackable-box.c:3124
 msgid "Mode transition duration"
 msgstr "Längd på lägesövergång"
 
-#: src/hdy-leaflet.c:1113 src/hdy-stackable-box.c:3121
+#: src/hdy-leaflet.c:1113 src/hdy-stackable-box.c:3125
 msgid "The mode transition animation duration, in milliseconds"
 msgstr "Längd på lägesövergångsanimeringen i millisekunder"
 
-#: src/hdy-leaflet.c:1119 src/hdy-stackable-box.c:3127
+#: src/hdy-leaflet.c:1119 src/hdy-stackable-box.c:3131
 msgid "Child transition duration"
 msgstr "Längd för övergång mellan underordnade"
 
-#: src/hdy-leaflet.c:1120 src/hdy-stackable-box.c:3128
+#: src/hdy-leaflet.c:1120 src/hdy-stackable-box.c:3132
 msgid "The child transition animation duration, in milliseconds"
 msgstr "Animeringslängden för övergången mellan underordnade i millisekunder"
 
-#: src/hdy-leaflet.c:1126 src/hdy-stackable-box.c:3134
+#: src/hdy-leaflet.c:1126 src/hdy-stackable-box.c:3138
 msgid "Child transition running"
 msgstr "Övergång mellan underordnade körs"
 
-#: src/hdy-leaflet.c:1127 src/hdy-stackable-box.c:3135
+#: src/hdy-leaflet.c:1127 src/hdy-stackable-box.c:3139
 msgid "Whether or not the child transition is currently running"
 msgstr "Huruvida övergången mellan underordnade körs för närvarande"
 
@@ -773,10 +773,18 @@ msgstr "Navigerbar"
 msgid "Whether the child can be navigated to"
 msgstr "Huruvida det går att navigera till den underordnade"
 
-#: src/hdy-preferences-group.c:273 src/hdy-preferences-group.c:274
+#: src/hdy-preferences-group.c:280 src/hdy-preferences-group.c:281
 #: src/hdy-status-page.c:249
 msgid "Description"
 msgstr "Beskrivning"
+
+#: src/hdy-preferences-group.c:308
+msgid "Use markup"
+msgstr "Använd markup"
+
+#: src/hdy-preferences-group.c:309
+msgid "Whether to use markup for the title and description"
+msgstr "Huruvida markup ska användas för titeln och beskrivningen"
 
 #: src/hdy-preferences-row.c:116
 msgid "The title of the preference"
@@ -887,27 +895,27 @@ msgstr ""
 "Huruvida den underordnade kan väljas eller ska ignoreras vid sökning av den "
 "underordnade som passar den tillgängliga storleken bäst"
 
-#: src/hdy-stackable-box.c:3045
+#: src/hdy-stackable-box.c:3049
 msgid "Horizontally homogeneous sizing when the widget is folded"
 msgstr "Vågrätt homogen omformning när komponenten är ihopvikt"
 
-#: src/hdy-stackable-box.c:3057
+#: src/hdy-stackable-box.c:3061
 msgid "Vertically homogeneous sizing when the widget is folded"
 msgstr "Lodrätt homogen omformning när komponenten är ihopvikt"
 
-#: src/hdy-stackable-box.c:3069
+#: src/hdy-stackable-box.c:3073
 msgid "Horizontally homogeneous sizing when the widget is unfolded"
 msgstr "Vågrätt homogen omformning när komponenten är utfälld"
 
-#: src/hdy-stackable-box.c:3081
+#: src/hdy-stackable-box.c:3085
 msgid "Vertically homogeneous sizing when the widget is unfolded"
 msgstr "Lodrätt homogen omformning när komponenten är utfälld"
 
-#: src/hdy-stackable-box.c:3088
+#: src/hdy-stackable-box.c:3092
 msgid "The widget currently visible when the widget is folded"
 msgstr "Komponenten som för närvarande är synlig när komponenten är ihopvikt"
 
-#: src/hdy-stackable-box.c:3178 src/hdy-stackable-box.c:3179
+#: src/hdy-stackable-box.c:3182 src/hdy-stackable-box.c:3183
 msgid "Orientation"
 msgstr "Orientering"
 
@@ -947,72 +955,72 @@ msgstr "Huruvida svepriktning är omvänd"
 msgid "Whether to allow swiping for more than one snap point at a time"
 msgstr "Huruvida svepning ska tillåtas för mer än en fästpunkt åt gången"
 
-#: src/hdy-tab-bar.c:515 src/hdy-tab-box.c:3508 src/hdy-tab-box.c:3509
+#: src/hdy-tab-bar.c:517 src/hdy-tab-box.c:3508 src/hdy-tab-box.c:3509
 #: src/hdy-tab.c:906 src/hdy-tab.c:907
 msgid "View"
 msgstr "Vy"
 
-#: src/hdy-tab-bar.c:516
+#: src/hdy-tab-bar.c:518
 msgid "The view the tab bar controls."
 msgstr "Vyn som flikraden styr."
 
-#: src/hdy-tab-bar.c:529
+#: src/hdy-tab-bar.c:531
 msgid "Start action widget"
 msgstr "Åtgärdskomponent i början"
 
-#: src/hdy-tab-bar.c:530
+#: src/hdy-tab-bar.c:532
 msgid "The widget shown before the tabs"
 msgstr "Komponenten som visas innan flikarna"
 
-#: src/hdy-tab-bar.c:543
+#: src/hdy-tab-bar.c:545
 msgid "End action widget"
 msgstr "Åtgärdskomponent i slutet"
 
-#: src/hdy-tab-bar.c:544
+#: src/hdy-tab-bar.c:546
 msgid "The widget shown after the tabs"
 msgstr "Komponenten som visas efter flikarna"
 
-#: src/hdy-tab-bar.c:562
+#: src/hdy-tab-bar.c:564
 msgid "Autohide"
 msgstr "Dölj automatiskt"
 
-#: src/hdy-tab-bar.c:563
+#: src/hdy-tab-bar.c:565
 msgid "Whether the tabs automatically hide"
 msgstr "Huruvida flikarna döljs automatiskt"
 
-#: src/hdy-tab-bar.c:578
+#: src/hdy-tab-bar.c:580
 msgid "Tabs revealed"
 msgstr "Flikar visas"
 
-#: src/hdy-tab-bar.c:579
+#: src/hdy-tab-bar.c:581
 msgid "Whether the tabs are currently revealed"
 msgstr "Huruvida flikarna visas för tillfället"
 
-#: src/hdy-tab-bar.c:595
+#: src/hdy-tab-bar.c:597
 msgid "Expand tabs"
 msgstr "Expandera flikar"
 
-#: src/hdy-tab-bar.c:596
+#: src/hdy-tab-bar.c:598
 msgid "Whether tabs expand to full width"
 msgstr "Huruvida flikarna expanderas till fullständig bredd"
 
-#: src/hdy-tab-bar.c:612 src/hdy-tab.c:948 src/hdy-tab.c:949
+#: src/hdy-tab-bar.c:614 src/hdy-tab.c:948 src/hdy-tab.c:949
 msgid "Inverted"
 msgstr "Omvänd"
 
-#: src/hdy-tab-bar.c:613
+#: src/hdy-tab-bar.c:615
 msgid "Whether tabs use inverted layout"
 msgstr "Huruvida flikar använder omvänd layout"
 
-#: src/hdy-tab-bar.c:635 src/hdy-tab-bar.c:636
+#: src/hdy-tab-bar.c:637 src/hdy-tab-bar.c:638
 msgid "Extra drag destination targets"
 msgstr "Extra mål för dragning"
 
-#: src/hdy-tab-bar.c:652
+#: src/hdy-tab-bar.c:654
 msgid "Is overflowing"
 msgstr "Flödar över"
 
-#: src/hdy-tab-bar.c:653
+#: src/hdy-tab-bar.c:655
 msgid "Whether the tab bar is overflowing"
 msgstr "Huruvida flikraden flödar över"
 
@@ -1189,11 +1197,11 @@ msgstr "Kortkommandokomponent"
 msgid "Tab shortcut widget"
 msgstr "Kortkommandokomponent för flikar"
 
-#: src/hdy-title-bar.c:308
+#: src/hdy-title-bar.c:321
 msgid "Selection mode"
 msgstr "Markeringsläge"
 
-#: src/hdy-title-bar.c:309
+#: src/hdy-title-bar.c:322
 msgid "Whether or not the title bar is in selection mode"
 msgstr "Huruvida namnlisten är i markeringsläge"
 
