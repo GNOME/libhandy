@@ -82,6 +82,147 @@ static GParamSpec *props[LAST_PROP];
 static GHashTable *display_style_managers = NULL;
 static HdyStyleManager *default_instance = NULL;
 
+/* Copied from gtkcssprovider.c */
+
+static gchar *
+get_theme_dir (void)
+{
+  const gchar *var;
+
+  var = g_getenv ("GTK_DATA_PREFIX");
+  if (var == NULL)
+    var = PREFIX;
+
+  return g_build_filename (var, "share", "themes", NULL);
+}
+
+#if (GTK_MINOR_VERSION % 2)
+#define MINOR (GTK_MINOR_VERSION + 1)
+#else
+#define MINOR GTK_MINOR_VERSION
+#endif
+
+static gchar *
+find_theme_dir (const gchar *dir,
+                const gchar *subdir,
+                const gchar *name,
+                const gchar *variant)
+{
+  g_autofree gchar *file = NULL;
+  g_autofree gchar *base = NULL;
+  gchar *path;
+  gint i;
+
+  if (variant)
+    file = g_strconcat ("gtk-", variant, ".css", NULL);
+  else
+    file = g_strdup ("gtk.css");
+
+  if (subdir)
+    base = g_build_filename (dir, subdir, name, NULL);
+  else
+    base = g_build_filename (dir, name, NULL);
+
+  for (i = MINOR; i >= 0; i = i - 2) {
+    g_autofree gchar *subsubdir = NULL;
+
+    if (i < 14)
+      i = 0;
+
+    subsubdir = g_strdup_printf ("gtk-3.%d", i);
+    path = g_build_filename (base, subsubdir, file, NULL);
+
+    if (g_file_test (path, G_FILE_TEST_EXISTS))
+      break;
+
+    g_free (path);
+    path = NULL;
+  }
+
+  return path;
+}
+
+#undef MINOR
+
+static gchar *
+find_theme (const gchar *name,
+            const gchar *variant)
+{
+  g_autofree gchar *dir = NULL;
+  const gchar *const *dirs;
+  gchar *path;
+  gint i;
+
+  /* First look in the user's data directory */
+  path = find_theme_dir (g_get_user_data_dir (), "themes", name, variant);
+  if (path)
+    return path;
+
+  /* Next look in the user's home directory */
+  path = find_theme_dir (g_get_home_dir (), ".themes", name, variant);
+  if (path)
+    return path;
+
+  /* Look in system data directories */
+  dirs = g_get_system_data_dirs ();
+  for (i = 0; dirs[i]; i++) {
+    path = find_theme_dir (dirs[i], "themes", name, variant);
+    if (path)
+      return path;
+  }
+
+  /* Finally, try in the default theme directory */
+  dir = get_theme_dir ();
+  path = find_theme_dir (dir, NULL, name, variant);
+
+  return path;
+}
+
+static gboolean
+check_theme_exists (const gchar *name,
+                    const gchar *variant)
+{
+  g_autofree gchar *resource_path = NULL;
+  g_autofree gchar *path = NULL;
+
+  /* try loading the resource for the theme. This is mostly meant for built-in
+   * themes.
+   */
+  if (variant)
+    resource_path = g_strdup_printf ("/org/gtk/libgtk/theme/%s/gtk-%s.css", name, variant);
+  else
+    resource_path = g_strdup_printf ("/org/gtk/libgtk/theme/%s/gtk.css", name);
+
+  if (g_resources_get_info (resource_path, 0, NULL, NULL, NULL))
+    return TRUE;
+
+  /* Next try looking for files in the various theme directories. */
+  path = find_theme (name, variant);
+
+  return path != NULL;
+}
+
+static gchar *
+get_system_theme_name (void)
+{
+  GdkScreen *screen = gdk_screen_get_default ();
+  g_auto (GValue) value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_STRING);
+  if (!gdk_screen_get_setting (screen, "gtk-theme-name", &value))
+    return g_strdup ("Adwaita");
+
+  return g_value_dup_string (&value);
+}
+
+static gboolean
+check_current_theme_exists (gboolean dark)
+{
+  g_autofree gchar *theme_name = get_system_theme_name ();
+
+  return check_theme_exists (theme_name, dark ? "dark" : NULL);
+}
+
 static void
 warn_prefer_dark_theme (HdyStyleManager *self)
 {
@@ -118,19 +259,6 @@ register_display (GdkDisplayManager *display_manager,
                     NULL);
 }
 
-static char *
-get_system_theme_name (void)
-{
-  GdkScreen *screen = gdk_screen_get_default ();
-  g_auto (GValue) value = G_VALUE_INIT;
-
-  g_value_init (&value, G_TYPE_STRING);
-  if (!gdk_screen_get_setting (screen, "gtk-theme-name", &value))
-    return g_strdup ("Adwaita");
-
-  return g_value_dup_string (&value);
-}
-
 static gboolean
 enable_animations_cb (HdyStyleManager *self)
 {
@@ -145,13 +273,29 @@ enable_animations_cb (HdyStyleManager *self)
   return G_SOURCE_REMOVE;
 }
 
+static void update_stylesheet (HdyStyleManager *self);
+
+static gboolean
+unblock_theme_name_changed_cb (HdyStyleManager *self)
+{
+  GdkScreen *screen;
+  GtkSettings *gtk_settings;
+
+  screen = gdk_display_get_default_screen (self->display);
+  gtk_settings = gtk_settings_get_for_screen (screen);
+
+  g_signal_handlers_unblock_by_func (gtk_settings,
+                                     G_CALLBACK (update_stylesheet),
+                                     self);
+
+  return G_SOURCE_REMOVE;
+}
+
 static void
 update_stylesheet (HdyStyleManager *self)
 {
   GdkScreen *screen;
   GtkSettings *gtk_settings;
-  const char *theme_name;
-  gboolean enable_animations;
 
   if (!self->display)
     return;
@@ -159,40 +303,40 @@ update_stylesheet (HdyStyleManager *self)
   screen = gdk_display_get_default_screen (self->display);
   gtk_settings = gtk_settings_get_for_screen (screen);
 
-  if (hdy_settings_get_high_contrast (self->settings))
-    theme_name = g_strdup (self->dark ? "HighContrastInverse" : "HighContrast");
-  else
-    theme_name = get_system_theme_name ();
-
-  if (self->animation_timeout_id) {
-    g_clear_handle_id (&self->animation_timeout_id, g_source_remove);
-    enable_animations = TRUE;
-  } else {
-    g_object_get (gtk_settings,
-                  "gtk-enable-animations", &enable_animations,
-                  NULL);
-  }
+  g_clear_handle_id (&self->animation_timeout_id, g_source_remove);
 
   g_signal_handlers_block_by_func (gtk_settings,
                                    G_CALLBACK (warn_prefer_dark_theme),
                                    self);
+  g_signal_handlers_block_by_func (gtk_settings,
+                                   G_CALLBACK (update_stylesheet),
+                                   self);
 
   g_object_set (gtk_settings,
                 "gtk-enable-animations", FALSE,
-                "gtk-theme-name", theme_name,
                 "gtk-application-prefer-dark-theme", self->dark,
                 NULL);
+
+  if (hdy_settings_get_high_contrast (self->settings))
+    g_object_set (gtk_settings,
+                  "gtk-theme-name",
+                  self->dark ? "HighContrastInverse" : "HighContrast",
+                  NULL);
+  else if (check_current_theme_exists (self->dark))
+    gtk_settings_reset_property (gtk_settings, "gtk-theme-name");
+  else
+    g_object_set (gtk_settings, "gtk-theme-name", "Adwaita", NULL);
 
   g_signal_handlers_unblock_by_func (gtk_settings,
                                      G_CALLBACK (warn_prefer_dark_theme),
                                      self);
 
-  if (enable_animations) {
-    self->animation_timeout_id =
-      g_timeout_add (SWITCH_DURATION,
-                     G_SOURCE_FUNC (enable_animations_cb),
-                     self);
-  }
+  self->animation_timeout_id =
+    g_timeout_add (SWITCH_DURATION,
+                   G_SOURCE_FUNC (enable_animations_cb),
+                   self);
+
+  g_idle_add (G_SOURCE_FUNC (unblock_theme_name_changed_cb), self);
 }
 
 static inline gboolean
@@ -263,6 +407,11 @@ hdy_style_manager_constructed (GObject *object)
     g_signal_connect_object (settings,
                              "notify::gtk-application-prefer-dark-theme",
                              G_CALLBACK (warn_prefer_dark_theme),
+                             self,
+                             G_CONNECT_SWAPPED);
+    g_signal_connect_object (settings,
+                             "notify::gtk-theme-name",
+                             G_CALLBACK (update_stylesheet),
                              self,
                              G_CONNECT_SWAPPED);
   }

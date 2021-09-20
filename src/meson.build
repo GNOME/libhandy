@@ -220,6 +220,7 @@ libhandy_c_args = [
 config_h = configuration_data()
 config_h.set_quoted('GETTEXT_PACKAGE', 'libhandy')
 config_h.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
+config_h.set_quoted('PREFIX', get_option('prefix'))
 
 # Symbol visibility
 if target_system == 'windows'
