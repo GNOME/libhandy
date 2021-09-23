@@ -934,6 +934,7 @@ hdy_swipe_tracker_dispose (GObject *object)
 
   g_object_set_data (G_OBJECT (self->swipeable), "captured-event-handler", NULL);
 
+  g_clear_pointer (&self->event_history, g_array_unref);
   g_clear_object (&self->touch_gesture);
   g_clear_object (&self->swipeable);
 
