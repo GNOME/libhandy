@@ -1393,6 +1393,7 @@ hdy_carousel_box_scroll_to (HdyCarouselBox *self,
   g_return_if_fail (HDY_IS_CAROUSEL_BOX (self));
   g_return_if_fail (GTK_IS_WIDGET (widget));
   g_return_if_fail (duration >= 0);
+  g_return_if_fail (gtk_widget_get_parent (widget) == GTK_WIDGET (self));
 
   child = find_child_info (self, widget);
   position = child->snap_point;
