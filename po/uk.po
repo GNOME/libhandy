@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2021-08-12 12:05+0000\n"
-"PO-Revision-Date: 2021-08-12 15:15+0300\n"
+"POT-Creation-Date: 2021-09-25 09:55+0000\n"
+"PO-Revision-Date: 2021-09-25 19:22+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -159,11 +159,11 @@ msgstr "Тривалість анімації"
 msgid "Default animation duration"
 msgstr "Типова тривалість анімації"
 
-#: src/hdy-carousel.c:677 src/hdy-swipe-tracker.c:1089
+#: src/hdy-carousel.c:677 src/hdy-swipe-tracker.c:1090
 msgid "Allow mouse drag"
 msgstr "Дозволити перетягування мишею"
 
-#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1090
+#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1091
 msgid "Whether to allow dragging with mouse pointer"
 msgstr "Визначає, чи можна перетягувати за допомогою вказівника миші"
 
@@ -176,7 +176,7 @@ msgid "Whether the widget will respond to scroll wheel events"
 msgstr ""
 "Визначає, чи відповідатиме віджет на події гортання вмісту коліщатком миші"
 
-#: src/hdy-carousel.c:707 src/hdy-swipe-tracker.c:1104
+#: src/hdy-carousel.c:707 src/hdy-swipe-tracker.c:1105
 msgid "Allow long swipes"
 msgstr "Дозволити довгі змахування"
 
@@ -776,7 +776,6 @@ msgid "Use markup"
 msgstr "Використовувати розмітку"
 
 #: src/hdy-preferences-group.c:309
-#| msgid "Whether or not the title bar is in selection mode"
 msgid "Whether to use markup for the title and description"
 msgstr "Визначає, чи слід використовувати мову розмітки для заголовка і опису"
 
@@ -876,7 +875,7 @@ msgstr "Вирівнювання за Y"
 msgid "The vertical alignment, from 0 (top) to 1 (bottom)"
 msgstr "Вирівнювання за вертикаллю, від 0 (верх) до 1 (низ)"
 
-#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1059
+#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1060
 msgid "Enabled"
 msgstr "Увімкнено"
 
@@ -924,27 +923,67 @@ msgstr "Заголовок, який має бути показано під п�
 msgid "The description to be displayed below the title"
 msgstr "Опис, який слід показати під заголовком"
 
-#: src/hdy-swipe-tracker.c:1044
+#: src/hdy-style-manager.c:566
+msgid "Color Scheme"
+msgstr ""
+"Схема кольорів"
+
+#: src/hdy-style-manager.c:567
+#| msgid "The current fold policy"
+msgid "The current color scheme"
+msgstr "Поточна схема кольорів"
+
+#: src/hdy-style-manager.c:589
+msgid "System supports color schemes"
+msgstr ""
+"У системі передбачено підтримку схем кольорів"
+
+#: src/hdy-style-manager.c:590
+msgid "Whether the system supports color schemes"
+msgstr ""
+"Визначає, чи передбачено у системі підтримку схем кольорів"
+
+#: src/hdy-style-manager.c:606
+msgid "Dark"
+msgstr ""
+"Темна"
+
+#: src/hdy-style-manager.c:607
+#| msgid "Whether the indicator icon is activatable"
+msgid "Whether the application is using dark appearance"
+msgstr "Визначає, чи використовує програма темний вигляд"
+
+#: src/hdy-style-manager.c:622
+msgid "High Contrast"
+msgstr ""
+"Висококонтрастна"
+
+#: src/hdy-style-manager.c:623
+msgid "Whether the application is using high contrast appearance"
+msgstr ""
+"Визначає, чи використовує програма висококонтрастний вигляд"
+
+#: src/hdy-swipe-tracker.c:1045
 msgid "Swipeable"
 msgstr "Змахуваний"
 
-#: src/hdy-swipe-tracker.c:1045
+#: src/hdy-swipe-tracker.c:1046
 msgid "The swipeable the swipe tracker is attached to"
 msgstr "Змахуваний об'єкт, до якого долучено стеження за змахуванням"
 
-#: src/hdy-swipe-tracker.c:1060
+#: src/hdy-swipe-tracker.c:1061
 msgid "Whether the swipe tracker processes events"
 msgstr "Визначає, чи стеження за змахуванням обробляє події"
 
-#: src/hdy-swipe-tracker.c:1074
+#: src/hdy-swipe-tracker.c:1075
 msgid "Reversed"
 msgstr "Обернене"
 
-#: src/hdy-swipe-tracker.c:1075
+#: src/hdy-swipe-tracker.c:1076
 msgid "Whether swipe direction is reversed"
 msgstr "Визначає, що напрям змахування є оберненим"
 
-#: src/hdy-swipe-tracker.c:1105
+#: src/hdy-swipe-tracker.c:1106
 msgid "Whether to allow swiping for more than one snap point at a time"
 msgstr ""
 "Визначає, чи дозволено змахування декількох точок прилипання одним рухом"
