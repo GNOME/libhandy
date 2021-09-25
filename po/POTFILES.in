@@ -33,6 +33,7 @@ src/hdy-shadow-helper.c
 src/hdy-squeezer.c
 src/hdy-stackable-box.c
 src/hdy-status-page.c
+src/hdy-style-manager.c
 src/hdy-swipe-tracker.c
 src/hdy-tab-bar.c
 src/hdy-tab-box.c
