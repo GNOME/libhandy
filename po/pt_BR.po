@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/"
-"POT-Creation-Date: 2021-08-12 12:05+0000\n"
-"PO-Revision-Date: 2021-08-14 09:12-0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
+"POT-Creation-Date: 2021-09-25 09:55+0000\n"
+"PO-Revision-Date: 2021-09-25 11:21-0300\n"
 "Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -162,11 +162,11 @@ msgstr "Duração da animação"
 msgid "Default animation duration"
 msgstr "Duração padrão da animação"
 
-#: src/hdy-carousel.c:677 src/hdy-swipe-tracker.c:1089
+#: src/hdy-carousel.c:677 src/hdy-swipe-tracker.c:1090
 msgid "Allow mouse drag"
 msgstr "Permitir arrastar com mouse"
 
-#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1090
+#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1091
 msgid "Whether to allow dragging with mouse pointer"
 msgstr "Se deve-se permitir arrastar com ponteiro do mouse"
 
@@ -178,7 +178,7 @@ msgstr "Permitir roda de rolagem"
 msgid "Whether the widget will respond to scroll wheel events"
 msgstr "Se o widget responderá a eventos de roda de rolagem"
 
-#: src/hdy-carousel.c:707 src/hdy-swipe-tracker.c:1104
+#: src/hdy-carousel.c:707 src/hdy-swipe-tracker.c:1105
 msgid "Allow long swipes"
 msgstr "Permitir longos deslizamentos"
 
@@ -879,7 +879,7 @@ msgstr "Alinh. Y"
 msgid "The vertical alignment, from 0 (top) to 1 (bottom)"
 msgstr "O alinhamento vertical, de 0 (topo) até 1 (base)"
 
-#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1059
+#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1060
 msgid "Enabled"
 msgstr "Habilitado"
 
@@ -929,27 +929,59 @@ msgstr "O título para ser exibido abaixo do ícone"
 msgid "The description to be displayed below the title"
 msgstr "A descrição a ser exibida abaixo do título"
 
-#: src/hdy-swipe-tracker.c:1044
+#: src/hdy-style-manager.c:566
+msgid "Color Scheme"
+msgstr "Esquema de cores"
+
+#: src/hdy-style-manager.c:567
+msgid "The current color scheme"
+msgstr "O esquema de cores atual"
+
+#: src/hdy-style-manager.c:589
+msgid "System supports color schemes"
+msgstr "O sistema tem suporte a esquemas de cores"
+
+#: src/hdy-style-manager.c:590
+msgid "Whether the system supports color schemes"
+msgstr "Se o sistema tem suporte a esquemas de cores"
+
+#: src/hdy-style-manager.c:606
+msgid "Dark"
+msgstr "Escuro"
+
+#: src/hdy-style-manager.c:607
+msgid "Whether the application is using dark appearance"
+msgstr "Se o aplicativo está usando aparência escura"
+
+#: src/hdy-style-manager.c:622
+msgid "High Contrast"
+msgstr "Alto contraste"
+
+#: src/hdy-style-manager.c:623
+msgid "Whether the application is using high contrast appearance"
+msgstr "Se o aplicativo está usando aparência de alto contraste"
+
+#: src/hdy-swipe-tracker.c:1045
 msgid "Swipeable"
 msgstr "Deslizável"
 
-#: src/hdy-swipe-tracker.c:1045
+#: src/hdy-swipe-tracker.c:1046
 msgid "The swipeable the swipe tracker is attached to"
 msgstr "O deslizável ao qual o rastreador de deslize está anexado"
 
-#: src/hdy-swipe-tracker.c:1060
+#: src/hdy-swipe-tracker.c:1061
 msgid "Whether the swipe tracker processes events"
 msgstr "Se o rastreador de deslize processa eventos"
 
-#: src/hdy-swipe-tracker.c:1074
+#: src/hdy-swipe-tracker.c:1075
 msgid "Reversed"
 msgstr "Invertida"
 
-#: src/hdy-swipe-tracker.c:1075
+#: src/hdy-swipe-tracker.c:1076
 msgid "Whether swipe direction is reversed"
 msgstr "Se a direção de deslize é revertida"
 
-#: src/hdy-swipe-tracker.c:1105
+#: src/hdy-swipe-tracker.c:1106
 msgid "Whether to allow swiping for more than one snap point at a time"
 msgstr "Permitir ou não deslizar em mais de um ponto de ajuste de cada vez"
 
