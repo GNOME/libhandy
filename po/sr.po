@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy libhandy-1-0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2021-09-15 15:08+0000\n"
-"PO-Revision-Date: 2021-09-18 09:49+0200\n"
+"POT-Creation-Date: 2021-09-25 09:55+0000\n"
+"PO-Revision-Date: 2021-09-30 05:46+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
@@ -158,11 +158,11 @@ msgstr "Трајање анимације"
 msgid "Default animation duration"
 msgstr "Основно трајање анимације"
 
-#: src/hdy-carousel.c:677 src/hdy-swipe-tracker.c:1089
+#: src/hdy-carousel.c:677 src/hdy-swipe-tracker.c:1090
 msgid "Allow mouse drag"
 msgstr "Дозвољава превлачење миша"
 
-#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1090
+#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1091
 msgid "Whether to allow dragging with mouse pointer"
 msgstr "Да ли да се омогући превлачење показивачем миша"
 
@@ -171,11 +171,10 @@ msgid "Allow scroll wheel"
 msgstr "Дозвољава точкић премицања"
 
 #: src/hdy-carousel.c:693
-#| msgid "Whether the swipe tracker processes events"
 msgid "Whether the widget will respond to scroll wheel events"
 msgstr "Да ли ће елемент одговорити на догађаје премицања точкића"
 
-#: src/hdy-carousel.c:707 src/hdy-swipe-tracker.c:1104
+#: src/hdy-carousel.c:707 src/hdy-swipe-tracker.c:1105
 msgid "Allow long swipes"
 msgstr "Допушта дуга превлачења"
 
@@ -768,7 +767,6 @@ msgid "Use markup"
 msgstr "Користи означавање"
 
 #: src/hdy-preferences-group.c:309
-#| msgid "Whether or not the title bar is in selection mode"
 msgid "Whether to use markup for the title and description"
 msgstr "Да ли ће користити означавање за наслов и опис"
 
@@ -868,7 +866,7 @@ msgstr "Усправно поравнање"
 msgid "The vertical alignment, from 0 (top) to 1 (bottom)"
 msgstr "Усправно поравнање, од 0 (врх) до 1 (дно)"
 
-#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1059
+#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1060
 msgid "Enabled"
 msgstr "Омогућен"
 
@@ -916,27 +914,61 @@ msgstr "Наслов који ће бити приказан испод икон
 msgid "The description to be displayed below the title"
 msgstr "Опис који ће бити приказан испод наслова"
 
-#: src/hdy-swipe-tracker.c:1044
+#: src/hdy-style-manager.c:566
+msgid "Color Scheme"
+msgstr "Шема боја"
+
+#: src/hdy-style-manager.c:567
+#| msgid "The current fold policy"
+msgid "The current color scheme"
+msgstr "Текућа шема боја"
+
+#: src/hdy-style-manager.c:589
+msgid "System supports color schemes"
+msgstr "Систем подржава шеме боја"
+
+#: src/hdy-style-manager.c:590
+msgid "Whether the system supports color schemes"
+msgstr "Да ли систем подржава шеме боја"
+
+#: src/hdy-style-manager.c:606
+msgid "Dark"
+msgstr "Тамна"
+
+#: src/hdy-style-manager.c:607
+#| msgid "Whether the indicator icon is activatable"
+msgid "Whether the application is using dark appearance"
+msgstr "Да ли програм користи тамни изглед"
+
+#: src/hdy-style-manager.c:622
+msgid "High Contrast"
+msgstr "Велики контраст"
+
+#: src/hdy-style-manager.c:623
+msgid "Whether the application is using high contrast appearance"
+msgstr "Да ли програм користи велики контраст изгледа"
+
+#: src/hdy-swipe-tracker.c:1045
 msgid "Swipeable"
 msgstr "Превлачив"
 
-#: src/hdy-swipe-tracker.c:1045
+#: src/hdy-swipe-tracker.c:1046
 msgid "The swipeable the swipe tracker is attached to"
 msgstr "Превлачив на кога се прикачиње пратилац превлачења"
 
-#: src/hdy-swipe-tracker.c:1060
+#: src/hdy-swipe-tracker.c:1061
 msgid "Whether the swipe tracker processes events"
 msgstr "Да ли пратилац превлачења обрађује догађаје"
 
-#: src/hdy-swipe-tracker.c:1074
+#: src/hdy-swipe-tracker.c:1075
 msgid "Reversed"
 msgstr "Обрнут"
 
-#: src/hdy-swipe-tracker.c:1075
+#: src/hdy-swipe-tracker.c:1076
 msgid "Whether swipe direction is reversed"
 msgstr "Да ли је смер превлачења обрнут"
 
-#: src/hdy-swipe-tracker.c:1105
+#: src/hdy-swipe-tracker.c:1106
 msgid "Whether to allow swiping for more than one snap point at a time"
 msgstr ""
 "Да ли ће допустити превлачење за више од једне тачке приањања у исто време"
