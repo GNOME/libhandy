@@ -5,9 +5,10 @@ REFS="
 master
 libhandy-1-0
 libhandy-1-2
+libhandy-1-4
 "
 
-LATEST_STABLE_1=1.2
+LATEST_STABLE_1=1.4
 
 IFS='
 '
