@@ -111,7 +111,7 @@ did_draw_something (GtkWidget *widget)
 static void
 test_hdy_avatar_generate (void)
 {
-  GtkWidget *avatar = hdy_avatar_new (TEST_SIZE, "", TRUE);
+  g_autoptr (GtkWidget) avatar = g_object_ref_sink (hdy_avatar_new (TEST_SIZE, "", TRUE));
   g_assert (HDY_IS_AVATAR (avatar));
 
   g_assert_true (did_draw_something (GTK_WIDGET (avatar)));
@@ -121,7 +121,7 @@ test_hdy_avatar_generate (void)
 static void
 test_hdy_avatar_icon_name (void)
 {
-  HdyAvatar *avatar = HDY_AVATAR (hdy_avatar_new (128, NULL, TRUE));
+  g_autoptr (HdyAvatar) avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (128, NULL, TRUE)));
 
   g_assert_null (hdy_avatar_get_icon_name (avatar));
   hdy_avatar_set_icon_name (avatar, TEST_ICON_NAME);
@@ -133,7 +133,7 @@ test_hdy_avatar_icon_name (void)
 static void
 test_hdy_avatar_text (void)
 {
-  HdyAvatar *avatar = HDY_AVATAR (hdy_avatar_new (128, NULL, TRUE));
+  g_autoptr (HdyAvatar) avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (128, NULL, TRUE)));
 
   g_assert_null (hdy_avatar_get_text (avatar));
   hdy_avatar_set_text (avatar, TEST_STRING);
@@ -145,7 +145,7 @@ test_hdy_avatar_text (void)
 static void
 test_hdy_avatar_size (void)
 {
-  HdyAvatar *avatar = HDY_AVATAR (hdy_avatar_new (TEST_SIZE, NULL, TRUE));
+  g_autoptr (HdyAvatar) avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (TEST_SIZE, NULL, TRUE)));
 
   g_assert_cmpint (hdy_avatar_get_size (avatar), ==, TEST_SIZE);
   hdy_avatar_set_size (avatar, TEST_SIZE / 2);
@@ -224,15 +224,12 @@ draw_to_pixbuf_async (HdyAvatar    *avatar,
 
   g_assert_cmpint (gdk_pixbuf_get_width (pixbuf), ==, TEST_SIZE * 2);
   g_assert_cmpint (gdk_pixbuf_get_height (pixbuf), ==, TEST_SIZE * 2);
-  g_object_unref (avatar);
 }
 
 static void
 test_hdy_avatar_draw_to_pixbuf_async (void)
 {
-  HdyAvatar *avatar = NULL;
-
-  avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (TEST_SIZE, NULL, TRUE)));
+  g_autoptr (HdyAvatar) avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (TEST_SIZE, NULL, TRUE)));
 
   hdy_avatar_draw_to_pixbuf_async (avatar,
                                    TEST_SIZE * 2,

@@ -15,7 +15,7 @@ test_hdy_deck_adjacent_child (void)
   gint i;
   GtkWidget *result;
 
-  deck = HDY_DECK (hdy_deck_new ());
+  deck = g_object_ref_sink (HDY_DECK (hdy_deck_new ()));
   g_assert_nonnull (deck);
 
   for (i = 0; i < 2; i++) {
@@ -51,7 +51,7 @@ test_hdy_deck_navigate (void)
   gint i;
   gboolean result;
 
-  deck = HDY_DECK (hdy_deck_new ());
+  deck = g_object_ref_sink (HDY_DECK (hdy_deck_new ()));
   g_assert_nonnull (deck);
 
   result = hdy_deck_navigate (deck, HDY_NAVIGATION_DIRECTION_BACK);
@@ -93,7 +93,7 @@ test_hdy_deck_prepend (void)
   gint i;
   GList *children = NULL;
 
-  deck = HDY_DECK (hdy_deck_new ());
+  deck = g_object_ref_sink (HDY_DECK (hdy_deck_new ()));
   g_assert_nonnull (deck);
 
   for (i = 0; i < 2; i++) {
@@ -122,7 +122,7 @@ test_hdy_deck_insert_child_after (void)
   gint i;
   GList *children = NULL;
 
-  deck = HDY_DECK (hdy_deck_new ());
+  deck = g_object_ref_sink (HDY_DECK (hdy_deck_new ()));
   g_assert_nonnull (deck);
 
   for (i = 0; i < 3; i++) {
@@ -155,7 +155,7 @@ test_hdy_deck_reorder_child_after (void)
   gint i;
   GList *children = NULL;
 
-  deck = HDY_DECK (hdy_deck_new ());
+  deck = g_object_ref_sink (HDY_DECK (hdy_deck_new ()));
   g_assert_nonnull (deck);
 
   for (i = 0; i < 3; i++) {

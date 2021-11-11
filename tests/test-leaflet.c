@@ -15,7 +15,7 @@ test_hdy_leaflet_adjacent_child (void)
   gint i;
   GtkWidget *result;
 
-  leaflet = HDY_LEAFLET (hdy_leaflet_new ());
+  leaflet = g_object_ref_sink (HDY_LEAFLET (hdy_leaflet_new ()));
   g_assert_nonnull (leaflet);
 
   for (i = 0; i < 3; i++) {
@@ -63,7 +63,7 @@ test_hdy_leaflet_navigate (void)
   gint i;
   gboolean result;
 
-  leaflet = HDY_LEAFLET (hdy_leaflet_new ());
+  leaflet = g_object_ref_sink (HDY_LEAFLET (hdy_leaflet_new ()));
   g_assert_nonnull (leaflet);
 
   result = hdy_leaflet_navigate (leaflet, HDY_NAVIGATION_DIRECTION_BACK);
@@ -109,7 +109,7 @@ test_hdy_leaflet_prepend (void)
   gint i;
   GList *children = NULL;
 
-  leaflet = HDY_LEAFLET (hdy_leaflet_new ());
+  leaflet = g_object_ref_sink (HDY_LEAFLET (hdy_leaflet_new ()));
   g_assert_nonnull (leaflet);
 
   for (i = 0; i < 2; i++) {
@@ -138,7 +138,7 @@ test_hdy_leaflet_insert_child_after (void)
   gint i;
   GList *children = NULL;
 
-  leaflet = HDY_LEAFLET (hdy_leaflet_new ());
+  leaflet = g_object_ref_sink (HDY_LEAFLET (hdy_leaflet_new ()));
   g_assert_nonnull (leaflet);
 
   for (i = 0; i < 3; i++) {
@@ -171,7 +171,7 @@ test_hdy_leaflet_reorder_child_after (void)
   gint i;
   GList *children = NULL;
 
-  leaflet = HDY_LEAFLET (hdy_leaflet_new ());
+  leaflet = g_object_ref_sink (HDY_LEAFLET (hdy_leaflet_new ()));
   g_assert_nonnull (leaflet);
 
   for (i = 0; i < 3; i++) {

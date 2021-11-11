@@ -138,7 +138,7 @@ static void
 test_hdy_tab_view_default_icon (void)
 {
   g_autoptr (HdyTabView) view = NULL;
-  GIcon *icon = NULL;
+  g_autoptr (GIcon) icon = NULL;
   g_autoptr (GIcon) icon1 = g_themed_icon_new ("go-previous-symbolic");
   g_autoptr (GIcon) icon2 = g_themed_icon_new ("go-next-symbolic");
   g_autofree gchar *icon_str = NULL;
@@ -155,8 +155,7 @@ test_hdy_tab_view_default_icon (void)
   g_assert_cmpint (notified, ==, 0);
 
   hdy_tab_view_set_default_icon (view, icon1);
-  g_object_get (view, "default-icon", &icon, NULL);
-  g_assert_true (icon == icon1);
+  g_assert_true (hdy_tab_view_get_default_icon (view) == icon1);
   g_assert_cmpint (notified, ==, 1);
 
   g_object_set (view, "default-icon", icon2, NULL);
@@ -183,8 +182,7 @@ test_hdy_tab_view_menu_model (void)
   g_assert_cmpint (notified, ==, 0);
 
   hdy_tab_view_set_menu_model (view, model1);
-  g_object_get (view, "menu-model", &model, NULL);
-  g_assert_true (model == model1);
+  g_assert_true (hdy_tab_view_get_menu_model (view) == model1);
   g_assert_cmpint (notified, ==, 1);
 
   g_object_set (view, "menu-model", model2, NULL);
@@ -211,8 +209,7 @@ test_hdy_tab_view_shortcut_widget (void)
   g_assert_cmpint (notified, ==, 0);
 
   hdy_tab_view_set_shortcut_widget (view, widget1);
-  g_object_get (view, "shortcut-widget", &widget, NULL);
-  g_assert_true (widget == widget1);
+  g_assert_true (hdy_tab_view_get_shortcut_widget (view) == widget1);
   g_assert_cmpint (notified, ==, 1);
 
   g_object_set (view, "shortcut-widget", widget2, NULL);
@@ -272,8 +269,6 @@ test_hdy_tab_view_select (void)
   g_assert_null (selected_page);
 
   page1 = hdy_tab_view_append (view, gtk_button_new ());
-  g_object_get (view, "selected-page", &selected_page, NULL);
-  g_assert_true (selected_page == page1);
   g_assert_true (hdy_tab_view_get_selected_page (view) == page1);
   g_assert_true (hdy_tab_page_get_selected (page1));
   g_assert_cmpint (notified, ==, 1);
@@ -914,8 +909,7 @@ test_hdy_tab_page_title (void)
   g_assert_cmpint (notified, ==, 0);
 
   hdy_tab_page_set_title (page, "Some title");
-  g_object_get (page, "title", &title, NULL);
-  g_assert_cmpstr (title, ==, "Some title");
+  g_assert_cmpstr (hdy_tab_page_get_title (page), ==, "Some title");
   g_assert_cmpint (notified, ==, 1);
 
   g_object_set (page, "title", "Some other title", NULL);
@@ -944,8 +938,7 @@ test_hdy_tab_page_tooltip (void)
   g_assert_cmpint (notified, ==, 0);
 
   hdy_tab_page_set_tooltip (page, "Some tooltip");
-  g_object_get (page, "tooltip", &tooltip, NULL);
-  g_assert_cmpstr (tooltip, ==, "Some tooltip");
+  g_assert_cmpstr (hdy_tab_page_get_tooltip (page), ==, "Some tooltip");
   g_assert_cmpint (notified, ==, 1);
 
   g_object_set (page, "tooltip", "Some other tooltip", NULL);
@@ -976,8 +969,7 @@ test_hdy_tab_page_icon (void)
   g_assert_cmpint (notified, ==, 0);
 
   hdy_tab_page_set_icon (page, icon1);
-  g_object_get (page, "icon", &icon, NULL);
-  g_assert_true (icon == icon1);
+  g_assert_true (hdy_tab_page_get_icon (page) == icon1);
   g_assert_cmpint (notified, ==, 1);
 
   g_object_set (page, "icon", icon2, NULL);
@@ -1038,8 +1030,7 @@ test_hdy_tab_page_indicator_icon (void)
   g_assert_cmpint (notified, ==, 0);
 
   hdy_tab_page_set_indicator_icon (page, icon1);
-  g_object_get (page, "indicator-icon", &icon, NULL);
-  g_assert_true (icon == icon1);
+  g_assert_true (hdy_tab_page_get_indicator_icon (page) == icon1);
   g_assert_cmpint (notified, ==, 1);
 
   g_object_set (page, "indicator-icon", icon2, NULL);

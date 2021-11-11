@@ -20,7 +20,7 @@ test_hdy_carousel_add_remove (void)
   HdyCarousel *carousel;
   GtkWidget *child1, *child2, *child3;
 
-  carousel = HDY_CAROUSEL (hdy_carousel_new ());
+  carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
 
   child1 = gtk_label_new ("");
   child2 = gtk_label_new ("");
@@ -68,7 +68,7 @@ test_hdy_carousel_scroll_to (void)
   HdyCarousel *carousel;
   GtkWidget *child1, *child2, *child3;
 
-  carousel = HDY_CAROUSEL (hdy_carousel_new ());
+  carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
 
   child1 = gtk_label_new ("");
   child2 = gtk_label_new ("");
@@ -101,7 +101,7 @@ test_hdy_carousel_scroll_to (void)
 static void
 test_hdy_carousel_interactive (void)
 {
-  HdyCarousel *carousel = HDY_CAROUSEL (hdy_carousel_new ());
+  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   gboolean interactive;
 
   notified = 0;
@@ -127,7 +127,7 @@ test_hdy_carousel_interactive (void)
 static void
 test_hdy_carousel_spacing (void)
 {
-  HdyCarousel *carousel = HDY_CAROUSEL (hdy_carousel_new ());
+  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   guint spacing;
 
   notified = 0;
@@ -153,7 +153,7 @@ test_hdy_carousel_spacing (void)
 static void
 test_hdy_carousel_animation_duration (void)
 {
-  HdyCarousel *carousel = HDY_CAROUSEL (hdy_carousel_new ());
+  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   guint duration;
 
   notified = 0;
@@ -179,7 +179,7 @@ test_hdy_carousel_animation_duration (void)
 static void
 test_hdy_carousel_allow_mouse_drag (void)
 {
-  HdyCarousel *carousel = HDY_CAROUSEL (hdy_carousel_new ());
+  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   gboolean allow_mouse_drag;
 
   notified = 0;
@@ -205,7 +205,7 @@ test_hdy_carousel_allow_mouse_drag (void)
 static void
 test_hdy_carousel_allow_long_swipes (void)
 {
-  HdyCarousel *carousel = HDY_CAROUSEL (hdy_carousel_new ());
+  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   gboolean allow_long_swipes;
 
   notified = 0;
@@ -231,7 +231,7 @@ test_hdy_carousel_allow_long_swipes (void)
 static void
 test_hdy_carousel_reveal_duration (void)
 {
-  HdyCarousel *carousel = HDY_CAROUSEL (hdy_carousel_new ());
+  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   guint duration;
 
   notified = 0;

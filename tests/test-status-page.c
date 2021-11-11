@@ -45,7 +45,7 @@ static void
 test_hdy_status_page_title (void)
 {
   g_autoptr (HdyStatusPage) status_page = NULL;
-  const gchar *title = NULL;
+  g_autofree gchar *title = NULL;
 
   status_page = HDY_STATUS_PAGE (g_object_ref_sink (hdy_status_page_new ()));
   g_assert_nonnull (status_page);
@@ -72,7 +72,7 @@ static void
 test_hdy_status_page_description (void)
 {
   g_autoptr (HdyStatusPage) status_page = NULL;
-  const gchar *description = NULL;
+  g_autofree gchar *description = NULL;
 
   status_page = HDY_STATUS_PAGE (g_object_ref_sink (hdy_status_page_new ()));
   g_assert_nonnull (status_page);
