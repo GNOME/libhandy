@@ -472,7 +472,6 @@ hdy_window_mixin_destroy (HdyWindowMixin *self)
 {
   if (self->content) {
     hdy_window_mixin_remove (self, self->content);
-    gtk_widget_destroy (self->content);
     self->content = NULL;
     self->child = NULL;
   }
