@@ -29,29 +29,29 @@ typedef enum {
   HDY_COLOR_SCHEME_FORCE_DARK,
 } HdyColorScheme;
 
-HDY_AVAILABLE_IN_ALL
+HDY_AVAILABLE_IN_1_6
 G_DECLARE_FINAL_TYPE (HdyStyleManager, hdy_style_manager, HDY, STYLE_MANAGER, GObject)
 
-HDY_AVAILABLE_IN_ALL
+HDY_AVAILABLE_IN_1_6
 HdyStyleManager *hdy_style_manager_get_default (void);
-HDY_AVAILABLE_IN_ALL
+HDY_AVAILABLE_IN_1_6
 HdyStyleManager *hdy_style_manager_get_for_display (GdkDisplay *display);
 
-HDY_AVAILABLE_IN_ALL
+HDY_AVAILABLE_IN_1_6
 GdkDisplay *hdy_style_manager_get_display (HdyStyleManager *self);
 
-HDY_AVAILABLE_IN_ALL
+HDY_AVAILABLE_IN_1_6
 HdyColorScheme hdy_style_manager_get_color_scheme (HdyStyleManager *self);
-HDY_AVAILABLE_IN_ALL
+HDY_AVAILABLE_IN_1_6
 void           hdy_style_manager_set_color_scheme (HdyStyleManager *self,
                                                    HdyColorScheme   color_scheme);
 
-HDY_AVAILABLE_IN_ALL
+HDY_AVAILABLE_IN_1_6
 gboolean hdy_style_manager_get_system_supports_color_schemes (HdyStyleManager *self);
 
-HDY_AVAILABLE_IN_ALL
+HDY_AVAILABLE_IN_1_6
 gboolean hdy_style_manager_get_dark          (HdyStyleManager *self);
-HDY_AVAILABLE_IN_ALL
+HDY_AVAILABLE_IN_1_6
 gboolean hdy_style_manager_get_high_contrast (HdyStyleManager *self);
 
 G_END_DECLS
