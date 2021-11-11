@@ -194,8 +194,7 @@ hdy_shadow_helper_dispose (GObject *object)
 
   hdy_shadow_helper_clear_cache (self);
 
-  if (self->widget)
-    g_clear_object (&self->widget);
+  self->widget = NULL;
 
   G_OBJECT_CLASS (hdy_shadow_helper_parent_class)->dispose (object);
 }
@@ -228,7 +227,7 @@ hdy_shadow_helper_set_property (GObject      *object,
 
   switch (prop_id) {
   case PROP_WIDGET:
-    self->widget = GTK_WIDGET (g_object_ref (g_value_get_object (value)));
+    self->widget = g_value_get_object (value);
     break;
 
   default:
