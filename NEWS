@@ -1,4 +1,26 @@
 =============
+Version 1.5.0
+=============
+
+- Introduce HdyStyleManager for managing color schemes (light/dark) and
+  high contrast mode.
+  - Support the cross-platform color scheme preference in the
+    settings portal.
+- HdyPreferencesPage
+  - Remove adaptive margins to fix default window sizes
+- HdyTabBar
+  - Handle middle click on button release rather than press
+- Various memory leak fixes
+- Translation updates:
+  - Brazilian Portuguese
+  - Finnish
+  - Indonesian
+  - Portuguese
+  - Serbian
+  - Swedish
+  - Ukrainian
+
+=============
 Version 1.4.0
 =============
 
