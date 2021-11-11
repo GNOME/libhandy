@@ -117,6 +117,24 @@ enum {
 
 static guint signals[SIGNAL_LAST_SIGNAL];
 
+static void
+set_swipeable (HdySwipeTracker *self,
+               HdySwipeable    *swipeable)
+{
+  if (self->swipeable == swipeable)
+    return;
+
+  if (self->swipeable)
+    g_object_remove_weak_pointer (G_OBJECT (self->swipeable),
+                                  (gpointer *) &self->swipeable);
+
+  self->swipeable = swipeable;
+
+  if (self->swipeable)
+    g_object_add_weak_pointer (G_OBJECT (self->swipeable),
+                               (gpointer *) &self->swipeable);
+}
+
 static gboolean
 get_widget_coordinates (HdySwipeTracker *self,
                         GdkEvent        *event,
@@ -936,7 +954,7 @@ hdy_swipe_tracker_dispose (GObject *object)
 
   g_clear_pointer (&self->event_history, g_array_unref);
   g_clear_object (&self->touch_gesture);
-  g_clear_object (&self->swipeable);
+  set_swipeable (self, NULL);
 
   G_OBJECT_CLASS (hdy_swipe_tracker_parent_class)->dispose (object);
 }
@@ -989,7 +1007,7 @@ hdy_swipe_tracker_set_property (GObject      *object,
 
   switch (prop_id) {
   case PROP_SWIPEABLE:
-    self->swipeable = HDY_SWIPEABLE (g_object_ref (g_value_get_object (value)));
+    set_swipeable (self, g_value_get_object (value));
     break;
 
   case PROP_ENABLED:
