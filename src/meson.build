@@ -48,18 +48,27 @@ libhandy_public_headers = []
 libhandy_public_sources = []
 libhandy_private_sources = []
 
-hdy_public_enums = gnome.mkenums('hdy-enums',
-      h_template: 'hdy-enums.h.in',
-      c_template: 'hdy-enums.c.in',
+hdy_public_enums = gnome.mkenums_simple('hdy-enums',
          sources: hdy_public_enum_headers,
+     body_prefix: '#include "config.h"',
+   header_prefix: '#if !defined(_HANDY_INSIDE) && !defined(HANDY_COMPILATION)\n' +
+                  '#error "Only <handy.h> can be included directly."\n' +
+                  '#endif\n' +
+                  '\n' +
+                  '#include "hdy-version.h"\n',
+       decorator: 'HDY_AVAILABLE_IN_ALL',
   install_header: true,
      install_dir: libhandy_header_dir,
 )
 
-hdy_private_enums = gnome.mkenums('hdy-enums-private',
-      h_template: 'hdy-enums-private.h.in',
-      c_template: 'hdy-enums-private.c.in',
+hdy_private_enums = gnome.mkenums_simple('hdy-enums-private',
          sources: hdy_private_enum_headers,
+     body_prefix: '#include "config.h"',
+   header_prefix: '#if !defined(_HANDY_INSIDE) && !defined(HANDY_COMPILATION)\n' +
+                  '#error "Only <handy.h> can be included directly."\n' +
+                  '#endif\n' +
+                  '\n' +
+                  '#include "hdy-enums.h"\n',
   install_header: false,
 )
 
