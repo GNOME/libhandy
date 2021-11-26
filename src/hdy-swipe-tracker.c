@@ -944,13 +944,13 @@ hdy_swipe_tracker_dispose (GObject *object)
 {
   HdySwipeTracker *self = HDY_SWIPE_TRACKER (object);
 
-  if (self->swipeable)
+  if (self->swipeable) {
     gtk_grab_remove (GTK_WIDGET (self->swipeable));
+    g_object_set_data (G_OBJECT (self->swipeable), "captured-event-handler", NULL);
+  }
 
   if (self->touch_gesture)
     g_signal_handlers_disconnect_by_data (self->touch_gesture, self);
-
-  g_object_set_data (G_OBJECT (self->swipeable), "captured-event-handler", NULL);
 
   g_clear_pointer (&self->event_history, g_array_unref);
   g_clear_object (&self->touch_gesture);
