@@ -264,9 +264,8 @@ enable_animations_cb (HdyStyleManager *self)
 {
   GdkScreen *screen = gdk_display_get_default_screen (self->display);
 
-  g_object_set (gtk_settings_get_for_screen (screen),
-                "gtk-enable-animations", TRUE,
-                NULL);
+  gtk_settings_reset_property (gtk_settings_get_for_screen (screen),
+                               "gtk-enable-animations");
 
   self->animation_timeout_id = 0;
 
@@ -296,14 +295,13 @@ update_stylesheet (HdyStyleManager *self)
 {
   GdkScreen *screen;
   GtkSettings *gtk_settings;
+  gboolean enable_animations;
 
   if (!self->display)
     return;
 
   screen = gdk_display_get_default_screen (self->display);
   gtk_settings = gtk_settings_get_for_screen (screen);
-
-  g_clear_handle_id (&self->animation_timeout_id, g_source_remove);
 
   g_signal_handlers_block_by_func (gtk_settings,
                                    G_CALLBACK (warn_prefer_dark_theme),
@@ -312,8 +310,19 @@ update_stylesheet (HdyStyleManager *self)
                                    G_CALLBACK (update_stylesheet),
                                    self);
 
+  if (self->animation_timeout_id) {
+    g_clear_handle_id (&self->animation_timeout_id, g_source_remove);
+    enable_animations = TRUE;
+  } else {
+    g_object_get (gtk_settings,
+                  "gtk-enable-animations", &enable_animations,
+                  NULL);
+  }
+
+  if (enable_animations)
+    g_object_set (gtk_settings, "gtk-enable-animations", FALSE, NULL);
+
   g_object_set (gtk_settings,
-                "gtk-enable-animations", FALSE,
                 "gtk-application-prefer-dark-theme", self->dark,
                 NULL);
 
@@ -331,10 +340,12 @@ update_stylesheet (HdyStyleManager *self)
                                      G_CALLBACK (warn_prefer_dark_theme),
                                      self);
 
-  self->animation_timeout_id =
-    g_timeout_add (SWITCH_DURATION,
-                   G_SOURCE_FUNC (enable_animations_cb),
-                   self);
+  if (enable_animations) {
+    self->animation_timeout_id =
+      g_timeout_add (SWITCH_DURATION,
+                     G_SOURCE_FUNC (enable_animations_cb),
+                     self);
+  }
 
   g_idle_add (G_SOURCE_FUNC (unblock_theme_name_changed_cb), self);
 }
