@@ -5,7 +5,6 @@
     <child>
       <object class="GtkGrid" id="grid">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
         <property name="hexpand">False</property>
         <property name="vexpand">False</property>
         <property name="row-spacing" bind-source="HdyKeypad" bind-property="row-spacing" bind-flags="sync-create"/>
@@ -16,7 +15,6 @@
           <object class="HdyKeypadButton" id="btn_1">
             <property name="symbols">1</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="letters-visible" bind-flags="sync-create"/>
@@ -31,7 +29,6 @@
           <object class="HdyKeypadButton" id="btn_2">
             <property name="symbols">2ABC</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="letters-visible" bind-flags="sync-create"/>
@@ -46,7 +43,6 @@
           <object class="HdyKeypadButton" id="btn_3">
             <property name="symbols">3DEF</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="letters-visible" bind-flags="sync-create"/>
@@ -61,7 +57,6 @@
           <object class="HdyKeypadButton" id="btn_4">
             <property name="symbols">4GHI</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="letters-visible" bind-flags="sync-create"/>
@@ -76,7 +71,6 @@
           <object class="HdyKeypadButton" id="btn_5">
             <property name="symbols">5JKL</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="letters-visible" bind-flags="sync-create"/>
@@ -91,7 +85,6 @@
           <object class="HdyKeypadButton" id="btn_6">
             <property name="symbols">6MNO</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="letters-visible" bind-flags="sync-create"/>
@@ -106,7 +99,6 @@
           <object class="HdyKeypadButton" id="btn_7">
             <property name="symbols">7PQRS</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="letters-visible" bind-flags="sync-create"/>
@@ -121,7 +113,6 @@
           <object class="HdyKeypadButton" id="btn_8">
             <property name="symbols">8TUV</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="letters-visible" bind-flags="sync-create"/>
@@ -136,7 +127,6 @@
           <object class="HdyKeypadButton" id="btn_9">
             <property name="symbols">9WXYZ</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="letters-visible" bind-flags="sync-create"/>
@@ -149,7 +139,6 @@
         </child>
         <child>
           <object class="GtkButton" id="btn_asterisk">
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="visible" bind-source="HdyKeypad" bind-property="symbols-visible" bind-flags="sync-create"/>
@@ -173,7 +162,6 @@
           <object class="HdyKeypadButton" id="btn_0">
             <property name="symbols">0+</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="show-symbols" bind-source="HdyKeypad" bind-property="symbols-visible" bind-flags="sync-create"/>
@@ -186,7 +174,6 @@
         </child>
         <child>
           <object class="GtkButton" id="btn_hash">
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
             <property name="visible" bind-source="HdyKeypad" bind-property="symbols-visible" bind-flags="sync-create"/>
