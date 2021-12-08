@@ -64,7 +64,7 @@ hdy_private_enums = gnome.mkenums('hdy-enums-private',
 )
 
 libhandy_public_sources += [hdy_public_enums[0]]
-libhandy_private_sources += [hdy_private_enums[0]]
+libhandy_private_sources += hdy_private_enums
 libhandy_generated_headers += [hdy_public_enums[1]]
 
 src_headers = [
