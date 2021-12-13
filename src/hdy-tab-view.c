@@ -958,6 +958,9 @@ shortcut_key_press_cb (HdyTabView  *self,
         return GDK_EVENT_PROPAGATE;
 
       page = hdy_tab_view_get_nth_page (self, n_page);
+      if (hdy_tab_view_get_selected_page (self) == page)
+        return GDK_EVENT_PROPAGATE;
+
       hdy_tab_view_set_selected_page (self, page);
 
       return GDK_EVENT_STOP;
