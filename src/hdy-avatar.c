@@ -822,12 +822,6 @@ hdy_avatar_get_preferred_height_for_width (GtkWidget *widget,
                       minimum, natural, NULL, NULL);
 }
 
-static GtkSizeRequestMode
-hdy_avatar_get_request_mode (GtkWidget *widget)
-{
-  return GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH;
-}
-
 static void
 hdy_avatar_size_allocate (GtkWidget     *widget,
                           GtkAllocation *allocation)
@@ -860,7 +854,6 @@ hdy_avatar_class_init (HdyAvatarClass *klass)
   object_class->get_property = hdy_avatar_get_property;
 
   widget_class->draw = hdy_avatar_draw;
-  widget_class->get_request_mode = hdy_avatar_get_request_mode;
   widget_class->get_preferred_width = hdy_avatar_get_preferred_width;
   widget_class->get_preferred_height = hdy_avatar_get_preferred_height;
   widget_class->get_preferred_width_for_height = hdy_avatar_get_preferred_width_for_height;
