@@ -230,11 +230,11 @@ hdy_view_switcher_button_class_init (HdyViewSwitcherButtonClass *klass)
    * Since: 0.0.10
    */
   props[PROP_NEEDS_ATTENTION] =
-  g_param_spec_boolean ("needs-attention",
-                        _("Needs attention"),
-                        _("Hint the view needs attention"),
-                        FALSE,
-                        G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE);
+    g_param_spec_boolean ("needs-attention",
+                          _("Needs attention"),
+                          _("Hint the view needs attention"),
+                          FALSE,
+                          G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE);
 
   g_object_class_install_properties (object_class, LAST_PROP, props);
 
