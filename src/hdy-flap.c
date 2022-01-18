@@ -215,7 +215,7 @@ set_orientation (HdyFlap        *self,
 static void
 update_child_visibility (HdyFlap *self)
 {
-  gboolean visible = self->reveal_flap || self->reveal_progress > 0;
+  gboolean visible = self->reveal_progress > 0;
 
   if (self->flap.widget)
     gtk_widget_set_child_visible (self->flap.widget, visible);
