@@ -965,13 +965,13 @@ hdy_tab_class_init (HdyTabClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, indicator_clicked_cb);
 
   gtk_widget_class_set_css_name (widget_class, "tab");
+
+  g_type_ensure (HDY_TYPE_FADING_LABEL);
 }
 
 static void
 hdy_tab_init (HdyTab *self)
 {
-  g_type_ensure (HDY_TYPE_FADING_LABEL);
-
   gtk_widget_init_template (GTK_WIDGET (self));
 
   self->gesture = gtk_gesture_drag_new (GTK_WIDGET (self));

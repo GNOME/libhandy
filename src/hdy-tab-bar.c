@@ -706,6 +706,8 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, extra_drag_data_received_cb);
 
   gtk_widget_class_set_css_name (widget_class, "tabbar");
+
+  g_type_ensure (HDY_TYPE_TAB_BOX);
 }
 
 static void
@@ -714,8 +716,6 @@ hdy_tab_bar_init (HdyTabBar *self)
   GtkAdjustment *adj;
 
   self->autohide = TRUE;
-
-  g_type_ensure (HDY_TYPE_TAB_BOX);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 

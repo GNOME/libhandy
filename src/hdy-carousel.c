@@ -764,6 +764,8 @@ hdy_carousel_class_init (HdyCarouselClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, position_shifted_cb);
 
   gtk_widget_class_set_css_name (widget_class, "carousel");
+
+  g_type_ensure (HDY_TYPE_CAROUSEL_BOX);
 }
 
 static void
@@ -771,7 +773,6 @@ hdy_carousel_init (HdyCarousel *self)
 {
   self->allow_scroll_wheel = TRUE;
 
-  g_type_ensure (HDY_TYPE_CAROUSEL_BOX);
   gtk_widget_init_template (GTK_WIDGET (self));
 
   self->animation_duration = DEFAULT_DURATION;

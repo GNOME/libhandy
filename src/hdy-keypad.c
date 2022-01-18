@@ -363,6 +363,8 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
 
   gtk_widget_class_set_accessible_role (widget_class, ATK_ROLE_DIAL);
   gtk_widget_class_set_css_name (widget_class, "keypad");
+
+  g_type_ensure (HDY_TYPE_KEYPAD_BUTTON);
 }
 
 
@@ -376,7 +378,6 @@ hdy_keypad_init (HdyKeypad *self)
   priv->letters_visible = TRUE;
   priv->symbols_visible = TRUE;
 
-  g_type_ensure (HDY_TYPE_KEYPAD_BUTTON);
   gtk_widget_init_template (GTK_WIDGET (self));
 }
 
