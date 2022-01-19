@@ -538,11 +538,10 @@
                                 </child>
                                 <child>
                                   <object class="HdyActionRow">
-                                    <property name="activatable_widget">frobnicate</property>
                                     <property name="title" translatable="yes">Rows can have action widgets</property>
                                     <property name="visible">True</property>
                                     <child>
-                                      <object class="GtkButton" id="frobnicate">
+                                      <object class="GtkButton">
                                         <property name="halign">end</property>
                                         <property name="label" translatable="yes">Frobnicate</property>
                                         <property name="valign">center</property>
