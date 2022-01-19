@@ -18,9 +18,16 @@ handy_demo_sources = [
   libhandy_generated_headers,
 ]
 
+demo_link_args = []
+
+if cc.get_argument_syntax() == 'msvc'
+  demo_link_args += '/entry:mainCRTStartup'
+endif
+
 handy_demo = executable('handy-@0@-demo'.format(apiversion),
   handy_demo_sources,
   dependencies: libhandy_dep,
+  link_args: demo_link_args,
   gui_app: true,
   install: true,
 )
