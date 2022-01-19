@@ -119,8 +119,7 @@ src_headers = [
   'hdy-window-handle.h',
 ]
 
-sed = find_program('sed', required: true)
-gen_public_types = find_program('gen-public-types.sh', required: true)
+gen_public_types = find_program('gen-public-types.py', required: true)
 
 libhandy_init_public_types = custom_target('hdy-public-types.c',
    output: 'hdy-public-types.c',
