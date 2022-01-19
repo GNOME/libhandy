@@ -72,6 +72,7 @@ set_high_contrast (HdySettings *self,
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_HIGH_CONTRAST]);
 }
 
+#ifndef G_OS_WIN32
 /* Settings portal */
 
 static gboolean
@@ -279,6 +280,7 @@ is_running_in_flatpak (void)
 {
   return g_file_test ("/.flatpak-info", G_FILE_TEST_EXISTS);
 }
+#endif /* !G_OS_WIN32 */
 
 static void
 gsettings_color_scheme_changed_cb (HdySettings *self)
@@ -299,10 +301,12 @@ init_gsettings (HdySettings *self)
   g_autoptr (GSettingsSchema) schema = NULL;
   g_autoptr (GSettingsSchema) a11y_schema = NULL;
 
+#ifndef G_OS_WIN32
   /* While we can access gsettings in flatpak, we can't do anything useful with
    * them as they aren't propagated from the system. */
   if (is_running_in_flatpak ())
     return;
+#endif
 
   source = g_settings_schema_source_get_default ();
 
@@ -388,7 +392,11 @@ hdy_settings_constructed (GObject *object)
 
   G_OBJECT_CLASS (hdy_settings_parent_class)->constructed (object);
 
+#ifndef G_OS_WIN32
+  g_debug ("Trying to initialize portal");
+
   init_portal (self);
+#endif
 
   if (!self->has_color_scheme || !self->has_high_contrast)
     init_gsettings (self);
