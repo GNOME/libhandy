@@ -48,7 +48,7 @@ struct _HdyCarousel
   GtkOrientation orientation;
   guint animation_duration;
 
-  gulong scroll_timeout_id;
+  guint scroll_timeout_id;
   gboolean can_scroll;
 };
 
@@ -360,7 +360,8 @@ scroll_event_cb (HdyCarousel *self,
   duration = MIN (self->animation_duration, DEFAULT_DURATION);
 
   self->can_scroll = FALSE;
-  g_timeout_add (duration, (GSourceFunc) scroll_timeout_cb, self);
+  self->scroll_timeout_id =
+   g_timeout_add (duration, (GSourceFunc) scroll_timeout_cb, self);
 
   return GDK_EVENT_STOP;
 }
