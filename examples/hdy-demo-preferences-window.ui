@@ -211,7 +211,6 @@
     <child>
       <object class="GtkButton">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="label" translatable="yes">Return to the preferences</property>
         <property name="halign">center</property>
         <signal name="clicked" handler="return_to_preferences_cb" swapped="yes"/>
@@ -247,7 +246,6 @@
     <child>
       <object class="GtkButton">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="label" translatable="yes">Return to the preferences</property>
         <property name="halign">center</property>
         <signal name="clicked" handler="return_to_preferences_cb" swapped="yes"/>
