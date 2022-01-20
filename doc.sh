@@ -3,6 +3,9 @@
 DOC_DIR=public/doc
 REFS="
 main
+"
+
+LEGACY_REFS="
 libhandy-1-0
 libhandy-1-2
 libhandy-1-4
@@ -20,6 +23,17 @@ for REF in $REFS; do
 
   curl -L --output "$REF.zip" "https://gitlab.gnome.org/GNOME/libhandy/-/jobs/artifacts/$REF/download?job=doc"
   unzip -d "$REF" "$REF.zip"
+  mv "$REF/_doc" $DOC_DIR/$API_VERSION
+
+  rm "$REF.zip"
+  rm -rf "$REF"
+done
+
+for REF in $LEGACY_REFS; do
+  API_VERSION=`echo $REF | sed 's/libhandy-\([0-9][0-9]*\)-\([0-9][0-9]*\)/\1.\2/'`
+
+  curl -L --output "$REF.zip" "https://gitlab.gnome.org/GNOME/libhandy/-/jobs/artifacts/$REF/download?job=build-gtkdoc"
+  unzip -d "$REF" "$REF.zip"
   mv "$REF/_reference" $DOC_DIR/$API_VERSION
 
   rm "$REF.zip"
@@ -27,7 +41,7 @@ for REF in $REFS; do
 done
 
 cp -r $DOC_DIR/$LATEST_STABLE_1 $DOC_DIR/1-latest
-ln -s $DOC_DIR/main $DOC_DIR/master
+ln -s main $DOC_DIR/master
 
 find $DOC_DIR -type f -print0 | xargs -0 sed -i 's|\.\./gdk3/|https://developer.gnome.org/gdk3/stable/|g'
 find $DOC_DIR -type f -print0 | xargs -0 sed -i 's|\.\./gdk-pixbuf/|https://developer.gnome.org/gdk-pixbuf/stable/|g'
