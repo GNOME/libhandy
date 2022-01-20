@@ -40,7 +40,7 @@ for REF in $LEGACY_REFS; do
   rm -rf "$REF"
 done
 
-cp -r $DOC_DIR/$LATEST_STABLE_1 $DOC_DIR/1-latest
+ln -s $LATEST_STABLE_1 $DOC_DIR/1-latest
 ln -s main $DOC_DIR/master
 
 find $DOC_DIR -type f -print0 | xargs -0 sed -i 's|\.\./gdk3/|https://developer.gnome.org/gdk3/stable/|g'
