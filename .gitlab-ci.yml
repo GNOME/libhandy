@@ -71,6 +71,6 @@ refresh-doc:
   stage: publish
   only:
     refs:
-    - 'master'
+    - 'main'
   script:
     - "curl -X POST -F token=${PAGES_TRIGGER_TOKEN} -F ref=pages https://gitlab.gnome.org/api/v4/projects/11489/trigger/pipeline"
