@@ -2,7 +2,7 @@
 
 DOC_DIR=public/doc
 REFS="
-master
+main
 libhandy-1-0
 libhandy-1-2
 libhandy-1-4
@@ -27,6 +27,7 @@ for REF in $REFS; do
 done
 
 cp -r $DOC_DIR/$LATEST_STABLE_1 $DOC_DIR/1-latest
+ln -s $DOC_DIR/main $DOC_DIR/master
 
 find $DOC_DIR -type f -print0 | xargs -0 sed -i 's|\.\./gdk3/|https://developer.gnome.org/gdk3/stable/|g'
 find $DOC_DIR -type f -print0 | xargs -0 sed -i 's|\.\./gdk-pixbuf/|https://developer.gnome.org/gdk-pixbuf/stable/|g'
