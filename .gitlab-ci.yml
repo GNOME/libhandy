@@ -18,7 +18,7 @@ api-visibility:
     - ./.gitlab-ci/api-visibility.sh
 
 doc:
-  image: fedora:latest
+  image: fedora:34
   stage: build
   variables:
     MESON_ARGS: >-
@@ -57,7 +57,7 @@ build-flatpak-glade:
     BUNDLE: 'sm.puri.Handy.Glade.flatpak'
 
 abi-check:
-  image: fedora:latest
+  image: fedora:34
   stage: build
   variables:
     LAST_ABI_BREAK: "b90b5120c5e9e3f5a3b0d228bd7ddb24f053289a"
