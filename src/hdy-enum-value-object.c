@@ -9,14 +9,14 @@
 #include "hdy-enum-value-object.h"
 
 /**
- * SECTION:hdy-enum-value-object
- * @short_description: An object representing a #GEnumValue.
- * @Title: HdyEnumValueObject
+ * HdyEnumValueObject:
  *
- * The #HdyEnumValueObject object represents a #GEnumValue, allowing it to be
- * used with #GListModel.
+ * An object representing an [struct@GObject.EnumValue].
  *
- * Since: 0.0.6
+ * The `HdyEnumValueObject` object represents a [struct@GObject.EnumValue],
+ * allowing it to be used with [iface@Gio.ListModel].
+ *
+ * Since: 1.0
  */
 
 struct _HdyEnumValueObject
@@ -28,6 +28,15 @@ struct _HdyEnumValueObject
 
 G_DEFINE_TYPE (HdyEnumValueObject, hdy_enum_value_object, G_TYPE_OBJECT)
 
+/**
+ * hdy_enum_value_object_new:
+ *
+ * Creates a new `HdyEnumValueObject`.
+ *
+ * Returns: the newly created `HdyEnumValueObject`
+ *
+ * Since: 1.0
+ */
 HdyEnumValueObject *
 hdy_enum_value_object_new (GEnumValue *enum_value)
 {
@@ -48,6 +57,16 @@ hdy_enum_value_object_init (HdyEnumValueObject *self)
 {
 }
 
+/**
+ * hdy_enum_value_object_get_value:
+ * @self: an enum value object
+ *
+ * Gets the value of @self.
+ *
+ * Returns: the value of @self
+ *
+ * Since: 1.0
+ */
 gint
 hdy_enum_value_object_get_value (HdyEnumValueObject *self)
 {
@@ -56,6 +75,16 @@ hdy_enum_value_object_get_value (HdyEnumValueObject *self)
   return self->enum_value.value;
 }
 
+/**
+ * hdy_enum_value_object_get_name:
+ * @self: an enum value object
+ *
+ * Gets the name of @self.
+ *
+ * Returns: the name of @self
+ *
+ * Since: 1.0
+ */
 const gchar *
 hdy_enum_value_object_get_name (HdyEnumValueObject *self)
 {
@@ -64,6 +93,16 @@ hdy_enum_value_object_get_name (HdyEnumValueObject *self)
   return self->enum_value.value_name;
 }
 
+/**
+ * hdy_enum_value_object_get_nick:
+ * @self: an enum value object
+ *
+ * Gets the nick of @self.
+ *
+ * Returns: the nick of @self
+ *
+ * Since: 1.0
+ */
 const gchar *
 hdy_enum_value_object_get_nick (HdyEnumValueObject *self)
 {

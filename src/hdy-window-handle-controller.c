@@ -34,16 +34,14 @@
 #include <glib/gi18n-lib.h>
 
 /**
- * PRIVATE:hdy-window-handle-controller
- * @short_description: An oblect that makes widgets behave like titlebars.
- * @Title: HdyWindowHandleController
- * @See_also: #HdyHeaderBar, #HdyWindowHandle
- * @stability: Private
+ * HdyWindowHandleController:
+ *
+ * An oblect that makes widgets behave like titlebars.
  *
  * When HdyWindowHandleController is added to the widget, dragging that widget
  * will move the window, and right click, double click and middle click will be
  * handled as if that widget was a titlebar. Currently it's used to implement
- * these properties in #HdyWindowHandle and #HdyHeaderBar
+ * these properties in [class@WindowHandle] and [class@HeaderBar]
  *
  * Since: 1.0
  */
@@ -472,11 +470,11 @@ hdy_window_handle_controller_init (HdyWindowHandleController *self)
 
 /**
  * hdy_window_handle_controller_new:
- * @widget: The widget to create a controller for
+ * @widget: the widget to create a controller for
  *
- * Creates a new #HdyWindowHandleController for @widget.
+ * Creates a new `HdyWindowHandleController` for @widget.
  *
- * Returns: (transfer full): a newly created #HdyWindowHandleController
+ * Returns: the newly created `HdyWindowHandleController`
  *
  * Since: 1.0
  */

@@ -30,7 +30,7 @@ typedef enum {
 
 /**
  * HdyDeckClass
- * @parent_class: The parent class
+ * @parent_class: the parent class
  */
 struct _HdyDeckClass
 {

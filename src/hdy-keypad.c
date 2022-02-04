@@ -11,18 +11,18 @@
 #include "hdy-keypad-button-private.h"
 
 /**
- * SECTION:hdy-keypad
- * @short_description: A keypad for dialing numbers
- * @Title: HdyKeypad
+ * HdyKeypad:
  *
- * The #HdyKeypad widget is a keypad for entering numbers such as phone numbers
+ * A keypad for dialing numbers
+ *
+ * The `HdyKeypad` widget is a keypad for entering numbers such as phone numbers
  * or PIN codes.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyKeypad has a single CSS node with name keypad.
+ * `HdyKeypad` has a single CSS node with name `keypad`.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 
 typedef struct
@@ -247,7 +247,7 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
   object_class->get_property = hdy_keypad_get_property;
 
   /**
-   * HdyKeypad:row-spacing:
+   * HdyKeypad:row-spacing: (attributes org.gtk.Property.get=hdy_keypad_get_row_spacing org.gtk.Property.set=hdy_keypad_set_row_spacing)
    *
    * The amount of space between two consecutive rows.
    *
@@ -261,7 +261,7 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyKeypad:column-spacing:
+   * HdyKeypad:column-spacing: (attributes org.gtk.Property.get=hdy_keypad_get_column_spacing org.gtk.Property.set=hdy_keypad_set_column_spacing)
    *
    * The amount of space between two consecutive columns.
    *
@@ -275,10 +275,10 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyKeypad:letters-visible:
+   * HdyKeypad:letters-visible: (attributes org.gtk.Property.get=hdy_keypad_get_letters_visible org.gtk.Property.set=hdy_keypad_set_letters_visible)
    *
-   * Whether the keypad should display the standard letters below the digits on
-   * its buttons.
+   * Whether standard letters should be displayed below the digits on the
+   * buttons.
    *
    * Since: 1.0
    */
@@ -290,10 +290,12 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyKeypad:symbols-visible:
+   * HdyKeypad:symbols-visible: (attributes org.gtk.Property.get=hdy_keypad_get_symbols_visible org.gtk.Property.set=hdy_keypad_set_symbols_visible)
    *
-   * Whether the keypad should display the hash and asterisk buttons, and should
-   * display the plus symbol at the bottom of its 0 button.
+   * Whether to display symbols.
+   *
+   * This includes hash and asterisk buttons, and the plus symbol at the bottom
+   * of its 0 button.
    *
    * Since: 1.0
    */
@@ -305,10 +307,11 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyKeypad:entry:
+   * HdyKeypad:entry: (attributes org.gtk.Property.get=hdy_keypad_get_entry org.gtk.Property.set=hdy_keypad_set_entry)
    *
-   * The entry widget connected to the keypad. See hdy_keypad_set_entry() for
-   * details.
+   * The entry widget connected to the keypad.
+   *
+   * The entry will block any input not possible to type with the keypad.
    *
    * Since: 1.0
    */
@@ -320,7 +323,7 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyKeypad:end-action:
+   * HdyKeypad:end-action: (attributes org.gtk.Property.get=hdy_keypad_get_end_action org.gtk.Property.set=hdy_keypad_set_end_action)
    *
    * The widget for the lower end corner of @self.
    *
@@ -334,7 +337,7 @@ hdy_keypad_class_init (HdyKeypadClass *klass)
                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyKeypad:start-action:
+   * HdyKeypad:start-action: (attributes org.gtk.Property.get=hdy_keypad_get_start_action org.gtk.Property.set=hdy_keypad_set_start_action)
    *
    * The widget for the lower start corner of @self.
    *
@@ -387,11 +390,11 @@ hdy_keypad_init (HdyKeypad *self)
  * @symbols_visible: whether the hash, plus, and asterisk symbols should be visible
  * @letters_visible: whether the letters below the digits should be visible
  *
- * Create a new #HdyKeypad widget.
+ * Creates a new `HdyKeypad`.
  *
- * Returns: the newly created #HdyKeypad widget
+ * Returns: the newly created `HdyKeypad`
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 GtkWidget *
 hdy_keypad_new (gboolean symbols_visible,
@@ -405,7 +408,7 @@ hdy_keypad_new (gboolean symbols_visible,
 
 /**
  * hdy_keypad_set_row_spacing:
- * @self: a #HdyKeypad
+ * @self: a keypad
  * @spacing: the amount of space to insert between rows
  *
  * Sets the amount of space between rows of @self.
@@ -433,8 +436,8 @@ hdy_keypad_set_row_spacing (HdyKeypad *self,
 
 
 /**
- * hdy_keypad_get_row_spacing:
- * @self: a #HdyKeypad
+ * hdy_keypad_get_row_spacing: (attributes org.gtk.Method.get_property=row-spacing)
+ * @self: a keypad
  *
  * Returns the amount of space between the rows of @self.
  *
@@ -456,8 +459,8 @@ hdy_keypad_get_row_spacing (HdyKeypad *self)
 
 
 /**
- * hdy_keypad_set_column_spacing:
- * @self: a #HdyKeypad
+ * hdy_keypad_set_column_spacing: (attributes org.gtk.Method.set_property=column-spacing)
+ * @self: a keypad
  * @spacing: the amount of space to insert between columns
  *
  * Sets the amount of space between columns of @self.
@@ -485,8 +488,8 @@ hdy_keypad_set_column_spacing (HdyKeypad *self,
 
 
 /**
- * hdy_keypad_get_column_spacing:
- * @self: a #HdyKeypad
+ * hdy_keypad_get_column_spacing: (attributes org.gtk.Method.get_property=column-spacing)
+ * @self: a keypad
  *
  * Returns the amount of space between the columns of @self.
  *
@@ -508,12 +511,11 @@ hdy_keypad_get_column_spacing (HdyKeypad *self)
 
 
 /**
- * hdy_keypad_set_letters_visible:
- * @self: a #HdyKeypad
+ * hdy_keypad_set_letters_visible: (attributes org.gtk.Method.set_property=letters-visible)
+ * @self: a keypad
  * @letters_visible: whether the letters below the digits should be visible
  *
- * Sets whether @self should display the standard letters below the digits on
- * its buttons.
+ * Sets whether standard letters are displayed below the digits on the buttons.
  *
  * Since: 1.0
  */
@@ -537,11 +539,10 @@ hdy_keypad_set_letters_visible (HdyKeypad *self,
 
 
 /**
- * hdy_keypad_get_letters_visible:
- * @self: a #HdyKeypad
+ * hdy_keypad_get_letters_visible: (attributes org.gtk.Method.get_property=letters-visible)
+ * @self: a keypad
  *
- * Returns whether @self should display the standard letters below the digits on
- * its buttons.
+ * Gets whether standard letters are displayed below the digits on the buttons.
  *
  * Returns: whether the letters below the digits should be visible
  *
@@ -561,12 +562,11 @@ hdy_keypad_get_letters_visible (HdyKeypad *self)
 
 
 /**
- * hdy_keypad_set_symbols_visible:
- * @self: a #HdyKeypad
+ * hdy_keypad_set_symbols_visible: (attributes org.gtk.Method.set_property=symbols-visible)
+ * @self: a keypad
  * @symbols_visible: whether the hash, plus, and asterisk symbols should be visible
  *
- * Sets whether @self should display the hash and asterisk buttons, and should
- * display the plus symbol at the bottom of its 0 button.
+ * Sets whether standard letters are displayed below the digits on the buttons.
  *
  * Since: 1.0
  */
@@ -590,16 +590,12 @@ hdy_keypad_set_symbols_visible (HdyKeypad *self,
 
 
 /**
- * hdy_keypad_get_symbols_visible:
- * @self: a #HdyKeypad
+ * hdy_keypad_get_symbols_visible: (attributes org.gtk.Method.get_property=symbols-visible)
+ * @self: a keypad
  *
- * Returns whether @self should display the standard letters below the digits on
- * its buttons.
+ * Gets whether symbols are displayed.
  *
- * Returns Whether @self should display the hash and asterisk buttons, and
- * should display the plus symbol at the bottom of its 0 button.
- *
- * Returns: whether the hash, plus, and asterisk symbols should be visible
+ * Returns: whether symboles are visible
  *
  * Since: 1.0
  */
@@ -617,14 +613,13 @@ hdy_keypad_get_symbols_visible (HdyKeypad *self)
 
 
 /**
- * hdy_keypad_set_entry:
- * @self: a #HdyKeypad
- * @entry: (nullable): a #GtkEntry
+ * hdy_keypad_set_entry: (attributes org.gtk.Method.set_property=entry)
+ * @self: a keypad
+ * @entry: (nullable): an entry
  *
- * Binds @entry to @self and blocks any input which wouldn't be possible to type
- * with with the keypad.
+ * Binds @entry to @self.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_keypad_set_entry (HdyKeypad *self,
@@ -661,12 +656,12 @@ hdy_keypad_set_entry (HdyKeypad *self,
 
 
 /**
- * hdy_keypad_get_entry:
- * @self: a #HdyKeypad
+ * hdy_keypad_get_entry: (attributes org.gtk.Method.get_property=entry)
+ * @self: a keypad
  *
- * Get the connected entry. See hdy_keypad_set_entry() for details.
+ * Gets the connected entry.
  *
- * Returns: (transfer none): the set #GtkEntry or %NULL if no widget was set
+ * Returns: (transfer none): the entry set
  *
  * Since: 1.0
  */
@@ -684,12 +679,11 @@ hdy_keypad_get_entry (HdyKeypad *self)
 
 
 /**
- * hdy_keypad_set_start_action:
- * @self: a #HdyKeypad
+ * hdy_keypad_set_start_action: (attributes org.gtk.Method.set_property=start-action)
+ * @self: a keypad
  * @start_action: (nullable): the start action widget
  *
- * Sets the widget for the lower left corner (or right, in RTL locales) of
- * @self.
+ * Sets the widget for the lower left corner (or right, in RTL locales).
  *
  * Since: 1.0
  */
@@ -721,11 +715,10 @@ hdy_keypad_set_start_action (HdyKeypad *self,
 
 
 /**
- * hdy_keypad_get_start_action:
- * @self: a #HdyKeypad
+ * hdy_keypad_get_start_action: (attributes org.gtk.Method.get_property=start-action)
+ * @self: a keypad
  *
- * Returns the widget for the lower left corner (or right, in RTL locales) of
- * @self.
+ * Gets the widget for the lower left corner (or right, in RTL locales).
  *
  * Returns: (transfer none) (nullable): the start action widget
  *
@@ -745,12 +738,11 @@ hdy_keypad_get_start_action (HdyKeypad *self)
 
 
 /**
- * hdy_keypad_set_end_action:
- * @self: a #HdyKeypad
+ * hdy_keypad_set_end_action: (attributes org.gtk.Method.set_property=end-action)
+ * @self: a keypad
  * @end_action: (nullable): the end action widget
  *
- * Sets the widget for the lower right corner (or left, in RTL locales) of
- * @self.
+ * Sets the widget for the lower right corner (or left, in RTL locales).
  *
  * Since: 1.0
  */
@@ -782,11 +774,10 @@ hdy_keypad_set_end_action (HdyKeypad *self,
 
 
 /**
- * hdy_keypad_get_end_action:
- * @self: a #HdyKeypad
+ * hdy_keypad_get_end_action: (attributes org.gtk.Method.get_property=end-action)
+ * @self: a keypad
  *
- * Returns the widget for the lower right corner (or left, in RTL locales) of
- * @self.
+ * Gets the widget for the lower right corner (or left, in RTL locales).
  *
  * Returns: (transfer none) (nullable): the end action widget
  *

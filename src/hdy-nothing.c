@@ -1,14 +1,12 @@
 #include "hdy-nothing-private.h"
 
 /**
- * PRIVATE:hdy-nothing
- * @short_description: A helper object for #HdyWindow and #HdyApplicationWindow
- * @title: HdyNothing
- * @See_also: #HdyApplicationWindow, #HdyWindow, #HdyWindowMixin
- * @stability: Private
+ * HdyNothing:
  *
- * The HdyNothing widget does nothing. It's used as the titlebar for
- * #HdyWindow and #HdyApplicationWindow.
+ * A helper object for [class@Window] and [class@ApplicationWindow]
+ *
+ * The [class@Nothing] widget does nothing. It's used as the titlebar for
+ * [class@Window] and [class@ApplicationWindow].
  *
  * Since: 1.0
  */
@@ -33,9 +31,9 @@ hdy_nothing_init (HdyNothing *self)
 /**
  * hdy_nothing_new:
  *
- * Creates a new #HdyNothing.
+ * Creates a new `HdyNothing`.
  *
- * Returns: (transfer full): a newly created #HdyNothing
+ * Returns: the newly created `HdyNothing`
  *
  * Since: 1.0
  */

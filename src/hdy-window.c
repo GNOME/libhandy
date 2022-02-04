@@ -10,17 +10,16 @@
 #include "hdy-window-mixin-private.h"
 
 /**
- * SECTION:hdy-window
- * @short_description: A freeform window.
- * @title: HdyWindow
- * @See_also: #HdyApplicationWindow, #HdyHeaderBar, #HdyWindowHandle
+ * HdyWindow:
  *
- * The HdyWindow widget is a subclass of #GtkWindow which has no titlebar area
- * and provides rounded corners on all sides, ensuring they can never be
- * overlapped by the content. This makes it safe to use headerbars in the
- * content area as follows:
+ * A freeform window.
  *
- * |[
+ * The `HdyWindow` widget is a subclass of [class@Gtk.Window] which has no
+ * titlebar area and provides rounded corners on all sides, ensuring they can
+ * never be overlapped by the content. This makes it safe to use headerbars in
+ * the content area as follows:
+ *
+ * ```xml
  * <object class="HdyWindow"/>
  *   <child>
  *     <object class="GtkBox">
@@ -33,40 +32,40 @@
  *         </object>
  *       </child>
  *       <child>
- *         ...
+ *         <!-- ... -->
  *       </child>
  *     </object>
  *   </child>
  * </object>
- * ]|
+ * ```
  *
- * It's recommended to use #HdyHeaderBar with #HdyWindow, as unlike
- * #GtkHeaderBar it remains draggable inside the window. Otherwise,
- * #HdyWindowHandle can be used.
+ * It's recommended to use [class@HeaderBar] with `HdyWindow`, as unlike
+ * [class@Gtk.HeaderBar] it remains draggable inside the window. Otherwise,
+ * [class@WindowHandle] can be used.
  *
- * #HdyWindow allows to easily implement titlebar autohiding by putting the
- * headerbar inside a #GtkRevealer, and to show titlebar above content by
- * putting it into a #GtkOverlay instead of #GtkBox.
+ * `HdyWindow` allows to easily implement titlebar autohiding by putting the
+ * headerbar inside a [class@Gtk.Revealer], and to show titlebar above content
+ * by putting it into a [class@Gtk.Overlay] instead of [class@Gtk.Box].
  *
- * if the window has a #GtkGLArea, it may bring a slight performance regression
- * when the window is not fullscreen, tiled or maximized.
+ * If the window has a [class@Gtk.GLArea], it may bring a slight performance
+ * regression when the window is not fullscreen, tiled or maximized.
  *
- * Using gtk_window_get_titlebar() and gtk_window_set_titlebar() is not
- * supported and will result in a crash.
+ * Using [method@Gtk.Window.get_titlebar] and [method@Gtk.Window.set_titlebar]
+ * is not supported and will result in a crash.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyWindow has a main CSS node with the name window and style classes
- * .background, .csd and .unified.
+ * `HdyWindow` has a main CSS node with the name `window` and style classes
+ * `.background`, `.csd` and `.unified`.
  *
- * The .solid-csd style class on the main node is used for client-side
+ * The `.solid-csd` style class on the main node is used for client-side
  * decorations without invisible borders.
  *
- * #HdyWindow also represents window states with the following
- * style classes on the main node: .tiled, .maximized, .fullscreen.
+ * `HdyWindow` also represents window states with the following style classes on
+ * the main node: `.tiled`, `.maximized`, `.fullscreen`.
  *
  * It contains the subnodes decoration for window shadow and/or border,
- * decoration-overlay for the sheen on top of the window, widget.titlebar, and
+ * decoration-overlay for the sheen on top of the window, `widget.titlebar`, and
  * deck, which contains the child inside the window.
  *
  * Since: 1.0
@@ -180,9 +179,9 @@ hdy_window_buildable_init (GtkBuildableIface *iface)
 /**
  * hdy_window_new:
  *
- * Creates a new #HdyWindow.
+ * Creates a new `HdyWindow`.
  *
- * Returns: (transfer full): a newly created #HdyWindow
+ * Returns: the newly created `HdyWindow`
  *
  * Since: 1.0
  */

@@ -13,13 +13,13 @@
 #include "hdy-swipeable.h"
 
 /**
- * SECTION:hdy-deck
- * @short_description: A swipeable widget showing one of the visible children at a time.
- * @Title: HdyDeck
+ * HdyDeck:
  *
- * The #HdyDeck widget displays one of the visible children, similar to a
- * #GtkStack. The children are strictly ordered and can be navigated using
- * swipe gestures.
+ * A swipeable widget showing one of the visible children at a time.
+ *
+ * The `HdyDeck` widget displays one of the visible children, similar to a
+ * [class@Gtk.Stack]. The children are strictly ordered and can be navigated
+ * using swipe gestures.
  *
  * The “over” and “under” stack the children one on top of the other, while the
  * “slide” transition puts the children side by side. While navigating to a
@@ -30,24 +30,34 @@
  * The “over” and “under” transitions can draw their shadow on top of the
  * window's transparent areas, like the rounded corners. This is a side-effect
  * of allowing shadows to be drawn on top of OpenGL areas. It can be mitigated
- * by using #HdyWindow or #HdyApplicationWindow as they will crop anything drawn
- * beyond the rounded corners.
+ * by using [class@Window] or [class@ApplicationWindow] as they will crop
+ * anything drawn beyond the rounded corners.
  *
- * # CSS nodes
+ * The child property `navigatable` can be set on `HdyDeck` children to
+ * determine whether they can be navigated to when folded. If `FALSE`, the child
+ * will be ignored by [method@Deck.get_adjacent_child], [method@Deck.navigate],
+ * and swipe gestures. This can be used used to prevent switching to widgets
+ * like separators.
  *
- * #HdyDeck has a single CSS node with name deck.
+ * ## CSS nodes
+ *
+ * `HdyDeck` has a single CSS node with name `deck`.
  *
  * Since: 1.0
  */
 
 /**
  * HdyDeckTransitionType:
- * @HDY_DECK_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
- * @HDY_DECK_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
- * @HDY_DECK_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
+ * @HDY_DECK_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page,
+ *   sliding from or towards the end according to orientation, text direction
+ *   and children order
+ * @HDY_DECK_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page,
+ *   sliding from or towards the start according to orientation, text direction
+ *   and children order
+ * @HDY_DECK_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according
+ *   to the orientation, text direction and the children order
  *
- * This enumeration value describes the possible transitions between children
- * in a #HdyDeck widget.
+ * Describes the possible transitions in a [class@Deck] widget.
  *
  * New values may be added to this enumeration over time.
  *
@@ -97,15 +107,14 @@ G_DEFINE_TYPE_WITH_CODE (HdyDeck, hdy_deck, GTK_TYPE_CONTAINER,
 
 /**
  * hdy_deck_set_homogeneous:
- * @self: a #HdyDeck
+ * @self: a deck
  * @orientation: the orientation
- * @homogeneous: %TRUE to make @self homogeneous
+ * @homogeneous: `TRUE` to make @self homogeneous
  *
- * Sets the #HdyDeck to be homogeneous or not for the given orientation.
- * If it is homogeneous, the #HdyDeck will request the same
- * width or height for all its children depending on the orientation.
- * If it isn't, the deck may change width or height when a different child
- * becomes visible.
+ * Sets whether @self is homogeneous for a given orientation.
+ *
+ * If set to `FALSE`, different children can have different size along the
+ * opposite orientation.
  *
  * Since: 1.0
  */
@@ -121,13 +130,12 @@ hdy_deck_set_homogeneous (HdyDeck        *self,
 
 /**
  * hdy_deck_get_homogeneous:
- * @self: a #HdyDeck
+ * @self: a deck
  * @orientation: the orientation
  *
  * Gets whether @self is homogeneous for the given orientation.
- * See hdy_deck_set_homogeneous().
  *
- * Returns: whether @self is homogeneous for the given orientation.
+ * Returns: whether @self is homogeneous for the given orientation
  *
  * Since: 1.0
  */
@@ -141,11 +149,10 @@ hdy_deck_get_homogeneous (HdyDeck        *self,
 }
 
 /**
- * hdy_deck_get_transition_type:
- * @self: a #HdyDeck
+ * hdy_deck_get_transition_type: (attributes org.gtk.Method.get_property=transition-type)
+ * @self: a deck
  *
- * Gets the type of animation that will be used
- * for transitions between children in @self.
+ * Gets the type of animation used for transitions between children.
  *
  * Returns: the current transition type of @self
  *
@@ -176,12 +183,11 @@ hdy_deck_get_transition_type (HdyDeck *self)
 }
 
 /**
- * hdy_deck_set_transition_type:
- * @self: a #HdyDeck
+ * hdy_deck_set_transition_type: (attributes org.gtk.Method.set_property=transition-type)
+ * @self: a deck
  * @transition: the new transition type
  *
- * Sets the type of animation that will be used for transitions between children
- * in @self.
+ * Sets the type of animation used for transitions between children.
  *
  * The transition type can be changed without problems at runtime, so it is
  * possible to change the animation based on the child that is about to become
@@ -219,13 +225,12 @@ hdy_deck_set_transition_type (HdyDeck               *self,
 }
 
 /**
- * hdy_deck_get_transition_duration:
- * @self: a #HdyDeck
+ * hdy_deck_get_transition_duration: (attributes org.gtk.Method.get_property=transition-duration)
+ * @self: a deck
  *
- * Returns the amount of time (in milliseconds) that
- * transitions between children in @self will take.
+ * Gets the mode transition animation duration for @self.
  *
- * Returns: the child transition duration
+ * Returns: the mode transition duration, in milliseconds.
  *
  * Since: 1.0
  */
@@ -238,12 +243,11 @@ hdy_deck_get_transition_duration (HdyDeck *self)
 }
 
 /**
- * hdy_deck_set_transition_duration:
- * @self: a #HdyDeck
+ * hdy_deck_set_transition_duration: (attributes org.gtk.Method.set_property=transition-duration)
+ * @self: a deck
  * @duration: the new duration, in milliseconds
  *
- * Sets the duration that transitions between children in @self
- * will take.
+ * Sets the mode transition animation duration for @self.
  *
  * Since: 1.0
  */
@@ -257,8 +261,8 @@ hdy_deck_set_transition_duration (HdyDeck *self,
 }
 
 /**
- * hdy_deck_get_visible_child:
- * @self: a #HdyDeck
+ * hdy_deck_get_visible_child: (attributes org.gtk.Method.get_property=visible-child)
+ * @self: a deck
  *
  * Gets the visible child widget.
  *
@@ -275,14 +279,11 @@ hdy_deck_get_visible_child (HdyDeck *self)
 }
 
 /**
- * hdy_deck_set_visible_child:
- * @self: a #HdyDeck
+ * hdy_deck_set_visible_child: (attributes org.gtk.Method.set_property=visible-child)
+ * @self: a deck
  * @visible_child: the new child
  *
- * Makes @visible_child visible using a transition determined by
- * HdyDeck:transition-type and HdyDeck:transition-duration. The transition can
- * be cancelled by the user, in which case visible child will change back to
- * the previously visible child.
+ * Sets the currently visible widget.
  *
  * Since: 1.0
  */
@@ -296,8 +297,8 @@ hdy_deck_set_visible_child (HdyDeck   *self,
 }
 
 /**
- * hdy_deck_get_visible_child_name:
- * @self: a #HdyDeck
+ * hdy_deck_get_visible_child_name: (attributes org.gtk.Method.get_property=visible-child-name)
+ * @self: a deck
  *
  * Gets the name of the currently visible child widget.
  *
@@ -314,13 +315,13 @@ hdy_deck_get_visible_child_name (HdyDeck *self)
 }
 
 /**
- * hdy_deck_set_visible_child_name:
- * @self: a #HdyDeck
+ * hdy_deck_set_visible_child_name: (attributes org.gtk.Method.set_property=visible-child-name)
+ * @self: a deck
  * @name: the name of a child
  *
  * Makes the child with the name @name visible.
  *
- * See hdy_deck_set_visible_child() for more details.
+ * See [method@Deck.set_visible_child] for more details.
  *
  * Since: 1.0
  */
@@ -334,13 +335,12 @@ hdy_deck_set_visible_child_name (HdyDeck     *self,
 }
 
 /**
- * hdy_deck_get_transition_running:
- * @self: a #HdyDeck
+ * hdy_deck_get_transition_running: (attributes org.gtk.Method.get_property=transition-running)
+ * @self: a deck
  *
- * Returns whether @self is currently in a transition from one page to
- * another.
+ * Gets whether a transition is currently running for @self.
  *
- * Returns: %TRUE if the transition is currently running, %FALSE otherwise.
+ * Returns: whether a transition is currently running
  *
  * Since: 1.0
  */
@@ -353,15 +353,15 @@ hdy_deck_get_transition_running (HdyDeck *self)
 }
 
 /**
- * hdy_deck_set_interpolate_size:
- * @self: a #HdyDeck
+ * hdy_deck_set_interpolate_size: (attributes org.gtk.Method.set_property=interpolate-size)
+ * @self: a deck
  * @interpolate_size: the new value
  *
- * Sets whether or not @self will interpolate its size when
- * changing the visible child. If the #HdyDeck:interpolate-size
- * property is set to %TRUE, @self will interpolate its size between
- * the current one and the one it'll take after changing the
- * visible child, according to the set transition duration.
+ * Sets whether @self will interpolate its size when changing the visible child.
+ *
+ * @self will interpolate its size between the current one and the one it'll
+ * take after changing the visible child, according to the set transition
+ * duration.
  *
  * Since: 1.0
  */
@@ -375,13 +375,12 @@ hdy_deck_set_interpolate_size (HdyDeck  *self,
 }
 
 /**
- * hdy_deck_get_interpolate_size:
- * @self: a #HdyDeck
+ * hdy_deck_get_interpolate_size: (attributes org.gtk.Method.get_property=interpolate-size)
+ * @self: a deck
  *
- * Returns whether the #HdyDeck is set up to interpolate between
- * the sizes of children on page switch.
+ * Gets whether @self will interpolate its size when changing the visible child.
  *
- * Returns: %TRUE if child sizes are interpolated
+ * Returns: whether child sizes are interpolated
  *
  * Since: 1.0
  */
@@ -394,12 +393,11 @@ hdy_deck_get_interpolate_size (HdyDeck *self)
 }
 
 /**
- * hdy_deck_set_can_swipe_back:
- * @self: a #HdyDeck
+ * hdy_deck_set_can_swipe_back: (attributes org.gtk.Method.set_property=can-swipe-back)
+ * @self: a deck
  * @can_swipe_back: the new value
  *
- * Sets whether or not @self allows switching to the previous child via a swipe
- * gesture.
+ * Sets whether swipe gestures for navigating backward are enabled.
  *
  * Since: 1.0
  */
@@ -413,12 +411,12 @@ hdy_deck_set_can_swipe_back (HdyDeck  *self,
 }
 
 /**
- * hdy_deck_get_can_swipe_back
- * @self: a #HdyDeck
+ * hdy_deck_get_can_swipe_back: (attributes org.gtk.Method.get_property=can-swipe-back)
+ * @self: a deck
  *
- * Returns whether the #HdyDeck allows swiping to the previous child.
+ * Gets whether swipe gestures for navigating backward are enabled.
  *
- * Returns: %TRUE if back swipe is enabled.
+ * Returns: Whether swipe gestures are enabled.
  *
  * Since: 1.0
  */
@@ -431,12 +429,11 @@ hdy_deck_get_can_swipe_back (HdyDeck *self)
 }
 
 /**
- * hdy_deck_set_can_swipe_forward:
- * @self: a #HdyDeck
+ * hdy_deck_set_can_swipe_forward: (attributes org.gtk.Method.set_property=can-swipe-forward)
+ * @self: a deck
  * @can_swipe_forward: the new value
  *
- * Sets whether or not @self allows switching to the next child via a swipe
- * gesture.
+ * Sets whether swipe gestures for navigating forward are enabled.
  *
  * Since: 1.0
  */
@@ -450,12 +447,12 @@ hdy_deck_set_can_swipe_forward (HdyDeck  *self,
 }
 
 /**
- * hdy_deck_get_can_swipe_forward
- * @self: a #HdyDeck
+ * hdy_deck_get_can_swipe_forward: (attributes org.gtk.Method.get_property=can-swipe-forward)
+ * @self: a deck
  *
- * Returns whether the #HdyDeck allows swiping to the next child.
+ * Gets whether swipe gestures for navigating forward enabled.
  *
- * Returns: %TRUE if forward swipe is enabled.
+ * Returns: Whether swipe gestures are enabled.
  *
  * Since: 1.0
  */
@@ -468,15 +465,18 @@ hdy_deck_get_can_swipe_forward (HdyDeck *self)
 }
 
 /**
- * hdy_deck_get_adjacent_child
- * @self: a #HdyDeck
+ * hdy_deck_get_adjacent_child:
+ * @self: a deck
  * @direction: the direction
  *
- * Gets the previous or next child, or %NULL if it doesn't exist. This will be
- * the same widget hdy_deck_navigate() will navigate to.
+ * Finds the previous or next navigatable child.
  *
- * Returns: (nullable) (transfer none): the previous or next child, or
- *   %NULL if it doesn't exist.
+ * Gets the previous or next child. This will be the same widget
+ * [method@Deck.navigate] will navigate to.
+ *
+ * If there's no child to navigate to, `NULL` will be returned instead.
+ *
+ * Returns: (nullable) (transfer none): the previous or next child
  *
  * Since: 1.0
  */
@@ -490,14 +490,15 @@ hdy_deck_get_adjacent_child (HdyDeck                *self,
 }
 
 /**
- * hdy_deck_navigate
- * @self: a #HdyDeck
+ * hdy_deck_navigate:
+ * @self: a deck
  * @direction: the direction
  *
- * Switches to the previous or next child, similar to performing a swipe
- * gesture to go in @direction.
+ * Navigates to the previous or next child.
  *
- * Returns: %TRUE if visible child was changed, %FALSE otherwise.
+ * The switch is similar to performing a swipe gesture to go in @direction.
+ *
+ * Returns: whether the visible child was changed
  *
  * Since: 1.0
  */
@@ -512,11 +513,12 @@ hdy_deck_navigate (HdyDeck                *self,
 
 /**
  * hdy_deck_get_child_by_name:
- * @self: a #HdyDeck
+ * @self: a deck
  * @name: the name of the child to find
  *
- * Finds the child of @self with the name given as the argument. Returns %NULL
- * if there is no child with this name.
+ * Finds the child of @self with @name.
+ *
+ * Returns `NULL` if there is no child with this name.
  *
  * Returns: (transfer none) (nullable): the requested child of @self
  *
@@ -533,8 +535,8 @@ hdy_deck_get_child_by_name (HdyDeck     *self,
 
 /**
  * hdy_deck_prepend:
- * @self: a #HdyDeck
- * @child: the #GtkWidget to prepend
+ * @self: a deck
+ * @child: the widget to prepend
  *
  * Inserts @child at the first position in @self.
  *
@@ -553,12 +555,13 @@ hdy_deck_prepend (HdyDeck   *self,
 
 /**
  * hdy_deck_insert_child_after:
- * @self: a #HdyDeck
- * @child: the #GtkWidget to insert
+ * @self: a deck
+ * @child: the widget to insert
  * @sibling: (nullable): the sibling after which to insert @child
  *
  * Inserts @child in the position after @sibling in the list of children.
- * If @sibling is %NULL, insert @child at the first position.
+ *
+ * If @sibling is `NULL`, inserts @child at the first position.
  *
  * Since: 1.2
  */
@@ -579,12 +582,13 @@ hdy_deck_insert_child_after (HdyDeck   *self,
 
 /**
  * hdy_deck_reorder_child_after:
- * @self: a #HdyDeck
- * @child: the #GtkWidget to move, must be a child of @self
- * @sibling: (nullable): the sibling to move @child after, or %NULL
+ * @self: a deck
+ * @child: the widget to move, must be a child of @self
+ * @sibling: (nullable): the sibling to move @child after
  *
  * Moves @child to the position after @sibling in the list of children.
- * If @sibling is %NULL, move @child to the first position.
+ *
+ * If @sibling is `NULL`, move @child to the first position.
  *
  * Since: 1.2
  */
@@ -938,7 +942,7 @@ hdy_deck_class_init (HdyDeckClass *klass)
                                     "orientation");
 
   /**
-   * HdyDeck:hhomogeneous:
+   * HdyDeck:hhomogeneous: (attributes org.gtk.Property.get=hdy_deck_get_homogeneous org.gtk.Property.set=hdy_deck_set_homogeneous)
    *
    * Horizontally homogeneous sizing.
    *
@@ -952,7 +956,7 @@ hdy_deck_class_init (HdyDeckClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyDeck:vhomogeneous:
+   * HdyDeck:vhomogeneous: (attributes org.gtk.Property.get=hdy_deck_get_homogeneous org.gtk.Property.set=hdy_deck_set_homogeneous)
    *
    * Vertically homogeneous sizing.
    *
@@ -966,9 +970,14 @@ hdy_deck_class_init (HdyDeckClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyDeck:visible-child:
+   * HdyDeck:visible-child: (attributes org.gtk.Property.get=hdy_deck_get_visible_child org.gtk.Property.set=hdy_deck_set_visible_child)
    *
    * The widget currently visible.
+   *
+   * The transition is determined by [property@Deck:transition-type] and
+   * [property@Deck:transition-duration]. The transition can be cancelled by the
+   * user, in which case visible child will change back to the previously
+   * visible child.
    *
    * Since: 1.0
    */
@@ -980,7 +989,7 @@ hdy_deck_class_init (HdyDeckClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyDeck:visible-child-name:
+   * HdyDeck:visible-child-name: (attributes org.gtk.Property.get=hdy_deck_get_visible_child_name org.gtk.Property.set=hdy_deck_set_visible_child_name)
    *
    * The name of the widget currently visible.
    *
@@ -994,14 +1003,13 @@ hdy_deck_class_init (HdyDeckClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyDeck:transition-type:
+   * HdyDeck:transition-type: (attributes org.gtk.Property.get=hdy_deck_get_transition_type org.gtk.Property.set=hdy_deck_set_transition_type)
    *
-   * The type of animation that will be used for transitions between
-   * children.
+   * The type of animation that will be used for transitions between children.
    *
    * The transition type can be changed without problems at runtime, so it is
-   * possible to change the animation based on the child that is about
-   * to become current.
+   * possible to change the animation based on the child that is about to become
+   * current.
    *
    * Since: 1.0
    */
@@ -1013,7 +1021,7 @@ hdy_deck_class_init (HdyDeckClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyDeck:transition-duration:
+   * HdyDeck:transition-duration: (attributes org.gtk.Property.get=hdy_deck_get_transition_duration org.gtk.Property.set=hdy_deck_set_transition_duration)
    *
    * The transition animation duration, in milliseconds.
    *
@@ -1027,7 +1035,7 @@ hdy_deck_class_init (HdyDeckClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyDeck:transition-running:
+   * HdyDeck:transition-running: (attributes org.gtk.Property.get=hdy_deck_get_transition_running)
    *
    * Whether or not the transition is currently running.
    *
@@ -1041,7 +1049,7 @@ hdy_deck_class_init (HdyDeckClass *klass)
                             G_PARAM_READABLE);
 
   /**
-   * HdyDeck:interpolate-size:
+   * HdyDeck:interpolate-size: (attributes org.gtk.Property.get=hdy_deck_get_interpolate_size org.gtk.Property.set=hdy_deck_set_interpolate_size)
    *
    * Whether or not the size should smoothly change when changing between
    * differently sized children.
@@ -1056,10 +1064,9 @@ hdy_deck_class_init (HdyDeckClass *klass)
                             G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyDeck:can-swipe-back:
+   * HdyDeck:can-swipe-back: (attributes org.gtk.Property.get=hdy_deck_get_can_swipe_back org.gtk.Property.set=hdy_deck_set_can_swipe_back)
    *
-   * Whether or not the deck allows switching to the previous child via a swipe
-   * gesture.
+   * Whether swipe gestures allow switching to the previous child.
    *
    * Since: 1.0
    */
@@ -1071,10 +1078,9 @@ hdy_deck_class_init (HdyDeckClass *klass)
                             G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyDeck:can-swipe-forward:
+   * HdyDeck:can-swipe-forward: (attributes org.gtk.Property.get=hdy_deck_get_can_swipe_forward org.gtk.Property.set=hdy_deck_set_can_swipe_forward)
    *
-   * Whether or not the deck allows switching to the next child via a swipe
-   * gesture.
+   * Whether swipe gestures allow switching to the next child.
    *
    * Since: 1.0
    */
@@ -1100,6 +1106,15 @@ hdy_deck_class_init (HdyDeckClass *klass)
   gtk_widget_class_set_css_name (widget_class, "deck");
 }
 
+/**
+ * hdy_deck_new:
+ *
+ * Creates a new `HdyDeck`.
+ *
+ * Returns: the newly created `HdyDeck`
+ *
+ * Since: 1.0
+ */
 GtkWidget *
 hdy_deck_new (void)
 {

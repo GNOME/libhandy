@@ -23,7 +23,7 @@ G_DECLARE_DERIVABLE_TYPE (HdyPreferencesGroup, hdy_preferences_group, HDY, PREFE
 
 /**
  * HdyPreferencesGroupClass
- * @parent_class: The parent class
+ * @parent_class: the parent class
  */
 struct _HdyPreferencesGroupClass
 {

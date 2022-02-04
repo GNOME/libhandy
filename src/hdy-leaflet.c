@@ -13,50 +13,62 @@
 #include "hdy-swipeable.h"
 
 /**
- * SECTION:hdy-leaflet
- * @short_description: An adaptive container acting like a box or a stack.
- * @Title: HdyLeaflet
+ * HdyLeaflet:
  *
- * The #HdyLeaflet widget can display its children like a #GtkBox does or
- * like a #GtkStack does, adapting to size changes by switching between
- * the two modes.
+ * An adaptive container acting like a box or a stack.
+ *
+ * The `HdyLeaflet` widget can display its children like a [class@Gtk.Box] does
+ * or like a [class@Gtk.Stack] does, adapting to size changes by switching
+ * between the two modes.
  *
  * When there is enough space the children are displayed side by side, otherwise
- * only one is displayed and the leaflet is said to be “folded”.
- * The threshold is dictated by the preferred minimum sizes of the children.
- * When a leaflet is folded, the children can be navigated using swipe gestures.
+ * only one is displayed and the leaflet is said to be “folded”. The threshold
+ * is dictated by the preferred minimum sizes of the children. When a leaflet is
+ * folded, the children can be navigated using swipe gestures.
  *
- * The “over” and “under” stack the children one on top of the other, while the
- * “slide” transition puts the children side by side. While navigating to a
- * child on the side or below can be performed by swiping the current child
- * away, navigating to an upper child requires dragging it from the edge where
- * it resides. This doesn't affect non-dragging swipes.
+ * The “over” and “under” transition types stack the children one on top of the
+ * other, while the “slide” transition puts the children side by side. While
+ * navigating to a child on the side or below can be performed by swiping the
+ * current child away, navigating to an upper child requires dragging it from
+ * the edge where it resides. This doesn't affect non-dragging swipes.
  *
  * The “over” and “under” transitions can draw their shadow on top of the
  * window's transparent areas, like the rounded corners. This is a side-effect
  * of allowing shadows to be drawn on top of OpenGL areas. It can be mitigated
- * by using #HdyWindow or #HdyApplicationWindow as they will crop anything drawn
- * beyond the rounded corners.
+ * by using [class@Window] or [class@ApplicationWindow] as they will crop
+ * anything drawn beyond the rounded corners.
  *
- * # CSS nodes
+ * The child property `navigatable` can be set on `HdyLeaflet` children to
+ * determine whether they can be navigated to when folded. If `FALSE`, the child
+ * will be ignored by [method@Leaflet.get_adjacent_child],
+ * [method@Leaflet.navigate], and swipe gestures. This can be used used to
+ * prevent switching to widgets like separators.
  *
- * #HdyLeaflet has a single CSS node with name leaflet. The node will get the
- * style classes .folded when it is folded, .unfolded when it's not, or none if
- * it didn't compute its fold yet.
+ * ## CSS nodes
+ *
+ * `HdyLeaflet` has a single CSS node with name `leaflet`. The node will get the
+ * style classes `.folded` when it is folded, `.unfolded` when it's not, or none
+ * if it didn't compute its fold yet.
+ *
+ * Since: 1.0
  */
 
 /**
  * HdyLeafletTransitionType:
- * @HDY_LEAFLET_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
- * @HDY_LEAFLET_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
- * @HDY_LEAFLET_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
+ * @HDY_LEAFLET_TRANSITION_TYPE_OVER: Cover the old page or uncover the new
+ *   page, sliding from or towards the end according to orientation, text
+ *   direction and children order
+ * @HDY_LEAFLET_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old
+ *   page, sliding from or towards the start according to orientation, text
+ *   direction and children order
+ * @HDY_LEAFLET_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down
+ *   according to the orientation, text direction and the children order
  *
- * This enumeration value describes the possible transitions between modes and
- * children in a #HdyLeaflet widget.
+ * Describes the possible transitions in a [class@Leaflet] widget.
  *
  * New values may be added to this enumeration over time.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 
 enum {
@@ -106,12 +118,14 @@ G_DEFINE_TYPE_WITH_CODE (HdyLeaflet, hdy_leaflet, GTK_TYPE_CONTAINER,
 #define HDY_GET_HELPER(obj) (((HdyLeafletPrivate *) hdy_leaflet_get_instance_private (HDY_LEAFLET (obj)))->box)
 
 /**
- * hdy_leaflet_get_folded:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_folded: (attributes org.gtk.Method.get_property=folded)
+ * @self: a leaflet
  *
  * Gets whether @self is folded.
  *
- * Returns: whether @self is folded.
+ * Returns: whether @self is folded
+ *
+ * Since: 1.0
  */
 gboolean
 hdy_leaflet_get_folded (HdyLeaflet *self)
@@ -123,16 +137,19 @@ hdy_leaflet_get_folded (HdyLeaflet *self)
 
 /**
  * hdy_leaflet_set_homogeneous:
- * @self: a #HdyLeaflet
+ * @self: a leaflet
  * @folded: the fold
  * @orientation: the orientation
- * @homogeneous: %TRUE to make @self homogeneous
+ * @homogeneous: `TRUE` to make @self homogeneous
  *
- * Sets the #HdyLeaflet to be homogeneous or not for the given fold and orientation.
- * If it is homogeneous, the #HdyLeaflet will request the same
- * width or height for all its children depending on the orientation.
- * If it isn't and it is folded, the leaflet may change width or height
- * when a different child becomes visible.
+ * Sets whether to be homogeneous for the given fold and orientation.
+ *
+ * If it is homogeneous, the [class@Leaflet] will request the same
+ * width or height for all its children depending on the orientation. If it
+ * isn't and it is folded, the leaflet may change width or height when a
+ * different child becomes visible.
+ *
+ * Since: 1.0
  */
 void
 hdy_leaflet_set_homogeneous (HdyLeaflet     *self,
@@ -147,14 +164,15 @@ hdy_leaflet_set_homogeneous (HdyLeaflet     *self,
 
 /**
  * hdy_leaflet_get_homogeneous:
- * @self: a #HdyLeaflet
+ * @self: a leaflet
  * @folded: the fold
  * @orientation: the orientation
  *
  * Gets whether @self is homogeneous for the given fold and orientation.
- * See hdy_leaflet_set_homogeneous().
  *
- * Returns: whether @self is homogeneous for the given fold and orientation.
+ * Returns: whether @self is homogeneous for the given fold and orientation
+ *
+ * Since: 1.0
  */
 gboolean
 hdy_leaflet_get_homogeneous (HdyLeaflet     *self,
@@ -167,15 +185,15 @@ hdy_leaflet_get_homogeneous (HdyLeaflet     *self,
 }
 
 /**
- * hdy_leaflet_get_transition_type:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_transition_type: (attributes org.gtk.Method.get_property=transition-type)
+ * @self: a leaflet
  *
- * Gets the type of animation that will be used
- * for transitions between modes and children in @self.
+ * Gets the animation type that will be used for transitions between modes and
+ * children.
  *
  * Returns: the current transition type of @self
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 HdyLeafletTransitionType
 hdy_leaflet_get_transition_type (HdyLeaflet *self)
@@ -202,18 +220,18 @@ hdy_leaflet_get_transition_type (HdyLeaflet *self)
 }
 
 /**
- * hdy_leaflet_set_transition_type:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_set_transition_type: (attributes org.gtk.Method.set_property=transition-type)
+ * @self: a leaflet
  * @transition: the new transition type
  *
- * Sets the type of animation that will be used for transitions between modes
- * and children in @self.
+ * Sets the animation type that will be used for transitions between modes and
+ * children.
  *
  * The transition type can be changed without problems at runtime, so it is
  * possible to change the animation based on the mode or child that is about to
  * become current.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_leaflet_set_transition_type (HdyLeaflet               *self,
@@ -245,13 +263,14 @@ hdy_leaflet_set_transition_type (HdyLeaflet               *self,
 }
 
 /**
- * hdy_leaflet_get_mode_transition_duration:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_mode_transition_duration: (attributes org.gtk.Method.get_property=mode-transition-duration)
+ * @self: a leaflet
  *
- * Returns the amount of time (in milliseconds) that
- * transitions between modes in @self will take.
+ * Gets the amount of time that transitions between modes in @self will take.
  *
- * Returns: the mode transition duration
+ * Returns: the mode transition duration, in milliseconds
+ *
+ * Since: 1.0
  */
 guint
 hdy_leaflet_get_mode_transition_duration (HdyLeaflet *self)
@@ -262,12 +281,13 @@ hdy_leaflet_get_mode_transition_duration (HdyLeaflet *self)
 }
 
 /**
- * hdy_leaflet_set_mode_transition_duration:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_set_mode_transition_duration: (attributes org.gtk.Method.set_property=mode-transition-duration)
+ * @self: a leaflet
  * @duration: the new duration, in milliseconds
  *
- * Sets the duration that transitions between modes in @self
- * will take.
+ * Sets the duration that transitions between modes in @self will take.
+ *
+ * Since: 1.0
  */
 void
 hdy_leaflet_set_mode_transition_duration (HdyLeaflet *self,
@@ -279,13 +299,14 @@ hdy_leaflet_set_mode_transition_duration (HdyLeaflet *self,
 }
 
 /**
- * hdy_leaflet_get_child_transition_duration:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_child_transition_duration: (attributes org.gtk.Method.get_property=child-transition-duration)
+ * @self: a leaflet
  *
- * Returns the amount of time (in milliseconds) that
- * transitions between children in @self will take.
+ * Gets the amount of time that transitions between children will take.
  *
- * Returns: the child transition duration
+ * Returns: the child transition duration, in milliseconds
+ *
+ * Since: 1.0
  */
 guint
 hdy_leaflet_get_child_transition_duration (HdyLeaflet *self)
@@ -296,12 +317,13 @@ hdy_leaflet_get_child_transition_duration (HdyLeaflet *self)
 }
 
 /**
- * hdy_leaflet_set_child_transition_duration:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_set_child_transition_duration: (attributes org.gtk.Method.set_property=child-transition-duration)
+ * @self: a leaflet
  * @duration: the new duration, in milliseconds
  *
- * Sets the duration that transitions between children in @self
- * will take.
+ * Sets the duration that transitions between children in @self will take.
+ *
+ * Since: 1.0
  */
 void
 hdy_leaflet_set_child_transition_duration (HdyLeaflet *self,
@@ -313,12 +335,14 @@ hdy_leaflet_set_child_transition_duration (HdyLeaflet *self,
 }
 
 /**
- * hdy_leaflet_get_visible_child:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_visible_child: (attributes org.gtk.Method.get_property=visible-child)
+ * @self: a leaflet
  *
  * Gets the visible child widget.
  *
  * Returns: (transfer none): the visible child widget
+ *
+ * Since: 1.0
  */
 GtkWidget *
 hdy_leaflet_get_visible_child (HdyLeaflet *self)
@@ -329,14 +353,13 @@ hdy_leaflet_get_visible_child (HdyLeaflet *self)
 }
 
 /**
- * hdy_leaflet_set_visible_child:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_set_visible_child: (attributes org.gtk.Method.set_property=visible-child)
+ * @self: a leaflet
  * @visible_child: the new child
  *
- * Makes @visible_child visible using a transition determined by
- * HdyLeaflet:transition-type and HdyLeaflet:child-transition-duration. The
- * transition can be cancelled by the user, in which case visible child will
- * change back to the previously visible child.
+ * Sets the currently visible widget when the leaflet is folded.
+ *
+ * Since: 1.0
  */
 void
 hdy_leaflet_set_visible_child (HdyLeaflet *self,
@@ -348,12 +371,14 @@ hdy_leaflet_set_visible_child (HdyLeaflet *self,
 }
 
 /**
- * hdy_leaflet_get_visible_child_name:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_visible_child_name: (attributes org.gtk.Method.get_property=visible-child-name)
+ * @self: a leaflet
  *
  * Gets the name of the currently visible child widget.
  *
  * Returns: (transfer none): the name of the visible child
+ *
+ * Since: 1.0
  */
 const gchar *
 hdy_leaflet_get_visible_child_name (HdyLeaflet *self)
@@ -364,13 +389,15 @@ hdy_leaflet_get_visible_child_name (HdyLeaflet *self)
 }
 
 /**
- * hdy_leaflet_set_visible_child_name:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_set_visible_child_name: (attributes org.gtk.Method.set_property=visible-child-name)
+ * @self: a leaflet
  * @name: the name of a child
  *
  * Makes the child with the name @name visible.
  *
- * See hdy_leaflet_set_visible_child() for more details.
+ * See [method@Leaflet.set_visible_child] for more details.
+ *
+ * Since: 1.0
  */
 void
 hdy_leaflet_set_visible_child_name (HdyLeaflet  *self,
@@ -382,13 +409,14 @@ hdy_leaflet_set_visible_child_name (HdyLeaflet  *self,
 }
 
 /**
- * hdy_leaflet_get_child_transition_running:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_child_transition_running: (attributes org.gtk.Method.get_property=child-transition-running)
+ * @self: a leaflet
  *
- * Returns whether @self is currently in a transition from one page to
- * another.
+ * Returns whether @self is currently in a transition from one page to another.
  *
- * Returns: %TRUE if the transition is currently running, %FALSE otherwise.
+ * Returns: whether a transition is currently running
+ *
+ * Since: 1.0
  */
 gboolean
 hdy_leaflet_get_child_transition_running (HdyLeaflet *self)
@@ -399,15 +427,17 @@ hdy_leaflet_get_child_transition_running (HdyLeaflet *self)
 }
 
 /**
- * hdy_leaflet_set_interpolate_size:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_set_interpolate_size: (attributes org.gtk.Method.set_property=interpolate-size)
+ * @self: a leaflet
  * @interpolate_size: the new value
  *
- * Sets whether or not @self will interpolate its size when
- * changing the visible child. If the #HdyLeaflet:interpolate-size
- * property is set to %TRUE, @self will interpolate its size between
- * the current one and the one it'll take after changing the
- * visible child, according to the set transition duration.
+ * Sets whether @self will interpolate its size when changing the visible child.
+ *
+ * If the [property@Leaflet:interpolate-size] property is set to `TRUE`, @self
+ * will interpolate its size between the current one and the one it'll take
+ * after changing the visible child, according to the set transition duration.
+ *
+ * Since: 1.0
  */
 void
 hdy_leaflet_set_interpolate_size (HdyLeaflet *self,
@@ -419,13 +449,14 @@ hdy_leaflet_set_interpolate_size (HdyLeaflet *self,
 }
 
 /**
- * hdy_leaflet_get_interpolate_size:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_interpolate_size: (attributes org.gtk.Method.get_property=interpolate-size)
+ * @self: a leaflet
  *
- * Returns whether the #HdyLeaflet is set up to interpolate between
- * the sizes of children on page switch.
+ * Gets whether to interpolate between the sizes of children on page switches.
  *
- * Returns: %TRUE if child sizes are interpolated
+ * Returns: `TRUE` if child sizes are interpolated
+ *
+ * Since: 1.0
  */
 gboolean
 hdy_leaflet_get_interpolate_size (HdyLeaflet *self)
@@ -436,14 +467,13 @@ hdy_leaflet_get_interpolate_size (HdyLeaflet *self)
 }
 
 /**
- * hdy_leaflet_set_can_swipe_back:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_set_can_swipe_back: (attributes org.gtk.Method.set_property=can-swipe-back)
+ * @self: a leaflet
  * @can_swipe_back: the new value
  *
- * Sets whether or not @self allows switching to the previous child that has
- * 'navigatable' child property set to %TRUE via a swipe gesture
+ * Sets whether swipe gestures switch to the previous navigatable child.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_leaflet_set_can_swipe_back (HdyLeaflet *self,
@@ -455,14 +485,14 @@ hdy_leaflet_set_can_swipe_back (HdyLeaflet *self,
 }
 
 /**
- * hdy_leaflet_get_can_swipe_back
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_can_swipe_back: (attributes org.gtk.Method.get_property=can-swipe-back)
+ * @self: a leaflet
  *
- * Returns whether the #HdyLeaflet allows swiping to the previous child.
+ * Gets whether swipe gestures switch to the previous navigatable child.
  *
- * Returns: %TRUE if back swipe is enabled.
+ * Returns: `TRUE` if back swipe is enabled
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 gboolean
 hdy_leaflet_get_can_swipe_back (HdyLeaflet *self)
@@ -473,14 +503,13 @@ hdy_leaflet_get_can_swipe_back (HdyLeaflet *self)
 }
 
 /**
- * hdy_leaflet_set_can_swipe_forward:
- * @self: a #HdyLeaflet
+ * hdy_leaflet_set_can_swipe_forward: (attributes org.gtk.Method.set_property=can-swipe-forward)
+ * @self: a leaflet
  * @can_swipe_forward: the new value
  *
- * Sets whether or not @self allows switching to the next child that has
- * 'navigatable' child property set to %TRUE via a swipe gesture.
+ * Sets whether swipe gestures switch to the next navigatable child.
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 void
 hdy_leaflet_set_can_swipe_forward (HdyLeaflet *self,
@@ -492,14 +521,14 @@ hdy_leaflet_set_can_swipe_forward (HdyLeaflet *self,
 }
 
 /**
- * hdy_leaflet_get_can_swipe_forward
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_can_swipe_forward: (attributes org.gtk.Method.get_property=can-swipe-forward)
+ * @self: a leaflet
  *
- * Returns whether the #HdyLeaflet allows swiping to the next child.
+ * Gets whether swipe gestures switch to the next navigatable child.
  *
- * Returns: %TRUE if forward swipe is enabled.
+ * Returns: `TRUE` if forward swipe is enabled
  *
- * Since: 0.0.12
+ * Since: 1.0
  */
 gboolean
 hdy_leaflet_get_can_swipe_forward (HdyLeaflet *self)
@@ -510,16 +539,17 @@ hdy_leaflet_get_can_swipe_forward (HdyLeaflet *self)
 }
 
 /**
- * hdy_leaflet_get_adjacent_child
- * @self: a #HdyLeaflet
+ * hdy_leaflet_get_adjacent_child:
+ * @self: a leaflet
  * @direction: the direction
  *
- * Gets the previous or next child that doesn't have 'navigatable' child
- * property set to %FALSE, or %NULL if it doesn't exist. This will be the same
- * widget hdy_leaflet_navigate() will navigate to.
+ * Finds the previous or next navigatable child.
  *
- * Returns: (nullable) (transfer none): the previous or next child, or
- *   %NULL if it doesn't exist.
+ * This will be the same widget [method@Leaflet.navigate] will navigate to.
+ *
+ * If there's no child to navigate to, `NULL` will be returned instead.
+ *
+ * Returns: (nullable) (transfer none): the previous or next child
  *
  * Since: 1.0
  */
@@ -533,15 +563,15 @@ hdy_leaflet_get_adjacent_child (HdyLeaflet             *self,
 }
 
 /**
- * hdy_leaflet_navigate
- * @self: a #HdyLeaflet
+ * hdy_leaflet_navigate:
+ * @self: a leaflet
  * @direction: the direction
  *
- * Switches to the previous or next child that doesn't have 'navigatable' child
- * property set to %FALSE, similar to performing a swipe gesture to go in
- * @direction.
+ * Navigates to the previous or next navigatable child.
  *
- * Returns: %TRUE if visible child was changed, %FALSE otherwise.
+ * The switch is similar to performing a swipe gesture to go in @direction.
+ *
+ * Returns: whether the visible child was changed
  *
  * Since: 1.0
  */
@@ -556,11 +586,12 @@ hdy_leaflet_navigate (HdyLeaflet             *self,
 
 /**
  * hdy_leaflet_get_child_by_name:
- * @self: a #HdyLeaflet
+ * @self: a leaflet
  * @name: the name of the child to find
  *
- * Finds the child of @self with the name given as the argument. Returns %NULL
- * if there is no child with this name.
+ * Finds the child of @self with the name given as the argument.
+ *
+ * Returns `NULL` if there is no child with this name.
  *
  * Returns: (transfer none) (nullable): the requested child of @self
  *
@@ -577,8 +608,8 @@ hdy_leaflet_get_child_by_name (HdyLeaflet  *self,
 
 /**
  * hdy_leaflet_prepend:
- * @self: a #HdyLeaflet
- * @child: the #GtkWidget to prepend
+ * @self: a leaflet
+ * @child: the widget to prepend
  *
  * Inserts @child at the first position in @self.
  *
@@ -597,12 +628,13 @@ hdy_leaflet_prepend (HdyLeaflet *self,
 
 /**
  * hdy_leaflet_insert_child_after:
- * @self: a #HdyLeaflet
- * @child: the #GtkWidget to insert
+ * @self: a leaflet
+ * @child: the widget to insert
  * @sibling: (nullable): the sibling after which to insert @child
  *
  * Inserts @child in the position after @sibling in the list of children.
- * If @sibling is %NULL, insert @child at the first position.
+ *
+ * If @sibling is `NULL`, inserts @child at the first position.
  *
  * Since: 1.2
  */
@@ -623,12 +655,13 @@ hdy_leaflet_insert_child_after (HdyLeaflet *self,
 
 /**
  * hdy_leaflet_reorder_child_after:
- * @self: a #HdyLeaflet
- * @child: the #GtkWidget to move, must be a child of @self
- * @sibling: (nullable): the sibling to move @child after, or %NULL
+ * @self: a leaflet
+ * @child: the widget to move, must be a child of @self
+ * @sibling: (nullable): the sibling to move @child after
  *
  * Moves @child to the position after @sibling in the list of children.
- * If @sibling is %NULL, move @child to the first position.
+ *
+ * If @sibling is `NULL`, move @child to the first position.
  *
  * Since: 1.2
  */
@@ -1012,12 +1045,14 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                                     "orientation");
 
   /**
-   * HdyLeaflet:folded:
+   * HdyLeaflet:folded: (attributes org.gtk.Property.get=hdy_leaflet_get_folded)
    *
-   * %TRUE if the leaflet is folded.
+   * Whether the leaflet is folded.
    *
    * The leaflet will be folded if the size allocated to it is smaller than the
    * sum of the natural size of its children, it will be unfolded otherwise.
+   *
+   * Since: 1.0
    */
   props[PROP_FOLDED] =
     g_param_spec_boolean ("folded",
@@ -1027,9 +1062,11 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                           G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyLeaflet:hhomogeneous_folded:
+   * HdyLeaflet:hhomogeneous-folded: (attributes org.gtk.Property.get=hdy_leaflet_get_homogeneous org.gtk.Property.set=hdy_leaflet_set_homogeneous)
    *
-   * %TRUE if the leaflet allocates the same width for all children when folded.
+   * Whether to allocate the same width for all children when folded.
+   *
+   * Since: 1.0
    */
   props[PROP_HHOMOGENEOUS_FOLDED] =
     g_param_spec_boolean ("hhomogeneous-folded",
@@ -1039,9 +1076,11 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyLeaflet:vhomogeneous_folded:
+   * HdyLeaflet:vhomogeneous-folded: (attributes org.gtk.Property.get=hdy_leaflet_get_homogeneous org.gtk.Property.set=hdy_leaflet_set_homogeneous)
    *
-   * %TRUE if the leaflet allocates the same height for all children when folded.
+   * Whether to allocates the same height for all children when folded.
+   *
+   * Since: 1.0
    */
   props[PROP_VHOMOGENEOUS_FOLDED] =
     g_param_spec_boolean ("vhomogeneous-folded",
@@ -1051,9 +1090,11 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyLeaflet:hhomogeneous_unfolded:
+   * HdyLeaflet:hhomogeneous-unfolded: (attributes org.gtk.Property.get=hdy_leaflet_get_homogeneous org.gtk.Property.set=hdy_leaflet_set_homogeneous)
    *
-   * %TRUE if the leaflet allocates the same width for all children when unfolded.
+   * Whether to allocate the same width for all children when unfolded.
+   *
+   * Since: 1.0
    */
   props[PROP_HHOMOGENEOUS_UNFOLDED] =
     g_param_spec_boolean ("hhomogeneous-unfolded",
@@ -1063,9 +1104,11 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyLeaflet:vhomogeneous_unfolded:
+   * HdyLeaflet:vhomogeneous-unfolded: (attributes org.gtk.Property.get=hdy_leaflet_get_homogeneous org.gtk.Property.set=hdy_leaflet_set_homogeneous)
    *
-   * %TRUE if the leaflet allocates the same height for all children when unfolded.
+   * Whether to allocate the same height for all children when unfolded.
+   *
+   * Since: 1.0
    */
   props[PROP_VHOMOGENEOUS_UNFOLDED] =
     g_param_spec_boolean ("vhomogeneous-unfolded",
@@ -1074,6 +1117,18 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                           FALSE,
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyLeaflet:visible-child: (attributes org.gtk.Property.get=hdy_leaflet_get_visible_child org.gtk.Property.set=hdy_leaflet_set_visible_child)
+   *
+   * The widget currently visible when the leaflet is folded.
+   *
+   * The transition is determined by [property@Leaflet:transition-type] and
+   * [property@Leaflet:child-transition-duration]. The transition can be
+   * cancelled by the user, in which case visible child will change back to the
+   * previously visible child.
+   *
+   * Since: 1.0
+   */
   props[PROP_VISIBLE_CHILD] =
     g_param_spec_object ("visible-child",
                          _("Visible child"),
@@ -1081,6 +1136,15 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                          GTK_TYPE_WIDGET,
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyLeaflet:visible-child-name: (attributes org.gtk.Property.get=hdy_leaflet_get_visible_child_name org.gtk.Property.set=hdy_leaflet_set_visible_child_name)
+   *
+   * The name of the widget currently visible when the leaflet is folded.
+   *
+   * See [property@Leaflet:visible-child].
+   *
+   * Since: 1.0
+   */
   props[PROP_VISIBLE_CHILD_NAME] =
     g_param_spec_string ("visible-child-name",
                          _("Name of visible child"),
@@ -1089,16 +1153,15 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyLeaflet:transition-type:
+   * HdyLeaflet:transition-type: (attributes org.gtk.Property.get=hdy_leaflet_get_transition_type org.gtk.Property.set=hdy_leaflet_set_transition_type)
    *
-   * The type of animation that will be used for transitions between modes and
-   * children.
+   * The animation type used for transitions between modes and children.
    *
    * The transition type can be changed without problems at runtime, so it is
    * possible to change the animation based on the mode or child that is about
    * to become current.
    *
-   * Since: 0.0.12
+   * Since: 1.0
    */
   props[PROP_TRANSITION_TYPE] =
     g_param_spec_enum ("transition-type",
@@ -1107,6 +1170,13 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                        HDY_TYPE_LEAFLET_TRANSITION_TYPE, HDY_LEAFLET_TRANSITION_TYPE_OVER,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyLeaflet:mode-transition-duration: (attributes org.gtk.Property.get=hdy_leaflet_get_mode_transition_duration org.gtk.Property.set=hdy_leaflet_set_mode_transition_duration)
+   *
+   * The mode transition animation duration, in milliseconds.
+   *
+   * Since: 1.0
+   */
   props[PROP_MODE_TRANSITION_DURATION] =
     g_param_spec_uint ("mode-transition-duration",
                        _("Mode transition duration"),
@@ -1114,6 +1184,13 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                        0, G_MAXUINT, 250,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyLeaflet:child-transition-duration: (attributes org.gtk.Property.get=hdy_leaflet_get_child_transition_duration org.gtk.Property.set=hdy_leaflet_set_child_transition_duration)
+   *
+   * The child transition animation duration, in milliseconds.
+   *
+   * Since: 1.0
+   */
   props[PROP_CHILD_TRANSITION_DURATION] =
     g_param_spec_uint ("child-transition-duration",
                        _("Child transition duration"),
@@ -1121,6 +1198,13 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                        0, G_MAXUINT, 200,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyLeaflet:child-transition-running: (attributes org.gtk.Property.get=hdy_leaflet_get_child_transition_running)
+   *
+   * Whether a child transition is currently running.
+   *
+   * Since: 1.0
+   */
   props[PROP_CHILD_TRANSITION_RUNNING] =
       g_param_spec_boolean ("child-transition-running",
                             _("Child transition running"),
@@ -1128,6 +1212,13 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                             FALSE,
                             G_PARAM_READABLE);
 
+  /**
+   * HdyLeaflet:interpolate-size: (attributes org.gtk.Property.get=hdy_leaflet_get_interpolate_size org.gtk.Property.set=hdy_leaflet_set_interpolate_size)
+   *
+   * Whether the size should smoothly change when changing between children.
+   *
+   * Since: 1.0
+   */
   props[PROP_INTERPOLATE_SIZE] =
       g_param_spec_boolean ("interpolate-size",
                             _("Interpolate size"),
@@ -1136,12 +1227,11 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                             G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyLeaflet:can-swipe-back:
+   * HdyLeaflet:can-swipe-back: (attributes org.gtk.Property.get=hdy_leaflet_get_can_swipe_back org.gtk.Property.set=hdy_leaflet_set_can_swipe_back)
    *
-   * Whether or not the leaflet allows switching to the previous child that has
-   * 'navigatable' child property set to %TRUE via a swipe gesture.
+   * Whether swipe gestures allow switching to the previous navigatable child.
    *
-   * Since: 0.0.12
+   * Since: 1.0
    */
   props[PROP_CAN_SWIPE_BACK] =
       g_param_spec_boolean ("can-swipe-back",
@@ -1151,12 +1241,11 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                             G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyLeaflet:can-swipe-forward:
+   * HdyLeaflet:can-swipe-forward: (attributes org.gtk.Property.get=hdy_leaflet_get_can_swipe_forward org.gtk.Property.set=hdy_leaflet_set_can_swipe_forward)
    *
-   * Whether or not the leaflet allows switching to the next child that has
-   * 'navigatable' child property set to %TRUE via a swipe gesture.
+   * Whether swipe gestures allow switching to the next navigatable child.
    *
-   * Since: 0.0.12
+   * Since: 1.0
    */
   props[PROP_CAN_SWIPE_FORWARD] =
       g_param_spec_boolean ("can-swipe-forward",
@@ -1174,17 +1263,6 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
                          NULL,
                          G_PARAM_READWRITE);
 
-  /**
-   * HdyLeaflet:navigatable:
-   *
-   * Whether the child can be navigated to when folded.
-   * If %FALSE, the child will be ignored by hdy_leaflet_get_adjacent_child(),
-   * hdy_leaflet_navigate(), and swipe gestures.
-   *
-   * This can be used used to prevent switching to widgets like separators.
-   *
-   * Since: 1.0
-   */
   child_props[CHILD_PROP_NAVIGATABLE] =
     g_param_spec_boolean ("navigatable",
                           _("Navigatable"),
@@ -1198,6 +1276,15 @@ hdy_leaflet_class_init (HdyLeafletClass *klass)
   gtk_widget_class_set_css_name (widget_class, "leaflet");
 }
 
+/**
+ * hdy_leaflet_new:
+ *
+ * Creates a new `HdyLeaflet`.
+ *
+ * Returns: the newly created `HdyLeaflet`
+ *
+ * Since: 1.0
+ */
 GtkWidget *
 hdy_leaflet_new (void)
 {

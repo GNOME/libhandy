@@ -14,14 +14,12 @@
 #include <math.h>
 
 /**
- * PRIVATE:hdy-carousel-box
- * @short_description: Scrolling box used in #HdyCarousel
- * @title: HdyCarouselBox
- * @See_also: #HdyCarousel
- * @stability: Private
+ * HdyCarouselBox:
  *
- * The #HdyCarouselBox object is meant to be used exclusively as part of the
- * #HdyCarousel implementation.
+ * Scrolling box used in [class@Carousel]
+ *
+ * The [class@CarouselBox] object is meant to be used exclusively as part of the
+ * [class@Carousel] implementation.
  *
  * Since: 1.0
  */
@@ -1082,9 +1080,9 @@ hdy_carousel_box_class_init (HdyCarouselBoxClass *klass)
   container_class->forall = hdy_carousel_box_forall;
 
   /**
-   * HdyCarouselBox:n-pages:
+   * HdyCarouselBox:n-pages: (attributes org.gtk.Property.get=hdy_carousel_box_get_n_pages)
    *
-   * The number of pages in a #HdyCarouselBox
+   * The number of pages in a [class@CarouselBox].
    *
    * Since: 1.0
    */
@@ -1098,7 +1096,7 @@ hdy_carousel_box_class_init (HdyCarouselBoxClass *klass)
                        G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyCarouselBox:position:
+   * HdyCarouselBox:position: (attributes org.gtk.Property.get=hdy_carousel_box_get_position org.gtk.Property.set=hdy_carousel_box_set_position)
    *
    * Current scrolling position, unitless. 1 matches 1 page.
    *
@@ -1114,7 +1112,7 @@ hdy_carousel_box_class_init (HdyCarouselBoxClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyCarouselBox:spacing:
+   * HdyCarouselBox:spacing: (attributes org.gtk.Property.get=hdy_carousel_box_get_spacing org.gtk.Property.set=hdy_carousel_box_set_spacing)
    *
    * Spacing between pages in pixels.
    *
@@ -1130,7 +1128,7 @@ hdy_carousel_box_class_init (HdyCarouselBoxClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyCarouselBox:reveal-duration:
+   * HdyCarouselBox:reveal-duration: (attributes org.gtk.Property.get=hdy_carousel_box_get_reveal_duration org.gtk.Property.set=hdy_carousel_box_set_reveal_duration)
    *
    * Duration of the animation used when adding or removing pages, in
    * milliseconds.
@@ -1154,7 +1152,6 @@ hdy_carousel_box_class_init (HdyCarouselBoxClass *klass)
 
   /**
    * HdyCarouselBox::animation-stopped:
-   * @self: The #HdyCarouselBox instance
    *
    * This signal is emitted after an animation has been stopped. If animations
    * are disabled, the signal is emitted as well.
@@ -1172,8 +1169,7 @@ hdy_carousel_box_class_init (HdyCarouselBoxClass *klass)
 
   /**
    * HdyCarouselBox::position-shifted:
-   * @self: The #HdyCarouselBox instance
-   * @delta: The amount to shift the position by
+   * @delta: the amount to shift the position by
    *
    * This signal is emitted when position has been programmatically shifted.
    *
@@ -1204,9 +1200,9 @@ hdy_carousel_box_init (HdyCarouselBox *self)
 /**
  * hdy_carousel_box_new:
  *
- * Create a new #HdyCarouselBox widget.
+ * Creates a new `HdyCarouselBox`.
  *
- * Returns: The newly created #HdyCarouselBox widget
+ * Returns: the newly created `HdyCarouselBox`
  *
  * Since: 1.0
  */
@@ -1218,9 +1214,9 @@ hdy_carousel_box_new (void)
 
 /**
  * hdy_carousel_box_insert:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  * @widget: a widget to add
- * @position: the position to insert @widget in.
+ * @position: the position to insert @widget in
  *
  * Inserts @widget into @self at position @position.
  *
@@ -1268,9 +1264,9 @@ hdy_carousel_box_insert (HdyCarouselBox *self,
 
 /**
  * hdy_carousel_box_reorder:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  * @widget: a widget to add
- * @position: the position to move @widget to.
+ * @position: the position to move @widget to
  *
  * Moves @widget into position @position.
  *
@@ -1326,11 +1322,11 @@ hdy_carousel_box_reorder (HdyCarouselBox *self,
 
 /**
  * hdy_carousel_box_is_animating:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  *
  * Get whether @self is animating position.
  *
- * Returns: %TRUE if an animation is running
+ * Returns: `TRUE` if an animation is running
  *
  * Since: 1.0
  */
@@ -1344,7 +1340,7 @@ hdy_carousel_box_is_animating (HdyCarouselBox *self)
 
 /**
  * hdy_carousel_box_stop_animation:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  *
  * Stops a running animation. If there's no animation running, does nothing.
  *
@@ -1366,17 +1362,16 @@ hdy_carousel_box_stop_animation (HdyCarouselBox *self)
 
 /**
  * hdy_carousel_box_scroll_to:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  * @widget: a child of @self
- * @duration: animation duration in milliseconds
+ * @duration: animation duration, in milliseconds
  *
  * Scrolls to @widget position over the next @duration milliseconds using
  * easeOutCubic interpolator.
  *
  * If an animation was already running, it will be cancelled automatically.
  *
- * @duration can be 0, in that case the position will be
- * changed immediately.
+ * @duration can be 0, in that case the position will be changed immediately.
  *
  * Since: 1.0
  */
@@ -1429,11 +1424,11 @@ hdy_carousel_box_scroll_to (HdyCarouselBox *self,
 
 /**
  * hdy_carousel_box_get_n_pages:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  *
  * Gets the number of pages in @self.
  *
- * Returns: The number of pages in @self
+ * Returns: the number of pages in @self
  *
  * Since: 1.0
  */
@@ -1458,11 +1453,11 @@ hdy_carousel_box_get_n_pages (HdyCarouselBox *self)
 
 /**
  * hdy_carousel_box_get_distance:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  *
  * Gets swiping distance between two adjacent children in pixels.
  *
- * Returns: The swiping distance in pixels
+ * Returns: the swiping distance in pixels
  *
  * Since: 1.0
  */
@@ -1475,12 +1470,12 @@ hdy_carousel_box_get_distance (HdyCarouselBox *self)
 }
 
 /**
- * hdy_carousel_box_get_position:
- * @self: a #HdyCarouselBox
+ * hdy_carousel_box_get_position: (attributes org.gtk.Method.get_property=position)
+ * @self: a carousel box
  *
  * Gets current scroll position in @self. It's unitless, 1 matches 1 page.
  *
- * Returns: The scroll position
+ * Returns: the scroll position
  *
  * Since: 1.0
  */
@@ -1493,8 +1488,8 @@ hdy_carousel_box_get_position (HdyCarouselBox *self)
 }
 
 /**
- * hdy_carousel_box_set_position:
- * @self: a #HdyCarouselBox
+ * hdy_carousel_box_set_position: (attributes org.gtk.Method.set_property=position)
+ * @self: a carousel box
  * @position: the new position value
  *
  * Sets current scroll position in @self, unitless, 1 matches 1 page.
@@ -1520,12 +1515,12 @@ hdy_carousel_box_set_position (HdyCarouselBox *self,
 }
 
 /**
- * hdy_carousel_box_get_spacing:
- * @self: a #HdyCarouselBox
+ * hdy_carousel_box_get_spacing: (attributes org.gtk.Method.get_property=spacing)
+ * @self: a carousel box
  *
  * Gets spacing between pages in pixels.
  *
- * Returns: Spacing between pages
+ * Returns: spacing between pages
  *
  * Since: 1.0
  */
@@ -1538,8 +1533,8 @@ hdy_carousel_box_get_spacing (HdyCarouselBox *self)
 }
 
 /**
- * hdy_carousel_box_set_spacing:
- * @self: a #HdyCarouselBox
+ * hdy_carousel_box_set_spacing: (attributes org.gtk.Method.set_property=spacing)
+ * @self: a carousel box
  * @spacing: the new spacing value
  *
  * Sets spacing between pages in pixels.
@@ -1561,13 +1556,13 @@ hdy_carousel_box_set_spacing (HdyCarouselBox *self,
 }
 
 /**
- * hdy_carousel_box_get_reveal_duration:
- * @self: a #HdyCarouselBox
+ * hdy_carousel_box_get_reveal_duration: (attributes org.gtk.Method.get_property=reveal-duration)
+ * @self: a carousel box
  *
  * Gets duration of the animation used when adding or removing pages in
  * milliseconds.
  *
- * Returns: Page reveal duration
+ * Returns: page reveal duration
  *
  * Since: 1.0
  */
@@ -1580,8 +1575,8 @@ hdy_carousel_box_get_reveal_duration (HdyCarouselBox *self)
 }
 
 /**
- * hdy_carousel_box_set_reveal_duration:
- * @self: a #HdyCarouselBox
+ * hdy_carousel_box_set_reveal_duration: (attributes org.gtk.Method.set_property=reveal-duration)
+ * @self: a carousel box
  * @reveal_duration: the new reveal duration value
  *
  * Sets duration of the animation used when adding or removing pages in
@@ -1605,12 +1600,12 @@ hdy_carousel_box_set_reveal_duration (HdyCarouselBox *self,
 
 /**
  * hdy_carousel_box_get_nth_child:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  * @n: the child index
  *
  * Retrieves @n-th child widget of @self.
  *
- * Returns: The @n-th child widget
+ * Returns: the @n-th child widget
  *
  * Since: 1.0
  */
@@ -1630,7 +1625,7 @@ hdy_carousel_box_get_nth_child (HdyCarouselBox *self,
 
 /**
  * hdy_carousel_box_get_snap_points:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  * @n_snap_points: (out)
  *
  * Gets the snap points of @self, representing the points between each page,
@@ -1669,10 +1664,11 @@ hdy_carousel_box_get_snap_points (HdyCarouselBox *self,
 
 /**
  * hdy_carousel_box_get_range:
- * @self: a #HdyCarouselBox
- * @lower: (out) (optional): location to store the lowest possible position, or %NULL
- * @upper: (out) (optional): location to store the maximum possible position, or %NULL
- *
+ * @self: a carousel box
+ * @lower: (out) (optional): location to store the lowest possible position, or
+ *   `NULL`
+ * @upper: (out) (optional): location to store the maximum possible position, or
+ *   `NULL`
  * Gets the range of possible positions.
  *
  * Since: 1.0
@@ -1699,11 +1695,11 @@ hdy_carousel_box_get_range (HdyCarouselBox *self,
 
 /**
  * hdy_carousel_box_get_closest_snap_point:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  *
  * Gets the snap point closest to the current position.
  *
- * Returns: the closest snap point.
+ * Returns: the closest snap point
  *
  * Since: 1.0
  */
@@ -1722,14 +1718,14 @@ hdy_carousel_box_get_closest_snap_point (HdyCarouselBox *self)
 
 /**
  * hdy_carousel_box_get_page_at_position:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  * @position: a scroll position
  *
- * Gets the page closest to @position. For example, if @position matches
- * the current position, the returned widget will match the currently
- * displayed page.
+ * Gets the page closest to @position. For example, if @position matches the
+ * current position, the returned widget will match the currently displayed
+ * page.
  *
- * Returns: (nullable): the closest page.
+ * Returns: (nullable): the closest page
  *
  * Since: 1.0
  */
@@ -1759,11 +1755,11 @@ hdy_carousel_box_get_page_at_position (HdyCarouselBox *self,
 
 /**
  * hdy_carousel_box_get_current_page_index:
- * @self: a #HdyCarouselBox
+ * @self: a carousel box
  *
  * Gets the index of the currently displayed page.
  *
- * Returns: the index of the current page.
+ * Returns: the index of the current page
  *
  * Since: 1.0
  */

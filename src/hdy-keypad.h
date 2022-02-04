@@ -23,7 +23,7 @@ G_DECLARE_DERIVABLE_TYPE (HdyKeypad, hdy_keypad, HDY, KEYPAD, GtkBin)
 
 /**
  * HdyKeypadClass:
- * @parent_class: The parent class
+ * @parent_class: the parent class
  */
 struct _HdyKeypadClass
 {

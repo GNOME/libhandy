@@ -10,23 +10,22 @@
 #include "hdy-window-handle-controller-private.h"
 
 /**
- * SECTION:hdy-window-handle
- * @short_description: A bin that acts like a titlebar.
- * @Title: HdyWindowHandle
- * @See_also: #HdyApplicationWindow, #HdyHeaderBar, #HdyWindow
+ * HdyWindowHandle:
  *
- * HdyWindowHandle is a #GtkBin subclass that can be dragged to move its
- * #GtkWindow, and handles right click, middle click and double click as
- * expected from a titlebar. This is particularly useful with #HdyWindow or
- * #HdyApplicationWindow.
+ * A bin that acts like a titlebar.
  *
- * It isn't necessary to use #HdyWindowHandle if you use #HdyHeaderBar.
+ * `HdyWindowHandle` is a [class@Gtk.Bin] subclass that can be dragged to move
+ * its [class@Gtk.Window], and handles right click, middle click and double
+ * click as expected from a titlebar. This is particularly useful with
+ * [class@Window] or [class@ApplicationWindow].
+ *
+ * It isn't necessary to use `HdyWindowHandle` if you use [class@HeaderBar].
  *
  * It can be safely nested or used in the actual window titlebar.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyWindowHandle has a single CSS node with name windowhandle.
+ * `HdyWindowHandle` has a single CSS node with name `windowhandle`.
  *
  * Since: 1.0
  */
@@ -70,9 +69,9 @@ hdy_window_handle_init (HdyWindowHandle *self)
 /**
  * hdy_window_handle_new:
  *
- * Creates a new #HdyWindowHandle.
+ * Creates a new `HdyWindowHandle`.
  *
- * Returns: (transfer full): a newly created #HdyWindowHandle
+ * Returns: the newly created `HdyWindowHandle`
  *
  * Since: 1.0
  */

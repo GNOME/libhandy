@@ -24,7 +24,7 @@ For build options see [meson_options.txt](./meson_options.txt). E.g. to enable d
 
 ```sh
 meson . _build -Dgtk_doc=true
-ninja -C _build libhandy-doc
+ninja -C _build
 ```
 
 ## Usage

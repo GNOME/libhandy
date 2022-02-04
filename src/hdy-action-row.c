@@ -10,38 +10,39 @@
 #include <glib/gi18n-lib.h>
 
 /**
- * SECTION:hdy-action-row
- * @short_description: A #GtkListBox row used to present actions.
- * @Title: HdyActionRow
+ * HdyActionRow:
  *
- * The #HdyActionRow widget can have a title, a subtitle and an icon. The row
+ * A [class@Gtk.ListBoxRow] used to present actions.
+ *
+ * The `HdyActionRow` widget can have a title, a subtitle and an icon. The row
  * can receive additional widgets at its end, or prefix widgets at its start.
  *
  * It is convenient to present a preference and its related actions.
  *
- * #HdyActionRow is unactivatable by default, giving it an activatable widget
+ * `HdyActionRow` is unactivatable by default, giving it an activatable widget
  * will automatically make it activatable, but unsetting it won't change the
  * row's activatability.
  *
- * # HdyActionRow as GtkBuildable
+ * ## HdyActionRow as GtkBuildable
  *
- * The GtkWindow implementation of the GtkBuildable interface supports setting a
- * child at its end by omitting the “type” attribute of a &lt;child&gt; element.
+ * The `HdyActionRow` implementation of the [iface@Gtk.Buildable] interface
+ * supports adding a child at its end by specifying “suffix” or omitting the
+ * “type” attribute of a <child> element.
  *
- * It also supports setting a child as a prefix widget by specifying “prefix” as
- * the “type” attribute of a &lt;child&gt; element.
+ * It also supports adding a child as a prefix widget by specifying “prefix” as
+ * the “type” attribute of a <child> element.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyActionRow has a main CSS node with name row.
+ * `HdyActionRow` has a main CSS node with name `row`.
  *
- * It contains the subnode box.header for its main horizontal box, and box.title
- * for the vertical box containing the title and subtitle labels.
+ * It contains the subnode `box.header` for its main horizontal box, and
+ * `box.title` for the vertical box containing the title and subtitle labels.
  *
- * It contains subnodes label.title and label.subtitle representing respectively
- * the title label and subtitle label.
+ * It contains subnodes `label.title` and `label.subtitle` representing
+ * respectively the title label and subtitle label.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 
 typedef struct
@@ -359,11 +360,11 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
   klass->activate = hdy_action_row_activate_real;
 
   /**
-   * HdyActionRow:icon-name:
+   * HdyActionRow:icon-name: (attributes org.gtk.Property.get=hdy_action_row_get_icon_name org.gtk.Property.set=hdy_action_row_set_icon_name)
    *
    * The icon name for this row.
    *
-   * Since: 0.0.6
+   * Since: 1.0
    */
   props[PROP_ICON_NAME] =
     g_param_spec_string ("icon-name",
@@ -373,11 +374,18 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyActionRow:activatable-widget:
+   * HdyActionRow:activatable-widget: (attributes org.gtk.Property.get=hdy_action_row_get_activatable_widget org.gtk.Property.set=hdy_action_row_set_activatable_widget)
    *
    * The activatable widget for this row.
    *
-   * Since: 0.0.7
+   * The widget is activated, either by clicking on it, by calling
+   * [method@ActionRow.activate], or via mnemonics in the title or the subtitle.
+   * See the [property@ActionRow:use-underline] property to enable mnemonics.
+   *
+   * The target widget will be activated by emitting the
+   * [signal@Gtk.Widget::mnemonic-activate] signal on it.
+   *
+   * Since: 1.0
    */
   props[PROP_ACTIVATABLE_WIDGET] =
       g_param_spec_object ("activatable-widget",
@@ -387,11 +395,11 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
                            G_PARAM_READWRITE);
 
   /**
-   * HdyActionRow:subtitle:
+   * HdyActionRow:subtitle: (attributes org.gtk.Property.get=hdy_action_row_get_subtitle org.gtk.Property.set=hdy_action_row_set_subtitle)
    *
    * The subtitle for this row.
    *
-   * Since: 0.0.6
+   * Since: 1.0
    */
   props[PROP_SUBTITLE] =
     g_param_spec_string ("subtitle",
@@ -401,12 +409,14 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyActionRow:use-underline:
+   * HdyActionRow:use-underline: (attributes org.gtk.Property.get=hdy_action_row_get_use_underline org.gtk.Property.set=hdy_action_row_set_use_underline)
    *
-   * Whether an embedded underline in the text of the title and subtitle labels
-   * indicates a mnemonic.
+   * Whether embedded underlines in the title or subtitle indicates a mnemonic.
    *
-   * Since: 0.0.6
+   * If true, an underline in the text of the title or subtitle labels indicates
+   * the next character should be used for the mnemonic accelerator key.
+   *
+   * Since: 1.0
    */
   props[PROP_USE_UNDERLINE] =
     g_param_spec_boolean ("use-underline",
@@ -416,10 +426,11 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyActionRow:title-lines:
+   * HdyActionRow:title-lines: (attributes org.gtk.Property.get=hdy_action_row_get_title_lines org.gtk.Property.set=hdy_action_row_set_title_lines)
    *
    * The number of lines at the end of which the title label will be ellipsized.
-   * Set this property to 0 if you don't want to limit the number of lines.
+   *
+   * If the value is 0, the number of lines won't be limited.
    *
    * Since: 1.2
    */
@@ -432,11 +443,12 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
                       G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyActionRow:subtitle-lines:
+   * HdyActionRow:subtitle-lines: (attributes org.gtk.Property.get=hdy_action_row_get_subtitle_lines org.gtk.Property.set=hdy_action_row_set_subtitle_lines)
    *
    * The number of lines at the end of which the subtitle label will be
    * ellipsized.
-   * Set this property to 0 if you don't want to limit the number of lines.
+   *
+   * If the value is 0, the number of lines won't be limited.
    *
    * Since: 1.2
    */
@@ -452,7 +464,6 @@ hdy_action_row_class_init (HdyActionRowClass *klass)
 
   /**
    * HdyActionRow::activated:
-   * @self: The #HdyActionRow instance
    *
    * This signal is emitted after the row has been activated.
    *
@@ -537,11 +548,11 @@ hdy_action_row_buildable_init (GtkBuildableIface *iface)
 /**
  * hdy_action_row_new:
  *
- * Creates a new #HdyActionRow.
+ * Creates a new `HdyActionRow`.
  *
- * Returns: a new #HdyActionRow
+ * Returns: the newly created `HdyActionRow`
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 GtkWidget *
 hdy_action_row_new (void)
@@ -550,14 +561,14 @@ hdy_action_row_new (void)
 }
 
 /**
- * hdy_action_row_get_subtitle:
- * @self: a #HdyActionRow
+ * hdy_action_row_get_subtitle: (attributes org.gtk.Method.get_property=subtitle)
+ * @self: an action row
  *
  * Gets the subtitle for @self.
  *
- * Returns: (transfer none) (nullable): the subtitle for @self, or %NULL.
+ * Returns: (transfer none) (nullable): the subtitle for @self
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 const gchar *
 hdy_action_row_get_subtitle (HdyActionRow *self)
@@ -572,13 +583,13 @@ hdy_action_row_get_subtitle (HdyActionRow *self)
 }
 
 /**
- * hdy_action_row_set_subtitle:
- * @self: a #HdyActionRow
+ * hdy_action_row_set_subtitle: (attributes org.gtk.Method.set_property=subtitle)
+ * @self: an action row
  * @subtitle: (nullable): the subtitle
  *
  * Sets the subtitle for @self.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_action_row_set_subtitle (HdyActionRow *self,
@@ -601,15 +612,14 @@ hdy_action_row_set_subtitle (HdyActionRow *self,
 }
 
 /**
- * hdy_action_row_get_icon_name:
- * @self: a #HdyActionRow
+ * hdy_action_row_get_icon_name: (attributes org.gtk.Method.get_property=icon-name)
+ * @self: an action row
  *
  * Gets the icon name for @self.
  *
- * Returns: (transfer none): the icon name for @self.
- * The returned string is owned by the #HdyActionRow and should not be freed.
+ * Returns: (transfer none): the icon name for @self
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 const gchar *
 hdy_action_row_get_icon_name (HdyActionRow *self)
@@ -627,13 +637,13 @@ hdy_action_row_get_icon_name (HdyActionRow *self)
 }
 
 /**
- * hdy_action_row_set_icon_name:
- * @self: a #HdyActionRow
+ * hdy_action_row_set_icon_name: (attributes org.gtk.Method.set_property=icon-name)
+ * @self: an action row
  * @icon_name: the icon name
  *
  * Sets the icon name for @self.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_action_row_set_icon_name (HdyActionRow *self,
@@ -658,15 +668,14 @@ hdy_action_row_set_icon_name (HdyActionRow *self,
 }
 
 /**
- * hdy_action_row_get_activatable_widget:
- * @self: a #HdyActionRow
+ * hdy_action_row_get_activatable_widget: (attributes org.gtk.Method.get_property=activatable-widget)
+ * @self: an action row
  *
  * Gets the widget activated when @self is activated.
  *
- * Returns: (nullable) (transfer none): the widget activated when @self is
- *          activated, or %NULL if none has been set.
+ * Returns: (nullable) (transfer none): the activatable widget for @self
  *
- * Since: 0.0.7
+ * Since: 1.0
  */
 GtkWidget *
 hdy_action_row_get_activatable_widget (HdyActionRow *self)
@@ -693,18 +702,13 @@ activatable_widget_weak_notify (gpointer  data,
 }
 
 /**
- * hdy_action_row_set_activatable_widget:
- * @self: a #HdyActionRow
- * @widget: (nullable): the target #GtkWidget, or %NULL to unset
+ * hdy_action_row_set_activatable_widget: (attributes org.gtk.Method.set_property=activatable-widget)
+ * @self: an action row
+ * @widget: (nullable): the target widget
  *
- * Sets the widget to activate when @self is activated, either by clicking
- * on it, by calling hdy_action_row_activate(), or via mnemonics in the title or
- * the subtitle. See the “use_underline” property to enable mnemonics.
+ * Sets the widget to activate when @self is activated.
  *
- * The target widget will be activated by emitting the
- * GtkWidget::mnemonic-activate signal on it.
- *
- * Since: 0.0.7
+ * Since: 1.0
  */
 void
 hdy_action_row_set_activatable_widget (HdyActionRow *self,
@@ -738,16 +742,16 @@ hdy_action_row_set_activatable_widget (HdyActionRow *self,
 }
 
 /**
- * hdy_action_row_get_use_underline:
- * @self: a #HdyActionRow
+ * hdy_action_row_get_use_underline: (attributes org.gtk.Method.get_property=use-underline)
+ * @self: an action row
  *
- * Gets whether an embedded underline in the text of the title and subtitle
- * labels indicates a mnemonic. See hdy_action_row_set_use_underline().
+ * Gets whether an embedded underline in the title or subtitle indicates a
+ * mnemonic.
  *
- * Returns: %TRUE if an embedded underline in the title and subtitle labels
- *          indicates the mnemonic accelerator keys.
+ * Returns: whether an embedded underline in the title or subtitle indicates a
+ *   mnemonic
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 gboolean
 hdy_action_row_get_use_underline (HdyActionRow *self)
@@ -762,14 +766,14 @@ hdy_action_row_get_use_underline (HdyActionRow *self)
 }
 
 /**
- * hdy_action_row_set_use_underline:
- * @self: a #HdyActionRow
- * @use_underline: %TRUE if underlines in the text indicate mnemonics
+ * hdy_action_row_set_use_underline: (attributes org.gtk.Method.set_property=use-underline)
+ * @self: an action row
+ * @use_underline: `TRUE` if underlines in the text indicate mnemonics
  *
- * If true, an underline in the text of the title and subtitle labels indicates
- * the next character should be used for the mnemonic accelerator key.
+ * Sets whether an embedded underline in the title or subtitle indicates a
+ * mnemonic.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_action_row_set_use_underline (HdyActionRow *self,
@@ -797,15 +801,16 @@ hdy_action_row_set_use_underline (HdyActionRow *self,
 }
 
 /**
- * hdy_action_row_get_title_lines:
- * @self: a #HdyActionRow
+ * hdy_action_row_get_title_lines: (attributes org.gtk.Method.get_property=title-lines)
+ * @self: an action row
  *
  * Gets the number of lines at the end of which the title label will be
  * ellipsized.
+ *
  * If the value is 0, the number of lines won't be limited.
  *
  * Returns: the number of lines at the end of which the title label will be
- *          ellipsized.
+ *   ellipsized
  *
  * Since: 1.2
  */
@@ -822,12 +827,13 @@ hdy_action_row_get_title_lines (HdyActionRow *self)
 }
 
 /**
- * hdy_action_row_set_title_lines:
- * @self: a #HdyActionRow
+ * hdy_action_row_set_title_lines: (attributes org.gtk.Method.set_property=title-lines)
+ * @self: an action row
  * @title_lines: the number of lines at the end of which the title label will be ellipsized
  *
  * Sets the number of lines at the end of which the title label will be
  * ellipsized.
+ *
  * If the value is 0, the number of lines won't be limited.
  *
  * Since: 1.2
@@ -855,15 +861,16 @@ hdy_action_row_set_title_lines (HdyActionRow *self,
 }
 
 /**
- * hdy_action_row_get_subtitle_lines:
- * @self: a #HdyActionRow
+ * hdy_action_row_get_subtitle_lines: (attributes org.gtk.Method.get_property=subtitle-lines)
+ * @self: an action row
  *
  * Gets the number of lines at the end of which the subtitle label will be
  * ellipsized.
+ *
  * If the value is 0, the number of lines won't be limited.
  *
  * Returns: the number of lines at the end of which the subtitle label will be
- *          ellipsized.
+ *   ellipsized
  *
  * Since: 1.2
  */
@@ -880,12 +887,13 @@ hdy_action_row_get_subtitle_lines (HdyActionRow *self)
 }
 
 /**
- * hdy_action_row_set_subtitle_lines:
- * @self: a #HdyActionRow
+ * hdy_action_row_set_subtitle_lines: (attributes org.gtk.Method.set_property=subtitle-lines)
+ * @self: an action row
  * @subtitle_lines: the number of lines at the end of which the subtitle label will be ellipsized
  *
  * Sets the number of lines at the end of which the subtitle label will be
  * ellipsized.
+ *
  * If the value is 0, the number of lines won't be limited.
  *
  * Since: 1.2
@@ -914,12 +922,12 @@ hdy_action_row_set_subtitle_lines (HdyActionRow *self,
 
 /**
  * hdy_action_row_add_prefix:
- * @self: a #HdyActionRow
+ * @self: an action row
  * @widget: the prefix widget
  *
  * Adds a prefix widget to @self.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_action_row_add_prefix (HdyActionRow *self,
@@ -936,6 +944,14 @@ hdy_action_row_add_prefix (HdyActionRow *self,
   gtk_widget_show (GTK_WIDGET (priv->prefixes));
 }
 
+/**
+ * hdy_action_row_activate:
+ * @self: an action row
+ *
+ * Activates @self.
+ *
+ * Since: 1.0
+ */
 void
 hdy_action_row_activate (HdyActionRow *self)
 {

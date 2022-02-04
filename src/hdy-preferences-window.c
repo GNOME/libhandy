@@ -19,19 +19,19 @@
 #include "hdy-view-switcher-title.h"
 
 /**
- * SECTION:hdy-preferences-window
- * @short_description: A window to present an application's preferences.
- * @Title: HdyPreferencesWindow
+ * HdyPreferencesWindow:
  *
- * The #HdyPreferencesWindow widget presents an application's preferences
+ * A window to present an application's preferences.
+ *
+ * The `HdyPreferencesWindow` widget presents an application's preferences
  * gathered into pages and groups. The preferences are searchable by the user.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyPreferencesWindow has a main CSS node with the name window and the style
- * class .preferences.
+ * `HdyPreferencesWindow` has a main CSS node with the name `window` and the
+ * style class `.preferences`.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 
 typedef struct
@@ -536,7 +536,7 @@ hdy_preferences_window_class_init (HdyPreferencesWindowClass *klass)
   container_class->forall = hdy_preferences_window_forall;
 
   /**
-   * HdyPreferencesWindow:search-enabled:
+   * HdyPreferencesWindow:search-enabled: (attributes org.gtk.Property.get=hdy_preferences_window_get_search_enabled org.gtk.Property.set=hdy_preferences_window_set_search_enabled)
    *
    * Whether search is enabled.
    *
@@ -550,9 +550,9 @@ hdy_preferences_window_class_init (HdyPreferencesWindowClass *klass)
                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyPreferencesWindow:can-swipe-back:
+   * HdyPreferencesWindow:can-swipe-back: (attributes org.gtk.Property.get=hdy_preferences_window_get_can_swipe_back org.gtk.Property.set=hdy_preferences_window_set_can_swipe_back)
    *
-   * Whether or not the window allows closing the subpage via a swipe gesture.
+   * Whether the window allows closing the subpage via a swipe gesture.
    *
    * Since: 1.0
    */
@@ -605,11 +605,11 @@ hdy_preferences_window_init (HdyPreferencesWindow *self)
 /**
  * hdy_preferences_window_new:
  *
- * Creates a new #HdyPreferencesWindow.
+ * Creates a new `HdyPreferencesWindow`.
  *
- * Returns: a new #HdyPreferencesWindow
+ * Returns: the newly created `HdyPreferencesWindow`
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkWidget *
 hdy_preferences_window_new (void)
@@ -618,12 +618,12 @@ hdy_preferences_window_new (void)
 }
 
 /**
- * hdy_preferences_window_get_search_enabled:
- * @self: a #HdyPreferencesWindow
+ * hdy_preferences_window_get_search_enabled: (attributes org.gtk.Method.get_property=search-enabled)
+ * @self: a preferences window
  *
  * Gets whether search is enabled for @self.
  *
- * Returns: whether search is enabled for @self.
+ * Returns: whether search is enabled for @self
  *
  * Since: 1.0
  */
@@ -640,9 +640,9 @@ hdy_preferences_window_get_search_enabled (HdyPreferencesWindow *self)
 }
 
 /**
- * hdy_preferences_window_set_search_enabled:
- * @self: a #HdyPreferencesWindow
- * @search_enabled: %TRUE to enable search, %FALSE to disable it
+ * hdy_preferences_window_set_search_enabled: (attributes org.gtk.Method.set_property=search-enabled)
+ * @self: a preferences window
+ * @search_enabled: `TRUE` to enable search, `FALSE` to disable it
  *
  * Sets whether search is enabled for @self.
  *
@@ -672,12 +672,12 @@ hdy_preferences_window_set_search_enabled (HdyPreferencesWindow *self,
 }
 
 /**
- * hdy_preferences_window_set_can_swipe_back:
- * @self: a #HdyPreferencesWindow
+ * hdy_preferences_window_set_can_swipe_back: (attributes org.gtk.Method.set_property=can-swipe-back)
+ * @self: a preferences window
  * @can_swipe_back: the new value
  *
- * Sets whether or not @self allows switching from a subpage to the preferences
- * via a swipe gesture.
+ * Sets whether swipe gestures allow switching from a subpage to the
+ * preferences.
  *
  * Since: 1.0
  */
@@ -702,13 +702,13 @@ hdy_preferences_window_set_can_swipe_back (HdyPreferencesWindow *self,
 }
 
 /**
- * hdy_preferences_window_get_can_swipe_back
- * @self: a #HdyPreferencesWindow
+ * hdy_preferences_window_get_can_swipe_back: (attributes org.gtk.Method.get_property=can-swipe-back)
+ * @self: a preferences window
  *
- * Returns whether or not @self allows switching from a subpage to the
- * preferences via a swipe gesture.
+ * Gets whether swipe gestures allow switching from a subpage to the
+ * preferences.
  *
- * Returns: %TRUE if back swipe is enabled.
+ * Returns: `TRUE` if back swipe is enabled
  *
  * Since: 1.0
  */
@@ -726,10 +726,11 @@ hdy_preferences_window_get_can_swipe_back (HdyPreferencesWindow *self)
 
 /**
  * hdy_preferences_window_present_subpage:
- * @self: a #HdyPreferencesWindow
+ * @self: a preferences window
  * @subpage: the subpage
  *
- * Sets @subpage as the window's subpage and present it.
+ * Sets @subpage as the window's subpage and opens it.
+ *
  * The transition can be cancelled by the user, in which case visible child will
  * change back to the previously visible child.
  *
@@ -762,10 +763,11 @@ hdy_preferences_window_present_subpage (HdyPreferencesWindow *self,
 
 /**
  * hdy_preferences_window_close_subpage:
- * @self: a #HdyPreferencesWindow
+ * @self: a preferences window
  *
- * Closes the current subpage to return back to the preferences, if there is no
- * presented subpage, this does nothing.
+ * Closes the current subpage.
+ *
+ * If there is no presented subpage, this does nothing.
  *
  * Since: 1.0
  */

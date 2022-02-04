@@ -28,10 +28,14 @@ G_DECLARE_DERIVABLE_TYPE (HdyComboRow, hdy_combo_row, HDY, COMBO_ROW, HdyActionR
  * @item: (type GObject): the item from the model from which to get a name
  * @user_data: (closure): user data
  *
- * Called for combo rows that are bound to a #GListModel with
- * hdy_combo_row_bind_name_model() for each item that gets added to the model.
+ * Callback for getting the name of a row.
  *
- * Returns: (transfer full): a newly allocated displayable name that represents @item
+ * Called for combo rows that are bound to a [iface@Gio.ListModel] with
+ * [method@ComboRow.bind_name_model] for each item that gets added to the model.
+ *
+ * Returns: (transfer full): a displayable name that represents @item
+ *
+ * Since: 1.0
  */
 typedef gchar * (*HdyComboRowGetNameFunc) (gpointer item,
                                            gpointer user_data);
@@ -41,17 +45,23 @@ typedef gchar * (*HdyComboRowGetNameFunc) (gpointer item,
  * @value: the value from the enum from which to get a name
  * @user_data: (closure): user data
  *
- * Called for combo rows that are bound to an enumeration with
- * hdy_combo_row_set_for_enum() for each value from that enumeration.
+ * Callback for getting the name of a row from an enum.
  *
- * Returns: (transfer full): a newly allocated displayable name that represents @value
+ * Called for combo rows that are bound to an enumeration with
+ * [method@ComboRow.set_for_enum] for each value from that enumeration.
+ *
+ * See also: [func@enum_value_row_name].
+ *
+ * Returns: (transfer full): a displayable name that represents @value
+ *
+ * Since: 1.0
  */
 typedef gchar * (*HdyComboRowGetEnumValueNameFunc) (HdyEnumValueObject *value,
                                                     gpointer            user_data);
 
 /**
  * HdyComboRowClass
- * @parent_class: The parent class
+ * @parent_class: the parent class
  */
 struct _HdyComboRowClass
 {

@@ -19,8 +19,8 @@
 /**
  * HdyColorScheme:
  * @HDY_COLOR_SCHEME_DEFAULT: Inherit the parent color-scheme. When set on the
- *   #HdyStyleManager returned by hdy_style_manager_get_default(), it's
- *   equivalent to %HDY_COLOR_SCHEME_FORCE_LIGHT.
+ *   [class@StyleManager] returned by [func@StyleManager.get_default], it's
+ *   equivalent to `HDY_COLOR_SCHEME_FORCE_LIGHT`.
  * @HDY_COLOR_SCHEME_FORCE_LIGHT: Always use light appearance.
  * @HDY_COLOR_SCHEME_PREFER_LIGHT: Use light appearance unless the system
  *   prefers dark colors.
@@ -28,24 +28,24 @@
  *   light colors.
  * @HDY_COLOR_SCHEME_FORCE_DARK: Always use dark appearance.
  *
- * Application color schemes for #HdyStyleManager:color-scheme.
+ * Application color schemes for [property@StyleManager:color-scheme].
  *
  * Since: 1.6
  */
 
 /**
- * SECTION:hdy-style-manager
- * @short_description: A class for managing application-wide styling
- * @title: HdyStyleManager
+ * HdyStyleManager:
  *
- * #HdyStyleManager provides a way to query and influence the application styles
- * such as whether to use dark or high contrast appearance.
+ * A class for managing application-wide styling.
  *
- * It allows to set the color scheme via the #HdyStyleManager:color-scheme
- * property, and to query the current appearance, as well as whether a
- * system-wide color scheme preference exists.
+ * `HdyStyleManager` provides a way to query and influence the application
+ * styles, such as whether to use dark or high contrast appearance.
  *
- * Important: #GtkSettings:gtk-application-prefer-dark-theme should
+ * It allows to set the color scheme via the
+ * [property@StyleManager:color-scheme] property, and to query the current
+ * appearance, as well as whether a system-wide color scheme preference exists.
+ *
+ * Important: [property@Gtk.Settings:gtk-application-prefer-dark-theme] should
  * not be used together with `HdyStyleManager` and will result in a warning.
  * Color schemes should be used instead.
  *
@@ -521,12 +521,12 @@ hdy_style_manager_class_init (HdyStyleManagerClass *klass)
   object_class->set_property = hdy_style_manager_set_property;
 
   /**
-   * HdyStyleManager:display:
+   * HdyStyleManager:display: (attributes org.gtk.Property.get=hdy_style_manager_get_display)
    *
    * The display the style manager is associated with.
    *
-   * The display will be %NULL for the style manager returned by
-   * hdy_style_manager_get_default().
+   * The display will be `NULL` for the style manager returned by
+   * [func@StyleManager.get_default].
    *
    * Since: 1.6
    */
@@ -538,37 +538,39 @@ hdy_style_manager_class_init (HdyStyleManagerClass *klass)
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
   /**
-   * HdyStyleManager:color-scheme:
+   * HdyStyleManager:color-scheme: (attributes org.gtk.Property.get=hdy_style_manager_get_color_scheme org.gtk.Property.set=hdy_style_manager_set_color_scheme)
    *
    * The requested application color scheme.
    *
    * The effective appearance will be decided based on the application color
-   * scheme and the system preferred color scheme. The #HdyStyleManager:dark
-   * property can be used to query the current effective appearance.
+   * scheme and the system preferred color scheme. The
+   * [property@StyleManager:dark] property can be used to query the current
+   * effective appearance.
    *
-   * The %HDY_COLOR_SCHEME_PREFER_LIGHT color scheme results in the application
+   * The `HDY_COLOR_SCHEME_PREFER_LIGHT` color scheme results in the application
    * using light appearance unless the system prefers dark colors. This is the
    * default value.
    *
-   * The %HDY_COLOR_SCHEME_PREFER_DARK color scheme results in the application
+   * The `HDY_COLOR_SCHEME_PREFER_DARK` color scheme results in the application
    * using dark appearance, but can still switch to the light appearance if the
    * system can prefers it, for example, when the high contrast preference is
    * enabled.
    *
-   * The %HDY_COLOR_SCHEME_FORCE_LIGHT and %HDY_COLOR_SCHEME_FORCE_DARK values
+   * The `HDY_COLOR_SCHEME_FORCE_LIGHT` and `HDY_COLOR_SCHEME_FORCE_DARK` values
    * ignore the system preference entirely, they are useful if the application
    * wants to match its UI to its content or to provide a separate color scheme
    * switcher.
    *
-   * If a per-#GdkDisplay style manager has its color scheme set to
-   * %HDY_COLOR_SCHEME_DEFAULT, it will inherit the color scheme from the
+   * If a per-[class@Gdk.Display] style manager has its color scheme set to
+   * `HDY_COLOR_SCHEME_DEFAULT`, it will inherit the color scheme from the
    * default style manager.
    *
-   * For the default style manager, %HDY_COLOR_SCHEME_DEFAULT is equivalent to
-   * %HDY_COLOR_SCHEME_FORCE_LIGHT.
+   * For the default style manager, `HDY_COLOR_SCHEME_DEFAULT` is equivalent to
+   * `HDY_COLOR_SCHEME_FORCE_LIGHT`.
    *
-   * The #HdyStyleManager:system-supports-color-schemes property can be used to
-   * check if the current environment provides a color scheme dddpreference.
+   * The [property@StyleManager:system-supports-color-schemes] property can be
+   * used to check if the current environment provides a color scheme
+   * dddpreference.
    *
    * Since: 1.6
    */
@@ -581,17 +583,17 @@ hdy_style_manager_class_init (HdyStyleManagerClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyStyleManager:system-supports-color-schemes:
+   * HdyStyleManager:system-supports-color-schemes: (attributes org.gtk.Property.get=hdy_style_manager_get_system_supports_color_schemes)
    *
    * Whether the system supports color schemes.
    *
    * This property can be used to check if the current environment provides a
    * color scheme preference. For example, applications might want to show a
-   * separate appearance switcher if it's set to %FALSE.
+   * separate appearance switcher if it's set to `FALSE`.
    *
    * It's only set at startup and cannot change its value later.
    *
-   * See #HdyStyleManager:color-scheme.
+   * See [property@StyleManager:color-scheme].
    *
    * Since: 1.6
    */
@@ -603,12 +605,12 @@ hdy_style_manager_class_init (HdyStyleManagerClass *klass)
                           G_PARAM_READABLE);
 
   /**
-   * HdyStyleManager:dark:
+   * HdyStyleManager:dark: (attributes org.gtk.Property.get=hdy_style_manager_get_dark)
    *
    * Whether the application is using dark appearance.
    *
    * This property can be used to query the current appearance, as requested via
-   * #HdyStyleManager:color-scheme.
+   * [property@StyleManager:color-scheme].
    *
    * Since: 1.6
    */
@@ -620,7 +622,7 @@ hdy_style_manager_class_init (HdyStyleManagerClass *klass)
                           G_PARAM_READABLE);
 
   /**
-   * HdyStyleManager:high-contrast:
+   * HdyStyleManager:high-contrast: (attributes org.gtk.Property.get=hdy_style_manager_get_high_contrast)
    *
    * Whether the application is using high contrast appearance.
    *
@@ -674,12 +676,12 @@ hdy_style_manager_ensure (void)
 /**
  * hdy_style_manager_get_default:
  *
- * Gets the default #HdyStyleManager instance.
+ * Gets the default [class@StyleManager] instance.
  *
- * It manages all #GdkDisplay instances unless the style manager for that
- * display has an override.
+ * It manages all [class@Gdk.Display] instances unless the style manager for
+ * that display has an override.
  *
- * See hdy_style_manager_get_for_display().
+ * See [func@StyleManager.get_for_display].
  *
  * Returns: (transfer none): the default style manager
  *
@@ -696,14 +698,14 @@ hdy_style_manager_get_default (void)
 
 /**
  * hdy_style_manager_get_for_display:
- * @display: a #GdkDisplay
+ * @display: a display
  *
- * Gets the #HdyStyleManager instance managing @display.
+ * Gets the [class@StyleManager] instance managing @display.
  *
  * It can be used to override styles for that specific display instead of the
  * whole application.
  *
- * Most applications should use hdy_style_manager_get_default() instead.
+ * Most applications should use [func@StyleManager.get_default] instead.
  *
  * Returns: (transfer none): the style manager for @display
  *
@@ -723,13 +725,13 @@ hdy_style_manager_get_for_display (GdkDisplay *display)
 }
 
 /**
- * hdy_style_manager_get_display:
- * @self: a #HdyStyleManager
+ * hdy_style_manager_get_display: (attributes org.gtk.Method.get_property=display)
+ * @self: a style manager
  *
  * Gets the display the style manager is associated with.
  *
- * The display will be %NULL for the style manager returned by
- * hdy_style_manager_get_default().
+ * The display will be `NULL` for the style manager returned by
+ * [func@StyleManager.get_default].
  *
  * Returns: (transfer none): (nullable): the display
  *
@@ -744,8 +746,8 @@ hdy_style_manager_get_display (HdyStyleManager *self)
 }
 
 /**
- * hdy_style_manager_get_color_scheme:
- * @self: a #HdyStyleManager
+ * hdy_style_manager_get_color_scheme: (attributes org.gtk.Method.get_property=color-scheme)
+ * @self: a style manager
  *
  * Gets the requested application color scheme.
  *
@@ -762,15 +764,16 @@ hdy_style_manager_get_color_scheme (HdyStyleManager *self)
 }
 
 /**
- * hdy_style_manager_set_color_scheme:
- * @self: a #HdyStyleManager
+ * hdy_style_manager_set_color_scheme: (attributes org.gtk.Method.set_property=color-scheme)
+ * @self: a style manager
  * @color_scheme: the color scheme
  *
  * Sets the requested application color scheme.
  *
  * The effective appearance will be decided based on the application color
- * scheme and the system preferred color scheme. The #HdyStyleManager:dark
- * property can be used to query the current effective appearance.
+ * scheme and the system preferred color scheme. The
+ * [property@StyleManager:dark] property can be used to query the current
+ * effective appearance.
  *
  * Since: 1.6
  */
@@ -806,8 +809,8 @@ hdy_style_manager_set_color_scheme (HdyStyleManager *self,
 }
 
 /**
- * hdy_style_manager_get_system_supports_color_schemes:
- * @self: a #HdyStyleManager
+ * hdy_style_manager_get_system_supports_color_schemes: (attributes org.gtk.Method.get_property=system-supports-color-schemes)
+ * @self: a style manager
  *
  * Gets whether the system supports color schemes.
  *
@@ -824,8 +827,8 @@ hdy_style_manager_get_system_supports_color_schemes (HdyStyleManager *self)
 }
 
 /**
- * hdy_style_manager_get_dark:
- * @self: a #HdyStyleManager
+ * hdy_style_manager_get_dark: (attributes org.gtk.Method.get_property=dark)
+ * @self: a style manager
  *
  * Gets whether the application is using dark appearance.
  *
@@ -842,8 +845,8 @@ hdy_style_manager_get_high_contrast (HdyStyleManager *self)
 }
 
 /**
- * hdy_style_manager_get_high_contrast:
- * @self: a #HdyStyleManager
+ * hdy_style_manager_get_high_contrast: (attributes org.gtk.Method.get_property=high-contrast)
+ * @self: a style manager
  *
  * Gets whether the application is using high contrast appearance.
  *

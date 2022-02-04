@@ -22,19 +22,20 @@
 #define LINE_MARGIN 2
 
 /**
- * SECTION:hdy-carousel-indicator-lines
- * @short_description: A lines indicator for #HdyCarousel
- * @title: HdyCarouselIndicatorLines
- * @See_also: #HdyCarousel, #HdyCarouselIndicatorDots
+ * HdyCarouselIndicatorLines:
  *
- * The #HdyCarouselIndicatorLines widget can be used to show a set of thin and long
- * rectangles for each page of a given #HdyCarousel. The carousel's active page
- * is shown with another rectangle that moves between them to match the
- * carousel's position.
+ * A lines indicator for [class@Carousel].
  *
- * # CSS nodes
+ * The `HdyCarouselIndicatorLines` widget shows a set of lines for each page of
+ * a given [class@Carousel]. The carousel's active page is shown as another line
+ * that moves between them to match the carousel's position.
  *
- * #HdyCarouselIndicatorLines has a single CSS node with name carouselindicatorlines.
+ * See also [class@CarouselIndicatorDots].
+ *
+ * ## CSS nodes
+ *
+ * `HdyCarouselIndicatorLines` has a single CSS node with name
+ * `carouselindicatorlines`.
  *
  * Since: 1.0
  */
@@ -380,9 +381,9 @@ hdy_carousel_indicator_lines_class_init (HdyCarouselIndicatorLinesClass *klass)
   widget_class->draw = hdy_carousel_indicator_lines_draw;
 
   /**
-   * HdyCarouselIndicatorLines:carousel:
+   * HdyCarouselIndicatorLines:carousel: (attributes org.gtk.Property.get=hdy_carousel_indicator_lines_get_carousel org.gtk.Property.set=hdy_carousel_indicator_lines_set_carousel)
    *
-   * The #HdyCarousel the indicator uses.
+   * The displayed carousel.
    *
    * Since: 1.0
    */
@@ -410,9 +411,9 @@ hdy_carousel_indicator_lines_init (HdyCarouselIndicatorLines *self)
 /**
  * hdy_carousel_indicator_lines_new:
  *
- * Create a new #HdyCarouselIndicatorLines widget.
+ * Creates a new `HdyCarouselIndicatorLines`.
  *
- * Returns: (transfer full): The newly created #HdyCarouselIndicatorLines widget
+ * Returns: the newly created `HdyCarouselIndicatorLines`
  *
  * Since: 1.0
  */
@@ -423,14 +424,12 @@ hdy_carousel_indicator_lines_new (void)
 }
 
 /**
- * hdy_carousel_indicator_lines_get_carousel:
- * @self: a #HdyCarouselIndicatorLines
+ * hdy_carousel_indicator_lines_get_carousel: (attributes org.gtk.Method.get_property=carousel)
+ * @self: an indicator
  *
- * Get the #HdyCarousel the indicator uses.
+ * Gets the displayed carousel.
  *
- * See: hdy_carousel_indicator_lines_set_carousel()
- *
- * Returns: (nullable) (transfer none): the #HdyCarousel, or %NULL if none has been set
+ * Returns: (nullable) (transfer none): the displayed carousel
  *
  * Since: 1.0
  */
@@ -444,11 +443,11 @@ hdy_carousel_indicator_lines_get_carousel (HdyCarouselIndicatorLines *self)
 }
 
 /**
- * hdy_carousel_indicator_lines_set_carousel:
- * @self: a #HdyCarouselIndicatorLines
- * @carousel: (nullable): a #HdyCarousel
+ * hdy_carousel_indicator_lines_set_carousel: (attributes org.gtk.Method.set_property=carousel)
+ * @self: an indicator
+ * @carousel: (nullable): a carousel
  *
- * Sets the #HdyCarousel to use.
+ * Sets the [class@Carousel] to use.
  *
  * Since: 1.0
  */

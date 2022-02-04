@@ -12,24 +12,26 @@
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
 /**
- * SECTION:hdy-title-bar
- * @short_description: A simple title bar container.
- * @Title: HdyTitleBar
+ * HdyTitleBar:
  *
- * HdyTitleBar is meant to be used as the top-level widget of your window's
- * title bar. It will be drawn with the same style as a GtkHeaderBar but it
- * won't force a widget layout on you: you can put whatever widget you want in
- * it, including a GtkHeaderBar.
+ * A simple title bar container.
  *
- * HdyTitleBar becomes really useful when you want to animate header bars, like
- * an adaptive application using #HdyLeaflet would do.
+ * `HdyTitleBar` is meant to be used as the top-level widget of your window's
+ * title bar. It will be drawn with the same style as a [class@Gtk.HeaderBar]
+ * but it won't force a widget layout on you: you can put whatever widget you
+ * want in it, including a [class@Gtk.HeaderBar].
  *
- * #HdyTitleBar has been deprecated, header bars can be animated without it
- * when placed inside #HdyWindow or #HdyApplicationWindow.
+ * `HdyTitleBar` becomes really useful when you want to animate header bars,
+ * like an adaptive application using [class@Leaflet] would do.
  *
- * # CSS nodes
+ * `HdyTitleBar` has been deprecated, header bars can be animated without it
+ * when placed inside [class@Window] or [class@ApplicationWindow].
  *
- * #HdyTitleBar has a single CSS node with name headerbar.
+ * ## CSS nodes
+ *
+ * `HdyTitleBar` has a single CSS node with name `headerbar`.
+ *
+ * Since: 1.0
  *
  * Deprecated: 1.4
  */
@@ -52,11 +54,13 @@ G_DEFINE_TYPE (HdyTitleBar, hdy_title_bar, GTK_TYPE_BIN)
 static GParamSpec *props[LAST_PROP];
 
 /**
- * hdy_title_bar_set_selection_mode:
- * @self: a #HdyTitleBar
- * @selection_mode: %TRUE to enable the selection mode
+ * hdy_title_bar_set_selection_mode:  (attributes org.gtk.Method.set_property=selection-mode)
+ * @self: a title bar
+ * @selection_mode: `TRUE` to enable the selection mode
  *
  * Sets whether @self is in selection mode.
+ *
+ * Since: 1.0
  *
  * Deprecated: 1.4
  */
@@ -86,12 +90,14 @@ hdy_title_bar_set_selection_mode (HdyTitleBar *self,
 }
 
 /**
- * hdy_title_bar_get_selection_mode:
- * @self: a #HdyTitleBar
+ * hdy_title_bar_get_selection_mode:  (attributes org.gtk.Method.get_property=selection-mode)
+ * @self: a title bar
  *
  * Returns whether whether @self is in selection mode.
  *
- * Returns: %TRUE if the title bar is in selection mode
+ * Returns: `TRUE` if the title bar is in selection mode
+ *
+ * Since: 1.0
  *
  * Deprecated: 1.4
  */
@@ -310,9 +316,11 @@ hdy_title_bar_class_init (HdyTitleBarClass *klass)
   widget_class->size_allocate = hdy_title_bar_size_allocate;
 
   /**
-   * HdyTitleBar:selection_mode:
+   * HdyTitleBar:selection-mode: (attributes org.gtk.Property.get=hdy_title_bar_set_selection_mode org.gtk.Property.set=hdy_title_bar_set_selection_mode)
    *
-   * %TRUE if the title bar is in selection mode.
+   * Whether or not the title bar is in selection mode.
+   *
+   * Since: 1.0
    *
    * Deprecated: 1.4
    */
@@ -349,9 +357,11 @@ hdy_title_bar_init (HdyTitleBar *self)
 /**
  * hdy_title_bar_new:
  *
- * Creates a new #HdyTitleBar.
+ * Creates a new `HdyTitleBar`.
  *
- * Returns: a new #HdyTitleBar
+ * Returns: a new `HdyTitleBar`
+ *
+ * Since: 1.0
  *
  * Deprecated: 1.4
  */

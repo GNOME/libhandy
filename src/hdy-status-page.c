@@ -10,16 +10,16 @@
 #include "hdy-status-page.h"
 
 /**
- * SECTION:hdy-status-page
- * @short_description: A page used for empty/error states and similar use-cases.
- * @Title: HdyStatusPage
+ * HdyStatusPage:
  *
- * The #HdyStatusPage widget can have an icon, a title, a description and a
+ * A page used for empty/error states and similar use-cases.
+ *
+ * The `HdyStatusPage` widget can have an icon, a title, a description and a
  * custom widget which is displayed below them.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyStatusPage has a main CSS node with name statuspage.
+ * `HdyStatusPage` has a main CSS node with name `statuspage`.
  *
  * Since: 1.2
  */
@@ -210,7 +210,7 @@ hdy_status_page_class_init (HdyStatusPageClass *klass)
   container_class->forall = hdy_status_page_forall;
 
   /**
-   * HdyStatusPage:icon-name:
+   * HdyStatusPage:icon-name: (attributes org.gtk.Property.get=hdy_status_page_get_icon_name org.gtk.Property.set=hdy_status_page_set_icon_name)
    *
    * The name of the icon to be used.
    *
@@ -224,7 +224,7 @@ hdy_status_page_class_init (HdyStatusPageClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyStatusPage:title:
+   * HdyStatusPage:title: (attributes org.gtk.Property.get=hdy_status_page_get_title org.gtk.Property.set=hdy_status_page_set_title)
    *
    * The title to be displayed below the icon.
    *
@@ -238,7 +238,7 @@ hdy_status_page_class_init (HdyStatusPageClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyStatusPage:description:
+   * HdyStatusPage:description: (attributes org.gtk.Property.get=hdy_status_page_get_description org.gtk.Property.set=hdy_status_page_set_description)
    *
    * The description to be displayed below the title.
    *
@@ -276,9 +276,9 @@ hdy_status_page_init (HdyStatusPage *self)
 /**
  * hdy_status_page_new:
  *
- * Creates a new #HdyStatusPage.
+ * Creates a new `HdyStatusPage`.
  *
- * Returns: a new #HdyStatusPage
+ * Returns: the newly created `HdyStatusPage`
  *
  * Since: 1.2
  */
@@ -289,12 +289,12 @@ hdy_status_page_new (void)
 }
 
 /**
- * hdy_status_page_get_icon_name:
- * @self: a #HdyStatusPage
+ * hdy_status_page_get_icon_name: (attributes org.gtk.Method.get_property=icon-name)
+ * @self: a status page
  *
  * Gets the icon name for @self.
  *
- * Returns: (transfer none) (nullable): the icon name for @self.
+ * Returns: (transfer none) (nullable): the icon name for @self
  *
  * Since: 1.2
  */
@@ -305,8 +305,8 @@ hdy_status_page_get_icon_name (HdyStatusPage *self)
 }
 
 /**
- * hdy_status_page_set_icon_name:
- * @self: a #HdyStatusPage
+ * hdy_status_page_set_icon_name: (attributes org.gtk.Method.set_property=icon-name)
+ * @self: a status page
  * @icon_name: (nullable): the icon name
  *
  * Sets the icon name for @self.
@@ -334,12 +334,12 @@ hdy_status_page_set_icon_name (HdyStatusPage *self,
 }
 
 /**
- * hdy_status_page_get_title:
- * @self: a #HdyStatusPage
+ * hdy_status_page_get_title: (attributes org.gtk.Method.get_property=title)
+ * @self: a status page
  *
  * Gets the title for @self.
  *
- * Returns: (transfer none) (nullable): the title for @self, or %NULL.
+ * Returns: (transfer none) (nullable): the title for @self
  *
  * Since: 1.2
  */
@@ -352,8 +352,8 @@ hdy_status_page_get_title (HdyStatusPage *self)
 }
 
 /**
- * hdy_status_page_set_title:
- * @self: a #HdyStatusPage
+ * hdy_status_page_set_title: (attributes org.gtk.Method.set_property=title)
+ * @self: a status page
  * @title: (nullable): the title
  *
  * Sets the title for @self.
@@ -376,12 +376,12 @@ hdy_status_page_set_title (HdyStatusPage *self,
 }
 
 /**
- * hdy_status_page_get_description:
- * @self: a #HdyStatusPage
+ * hdy_status_page_get_description: (attributes org.gtk.Method.get_property=description)
+ * @self: a status page
  *
  * Gets the description for @self.
  *
- * Returns: (transfer none) (nullable): the description for @self, or %NULL.
+ * Returns: (transfer none) (nullable): the description for @self
  *
  * Since: 1.2
  */
@@ -394,8 +394,8 @@ hdy_status_page_get_description (HdyStatusPage *self)
 }
 
 /**
- * hdy_status_page_set_description:
- * @self: a #HdyStatusPage
+ * hdy_status_page_set_description: (attributes org.gtk.Method.set_property=description)
+ * @self: a status page
  * @description: (nullable): the description
  *
  * Sets the description for @self.

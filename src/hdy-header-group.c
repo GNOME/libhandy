@@ -10,24 +10,24 @@
 #include "hdy-header-group.h"
 
 /**
- * SECTION:hdy-header-group
- * @short_description: An object handling composite title bars.
- * @Title: HdyHeaderGroup
- * @See_also: #GtkHeaderBar, #HdyHeaderBar, #HdyLeaflet
+ * HdyHeaderGroup:
  *
- * The #HdyHeaderGroup object handles the header bars of a composite title bar.
+ * An object handling composite title bars.
+ *
+ * The `HdyHeaderGroup` object handles the header bars of a composite title bar.
  * It splits the window decoration across the header bars, giving the left side
  * of the decorations to the leftmost header bar, and the right side of the
- * decorations to the rightmost header bar.
- * See hdy_header_bar_set_decoration_layout().
+ * decorations to the rightmost header bar. See
+ * [method@HeaderBar.set_decoration_layout].
  *
- * The #HdyHeaderGroup:decorate-all property can be used in conjunction with
- * #HdyLeaflet:folded when the title bar is split across the pages of a
- * #HdyLeaflet to automatically display the decorations on all the pages when
- * the leaflet is folded.
+ * The [property@HeaderGroup:decorate-all] property can be used in conjunction
+ * with [property@Leaflet:folded] when the title bar is split across the pages
+ * of a [class@Leaflet] to automatically display the decorations on all the
+ * pages when the leaflet is folded.
  *
  * You can nest header groups, which is convenient when you nest leaflets too:
- * |[
+ *
+ * ```xml
  * <object class="HdyHeaderGroup" id="inner_header_group">
  *   <property name="decorate-all" bind-source="inner_leaflet" bind-property="folded" bind-flags="sync-create"/>
  *   <headerbars>
@@ -42,24 +42,33 @@
  *     <headerbar name="outer_header_bar"/>
  *   </headerbars>
  * </object>
- * ]|
+ * ```
  *
- * Since: 0.0.4
+ * Since: 1.0
  */
 
 /**
  * HdyHeaderGroupChildType:
- * @HDY_HEADER_GROUP_CHILD_TYPE_HEADER_BAR: The child is a #HdyHeaderBar
- * @HDY_HEADER_GROUP_CHILD_TYPE_GTK_HEADER_BAR: The child is a #GtkHeaderBar
- * @HDY_HEADER_GROUP_CHILD_TYPE_HEADER_GROUP: The child is a #HdyHeaderGroup
+ * @HDY_HEADER_GROUP_CHILD_TYPE_HEADER_BAR: The child is a [class@HeaderBar]
+ * @HDY_HEADER_GROUP_CHILD_TYPE_GTK_HEADER_BAR: The child is a
+ *   [class@Gtk.HeaderBar]
+ * @HDY_HEADER_GROUP_CHILD_TYPE_HEADER_GROUP: The child is a
+ *   [class@HeaderGroup]
  *
- * This enumeration value describes the child types handled by #HdyHeaderGroup.
+ * Describes the child types handled by [class@HeaderGroup].
  *
  * New values may be added to this enumeration over time.
  *
  * Since: 1.0
  */
 
+/**
+ * HdyHeaderGroupChild:
+ *
+ * A child object for [class@HeaderGroup].
+ *
+ * Since: 1.0
+ */
 struct _HdyHeaderGroupChild
 {
   GObject parent_instance;
@@ -399,6 +408,15 @@ child_destroyed_cb (HdyHeaderGroup      *self,
   g_object_unref (self);
 }
 
+/**
+ * hdy_header_group_new:
+ *
+ * Creates a new `HdyHeaderGroup`.
+ *
+ * Returns: the newly created `HdyHeaderGroup`
+ *
+ * Since: 1.0
+ */
 HdyHeaderGroup *
 hdy_header_group_new (void)
 {
@@ -424,12 +442,13 @@ hdy_header_group_add_child (HdyHeaderGroup      *self,
 
 /**
  * hdy_header_group_add_header_bar:
- * @self: a #HdyHeaderGroup
- * @header_bar: the #HdyHeaderBar to add
+ * @self: a header group
+ * @header_bar: the header bar to add
  *
  * Adds @header_bar to @self.
- * When the widget is destroyed or no longer referenced elsewhere, it will
- * be removed from the header group.
+ *
+ * When the widget is destroyed or no longer referenced elsewhere, it will be
+ * removed from the header group.
  *
  * Since: 1.0
  */
@@ -449,12 +468,13 @@ hdy_header_group_add_header_bar (HdyHeaderGroup *self,
 
 /**
  * hdy_header_group_add_gtk_header_bar:
- * @self: a #HdyHeaderGroup
- * @header_bar: the #GtkHeaderBar to add
+ * @self: a header group
+ * @header_bar: the header bar to add
  *
  * Adds @header_bar to @self.
- * When the widget is destroyed or no longer referenced elsewhere, it will
- * be removed from the header group.
+ *
+ * When the widget is destroyed or no longer referenced elsewhere, it will be
+ * removed from the header group.
  *
  * Since: 1.0
  */
@@ -474,10 +494,11 @@ hdy_header_group_add_gtk_header_bar (HdyHeaderGroup *self,
 
 /**
  * hdy_header_group_add_header_group:
- * @self: a #HdyHeaderGroup
- * @header_group: the #HdyHeaderGroup to add
+ * @self: a header group
+ * @header_group: the header group to add
  *
  * Adds @header_group to @self.
+ *
  * When the nested group is no longer referenced elsewhere, it will be removed
  * from the header group.
  *
@@ -574,18 +595,18 @@ hdy_header_group_set_property (GObject      *object,
 }
 
 /*< private >
- * @builder: a #GtkBuilder
- * @context: the #GMarkupParseContext
+ * @builder: a builder
+ * @context: the markup parse context
  * @parent_name: the name of the expected parent element
  * @error: return location for an error
  *
- * Checks that the parent element of the currently handled
- * start tag is @parent_name and set @error if it isn't.
+ * Checks that the parent element of the currently handled start tag is
+ * @parent_name and set @error if it isn't.
  *
- * This is intended to be called in start_element vfuncs to
- * ensure that element nesting is as intended.
+ * This is intended to be called in start_element vfuncs to ensure that element
+ * nesting is as intended.
  *
- * Returns: %TRUE if @parent_name is the parent element
+ * Returns: `TRUE` if @parent_name is the parent element
  */
 /* This has been copied and modified from gtkbuilder.c. */
 static gboolean
@@ -620,17 +641,16 @@ _gtk_builder_check_parent (GtkBuilder           *builder,
 
 /*< private >
  * _gtk_builder_prefix_error:
- * @builder: a #GtkBuilder
- * @context: the #GMarkupParseContext
+ * @builder: a builder
+ * @context: the markup parse context
  * @error: an error
  *
- * Calls g_prefix_error() to prepend a filename:line:column marker
- * to the given error. The filename is taken from @builder, and
- * the line and column are obtained by calling
- * g_markup_parse_context_get_position().
+ * Calls [func@GLib.prefix_error] to prepend a filename:line:column marker to
+ * the given error. The filename is taken from @builder, and the line and column
+ * are obtained by calling [method@GLib.MarkupParseContext.get_position].
  *
  * This is intended to be called on errors returned by
- * g_markup_collect_attributes() in a start_element vfunc.
+ * [method@GLib.Markup.collect_attributes] in a start_element vfunc.
  */
 /* This has been copied and modified from gtkbuilder.c. */
 static void
@@ -646,14 +666,14 @@ _gtk_builder_prefix_error (GtkBuilder           *builder,
 
 /*< private >
  * _gtk_builder_error_unhandled_tag:
- * @builder: a #GtkBuilder
- * @context: the #GMarkupParseContext
+ * @builder: a builder
+ * @context: the markup parse context
  * @object: name of the object that is being handled
  * @element_name: name of the element whose start tag is being handled
  * @error: return location for the error
  *
- * Sets @error to a suitable error indicating that an @element_name
- * tag is not expected in the custom markup for @object.
+ * Sets @error to a suitable error indicating that an @element_name tag is not
+ * expected in the custom markup for @object.
  *
  * This is intended to be called in a start_element vfunc.
  */
@@ -817,12 +837,13 @@ hdy_header_group_class_init (HdyHeaderGroupClass *klass)
   object_class->set_property = hdy_header_group_set_property;
 
   /**
-   * HdyHeaderGroup:decorate-all:
+   * HdyHeaderGroup:decorate-all: (attributes org.gtk.Property.get=hdy_header_group_get_decorate_all org.gtk.Property.set=hdy_header_group_set_decorate_all)
    *
    * Whether the elements of the group should all receive the full decoration.
-   * This is useful in conjunction with #HdyLeaflet:folded when the leaflet
-   * contains the header bars of the group, as you want them all to display the
-   * complete decoration when the leaflet is folded.
+   *
+   * This is useful in conjunction with [property@Leaflet:folded] when the
+   * leaflet contains the header bars of the group, as you want them all to
+   * display the complete decoration when the leaflet is folded.
    *
    * Since: 1.0
    */
@@ -837,7 +858,6 @@ hdy_header_group_class_init (HdyHeaderGroupClass *klass)
 
   /**
    * HdyHeaderGroup::update-decoration-layouts:
-   * @self: The #HdyHeaderGroup instance
    *
    * This signal is emitted before updating the decoration layouts.
    *
@@ -870,12 +890,13 @@ hdy_header_group_buildable_init (GtkBuildableIface *iface)
 
 /**
  * hdy_header_group_child_get_header_bar:
- * @self: a #HdyHeaderGroupChild
+ * @self: a header group child
  *
- * Gets the child #HdyHeaderBar.
- * Use hdy_header_group_child_get_child_type() to check the child type.
+ * Gets the child [class@HeaderBar].
  *
- * Returns: (transfer none): the child #HdyHeaderBar, or %NULL in case of error.
+ * Use [method@HeaderGroupChild.get_child_type] to check the child type.
+ *
+ * Returns: (transfer none): the child headerbar
  *
  * Since: 1.0
  */
@@ -890,12 +911,13 @@ hdy_header_group_child_get_header_bar (HdyHeaderGroupChild *self)
 
 /**
  * hdy_header_group_child_get_gtk_header_bar:
- * @self: a #HdyHeaderGroupChild
+ * @self: a header group child
  *
- * Gets the child #GtkHeaderBar.
- * Use hdy_header_group_child_get_child_type() to check the child type.
+ * Gets the child [class@Gtk.HeaderBar].
  *
- * Returns: (transfer none): the child #GtkHeaderBar, or %NULL in case of error.
+ * Use [method@HeaderGroupChild.get_child_type] to check the child type.
+ *
+ * Returns: (transfer none): the child header bar
  *
  * Since: 1.0
  */
@@ -910,12 +932,13 @@ hdy_header_group_child_get_gtk_header_bar (HdyHeaderGroupChild *self)
 
 /**
  * hdy_header_group_child_get_header_group:
- * @self: a #HdyHeaderGroupChild
+ * @self: a header group child
  *
- * Gets the child #HdyHeaderGroup.
- * Use hdy_header_group_child_get_child_type() to check the child type.
+ * Gets the child [class@HeaderGroup].
  *
- * Returns: (transfer none): the child #HdyHeaderGroup, or %NULL in case of error.
+ * Use [method@HeaderGroupChild.get_child_type] to check the child type.
+ *
+ * Returns: (transfer none): the child header bar
  *
  * Since: 1.0
  */
@@ -930,11 +953,11 @@ hdy_header_group_child_get_header_group (HdyHeaderGroupChild *self)
 
 /**
  * hdy_header_group_child_get_child_type:
- * @self: a #HdyHeaderGroupChild
+ * @self: a header group child
  *
  * Gets the child type.
  *
- * Returns: the child type.
+ * Returns: the child type
  *
  * Since: 1.0
  */
@@ -948,12 +971,12 @@ hdy_header_group_child_get_child_type (HdyHeaderGroupChild *self)
 
 /**
  * hdy_header_group_get_children:
- * @self: a #HdyHeaderGroup
+ * @self: a header group
  *
  * Returns the list of children associated with @self.
  *
- * Returns: (element-type HdyHeaderGroupChild) (transfer none): the #GSList of
- *   children. The list is owned by libhandy and should not be modified.
+ * Returns: (element-type HdyHeaderGroupChild) (transfer none): the list of
+ *   children
  *
  * Since: 1.0
  */
@@ -979,8 +1002,8 @@ remove_child (HdyHeaderGroup      *self,
 
 /**
  * hdy_header_group_remove_header_bar:
- * @self: a #HdyHeaderGroup
- * @header_bar: the #HdyHeaderBar to remove
+ * @self: a header group
+ * @header_bar: the header bar to remove
  *
  * Removes @header_bar from @self.
  *
@@ -1004,8 +1027,8 @@ hdy_header_group_remove_header_bar (HdyHeaderGroup *self,
 
 /**
  * hdy_header_group_remove_gtk_header_bar:
- * @self: a #HdyHeaderGroup
- * @header_bar: the #GtkHeaderBar to remove
+ * @self: a header group
+ * @header_bar: the header bar to remove
  *
  * Removes @header_bar from @self.
  *
@@ -1029,10 +1052,10 @@ hdy_header_group_remove_gtk_header_bar (HdyHeaderGroup *self,
 
 /**
  * hdy_header_group_remove_header_group:
- * @self: a #HdyHeaderGroup
- * @header_group: the #HdyHeaderGroup to remove
+ * @self: a header group
+ * @header_group: the header group to remove
  *
- * Removes a nested #HdyHeaderGroup from a #HdyHeaderGroup
+ * Removes a nested `HdyHeaderGroup` from @self.
  *
  * Since: 1.0
  */
@@ -1054,8 +1077,8 @@ hdy_header_group_remove_header_group (HdyHeaderGroup *self,
 
 /**
  * hdy_header_group_remove_child:
- * @self: a #HdyHeaderGroup
- * @child: the #HdyHeaderGroupChild to remove
+ * @self: a header group
+ * @child: the header group child to remove
  *
  * Removes @child from @self.
  *
@@ -1073,11 +1096,13 @@ hdy_header_group_remove_child (HdyHeaderGroup      *self,
 }
 
 /**
- * hdy_header_group_set_decorate_all:
- * @self: a #HdyHeaderGroup
- * @decorate_all: whether the elements of the group should all receive the full decoration
+ * hdy_header_group_set_decorate_all: (attributes org.gtk.Method.set_property=decorate-all)
+ * @self: a header group
+ * @decorate_all: whether the elements of the group should all receive the full
+ *   decoration
  *
- * Sets whether the elements of the group should all receive the full decoration.
+ * Sets whether the elements of the group should all receive the full
+ * decoration.
  *
  * Since: 1.0
  */
@@ -1100,13 +1125,14 @@ hdy_header_group_set_decorate_all (HdyHeaderGroup *self,
 }
 
 /**
- * hdy_header_group_get_decorate_all:
- * @self: a #HdyHeaderGroup
+ * hdy_header_group_get_decorate_all: (attributes org.gtk.Method.get_property=decorate-all)
+ * @self: a header group
  *
- * Gets whether the elements of the group should all receive the full decoration.
+ * Gets whether the elements of the group should all receive the full
+ * decoration.
  *
- * Returns: %TRUE if the elements of the group should all receive the full
- *   decoration, %FALSE otherwise.
+ * Returns: whether the elements of the group should all receive the full
+ *   decoration
  *
  * Since: 1.0
  */

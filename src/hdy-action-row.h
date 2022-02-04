@@ -23,8 +23,8 @@ G_DECLARE_DERIVABLE_TYPE (HdyActionRow, hdy_action_row, HDY, ACTION_ROW, HdyPref
 
 /**
  * HdyActionRowClass
- * @parent_class: The parent class
- * @activate: Activates the row to trigger its main action.
+ * @parent_class: the parent class
+ * @activate: activates the row to trigger its main action
  */
 struct _HdyActionRowClass
 {

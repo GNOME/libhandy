@@ -11,32 +11,37 @@
 #include "hdy-action-row.h"
 
 /**
- * SECTION:hdy-expander-row
- * @short_description: A #GtkListBox row used to reveal widgets.
- * @Title: HdyExpanderRow
+ * HdyExpanderRow:
  *
- * The #HdyExpanderRow allows the user to reveal or hide widgets below it. It
- * also allows the user to enable the expansion of the row, allowing to disable
- * all that the row contains.
+ * A [class@Gtk.ListBoxRow] used to reveal widgets.
  *
- * It also supports adding a child as an action widget by specifying “action” as
- * the “type” attribute of a &lt;child&gt; element. It also supports setting a
- * child as a prefix widget by specifying “prefix” as the “type” attribute of a
- * &lt;child&gt; element.
+ * The `HdyExpanderRow` widget allows the user to reveal or hide widgets below
+ * it. It also allows the user to enable the expansion of the row, allowing to
+ * disable all that the row contains.
  *
- * # CSS nodes
+ * ## HdyExpanderRow as GtkBuildable
  *
- * #HdyExpanderRow has a main CSS node with name row, and the .expander style
- * class. It has the .empty style class when it contains no children.
+ * The `HdyExpanderRow` implementation of the [iface@Gtk.Buildable] interface
+ * supports adding a child as an action widget by specifying “action” as the
+ * “type” attribute of a <child> element.
  *
- * It contains the subnodes row.header for its main embedded row, list.nested
- * for the list it can expand, and image.expander-row-arrow for its arrow.
+ * It also supports adding it as a prefix widget by specifying “prefix” as the
+ * “type” attribute of a <child> element.
  *
- * When expanded, #HdyExpanderRow will add the
- * .checked-expander-row-previous-sibling style class to its previous sibling,
+ * ## CSS nodes
+ *
+ * `HdyExpanderRow` has a main CSS node with name `row`, and the `.expander`
+ * style class. It has the `.empty` style class when it contains no children.
+ *
+ * It contains the subnodes `row.header` for its main embedded row,
+ * `list.nested` for the list it can expand, and `image.expander-row-arrow` for
+ * its arrow.
+ *
+ * When expanded, `HdyExpanderRow` will add the
+ * `.checked-expander-row-previous-sibling` style class to its previous sibling,
  * and remove it when retracted.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 
 typedef struct
@@ -274,7 +279,7 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
   container_class->forall = hdy_expander_row_forall;
 
   /**
-   * HdyExpanderRow:subtitle:
+   * HdyExpanderRow:subtitle: (attributes org.gtk.Property.get=hdy_expander_row_get_subtitle org.gtk.Property.set=hdy_expander_row_set_subtitle)
    *
    * The subtitle for this row.
    *
@@ -288,10 +293,10 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyExpanderRow:use-underline:
+   * HdyExpanderRow:use-underline: (attributes org.gtk.Property.get=hdy_expander_row_get_use_underline org.gtk.Property.set=hdy_expander_row_set_use_underline)
    *
-   * Whether an embedded underline in the text of the title and subtitle labels
-   * indicates a mnemonic.
+   * Whether an embedded underline in the title or subtitle labels indicates a
+   * mnemonic.
    *
    * Since: 1.0
    */
@@ -303,7 +308,7 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyExpanderRow:icon-name:
+   * HdyExpanderRow:icon-name: (attributes org.gtk.Property.get=hdy_expander_row_get_icon_name org.gtk.Property.set=hdy_expander_row_set_icon_name)
    *
    * The icon name for this row.
    *
@@ -317,9 +322,11 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyExpanderRow:expanded:
+   * HdyExpanderRow:expanded: (attributes org.gtk.Property.get=hdy_expander_row_get_expanded org.gtk.Property.set=hdy_expander_row_set_expanded)
    *
-   * %TRUE if the row is expanded.
+   * Whether the row is expanded.
+   *
+   * Since: 1.0
    */
   props[PROP_EXPANDED] =
     g_param_spec_boolean ("expanded",
@@ -329,9 +336,11 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyExpanderRow:enable-expansion:
+   * HdyExpanderRow:enable-expansion: (attributes org.gtk.Property.get=hdy_expander_row_get_enable_expansion org.gtk.Property.set=hdy_expander_row_set_enable_expansion)
    *
-   * %TRUE if the expansion is enabled.
+   * Whether expansion is enabled.
+   *
+   * Since: 1.0
    */
   props[PROP_ENABLE_EXPANSION] =
     g_param_spec_boolean ("enable-expansion",
@@ -341,9 +350,11 @@ hdy_expander_row_class_init (HdyExpanderRowClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyExpanderRow:show-enable-switch:
+   * HdyExpanderRow:show-enable-switch: (attributes org.gtk.Property.get=hdy_expander_row_get_show_enable_switch org.gtk.Property.set=hdy_expander_row_set_show_enable_switch)
    *
-   * %TRUE if the switch enabling the expansion is visible.
+   * Whether the switch enabling the expansion is visible.
+   *
+   * Since: 1.0
    */
   props[PROP_SHOW_ENABLE_SWITCH] =
     g_param_spec_boolean ("show-enable-switch",
@@ -422,11 +433,11 @@ hdy_expander_row_buildable_init (GtkBuildableIface *iface)
 /**
  * hdy_expander_row_new:
  *
- * Creates a new #HdyExpanderRow.
+ * Creates a new `HdyExpanderRow`.
  *
- * Returns: a new #HdyExpanderRow
+ * Returns: the newly created `HdyExpanderRow`
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 GtkWidget *
 hdy_expander_row_new (void)
@@ -435,12 +446,12 @@ hdy_expander_row_new (void)
 }
 
 /**
- * hdy_expander_row_get_subtitle:
- * @self: a #HdyExpanderRow
+ * hdy_expander_row_get_subtitle: (attributes org.gtk.Method.get_property=subtitle)
+ * @self: a expander row
  *
  * Gets the subtitle for @self.
  *
- * Returns: (transfer none) (nullable): the subtitle for @self, or %NULL.
+ * Returns: (transfer none) (nullable): the subtitle for @self
  *
  * Since: 1.0
  */
@@ -457,8 +468,8 @@ hdy_expander_row_get_subtitle (HdyExpanderRow *self)
 }
 
 /**
- * hdy_expander_row_set_subtitle:
- * @self: a #HdyExpanderRow
+ * hdy_expander_row_set_subtitle: (attributes org.gtk.Method.set_property=subtitle)
+ * @self: a expander row
  * @subtitle: (nullable): the subtitle
  *
  * Sets the subtitle for @self.
@@ -479,14 +490,13 @@ hdy_expander_row_set_subtitle (HdyExpanderRow *self,
 }
 
 /**
- * hdy_expander_row_get_use_underline:
- * @self: a #HdyExpanderRow
+ * hdy_expander_row_get_use_underline: (attributes org.gtk.Method.get_property=use-underline)
+ * @self: a expander row
  *
- * Gets whether an embedded underline in the text of the title and subtitle
- * labels indicates a mnemonic. See hdy_expander_row_set_use_underline().
+ * Gets whether an embedded underline in the title or subtitle labels indicates
+ * a mnemonic.
  *
- * Returns: %TRUE if an embedded underline in the title and subtitle labels
- *          indicates the mnemonic accelerator keys.
+ * Returns: whether an embedded underlines indicates a mnemonic
  *
  * Since: 1.0
  */
@@ -503,12 +513,12 @@ hdy_expander_row_get_use_underline (HdyExpanderRow *self)
 }
 
 /**
- * hdy_expander_row_set_use_underline:
- * @self: a #HdyExpanderRow
- * @use_underline: %TRUE if underlines in the text indicate mnemonics
+ * hdy_expander_row_set_use_underline: (attributes org.gtk.Method.set_property=use-underline)
+ * @self: a expander row
+ * @use_underline: `TRUE` if underlines in the text indicate mnemonics
  *
- * If true, an underline in the text of the title and subtitle labels indicates
- * the next character should be used for the mnemonic accelerator key.
+ * Sets whether an embedded underline in the title or subtitle labels indicates
+ * a mnemonic.
  *
  * Since: 1.0
  */
@@ -526,12 +536,12 @@ hdy_expander_row_set_use_underline (HdyExpanderRow *self,
 }
 
 /**
- * hdy_expander_row_get_icon_name:
- * @self: a #HdyExpanderRow
+ * hdy_expander_row_get_icon_name: (attributes org.gtk.Method.get_property=icon-name)
+ * @self: a expander row
  *
  * Gets the icon name for @self.
  *
- * Returns: the icon name for @self.
+ * Returns: the icon name for @self
  *
  * Since: 1.0
  */
@@ -548,8 +558,8 @@ hdy_expander_row_get_icon_name (HdyExpanderRow *self)
 }
 
 /**
- * hdy_expander_row_set_icon_name:
- * @self: a #HdyExpanderRow
+ * hdy_expander_row_set_icon_name: (attributes org.gtk.Method.set_property=icon-name)
+ * @self: a expander row
  * @icon_name: the icon name
  *
  * Sets the icon name for @self.
@@ -604,14 +614,14 @@ hdy_expander_row_set_expanded (HdyExpanderRow *self,
 }
 
 /**
- * hdy_expander_row_get_enable_expansion:
- * @self: a #HdyExpanderRow
+ * hdy_expander_row_get_enable_expansion: (attributes org.gtk.Method.get_property=enable-expansion)
+ * @self: a expander row
  *
  * Gets whether the expansion of @self is enabled.
  *
- * Returns: whether the expansion of @self is enabled.
+ * Returns: whether the expansion of @self is enabled
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 gboolean
 hdy_expander_row_get_enable_expansion (HdyExpanderRow *self)
@@ -626,13 +636,13 @@ hdy_expander_row_get_enable_expansion (HdyExpanderRow *self)
 }
 
 /**
- * hdy_expander_row_set_enable_expansion:
- * @self: a #HdyExpanderRow
- * @enable_expansion: %TRUE to enable the expansion
+ * hdy_expander_row_set_enable_expansion: (attributes org.gtk.Method.set_property=enable-expansion)
+ * @self: a expander row
+ * @enable_expansion: `TRUE` to enable the expansion
  *
  * Sets whether the expansion of @self is enabled.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_expander_row_set_enable_expansion (HdyExpanderRow *self,
@@ -657,14 +667,14 @@ hdy_expander_row_set_enable_expansion (HdyExpanderRow *self,
 }
 
 /**
- * hdy_expander_row_get_show_enable_switch:
- * @self: a #HdyExpanderRow
+ * hdy_expander_row_get_show_enable_switch: (attributes org.gtk.Method.get_property=show-enable-switch)
+ * @self: a expander row
  *
  * Gets whether the switch enabling the expansion of @self is visible.
  *
- * Returns: whether the switch enabling the expansion of @self is visible.
+ * Returns: whether the switch enabling the expansion of @self is visible
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 gboolean
 hdy_expander_row_get_show_enable_switch (HdyExpanderRow *self)
@@ -679,13 +689,13 @@ hdy_expander_row_get_show_enable_switch (HdyExpanderRow *self)
 }
 
 /**
- * hdy_expander_row_set_show_enable_switch:
- * @self: a #HdyExpanderRow
- * @show_enable_switch: %TRUE to show the switch enabling the expansion
+ * hdy_expander_row_set_show_enable_switch: (attributes org.gtk.Method.set_property=show-enable-switch)
+ * @self: a expander row
+ * @show_enable_switch: `TRUE` to show the switch enabling the expansion
  *
  * Sets whether the switch enabling the expansion of @self is visible.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_expander_row_set_show_enable_switch (HdyExpanderRow *self,
@@ -709,7 +719,7 @@ hdy_expander_row_set_show_enable_switch (HdyExpanderRow *self,
 
 /**
  * hdy_expander_row_add_action:
- * @self: a #HdyExpanderRow
+ * @self: a expander row
  * @widget: the action widget
  *
  * Adds an action widget to @self.
@@ -733,7 +743,7 @@ hdy_expander_row_add_action (HdyExpanderRow *self,
 
 /**
  * hdy_expander_row_add_prefix:
- * @self: a #HdyExpanderRow
+ * @self: a expander row
  * @widget: the prefix widget
  *
  * Adds a prefix widget to @self.

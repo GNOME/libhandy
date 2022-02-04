@@ -23,7 +23,7 @@ G_DECLARE_DERIVABLE_TYPE (HdyPreferencesRow, hdy_preferences_row, HDY, PREFERENC
 
 /**
  * HdyPreferencesRowClass
- * @parent_class: The parent class
+ * @parent_class: the parent class
  */
 struct _HdyPreferencesRowClass
 {

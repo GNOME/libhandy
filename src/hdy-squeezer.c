@@ -25,21 +25,23 @@
 #include "hdy-css-private.h"
 
 /**
- * SECTION:hdy-squeezer
- * @short_description: A best fit container.
- * @Title: HdySqueezer
+ * HdySqueezer:
  *
- * The HdySqueezer widget is a container which only shows the first of its
+ * A best fit container.
+ *
+ * The `HdySqueezer` widget is a container which only shows the first of its
  * children that fits in the available size. It is convenient to offer different
  * widgets to represent the same data with different levels of detail, making
  * the widget seem to squeeze itself to fit in the available space.
  *
  * Transitions between children can be animated as fades. This can be controlled
- * with hdy_squeezer_set_transition_type().
+ * with [method@Squeezer.set_transition_type].
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdySqueezer has a single CSS node with name squeezer.
+ * `HdySqueezer` has a single CSS node with name `squeezer`.
+ *
+ * Since: 1.0
  */
 
 /**
@@ -47,8 +49,9 @@
  * @HDY_SQUEEZER_TRANSITION_TYPE_NONE: No transition
  * @HDY_SQUEEZER_TRANSITION_TYPE_CROSSFADE: A cross-fade
  *
- * These enumeration values describe the possible transitions between children
- * in a #HdySqueezer widget.
+ * Describes the possible transitions in a [class@Squeezer] widget.
+ *
+ * Since: 1.0
  */
 
 enum  {
@@ -1103,6 +1106,17 @@ hdy_squeezer_class_init (HdySqueezerClass *klass)
                                     PROP_ORIENTATION,
                                     "orientation");
 
+  /**
+   * HdySqueezer:homogeneous: (attributes org.gtk.Property.get=hdy_squeezer_get_homogeneous org.gtk.Property.set=hdy_squeezer_set_homogeneous)
+   *
+   * Whether all children have the same size for the opposite orientation.
+   *
+   * For example, if a squeezer is horizontal and is homogeneous, it will request
+   * the same height for all its children. If it isn't, the squeezer may change
+   * size when a different child becomes visible.
+   *
+   * Since: 1.0
+   */
   props[PROP_HOMOGENEOUS] =
     g_param_spec_boolean ("homogeneous",
                           _("Homogeneous"),
@@ -1110,6 +1124,13 @@ hdy_squeezer_class_init (HdySqueezerClass *klass)
                             FALSE,
                             G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdySqueezer:visible-child: (attributes org.gtk.Property.get=hdy_squeezer_get_visible_child)
+   *
+   * The currently visible child.
+   *
+   * Since: 1.0
+   */
   props[PROP_VISIBLE_CHILD] =
     g_param_spec_object ("visible-child",
                          _("Visible child"),
@@ -1117,6 +1138,13 @@ hdy_squeezer_class_init (HdySqueezerClass *klass)
                          GTK_TYPE_WIDGET,
                          G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdySqueezer:transition-duration: (attributes org.gtk.Property.get=hdy_squeezer_get_transition_duration org.gtk.Property.set=hdy_squeezer_set_transition_duration)
+   *
+   * The animation duration, in milliseconds.
+   *
+   * Since: 1.0
+   */
   props[PROP_TRANSITION_DURATION] =
     g_param_spec_uint ("transition-duration",
                        _("Transition duration"),
@@ -1124,6 +1152,19 @@ hdy_squeezer_class_init (HdySqueezerClass *klass)
                        0, G_MAXUINT, 200,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdySqueezer:transition-type: (attributes org.gtk.Property.get=hdy_squeezer_get_transition_type org.gtk.Property.set=hdy_squeezer_set_transition_type)
+   *
+   * The type of animation used for transitions between children.
+   *
+   * Available types include various kinds of fades and slides.
+   *
+   * The transition type can be changed without problems at runtime, so it is
+   * possible to change the animation based on the child that is about to become
+   * current.
+   *
+   * Since: 1.0
+   */
   props[PROP_TRANSITION_TYPE] =
     g_param_spec_enum ("transition-type",
                        _("Transition type"),
@@ -1132,6 +1173,13 @@ hdy_squeezer_class_init (HdySqueezerClass *klass)
                        HDY_SQUEEZER_TRANSITION_TYPE_NONE,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdySqueezer:transition-running: (attributes org.gtk.Property.get=hdy_squeezer_get_transition_running)
+   *
+   * Whether a transition is currently running.
+   *
+   * Since: 1.0
+   */
   props[PROP_TRANSITION_RUNNING] =
     g_param_spec_boolean ("transition-running",
                           _("Transition running"),
@@ -1139,6 +1187,18 @@ hdy_squeezer_class_init (HdySqueezerClass *klass)
                           FALSE,
                           G_PARAM_READABLE);
 
+  /**
+   * HdySqueezer:interpolate-size: (attributes org.gtk.Property.get=hdy_squeezer_get_interpolate_size org.gtk.Property.set=hdy_squeezer_set_interpolate_size)
+   *
+   * Whether the squeezer interpolates its size when changing the visible child.
+   *
+   * If `TRUE`, the squeezer will interpolate its size between the one of the
+   * previous visible child and the one of the new visible child, according to
+   * the set transition duration and the orientation, e.g. if the squeezer is
+   * horizontal, it will interpolate the its height.
+   *
+   * Since: 1.0
+   */
   props[PROP_INTERPOLATE_SIZE] =
     g_param_spec_boolean ("interpolate-size",
                           _("Interpolate size"),
@@ -1147,13 +1207,14 @@ hdy_squeezer_class_init (HdySqueezerClass *klass)
                             G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdySqueezer:xalign:
+   * HdySqueezer:xalign: (attributes org.gtk.Property.get=hdy_squeezer_get_xalign org.gtk.Property.set=hdy_squeezer_set_xalign)
+   *
+   * The horizontal alignment, from 0 (start) to 1 (end).
    *
    * The xalign property determines the horizontal alignment of the children
-   * inside the squeezer's size allocation.
-   * Compare this to #GtkWidget:halign, which determines how the squeezer's size
+   * inside the squeezer's size allocation. Compare this to
+   * [property@Gtk.Widget:halign], which determines how the squeezer's size
    * allocation is positioned in the space available for the squeezer.
-   * The range goes from 0 (start) to 1 (end).
    *
    * This will affect the position of children too wide to fit in the squeezer
    * as they are fading out.
@@ -1169,13 +1230,14 @@ hdy_squeezer_class_init (HdySqueezerClass *klass)
                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdySqueezer:yalign:
+   * HdySqueezer:yalign: (attributes org.gtk.Property.get=hdy_squeezer_get_yalign org.gtk.Property.set=hdy_squeezer_set_yalign)
    *
-   * The yalign property determines the vertical alignment of the children inside
-   * the squeezer's size allocation.
-   * Compare this to #GtkWidget:valign, which determines how the squeezer's size
+   * The vertical alignment, from 0 (start) to 1 (end).
+   *
+   * The yalign property determines the vertical alignment of the children
+   * inside the squeezer's size allocation. Compare this to
+   * [property@Gtk.Widget:valign], which determines how the squeezer's size
    * allocation is positioned in the space available for the squeezer.
-   * The range goes from 0 (top) to 1 (bottom).
    *
    * This will affect the position of children too tall to fit in the squeezer
    * as they are fading out.
@@ -1220,9 +1282,11 @@ hdy_squeezer_init (HdySqueezer *self)
 /**
  * hdy_squeezer_new:
  *
- * Creates a new #HdySqueezer container.
+ * Creates a new `HdySqueezer`.
  *
- * Returns: a new #HdySqueezer
+ * Returns: the newly created `HdySqueezer`
+ *
+ * Since: 1.0
  */
 GtkWidget *
 hdy_squeezer_new (void)
@@ -1231,16 +1295,14 @@ hdy_squeezer_new (void)
 }
 
 /**
- * hdy_squeezer_get_homogeneous:
- * @self: a #HdySqueezer
+ * hdy_squeezer_get_homogeneous: (attributes org.gtk.Method.get_property=homogeneous)
+ * @self: a squeezer
  *
  * Gets whether @self is homogeneous.
  *
- * See hdy_squeezer_set_homogeneous().
+ * Returns: whether @self is homogeneous
  *
- * Returns: %TRUE if @self is homogeneous, %FALSE is not
- *
- * Since: 0.0.10
+ * Since: 1.0
  */
 gboolean
 hdy_squeezer_get_homogeneous (HdySqueezer *self)
@@ -1251,17 +1313,13 @@ hdy_squeezer_get_homogeneous (HdySqueezer *self)
 }
 
 /**
- * hdy_squeezer_set_homogeneous:
- * @self: a #HdySqueezer
- * @homogeneous: %TRUE to make @self homogeneous
+ * hdy_squeezer_set_homogeneous: (attributes org.gtk.Method.set_property=homogeneous)
+ * @self: a squeezer
+ * @homogeneous: `TRUE` to make @self homogeneous
  *
- * Sets @self to be homogeneous or not. If it is homogeneous, @self will request
- * the same size for all its children for its opposite orientation, e.g. if
- * @self is oriented horizontally and is homogeneous, it will request the same
- * height for all its children. If it isn't, @self may change size when a
- * different child becomes visible.
+ * Sets whether all children have the same size for the opposite orientation.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_squeezer_set_homogeneous (HdySqueezer *self,
@@ -1283,13 +1341,14 @@ hdy_squeezer_set_homogeneous (HdySqueezer *self,
 }
 
 /**
- * hdy_squeezer_get_transition_duration:
- * @self: a #HdySqueezer
+ * hdy_squeezer_get_transition_duration: (attributes org.gtk.Method.get_property=transition-duration)
+ * @self: a squeezer
  *
- * Gets the amount of time (in milliseconds) that transitions between children
- * in @self will take.
+ * Gets the amount of time that transitions between children will take.
  *
- * Returns: the transition duration
+ * Returns: the transition duration, in milliseconds
+ *
+ * Since: 1.0
  */
 guint
 hdy_squeezer_get_transition_duration (HdySqueezer *self)
@@ -1300,11 +1359,13 @@ hdy_squeezer_get_transition_duration (HdySqueezer *self)
 }
 
 /**
- * hdy_squeezer_set_transition_duration:
- * @self: a #HdySqueezer
+ * hdy_squeezer_set_transition_duration: (attributes org.gtk.Method.set_property=transition-duration)
+ * @self: a squeezer
  * @duration: the new duration, in milliseconds
  *
  * Sets the duration that transitions between children in @self will take.
+ *
+ * Since: 1.0
  */
 void
 hdy_squeezer_set_transition_duration (HdySqueezer *self,
@@ -1320,13 +1381,14 @@ hdy_squeezer_set_transition_duration (HdySqueezer *self,
 }
 
 /**
- * hdy_squeezer_get_transition_type:
- * @self: a #HdySqueezer
+ * hdy_squeezer_get_transition_type: (attributes org.gtk.Method.get_property=transition-type)
+ * @self: a squeezer
  *
- * Gets the type of animation that will be used for transitions between children
- * in @self.
+ * Gets the animation type that will be used for transitions between children.
  *
  * Returns: the current transition type of @self
+ *
+ * Since: 1.0
  */
 HdySqueezerTransitionType
 hdy_squeezer_get_transition_type (HdySqueezer *self)
@@ -1337,16 +1399,13 @@ hdy_squeezer_get_transition_type (HdySqueezer *self)
 }
 
 /**
- * hdy_squeezer_set_transition_type:
- * @self: a #HdySqueezer
+ * hdy_squeezer_set_transition_type: (attributes org.gtk.Method.set_property=transition-type)
+ * @self: a squeezer
  * @transition: the new transition type
  *
- * Sets the type of animation that will be used for transitions between children
- * in @self. Available types include various kinds of fades and slides.
+ * Sets the animation type that will be used for transitions between children.
  *
- * The transition type can be changed without problems at runtime, so it is
- * possible to change the animation based on the child that is about to become
- * current.
+ * Since: 1.0
  */
 void
 hdy_squeezer_set_transition_type (HdySqueezer               *self,
@@ -1362,12 +1421,14 @@ hdy_squeezer_set_transition_type (HdySqueezer               *self,
 }
 
 /**
- * hdy_squeezer_get_transition_running:
- * @self: a #HdySqueezer
+ * hdy_squeezer_get_transition_running: (attributes org.gtk.Method.get_property=transition-running)
+ * @self: a squeezer
  *
- * Gets whether @self is currently in a transition from one child to another.
+ * Gets whether a transition is currently running for @self.
  *
- * Returns: %TRUE if the transition is currently running, %FALSE otherwise.
+ * Returns: whether a transition is currently running
+ *
+ * Since: 1.0
  */
 gboolean
 hdy_squeezer_get_transition_running (HdySqueezer *self)
@@ -1378,16 +1439,14 @@ hdy_squeezer_get_transition_running (HdySqueezer *self)
 }
 
 /**
- * hdy_squeezer_get_interpolate_size:
- * @self: A #HdySqueezer
+ * hdy_squeezer_get_interpolate_size: (attributes org.gtk.Method.get_property=interpolate-size)
+ * @self: a squeezer
  *
  * Gets whether @self should interpolate its size on visible child change.
  *
- * See hdy_squeezer_set_interpolate_size().
+ * Returns: whether @self interpolates its size on visible child change
  *
- * Returns: %TRUE if @self interpolates its size on visible child change, %FALSE if not
- *
- * Since: 0.0.10
+ * Since: 1.0
  */
 gboolean
 hdy_squeezer_get_interpolate_size (HdySqueezer *self)
@@ -1398,17 +1457,13 @@ hdy_squeezer_get_interpolate_size (HdySqueezer *self)
 }
 
 /**
- * hdy_squeezer_set_interpolate_size:
- * @self: A #HdySqueezer
- * @interpolate_size: %TRUE to interpolate the size
+ * hdy_squeezer_set_interpolate_size: (attributes org.gtk.Method.set_property=interpolate-size)
+ * @self: a squeezer
+ * @interpolate_size: `TRUE` to interpolate the size
  *
- * Sets whether or not @self will interpolate the size of its opposing
- * orientation when changing the visible child. If %TRUE, @self will interpolate
- * its size between the one of the previous visible child and the one of the new
- * visible child, according to the set transition duration and the orientation,
- * e.g. if @self is horizontal, it will interpolate the its height.
+ * Sets whether @self should interpolate its size on visible child change.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_squeezer_set_interpolate_size (HdySqueezer *self,
@@ -1426,13 +1481,14 @@ hdy_squeezer_set_interpolate_size (HdySqueezer *self,
 }
 
 /**
- * hdy_squeezer_get_visible_child:
- * @self: a #HdySqueezer
+ * hdy_squeezer_get_visible_child: (attributes org.gtk.Method.get_property=visible-child)
+ * @self: a squeezer
  *
- * Gets the currently visible child of @self, or %NULL if there are no visible
- * children.
+ * Gets the currently visible child of @self.
  *
- * Returns: (transfer none) (nullable): the visible child of the #HdySqueezer
+ * Returns: (transfer none) (nullable): the visible child
+ *
+ * Since: 1.0
  */
 GtkWidget *
 hdy_squeezer_get_visible_child (HdySqueezer *self)
@@ -1444,14 +1500,16 @@ hdy_squeezer_get_visible_child (HdySqueezer *self)
 
 /**
  * hdy_squeezer_get_child_enabled:
- * @self: a #HdySqueezer
+ * @self: a squeezer
  * @child: a child of @self
  *
  * Gets whether @child is enabled.
  *
- * See hdy_squeezer_set_child_enabled().
+ * See [method@Squeezer.set_child_enabled].
  *
- * Returns: %TRUE if @child is enabled, %FALSE otherwise.
+ * Returns: whether @child is enabled
+ *
+ * Since: 1.0
  */
 gboolean
 hdy_squeezer_get_child_enabled (HdySqueezer *self,
@@ -1471,17 +1529,20 @@ hdy_squeezer_get_child_enabled (HdySqueezer *self,
 
 /**
  * hdy_squeezer_set_child_enabled:
- * @self: a #HdySqueezer
+ * @self: a squeezer
  * @child: a child of @self
- * @enabled: %TRUE to enable the child, %FALSE to disable it
+ * @enabled: whether to enable the child
  *
- * Make @self enable or disable @child. If a child is disabled, it will be
- * ignored when looking for the child fitting the available size best. This
- * allows to programmatically and prematurely hide a child of @self even if it
- * fits in the available space.
+ * Sets whether @child is enabled.
+ *
+ * If a child is disabled, it will be ignored when looking for the child fitting
+ * the available size best. This allows to programmatically and prematurely hide
+ * a child of @self even if it fits in the available space.
  *
  * This can be used e.g. to ensure a certain child is hidden below a certain
  * window width, or any other constraint you find suitable.
+ *
+ * Since: 1.0
  */
 void
 hdy_squeezer_set_child_enabled (HdySqueezer *self,
@@ -1507,10 +1568,10 @@ hdy_squeezer_set_child_enabled (HdySqueezer *self,
 }
 
 /**
- * hdy_squeezer_get_xalign:
- * @self: a #HdySqueezer
+ * hdy_squeezer_get_xalign: (attributes org.gtk.Method.get_property=xalign)
+ * @self: a squeezer
  *
- * Gets the #HdySqueezer:xalign property for @self.
+ * Gets the horizontal alignment.
  *
  * Returns: the xalign property
  *
@@ -1525,11 +1586,11 @@ hdy_squeezer_get_xalign (HdySqueezer *self)
 }
 
 /**
- * hdy_squeezer_set_xalign:
- * @self: a #HdySqueezer
+ * hdy_squeezer_set_xalign: (attributes org.gtk.Method.set_property=xalign)
+ * @self: a squeezer
  * @xalign: the new xalign value, between 0 and 1
  *
- * Sets the #HdySqueezer:xalign property for @self.
+ * Sets the horizontal alignment.
  *
  * Since: 1.0
  */
@@ -1550,10 +1611,10 @@ hdy_squeezer_set_xalign (HdySqueezer *self,
 }
 
 /**
- * hdy_squeezer_get_yalign:
- * @self: a #HdySqueezer
+ * hdy_squeezer_get_yalign: (attributes org.gtk.Method.get_property=yalign)
+ * @self: a squeezer
  *
- * Gets the #HdySqueezer:yalign property for @self.
+ * Gets the vertical alignment.
  *
  * Returns: the yalign property
  *
@@ -1568,11 +1629,11 @@ hdy_squeezer_get_yalign (HdySqueezer *self)
 }
 
 /**
- * hdy_squeezer_set_yalign:
- * @self: a #HdySqueezer
+ * hdy_squeezer_set_yalign: (attributes org.gtk.Method.set_property=yalign)
+ * @self: a squeezer
  * @yalign: the new yalign value, between 0 and 1
  *
- * Sets the #HdySqueezer:yalign property for @self.
+ * Sets the vertical alignment.
  *
  * Since: 1.0
  */

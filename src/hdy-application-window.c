@@ -10,18 +10,18 @@
 #include "hdy-window-mixin-private.h"
 
 /**
- * SECTION:hdy-application-window
- * @short_description: A freeform application window.
- * @title: HdyApplicationWindow
- * @See_also: #HdyHeaderBar, #HdyWindow, #HdyWindowHandle
+ * HdyApplicationWindow:
  *
- * HdyApplicationWindow is a #GtkApplicationWindow subclass providing the same
- * features as #HdyWindow.
+ * A freeform application window.
  *
- * See #HdyWindow for details.
+ * `HdyApplicationWindow` is a [class@Gtk.ApplicationWindow] subclass providing
+ * the same features as [class@Window].
  *
- * Using gtk_application_set_app_menu() and gtk_application_set_menubar() is
- * not supported and may result in visual glitches.
+ * See [class@Window] for details.
+ *
+ * Using [method@Gtk.Application.set_app_menu] and
+ * [method@Gtk.Application.set_menubar] is not supported and may result in
+ * visual glitches.
  *
  * Since: 1.0
  */
@@ -136,9 +136,9 @@ hdy_application_window_buildable_init (GtkBuildableIface *iface)
 /**
  * hdy_application_window_new:
  *
- * Creates a new #HdyApplicationWindow.
+ * Creates a new `HdyApplicationWindow`.
  *
- * Returns: (transfer full): a newly created #HdyApplicationWindow
+ * Returns: the newly created `HdyApplicationWindow`
  *
  * Since: 1.0
  */

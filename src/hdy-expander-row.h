@@ -24,7 +24,7 @@ G_DECLARE_DERIVABLE_TYPE (HdyExpanderRow, hdy_expander_row, HDY, EXPANDER_ROW, H
 
 /**
  * HdyExpanderRowClass
- * @parent_class: The parent class
+ * @parent_class: the parent class
  */
 struct _HdyExpanderRowClass
 {

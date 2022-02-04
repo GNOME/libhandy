@@ -23,7 +23,7 @@ G_DECLARE_DERIVABLE_TYPE (HdyPreferencesPage, hdy_preferences_page, HDY, PREFERE
 
 /**
  * HdyPreferencesPageClass
- * @parent_class: The parent class
+ * @parent_class: the parent class
  */
 struct _HdyPreferencesPageClass
 {

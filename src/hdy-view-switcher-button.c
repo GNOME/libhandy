@@ -11,16 +11,14 @@
 #include "hdy-view-switcher-button-private.h"
 
 /**
- * PRIVATE:hdy-view-switcher-button
- * @short_description: Button used in #HdyViewSwitcher.
- * @title: HdyViewSwitcherButton
- * @See_also: #HdyViewSwitcher
- * @stability: Private
+ * HdyViewSwitcherButton:
  *
- * #HdyViewSwitcherButton represents an application's view. It is designed to be
- * used exclusively internally by #HdyViewSwitcher.
+ * Button used in [class@ViewSwitcher].
  *
- * Since: 0.0.10
+ * [class@ViewSwitcherButton] represents an application's view. It is designed
+ * to be used exclusively internally by [class@ViewSwitcher].
+ *
+ * Since: 1.0
  */
 
 enum {
@@ -194,9 +192,9 @@ hdy_view_switcher_button_class_init (HdyViewSwitcherButtonClass *klass)
   /**
    * HdyViewSwitcherButton:icon-name:
    *
-   * The icon name representing the view, or %NULL for no icon.
+   * The icon name representing the view, or `NULL` for no icon.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_ICON_NAME] =
     g_param_spec_string ("icon-name",
@@ -210,7 +208,7 @@ hdy_view_switcher_button_class_init (HdyViewSwitcherButtonClass *klass)
    *
    * The icon size.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_ICON_SIZE] =
     g_param_spec_int ("icon-size",
@@ -227,7 +225,7 @@ hdy_view_switcher_button_class_init (HdyViewSwitcherButtonClass *klass)
    * corresponding button when a view needs attention and it is not the current
    * one.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_NEEDS_ATTENTION] =
     g_param_spec_boolean ("needs-attention",
@@ -280,11 +278,11 @@ hdy_view_switcher_button_init (HdyViewSwitcherButton *self)
 /**
  * hdy_view_switcher_button_new:
  *
- * Creates a new #HdyViewSwitcherButton widget.
+ * Creates a new [class@ViewSwitcherButton] widget.
  *
- * Returns: a new #HdyViewSwitcherButton
+ * Returns: a new [class@ViewSwitcherButton]
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkWidget *
 hdy_view_switcher_button_new (void)
@@ -294,13 +292,13 @@ hdy_view_switcher_button_new (void)
 
 /**
  * hdy_view_switcher_button_get_icon_name:
- * @self: a #HdyViewSwitcherButton
+ * @self: a view switcher button
  *
- * Gets the icon name representing the view, or %NULL is no icon is set.
+ * Gets the icon name representing the view, or `NULL` is no icon is set.
  *
- * Returns: (transfer none) (nullable): the icon name, or %NULL
+ * Returns: (transfer none) (nullable): the icon name
  *
- * Since: 0.0.10
+ * Since: 1.0
  **/
 const gchar *
 hdy_view_switcher_button_get_icon_name (HdyViewSwitcherButton *self)
@@ -312,12 +310,12 @@ hdy_view_switcher_button_get_icon_name (HdyViewSwitcherButton *self)
 
 /**
  * hdy_view_switcher_button_set_icon_name:
- * @self: a #HdyViewSwitcherButton
- * @icon_name: (nullable): an icon name or %NULL
+ * @self: a view switcher button
+ * @icon_name: (nullable): an icon name
  *
- * Sets the icon name representing the view, or %NULL to disable the icon.
+ * Sets the icon name representing the view, or `NULL` to disable the icon.
  *
- * Since: 0.0.10
+ * Since: 1.0
  **/
 void
 hdy_view_switcher_button_set_icon_name (HdyViewSwitcherButton *self,
@@ -336,13 +334,13 @@ hdy_view_switcher_button_set_icon_name (HdyViewSwitcherButton *self,
 
 /**
  * hdy_view_switcher_button_get_icon_size:
- * @self: a #HdyViewSwitcherButton
+ * @self: a view switcher button
  *
  * Gets the icon size used by @self.
  *
  * Returns: the icon size used by @self
  *
- * Since: 0.0.10
+ * Since: 1.0
  **/
 GtkIconSize
 hdy_view_switcher_button_get_icon_size (HdyViewSwitcherButton *self)
@@ -354,12 +352,12 @@ hdy_view_switcher_button_get_icon_size (HdyViewSwitcherButton *self)
 
 /**
  * hdy_view_switcher_button_set_icon_size:
- * @self: a #HdyViewSwitcherButton
+ * @self: a view switcher button
  * @icon_size: the new icon size
  *
  * Sets the icon size used by @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_view_switcher_button_set_icon_size (HdyViewSwitcherButton *self,
@@ -377,13 +375,14 @@ hdy_view_switcher_button_set_icon_size (HdyViewSwitcherButton *self,
 
 /**
  * hdy_view_switcher_button_get_needs_attention:
- * @self: a #HdyViewSwitcherButton
+ * @self: a view switcher button
  *
  * Gets whether the view represented by @self requires the user attention.
  *
- * Returns: %TRUE if the view represented by @self requires the user attention, %FALSE otherwise
+ * Returns: `TRUE` if the view represented by @self requires the user attention,
+ *   `FALSE` otherwise
  *
- * Since: 0.0.10
+ * Since: 1.0
  **/
 gboolean
 hdy_view_switcher_button_get_needs_attention (HdyViewSwitcherButton *self)
@@ -399,12 +398,12 @@ hdy_view_switcher_button_get_needs_attention (HdyViewSwitcherButton *self)
 
 /**
  * hdy_view_switcher_button_set_needs_attention:
- * @self: a #HdyViewSwitcherButton
+ * @self: a view switcher button
  * @needs_attention: the new icon size
  *
  * Sets whether the view represented by @self requires the user attention.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_view_switcher_button_set_needs_attention (HdyViewSwitcherButton *self,
@@ -430,13 +429,13 @@ hdy_view_switcher_button_set_needs_attention (HdyViewSwitcherButton *self,
 
 /**
  * hdy_view_switcher_button_get_label:
- * @self: a #HdyViewSwitcherButton
+ * @self: a view switcher button
  *
  * Gets the label representing the view.
  *
- * Returns: (transfer none) (nullable): the label, or %NULL
+ * Returns: (transfer none) (nullable): the label
  *
- * Since: 0.0.10
+ * Since: 1.0
  **/
 const gchar *
 hdy_view_switcher_button_get_label (HdyViewSwitcherButton *self)
@@ -448,12 +447,12 @@ hdy_view_switcher_button_get_label (HdyViewSwitcherButton *self)
 
 /**
  * hdy_view_switcher_button_set_label:
- * @self: a #HdyViewSwitcherButton
- * @label: (nullable): a label or %NULL
+ * @self: a view switcher button
+ * @label: (nullable): a label
  *
  * Sets the label representing the view.
  *
- * Since: 0.0.10
+ * Since: 1.0
  **/
 void
 hdy_view_switcher_button_set_label (HdyViewSwitcherButton *self,
@@ -472,13 +471,13 @@ hdy_view_switcher_button_set_label (HdyViewSwitcherButton *self,
 
 /**
  * hdy_view_switcher_button_set_narrow_ellipsize:
- * @self: a #HdyViewSwitcherButton
- * @mode: a #PangoEllipsizeMode
+ * @self: a view switcher button
+ * @mode: a [enum@Pango.EllipsizeMode]
  *
- * Set the mode used to ellipsize the text in narrow mode if there is not
- * enough space to render the entire string.
+ * Set the mode used to ellipsize the text in narrow mode if there is not enough
+ * space to render the entire string.
  *
- * Since: 0.0.10
+ * Since: 1.0
  **/
 void
 hdy_view_switcher_button_set_narrow_ellipsize (HdyViewSwitcherButton *self,
@@ -493,7 +492,7 @@ hdy_view_switcher_button_set_narrow_ellipsize (HdyViewSwitcherButton *self,
 
 /**
  * hdy_view_switcher_button_get_size:
- * @self: a #HdyViewSwitcherButton
+ * @self: a view switcher button
  * @h_min_width: (out) (nullable): the minimum width when horizontal
  * @h_nat_width: (out) (nullable): the natural width when horizontal
  * @v_min_width: (out) (nullable): the minimum width when vertical
@@ -501,7 +500,7 @@ hdy_view_switcher_button_set_narrow_ellipsize (HdyViewSwitcherButton *self,
  *
  * Measure the size requests in both horizontal and vertical modes.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_view_switcher_button_get_size (HdyViewSwitcherButton *self,

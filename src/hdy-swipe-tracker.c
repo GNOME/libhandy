@@ -32,18 +32,18 @@
 #define SIGN(x) ((x) > 0.0 ? 1.0 : ((x) < 0.0 ? -1.0 : 0.0))
 
 /**
- * SECTION:hdy-swipe-tracker
- * @short_description: Swipe tracker used in #HdyCarousel and #HdyLeaflet
- * @title: HdySwipeTracker
- * @See_also: #HdyCarousel, #HdyDeck, #HdyLeaflet, #HdySwipeable
+ * HdySwipeTracker:
  *
- * The HdySwipeTracker object can be used for implementing widgets with swipe
+ * Swipe tracker used in [class@Carousel] and [class@Leaflet].
+ *
+ * The `HdySwipeTracker` object can be used for implementing widgets with swipe
  * gestures. It supports touch-based swipes, pointer dragging, and touchpad
  * scrolling.
  *
- * The widgets will probably want to expose #HdySwipeTracker:enabled property.
- * If they expect to use horizontal orientation, #HdySwipeTracker:reversed
- * property can be used for supporting RTL text direction.
+ * The widgets will probably want to expose [property@SwipeTracker:enabled]
+ * property. If they expect to use horizontal orientation,
+ * [property@SwipeTracker:reversed] property can be used for supporting RTL text
+ * direction.
  *
  * Since: 1.0
  */
@@ -1052,9 +1052,9 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
   object_class->set_property = hdy_swipe_tracker_set_property;
 
   /**
-   * HdySwipeTracker:swipeable:
+   * HdySwipeTracker:swipeable: (attributes org.gtk.Property.get=hdy_swipe_tracker_get_swipeable)
    *
-   * The widget the swipe tracker is attached to. Must not be %NULL.
+   * The widget the swipe tracker is attached to. Must not be `NULL`.
    *
    * Since: 1.0
    */
@@ -1066,10 +1066,12 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
   /**
-   * HdySwipeTracker:enabled:
+   * HdySwipeTracker:enabled: (attributes org.gtk.Property.get=hdy_swipe_tracker_get_enabled org.gtk.Property.set=hdy_swipe_tracker_set_enabled)
    *
-   * Whether the swipe tracker is enabled. When it's not enabled, no events
-   * will be processed. Usually widgets will want to expose this via a property.
+   * Whether the swipe tracker is enabled.
+   *
+   * When it's not enabled, no events will be processed. Usually widgets will
+   * want to expose this via a property.
    *
    * Since: 1.0
    */
@@ -1081,10 +1083,12 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdySwipeTracker:reversed:
+   * HdySwipeTracker:reversed: (attributes org.gtk.Property.get=hdy_swipe_tracker_get_reversed org.gtk.Property.set=hdy_swipe_tracker_set_reversed)
    *
-   * Whether to reverse the swipe direction. If the swipe tracker is horizontal,
-   * it can be used for supporting RTL text direction.
+   * Whether to reverse the swipe direction.
+   *
+   * If the swipe tracker is horizontal, it can be used for supporting RTL text
+   * direction.
    *
    * Since: 1.0
    */
@@ -1096,10 +1100,11 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdySwipeTracker:allow-mouse-drag:
+   * HdySwipeTracker:allow-mouse-drag: (attributes org.gtk.Property.get=hdy_swipe_tracker_get_allow_mouse_drag org.gtk.Property.set=hdy_swipe_tracker_set_allow_mouse_drag)
    *
-   * Whether to allow dragging with mouse pointer. This should usually be
-   * %FALSE.
+   * Whether to allow dragging with mouse pointer.
+   *
+   * This should usually be `FALSE`.
    *
    * Since: 1.0
    */
@@ -1111,10 +1116,12 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdySwipeTracker:allow-long-swipes:
+   * HdySwipeTracker:allow-long-swipes: (attributes org.gtk.Property.get=hdy_swipe_tracker_get_allow_long_swipes org.gtk.Property.set=hdy_swipe_tracker_set_allow_long_swipes)
    *
-   * Whether to allow swiping for more than one snap point at a time. If the
-   * value is %FALSE, each swipe can only move to the adjacent snap points.
+   * Whether to allow swiping for more than one snap point at a time.
+   *
+   * If the value is `FALSE`, each swipe can only move to the adjacent snap
+   * points.
    *
    * Since: 1.2
    */
@@ -1133,10 +1140,10 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
 
   /**
    * HdySwipeTracker::begin-swipe:
-   * @self: The #HdySwipeTracker instance
-   * @direction: The direction of the swipe
-   * @direct: %TRUE if the swipe is directly triggered by a gesture,
-   *   %FALSE if it's triggered via a #HdySwipeGroup
+   * @self: a swipe tracker
+   * @direction: the direction of the swipe
+   * @direct: `TRUE` if the swipe is directly triggered by a gesture,
+   *   `FALSE` if it's triggered via a [class@SwipeGroup]
    *
    * This signal is emitted when a possible swipe is detected.
    *
@@ -1157,8 +1164,8 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
 
   /**
    * HdySwipeTracker::update-swipe:
-   * @self: The #HdySwipeTracker instance
-   * @progress: The current animation progress value
+   * @self: a swipe tracker
+   * @progress: the current animation progress value
    *
    * This signal is emitted every time the progress value changes.
    *
@@ -1176,9 +1183,9 @@ hdy_swipe_tracker_class_init (HdySwipeTrackerClass *klass)
 
   /**
    * HdySwipeTracker::end-swipe:
-   * @self: The #HdySwipeTracker instance
-   * @duration: Snap-back animation duration in milliseconds
-   * @to: The progress value to animate to
+   * @self: a swipe tracker
+   * @duration: snap-back animation duration, in milliseconds
+   * @to: the progress value to animate to
    *
    * This signal is emitted as soon as the gesture has stopped.
    *
@@ -1207,11 +1214,11 @@ hdy_swipe_tracker_init (HdySwipeTracker *self)
 
 /**
  * hdy_swipe_tracker_new:
- * @swipeable: a #GtkWidget to add the tracker on
+ * @swipeable: a swipeable to add the tracker on
  *
- * Create a new #HdySwipeTracker object on @widget.
+ * Creates a new `HdySwipeTracker` object on @widget.
  *
- * Returns: the newly created #HdySwipeTracker object
+ * Returns: the newly created `HdySwipeTracker`
  *
  * Since: 1.0
  */
@@ -1226,8 +1233,8 @@ hdy_swipe_tracker_new (HdySwipeable *swipeable)
 }
 
 /**
- * hdy_swipe_tracker_get_swipeable:
- * @self: a #HdySwipeTracker
+ * hdy_swipe_tracker_get_swipeable: (attributes org.gtk.Method.get_property=swipeable)
+ * @self: a swipe tracker
  *
  * Get @self's swipeable widget.
  *
@@ -1244,13 +1251,12 @@ hdy_swipe_tracker_get_swipeable (HdySwipeTracker *self)
 }
 
 /**
- * hdy_swipe_tracker_get_enabled:
- * @self: a #HdySwipeTracker
+ * hdy_swipe_tracker_get_enabled: (attributes org.gtk.Method.get_property=enabled)
+ * @self: a swipe tracker
  *
- * Get whether @self is enabled. When it's not enabled, no events will be
- * processed. Generally widgets will want to expose this via a property.
+ * Get whether @self is enabled.
  *
- * Returns: %TRUE if @self is enabled
+ * Returns: `TRUE` if @self is enabled
  *
  * Since: 1.0
  */
@@ -1263,12 +1269,11 @@ hdy_swipe_tracker_get_enabled (HdySwipeTracker *self)
 }
 
 /**
- * hdy_swipe_tracker_set_enabled:
- * @self: a #HdySwipeTracker
+ * hdy_swipe_tracker_set_enabled: (attributes org.gtk.Method.set_property=enabled)
+ * @self: a swipe tracker
  * @enabled: whether to enable to swipe tracker
  *
- * Set whether @self is enabled. When it's not enabled, no events will be
- * processed. Usually widgets will want to expose this via a property.
+ * Set whether @self is enabled.
  *
  * Since: 1.0
  */
@@ -1292,12 +1297,12 @@ hdy_swipe_tracker_set_enabled (HdySwipeTracker *self,
 }
 
 /**
- * hdy_swipe_tracker_get_reversed:
- * @self: a #HdySwipeTracker
+ * hdy_swipe_tracker_get_reversed: (attributes org.gtk.Method.get_property=reversed)
+ * @self: a swipe tracker
  *
  * Get whether @self is reversing the swipe direction.
  *
- * Returns: %TRUE is the direction is reversed
+ * Returns: `TRUE` is the direction is reversed
  *
  * Since: 1.0
  */
@@ -1310,12 +1315,13 @@ hdy_swipe_tracker_get_reversed (HdySwipeTracker *self)
 }
 
 /**
- * hdy_swipe_tracker_set_reversed:
- * @self: a #HdySwipeTracker
+ * hdy_swipe_tracker_set_reversed: (attributes org.gtk.Method.set_property=reversed)
+ * @self: a swipe tracker
  * @reversed: whether to reverse the swipe direction
  *
- * Set whether to reverse the swipe direction. If @self is horizontal,
- * can be used for supporting RTL text direction.
+ * Set whether to reverse the swipe direction.
+ *
+ * If @self is horizontal, can be used for supporting RTL text direction.
  *
  * Since: 1.0
  */
@@ -1335,12 +1341,12 @@ hdy_swipe_tracker_set_reversed (HdySwipeTracker *self,
 }
 
 /**
- * hdy_swipe_tracker_get_allow_mouse_drag:
- * @self: a #HdySwipeTracker
+ * hdy_swipe_tracker_get_allow_mouse_drag: (attributes org.gtk.Method.get_property=allow-mouse-drag)
+ * @self: a swipe tracker
  *
  * Get whether @self can be dragged with mouse pointer.
  *
- * Returns: %TRUE is mouse dragging is allowed
+ * Returns: `TRUE` is mouse dragging is allowed
  *
  * Since: 1.0
  */
@@ -1353,12 +1359,13 @@ hdy_swipe_tracker_get_allow_mouse_drag (HdySwipeTracker *self)
 }
 
 /**
- * hdy_swipe_tracker_set_allow_mouse_drag:
- * @self: a #HdySwipeTracker
+ * hdy_swipe_tracker_set_allow_mouse_drag: (attributes org.gtk.Method.set_property=allow-mouse-drag)
+ * @self: a swipe tracker
  * @allow_mouse_drag: whether to allow mouse dragging
  *
- * Set whether @self can be dragged with mouse pointer. This should usually be
- * %FALSE.
+ * Set whether @self can be dragged with mouse pointer.
+ *
+ * This should usually be `FALSE`.
  *
  * Since: 1.0
  */
@@ -1382,13 +1389,15 @@ hdy_swipe_tracker_set_allow_mouse_drag (HdySwipeTracker *self,
 }
 
 /**
- * hdy_swipe_tracker_get_allow_long_swipes:
- * @self: a #HdySwipeTracker
+ * hdy_swipe_tracker_get_allow_long_swipes: (attributes org.gtk.Method.get_property=allow-long-swipes)
+ * @self: a swipe tracker
  *
- * Whether to allow swiping for more than one snap point at a time. If the
- * value is %FALSE, each swipe can only move to the adjacent snap points.
+ * Whether to allow swiping for more than one snap point at a time.
  *
- * Returns: %TRUE if long swipes are allowed, %FALSE otherwise
+ * If the value is `FALSE`, each swipe can only move to the adjacent snap
+ * points.
+ *
+ * Returns: whether long swipes are allowed
  *
  * Since: 1.2
  */
@@ -1401,12 +1410,14 @@ hdy_swipe_tracker_get_allow_long_swipes (HdySwipeTracker *self)
 }
 
 /**
- * hdy_swipe_tracker_set_allow_long_swipes:
- * @self: a #HdySwipeTracker
+ * hdy_swipe_tracker_set_allow_long_swipes: (attributes org.gtk.Method.set_property=allow-long-swipes)
+ * @self: a swipe tracker
  * @allow_long_swipes: whether to allow long swipes
  *
- * Sets whether to allow swiping for more than one snap point at a time. If the
- * value is %FALSE, each swipe can only move to the adjacent snap points.
+ * Sets whether to allow swiping for more than one snap point at a time.
+ *
+ * If the value is `FALSE`, each swipe can only move to the adjacent snap
+ * points.
  *
  * Since: 1.2
  */
@@ -1428,11 +1439,13 @@ hdy_swipe_tracker_set_allow_long_swipes (HdySwipeTracker *self,
 
 /**
  * hdy_swipe_tracker_shift_position:
- * @self: a #HdySwipeTracker
+ * @self: a swipe tracker
  * @delta: the position delta
  *
- * Move the current progress value by @delta. This can be used to adjust the
- * current position if snap points move during the gesture.
+ * Move the current progress value by @delta.
+ *
+ * This can be used to adjust the current position if snap points move during
+ * the gesture.
  *
  * Since: 1.0
  */

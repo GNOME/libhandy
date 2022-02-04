@@ -19,39 +19,38 @@
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
 /**
- * SECTION:hdy-swipe-group
- * @short_description: An object for syncing swipeable widgets.
- * @title: HdySwipeGroup
- * @See_also: #HdyCarousel, #HdyDeck, #HdyLeaflet, #HdySwipeable
+ * HdySwipeGroup:
  *
- * The #HdySwipeGroup object can be used to sync multiple swipeable widgets
- * that implement the #HdySwipeable interface, such as #HdyCarousel, so that
- * animating one of them also animates all the other widgets in the group.
+ * An object for syncing swipeable widgets.
+ *
+ * The `HdySwipeGroup` object can be used to sync multiple swipeable widgets
+ * that implement the [iface@Swipeable] interface, such as [class@Carousel], so
+ * that animating one of them also animates all the other widgets in the group.
  *
  * This can be useful for syncing widgets between a window's titlebar and
  * content area.
  *
- * # #HdySwipeGroup as #GtkBuildable
+ * ## HdySwipeGroup as GtkBuildable
  *
- * #HdySwipeGroup can be created in an UI definition. The list of swipeable
+ * `HdySwipeGroup` can be created in an UI definition. The list of swipeable
  * widgets is specified with a &lt;swipeables&gt; element containing multiple
  * &lt;swipeable&gt; elements with their ”name” attribute specifying the id of
  * the widgets.
  *
- * |[
+ * ```xml
  * <object class="HdySwipeGroup">
  *   <swipeables>
  *     <swipeable name="carousel1"/>
  *     <swipeable name="carousel2"/>
  *   </swipeables>
  * </object>
- * ]|
+ * ```
  *
- * #HdySwipeGroup has been deprecated, #HdyWindow and #HdyApplicationWindow
- * allow using a single leaflet for both content and header bar, without the
- * need to sync them.
+ * `HdySwipeGroup` has been deprecated, [class@Window] and
+ * [class@ApplicationWindow] allow using a single leaflet for both content and
+ * header bar, without the need to sync them.
  *
- * Since: 0.0.12
+ * Since: 1.0
  *
  * Deprecated: 1.4
  */
@@ -98,11 +97,11 @@ swipeable_destroyed (HdySwipeGroup *self,
 /**
  * hdy_swipe_group_new:
  *
- * Create a new #HdySwipeGroup object.
+ * Creates a new `HdySwipeGroup`.
  *
- * Returns: The newly created #HdySwipeGroup object
+ * Returns: the newly created `HdySwipeGroup`
  *
- * Since: 0.0.12
+ * Since: 1.0
  *
  * Deprecated: 1.4
  */
@@ -221,13 +220,15 @@ end_swipe_cb (HdySwipeGroup   *self,
 
 /**
  * hdy_swipe_group_add_swipeable:
- * @self: a #HdySwipeGroup
- * @swipeable: the #HdySwipeable to add
+ * @self: a swipe group
+ * @swipeable: the [iface@Swipeable] to add
  *
- * When the widget is destroyed or no longer referenced elsewhere, it will
- * be removed from the swipe group.
+ * Adds a swipeable to @self.
  *
- * Since: 0.0.12
+ * When the widget is destroyed or no longer referenced elsewhere, it will be
+ * removed from the swipe group.
+ *
+ * Since: 1.0
  *
  * Deprecated: 1.4
  */
@@ -259,12 +260,12 @@ hdy_swipe_group_add_swipeable (HdySwipeGroup *self,
 
 /**
  * hdy_swipe_group_remove_swipeable:
- * @self: a #HdySwipeGroup
- * @swipeable: the #HdySwipeable to remove
+ * @self: a swipe group
+ * @swipeable: the [iface@Swipeable] to remove
  *
- * Removes a widget from a #HdySwipeGroup.
+ * Removes a widget from a [class@SwipeGroup].
  *
- * Since: 0.0.12
+ * Since: 1.0
  *
  * Deprecated: 1.4
  **/
@@ -291,14 +292,13 @@ hdy_swipe_group_remove_swipeable (HdySwipeGroup *self,
 
 /**
  * hdy_swipe_group_get_swipeables:
- * @self: a #HdySwipeGroup
+ * @self: a swipe group
  *
- * Returns the list of swipeables associated with @self.
+ * Gets the list of swipeables associated with @self.
  *
- * Returns:  (element-type HdySwipeable) (transfer none): a #GSList of
- *   swipeables. The list is owned by libhandy and should not be modified.
+ * Returns: (element-type HdySwipeable) (transfer none): a list of swipeables
  *
- * Since: 0.0.12
+ * Since: 1.0
  *
  * Deprecated: 1.4
  **/
@@ -343,18 +343,18 @@ hdy_swipe_group_dispose (GObject *object)
 }
 
 /*< private >
- * @builder: a #GtkBuilder
- * @context: the #GMarkupParseContext
+ * @builder: a builder
+ * @context: the markup parse context
  * @parent_name: the name of the expected parent element
  * @error: return location for an error
  *
- * Checks that the parent element of the currently handled
- * start tag is @parent_name and set @error if it isn't.
+ * Checks that the parent element of the currently handled start tag is
+ * @parent_name and set @error if it isn't.
  *
- * This is intended to be called in start_element vfuncs to
- * ensure that element nesting is as intended.
+ * This is intended to be called in start_element vfuncs to ensure that element
+ * nesting is as intended.
  *
- * Returns: %TRUE if @parent_name is the parent element
+ * Returns: whether @parent_name is the parent element
  */
 /* This has been copied and modified from gtkbuilder.c. */
 static gboolean
@@ -390,14 +390,13 @@ _gtk_builder_check_parent (GtkBuilder           *builder,
 
 /*< private >
  * _gtk_builder_prefix_error:
- * @builder: a #GtkBuilder
- * @context: the #GMarkupParseContext
+ * @builder: a builder
+ * @context: the markup parse context
  * @error: an error
  *
- * Calls g_prefix_error() to prepend a filename:line:column marker
- * to the given error. The filename is taken from @builder, and
- * the line and column are obtained by calling
- * g_markup_parse_context_get_position().
+ * Calls g_prefix_error() to prepend a filename:line:column marker to the given
+ * error. The filename is taken from @builder, and the line and column are
+ * obtained by calling g_markup_parse_context_get_position().
  *
  * This is intended to be called on errors returned by
  * g_markup_collect_attributes() in a start_element vfunc.
@@ -416,14 +415,14 @@ _gtk_builder_prefix_error (GtkBuilder           *builder,
 
 /*< private >
  * _gtk_builder_error_unhandled_tag:
- * @builder: a #GtkBuilder
- * @context: the #GMarkupParseContext
+ * @builder: a builder
+ * @context: the [GLib.MarkupParseContext]
  * @object: name of the object that is being handled
  * @element_name: name of the element whose start tag is being handled
  * @error: return location for the error
  *
- * Sets @error to a suitable error indicating that an @element_name
- * tag is not expected in the custom markup for @object.
+ * Sets @error to a suitable error indicating that an @element_name tag is not
+ * expected in the custom markup for @object.
  *
  * This is intended to be called in a start_element vfunc.
  */

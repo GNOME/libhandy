@@ -12,22 +12,24 @@
 #include "hdy-view-switcher-bar.h"
 
 /**
- * SECTION:hdy-view-switcher-bar
- * @short_description: A view switcher action bar.
- * @title: HdyViewSwitcherBar
- * @See_also: #HdyViewSwitcher, #HdyViewSwitcherTitle
+ * HdyViewSwitcherBar:
+ *
+ * A view switcher action bar.
  *
  * An action bar letting you switch between multiple views offered by a
- * #GtkStack, via an #HdyViewSwitcher. It is designed to be put at the bottom of
- * a window and to be revealed only on really narrow windows e.g. on mobile
- * phones. It can't be revealed if there are less than two pages.
+ * [class@Gtk.Stack], via an [class@ViewSwitcher]. It is designed to be put at
+ * the bottom of a window and to be revealed only on really narrow windows e.g.
+ * on mobile phones. It can't be revealed if there are less than two pages.
  *
- * You can conveniently bind the #HdyViewSwitcherBar:reveal property to
- * #HdyViewSwitcherTitle:title-visible to automatically reveal the view switcher
- * bar when the title label is displayed in place of the view switcher.
+ * `HdyViewSwitcherBar` is intended to be used together with
+ * [class@ViewSwitcherTitle].
  *
- * An example of the UI definition for a common use case:
- * |[
+ * A common use case is to bind the [property@ViewSwitcherBar:reveal] property
+ * to [property@ViewSwitcherTitle:title-visible] to automatically reveal the
+ * view switcher bar when the title label is displayed in place of the view
+ * switcher, as follows:
+ *
+ * ```xml
  * <object class="GtkWindow"/>
  *   <child type="titlebar">
  *     <object class="HdyHeaderBar">
@@ -57,13 +59,13 @@
  *     </object>
  *   </child>
  * </object>
- * ]|
+ * ```
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyViewSwitcherBar has a single CSS node with name viewswitcherbar.
+ * `HdyViewSwitcherBar` has a single CSS node with name `viewswitcherbar`.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 
 enum {
@@ -166,12 +168,11 @@ hdy_view_switcher_bar_class_init (HdyViewSwitcherBarClass *klass)
   object_class->set_property = hdy_view_switcher_bar_set_property;
 
   /**
-   * HdyViewSwitcherBar:policy:
+   * HdyViewSwitcherBar:policy: (attributes org.gtk.Property.get=hdy_view_switcher_bar_get_policy org.gtk.Property.set=hdy_view_switcher_bar_set_policy)
    *
-   * The #HdyViewSwitcherPolicy the #HdyViewSwitcher should use to determine
-   * which mode to use.
+   * The policy used to determine which mode to use.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_POLICY] =
     g_param_spec_enum ("policy",
@@ -181,11 +182,11 @@ hdy_view_switcher_bar_class_init (HdyViewSwitcherBarClass *klass)
                        G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyViewSwitcherBar:stack:
+   * HdyViewSwitcherBar:stack: (attributes org.gtk.Property.get=hdy_view_switcher_bar_get_stack org.gtk.Property.set=hdy_view_switcher_bar_set_stack)
    *
-   * The #GtkStack the #HdyViewSwitcher controls.
+   * The [class@Gtk.Stack] the [class@ViewSwitcher] controls.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_STACK] =
     g_param_spec_object ("stack",
@@ -195,11 +196,11 @@ hdy_view_switcher_bar_class_init (HdyViewSwitcherBarClass *klass)
                          G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyViewSwitcherBar:reveal:
+   * HdyViewSwitcherBar:reveal: (attributes org.gtk.Property.get=hdy_view_switcher_bar_get_reveal org.gtk.Property.set=hdy_view_switcher_bar_set_reveal)
    *
    * Whether the bar should be revealed or hidden.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_REVEAL] =
     g_param_spec_boolean ("reveal",
@@ -236,11 +237,11 @@ hdy_view_switcher_bar_init (HdyViewSwitcherBar *self)
 /**
  * hdy_view_switcher_bar_new:
  *
- * Creates a new #HdyViewSwitcherBar widget.
+ * Creates a new `HdyViewSwitcherBar`.
  *
- * Returns: a new #HdyViewSwitcherBar
+ * Returns: the newly created `HdyViewSwitcherBar`
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkWidget *
 hdy_view_switcher_bar_new (void)
@@ -249,14 +250,14 @@ hdy_view_switcher_bar_new (void)
 }
 
 /**
- * hdy_view_switcher_bar_get_policy:
- * @self: a #HdyViewSwitcherBar
+ * hdy_view_switcher_bar_get_policy: (attributes org.gtk.Method.get_property=policy)
+ * @self: a view switcher bar
  *
  * Gets the policy of @self.
  *
  * Returns: the policy of @self
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 HdyViewSwitcherPolicy
 hdy_view_switcher_bar_get_policy (HdyViewSwitcherBar *self)
@@ -267,13 +268,13 @@ hdy_view_switcher_bar_get_policy (HdyViewSwitcherBar *self)
 }
 
 /**
- * hdy_view_switcher_bar_set_policy:
- * @self: a #HdyViewSwitcherBar
+ * hdy_view_switcher_bar_set_policy: (attributes org.gtk.Method.set_property=policy)
+ * @self: a view switcher bar
  * @policy: the new policy
  *
  * Sets the policy of @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_view_switcher_bar_set_policy (HdyViewSwitcherBar    *self,
@@ -292,14 +293,14 @@ hdy_view_switcher_bar_set_policy (HdyViewSwitcherBar    *self,
 }
 
 /**
- * hdy_view_switcher_bar_get_stack:
- * @self: a #HdyViewSwitcherBar
+ * hdy_view_switcher_bar_get_stack: (attributes org.gtk.Method.get_property=stack)
+ * @self: a view switcher bar
  *
- * Get the #GtkStack being controlled by the #HdyViewSwitcher.
+ * Get the [class@Gtk.Stack] being controlled by the [class@ViewSwitcher].
  *
- * Returns: (nullable) (transfer none): the #GtkStack, or %NULL if none has been set
+ * Returns: (nullable) (transfer none): the stack
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkStack *
 hdy_view_switcher_bar_get_stack (HdyViewSwitcherBar *self)
@@ -310,13 +311,13 @@ hdy_view_switcher_bar_get_stack (HdyViewSwitcherBar *self)
 }
 
 /**
- * hdy_view_switcher_bar_set_stack:
- * @self: a #HdyViewSwitcherBar
- * @stack: (nullable): a #GtkStack
+ * hdy_view_switcher_bar_set_stack: (attributes org.gtk.Method.set_property=stack)
+ * @self: a view switcher bar
+ * @stack: (nullable): a stack
  *
- * Sets the #GtkStack to control.
+ * Sets the [class@Gtk.Stack] to control.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_view_switcher_bar_set_stack (HdyViewSwitcherBar *self,
@@ -348,14 +349,14 @@ hdy_view_switcher_bar_set_stack (HdyViewSwitcherBar *self,
 }
 
 /**
- * hdy_view_switcher_bar_get_reveal:
- * @self: a #HdyViewSwitcherBar
+ * hdy_view_switcher_bar_get_reveal: (attributes org.gtk.Method.get_property=reveal)
+ * @self: a view switcher bar
  *
- * Gets whether @self should be revealed or not.
+ * Gets whether @self should be revealed or hidden.
  *
- * Returns: %TRUE if @self is revealed, %FALSE if not.
+ * Returns: whether @self is revealed
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 gboolean
 hdy_view_switcher_bar_get_reveal (HdyViewSwitcherBar *self)
@@ -366,13 +367,13 @@ hdy_view_switcher_bar_get_reveal (HdyViewSwitcherBar *self)
 }
 
 /**
- * hdy_view_switcher_bar_set_reveal:
- * @self: a #HdyViewSwitcherBar
- * @reveal: %TRUE to reveal @self
+ * hdy_view_switcher_bar_set_reveal: (attributes org.gtk.Method.set_property=reveal)
+ * @self: a view switcher bar
+ * @reveal: `TRUE` to reveal @self
  *
  * Sets whether @self should be revealed or not.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_view_switcher_bar_set_reveal (HdyViewSwitcherBar *self,

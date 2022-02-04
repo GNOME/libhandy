@@ -33,37 +33,42 @@
 #include "gtk-window-private.h"
 
 /**
- * SECTION:hdy-header-bar
- * @short_description: A box with a centered child.
- * @Title: HdyHeaderBar
- * @See_also: #GtkHeaderBar, #HdyApplicationWindow, #HdyTitleBar, #HdyViewSwitcher, #HdyWindow
+ * HdyHeaderBar:
  *
- * HdyHeaderBar is similar to #GtkHeaderBar but is designed to fix some of its
- * shortcomings for adaptive applications.
+ * A title bar widget.
  *
- * HdyHeaderBar doesn't force the custom title widget to be vertically centered,
- * hence allowing it to fill up the whole height, which is e.g. needed for
- * #HdyViewSwitcher.
+ * `HdyHeaderBar` is similar to [class@Gtk.HeaderBar] but is designed to fix
+ * some of its shortcomings for adaptive applications.
  *
- * When used in a mobile dialog, HdyHeaderBar will replace its window
+ * `HdyHeaderBar` doesn't force the custom title widget to be vertically
+ * centered, hence allowing it to fill up the whole height, which is e.g. needed
+ * for [class@ViewSwitcher].
+ *
+ * When used in a mobile dialog, `HdyHeaderBar` will replace its window
  * decorations by a back button allowing to close it. It doesn't have to be its
  * direct child and you can use any complex contraption you like as the dialog's
  * titlebar.
  *
- * #HdyHeaderBar can be used in window's content area rather than titlebar, and
+ * `HdyHeaderBar` can be used in window's content area rather than titlebar, and
  * will still be draggable and will handle right click, middle click and double
  * click as expected from a titlebar. This is particularly useful with
- * #HdyWindow or #HdyApplicationWindow.
+ * [class@Window] or [class@ApplicationWindow].
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyHeaderBar has a single CSS node with name headerbar.
+ * `HdyHeaderBar` has a single CSS node with name `headerbar`.
+ *
+ * Since: 1.0
  */
 
 /**
  * HdyCenteringPolicy:
  * @HDY_CENTERING_POLICY_LOOSE: Keep the title centered when possible
  * @HDY_CENTERING_POLICY_STRICT: Keep the title centered at all cost
+ *
+ * Describes title centering behavior of a [class@HeaderBar] widget.
+ *
+ * Since: 1.0
  */
 
 #define DEFAULT_SPACING 6
@@ -2092,6 +2097,13 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                                                                 -1, G_MAXINT, 0,
                                                                 G_PARAM_READWRITE));
 
+  /**
+   * HdyHeaderBar:title: (attributes org.gtk.Property.get=hdy_header_bar_get_title org.gtk.Property.set=hdy_header_bar_set_title)
+   *
+   * The title to display.
+   *
+   * Since: 1.0
+   */
   props[PROP_TITLE] =
     g_param_spec_string ("title",
                          _("Title"),
@@ -2099,6 +2111,13 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                          NULL,
                          G_PARAM_READWRITE);
 
+  /**
+   * HdyHeaderBar:subtitle: (attributes org.gtk.Property.get=hdy_header_bar_get_subtitle org.gtk.Property.set=hdy_header_bar_set_subtitle)
+   *
+   * The subtitle to display.
+   *
+   * Since: 1.0
+   */
   props[PROP_SUBTITLE] =
     g_param_spec_string ("subtitle",
                          _("Subtitle"),
@@ -2106,6 +2125,13 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                          NULL,
                          G_PARAM_READWRITE);
 
+  /**
+   * HdyHeaderBar:custom-title: (attributes org.gtk.Property.get=hdy_header_bar_get_custom_title org.gtk.Property.set=hdy_header_bar_set_custom_title)
+   *
+   * Custom title widget to display.
+   *
+   * Since: 1.0
+   */
   props[PROP_CUSTOM_TITLE] =
     g_param_spec_object ("custom-title",
                          _("Custom Title"),
@@ -2113,6 +2139,13 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                          GTK_TYPE_WIDGET,
                          G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
 
+  /**
+   * HdyHeaderBar:spacing:
+   *
+   * The amount of space between children.
+   *
+   * Since: 1.0
+   */
   props[PROP_SPACING] =
     g_param_spec_int ("spacing",
                       _("Spacing"),
@@ -2122,16 +2155,16 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                       G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyHeaderBar:show-close-button:
+   * HdyHeaderBar:show-close-button: (attributes org.gtk.Property.get=hdy_header_bar_get_show_close_button org.gtk.Property.set=hdy_header_bar_set_show_close_button)
    *
    * Whether to show window decorations.
    *
-   * Which buttons are actually shown and where is determined
-   * by the #HdyHeaderBar:decoration-layout property, and by
-   * the state of the window (e.g. a close button will not be
-   * shown if the window can't be closed).
+   * Which buttons are actually shown and where is determined by the
+   * [property@HeaderBar:decoration-layout] property, and by the state of the
+   * window (e.g. a close button will not be shown if the window can't be
+   * closed).
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_SHOW_CLOSE_BUTTON] =
     g_param_spec_boolean ("show-close-button",
@@ -2141,16 +2174,27 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                           G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyHeaderBar:decoration-layout:
+   * HdyHeaderBar:decoration-layout: (attributes org.gtk.Property.get=hdy_header_bar_get_decoration_layout org.gtk.Property.set=hdy_header_bar_set_decoration_layout)
    *
-   * The decoration layout for buttons. If this property is
-   * not set, the #GtkSettings:gtk-decoration-layout setting
-   * is used.
+   * The decoration layout for buttons.
    *
-   * See hdy_header_bar_set_decoration_layout() for information
-   * about the format of this string.
+   * If this property is not set, the
+   * [property@Gtk.Settings:gtk-decoration-layout] setting is used.
    *
-   * Since: 0.0.10
+   * There can be valid reasons for overriding the setting, such as a header bar
+   * design that does not allow for buttons to take room on the right, or only
+   * offers room for a single close button. Split header bars are another example
+   * for overriding the setting.
+   *
+   * The format of the string is button names, separated by commas. A colon
+   * separates the buttons that should appear on the start from those on the
+   * end. Recognized button names are minimize, maximize, close, icon (the
+   * window icon) and menu (a menu button for the fallback app menu).
+   *
+   * For example, “menu:minimize,maximize,close” specifies a menu on the left, and
+   * minimize, maximize and close buttons on the right.
+   *
+   * Since: 1.0
    */
   props[PROP_DECORATION_LAYOUT] =
     g_param_spec_string ("decoration-layout",
@@ -2162,9 +2206,9 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
   /**
    * HdyHeaderBar:decoration-layout-set:
    *
-   * Set to %TRUE if #HdyHeaderBar:decoration-layout is set.
+   * Whether [property@HeaderBar:decoration-layout] is set.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_DECORATION_LAYOUT_SET] =
     g_param_spec_boolean ("decoration-layout-set",
@@ -2174,12 +2218,11 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                           G_PARAM_READWRITE);
 
   /**
-   * HdyHeaderBar:has-subtitle:
+   * HdyHeaderBar:has-subtitle: (attributes org.gtk.Property.get=hdy_header_bar_get_has_subtitle org.gtk.Property.set=hdy_header_bar_set_has_subtitle)
    *
-   * If %TRUE, reserve space for a subtitle, even if none
-   * is currently set.
+   * Whether to reserve space for a subtitle, even if none is currently set.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_HAS_SUBTITLE] =
     g_param_spec_boolean ("has-subtitle",
@@ -2188,6 +2231,13 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                           TRUE,
                           G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyHeaderBar:centering-policy: (attributes org.gtk.Property.get=hdy_header_bar_get_centering_policy org.gtk.Property.set=hdy_header_bar_set_centering_policy)
+   *
+   * The policy for aligning the center widget.
+   *
+   * Since: 1.0
+   */
   props[PROP_CENTERING_POLICY] =
     g_param_spec_enum ("centering-policy",
                        _("Centering policy"),
@@ -2195,6 +2245,13 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                        HDY_TYPE_CENTERING_POLICY, HDY_CENTERING_POLICY_LOOSE,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyHeaderBar:transition-duration: (attributes org.gtk.Property.get=hdy_header_bar_get_transition_duration org.gtk.Property.set=hdy_header_bar_set_transition_duration)
+   *
+   * The transition duration, in milliseconds.
+   *
+   * Since: 1.0
+   */
   props[PROP_TRANSITION_DURATION] =
     g_param_spec_uint ("transition-duration",
                        _("Transition duration"),
@@ -2202,6 +2259,13 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                        0, G_MAXUINT, 200,
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * HdyHeaderBar:transition-running: (attributes org.gtk.Property.get=hdy_header_bar_get_transition_running)
+   *
+   * Whether or not the transition is currently running.
+   *
+   * Since: 1.0
+   */
   props[PROP_TRANSITION_RUNNING] =
     g_param_spec_boolean ("transition-running",
                           _("Transition running"),
@@ -2209,6 +2273,18 @@ hdy_header_bar_class_init (HdyHeaderBarClass *class)
                           FALSE,
                           G_PARAM_READABLE);
 
+  /**
+   * HdyHeaderBar:interpolate-size: (attributes org.gtk.Property.get=hdy_header_bar_get_interpolate_size org.gtk.Property.set=hdy_header_bar_set_interpolate_size)
+   *
+   * Whether the size should smoothly change when changing between children.
+   *
+   * If `TRUE`, the header bar will interpolate its size between the one of the
+   * previous visible child and the one of the new visible child, according to
+   * the set transition duration and the orientation, e.g. if the orientation is
+   * horizontal, it will interpolate the its height.
+   *
+   * Since: 1.0
+   */
   props[PROP_INTERPOLATE_SIZE] =
     g_param_spec_boolean ("interpolate-size",
                           _("Interpolate size"),
@@ -2273,11 +2349,11 @@ hdy_header_bar_buildable_init (GtkBuildableIface *iface)
 /**
  * hdy_header_bar_new:
  *
- * Creates a new #HdyHeaderBar widget.
+ * Creates a new `HdyHeaderBar`.
  *
- * Returns: a new #HdyHeaderBar
+ * Returns: the newly created `HdyHeaderBar`.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkWidget *
 hdy_header_bar_new (void)
@@ -2287,13 +2363,12 @@ hdy_header_bar_new (void)
 
 /**
  * hdy_header_bar_pack_start:
- * @self: A #HdyHeaderBar
- * @child: the #GtkWidget to be added to @self:
+ * @self: a header bar
+ * @child: the widget to be added to @self
  *
- * Adds @child to @self:, packed with reference to the
- * start of the @self:.
+ * Adds @child to @self, packed with reference to the start of the @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_header_bar_pack_start (HdyHeaderBar *self,
@@ -2304,13 +2379,12 @@ hdy_header_bar_pack_start (HdyHeaderBar *self,
 
 /**
  * hdy_header_bar_pack_end:
- * @self: A #HdyHeaderBar
- * @child: the #GtkWidget to be added to @self:
+ * @self: a header bar
+ * @child: the widget to be added to @self
  *
- * Adds @child to @self:, packed with reference to the
- * end of the @self:.
+ * Adds @child to @self, packed with reference to the end of the @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_header_bar_pack_end (HdyHeaderBar *self,
@@ -2320,15 +2394,16 @@ hdy_header_bar_pack_end (HdyHeaderBar *self,
 }
 
 /**
- * hdy_header_bar_set_title:
- * @self: a #HdyHeaderBar
- * @title: (nullable): a title, or %NULL
+ * hdy_header_bar_set_title: (attributes org.gtk.Method.set_property=title)
+ * @self: a header bar
+ * @title: (nullable): a title
  *
- * Sets the title of the #HdyHeaderBar. The title should help a user
- * identify the current view. A good title should not include the
- * application name.
+ * Sets the title of the [class@HeaderBar].
  *
- * Since: 0.0.10
+ * The title should help a user identify the current view. A good title should
+ * not include the application name.
+ *
+ * Since: 1.0
  */
 void
 hdy_header_bar_set_title (HdyHeaderBar *self,
@@ -2352,16 +2427,14 @@ hdy_header_bar_set_title (HdyHeaderBar *self,
 }
 
 /**
- * hdy_header_bar_get_title:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_get_title: (attributes org.gtk.Method.get_property=title)
+ * @self: a header bar
  *
- * Retrieves the title of the header. See hdy_header_bar_set_title().
+ * Retrieves the title of the header.
  *
- * Returns: (nullable): the title of the header, or %NULL if none has
- *    been set explicitly. The returned string is owned by the widget
- *    and must not be modified or freed.
+ * Returns: (nullable): the title of the header.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 const gchar *
 hdy_header_bar_get_title (HdyHeaderBar *self)
@@ -2374,18 +2447,20 @@ hdy_header_bar_get_title (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_set_subtitle:
- * @self: a #HdyHeaderBar
- * @subtitle: (nullable): a subtitle, or %NULL
+ * hdy_header_bar_set_subtitle: (attributes org.gtk.Method.set_property=subtitle)
+ * @self: a header bar
+ * @subtitle: (nullable): a subtitle
  *
- * Sets the subtitle of the #HdyHeaderBar. The title should give a user
- * an additional detail to help them identify the current view.
+ * Sets the subtitle of the header bar.
  *
- * Note that HdyHeaderBar by default reserves room for the subtitle,
- * even if none is currently set. If this is not desired, set the
- * #HdyHeaderBar:has-subtitle property to %FALSE.
+ * The title should give a user an additional detail to help them identify the
+ * current view.
  *
- * Since: 0.0.10
+ * Note that [class@HeaderBar] by default reserves room for the subtitle, even
+ * if none is currently set. If this is not desired, set the
+ * [property@HeaderBar:has-subtitle] property to `FALSE`.
+ *
+ * Since: 1.0
  */
 void
 hdy_header_bar_set_subtitle (HdyHeaderBar *self,
@@ -2412,16 +2487,14 @@ hdy_header_bar_set_subtitle (HdyHeaderBar *self,
 }
 
 /**
- * hdy_header_bar_get_subtitle:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_get_subtitle: (attributes org.gtk.Method.get_property=subtitle)
+ * @self: a header bar
  *
- * Retrieves the subtitle of the header. See hdy_header_bar_set_subtitle().
+ * Gets the subtitle of the header.
  *
- * Returns: (nullable): the subtitle of the header, or %NULL if none has
- *    been set explicitly. The returned string is owned by the widget
- *    and must not be modified or freed.
+ * Returns: (nullable): the subtitle of the header
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 const gchar *
 hdy_header_bar_get_subtitle (HdyHeaderBar *self)
@@ -2434,22 +2507,21 @@ hdy_header_bar_get_subtitle (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_set_custom_title:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_set_custom_title: (attributes org.gtk.Method.set_property=custom-title)
+ * @self: a header bar
  * @title_widget: (nullable): a custom widget to use for a title
  *
- * Sets a custom title for the #HdyHeaderBar.
+ * Sets a custom title for the header bar.
  *
- * The title should help a user identify the current view. This
- * supersedes any title set by hdy_header_bar_set_title() or
- * hdy_header_bar_set_subtitle(). To achieve the same style as
- * the builtin title and subtitle, use the “title” and “subtitle”
- * style classes.
+ * The title should help a user identify the current view. This supersedes any
+ * title set by [method@HeaderBar.set_title] or [method@HeaderBar.set_subtitle].
+ * To achieve the same style as the builtin title and subtitle, use the `.title`
+ * and `.subtitle` style classes.
  *
- * You should set the custom title to %NULL, for the header title
- * label to be visible again.
+ * You should set the custom title to `NULL`, for the header title label to be
+ * visible again.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_header_bar_set_custom_title (HdyHeaderBar *self,
@@ -2496,16 +2568,14 @@ hdy_header_bar_set_custom_title (HdyHeaderBar *self,
 }
 
 /**
- * hdy_header_bar_get_custom_title:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_get_custom_title: (attributes org.gtk.Method.get_property=custom-title)
+ * @self: a header bar
  *
- * Retrieves the custom title widget of the header. See
- * hdy_header_bar_set_custom_title().
+ * Retrieves the custom title widget of the header.
  *
- * Returns: (nullable) (transfer none): the custom title widget
- *    of the header, or %NULL if none has been set explicitly.
+ * Returns: (nullable) (transfer none): the custom title widget of the header
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkWidget *
 hdy_header_bar_get_custom_title (HdyHeaderBar *self)
@@ -2518,15 +2588,14 @@ hdy_header_bar_get_custom_title (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_get_show_close_button:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_get_show_close_button: (attributes org.gtk.Method.get_property=show-close-button)
+ * @self: a header bar
  *
- * Returns whether this header bar shows the standard window
- * decorations.
+ * Gets whether this header bar shows the standard window decorations.
  *
- * Returns: %TRUE if the decorations are shown
+ * Returns: whether decorations are shown
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 gboolean
 hdy_header_bar_get_show_close_button (HdyHeaderBar *self)
@@ -2541,14 +2610,13 @@ hdy_header_bar_get_show_close_button (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_set_show_close_button:
- * @self: a #HdyHeaderBar
- * @setting: %TRUE to show standard window decorations
+ * hdy_header_bar_set_show_close_button: (attributes org.gtk.Method.set_property=show-close-button)
+ * @self: a header bar
+ * @setting: `TRUE` to show standard window decorations
  *
- * Sets whether this header bar shows the standard window decorations,
- * including close, maximize, and minimize.
+ * Sets whether this header bar shows the standard window decorations.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_header_bar_set_show_close_button (HdyHeaderBar *self,
@@ -2571,14 +2639,13 @@ hdy_header_bar_set_show_close_button (HdyHeaderBar *self,
 }
 
 /**
- * hdy_header_bar_set_has_subtitle:
- * @self: a #HdyHeaderBar
- * @setting: %TRUE to reserve space for a subtitle
+ * hdy_header_bar_set_has_subtitle: (attributes org.gtk.Method.set_property=has-subtitle)
+ * @self: a header bar
+ * @setting: `TRUE` to reserve space for a subtitle
  *
- * Sets whether the header bar should reserve space
- * for a subtitle, even if none is currently set.
+ * Sets whether space is reserved for a subtitle, even if none is currently set.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_header_bar_set_has_subtitle (HdyHeaderBar *self,
@@ -2604,16 +2671,15 @@ hdy_header_bar_set_has_subtitle (HdyHeaderBar *self,
 }
 
 /**
- * hdy_header_bar_get_has_subtitle:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_get_has_subtitle: (attributes org.gtk.Method.get_property=has-subtitle)
+ * @self: a header bar
  *
- * Retrieves whether the header bar reserves space for
- * a subtitle, regardless if one is currently set or not.
+ * Gets whether space is reserved for a subtitle, regardless if one is currently
+ * set or not.
  *
- * Returns: %TRUE if the header bar reserves space
- *     for a subtitle
+ * Returns: `TRUE` if the header bar reserves space for a subtitle
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 gboolean
 hdy_header_bar_get_has_subtitle (HdyHeaderBar *self)
@@ -2628,29 +2694,13 @@ hdy_header_bar_get_has_subtitle (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_set_decoration_layout:
- * @self: a #HdyHeaderBar
- * @layout: (nullable): a decoration layout, or %NULL to unset the layout
+ * hdy_header_bar_set_decoration_layout: (attributes org.gtk.Method.set_property=decoration-layout)
+ * @self: a header bar
+ * @layout: (nullable): a decoration layout
  *
- * Sets the decoration layout for this header bar, overriding
- * the #GtkSettings:gtk-decoration-layout setting.
+ * Sets the decoration layout for this header bar.
  *
- * There can be valid reasons for overriding the setting, such
- * as a header bar design that does not allow for buttons to take
- * room on the right, or only offers room for a single close button.
- * Split header bars are another example for overriding the
- * setting.
- *
- * The format of the string is button names, separated by commas.
- * A colon separates the buttons that should appear on the left
- * from those on the right. Recognized button names are minimize,
- * maximize, close, icon (the window icon) and menu (a menu button
- * for the fallback app menu).
- *
- * For example, “menu:minimize,maximize,close” specifies a menu
- * on the left, and minimize, maximize and close buttons on the right.
- *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_header_bar_set_decoration_layout (HdyHeaderBar *self,
@@ -2673,15 +2723,14 @@ hdy_header_bar_set_decoration_layout (HdyHeaderBar *self,
 }
 
 /**
- * hdy_header_bar_get_decoration_layout:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_get_decoration_layout: (attributes org.gtk.Method.get_property=decoration-layout)
+ * @self: a header bar
  *
- * Gets the decoration layout set with
- * hdy_header_bar_set_decoration_layout().
+ * Gets the decoration layout.
  *
  * Returns: the decoration layout
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 const gchar *
 hdy_header_bar_get_decoration_layout (HdyHeaderBar *self)
@@ -2696,14 +2745,14 @@ hdy_header_bar_get_decoration_layout (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_get_centering_policy:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_get_centering_policy: (attributes org.gtk.Method.get_property=centering-policy)
+ * @self: a header bar
  *
  * Gets the policy @self follows to horizontally align its center widget.
  *
  * Returns: the centering policy
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 HdyCenteringPolicy
 hdy_header_bar_get_centering_policy (HdyHeaderBar *self)
@@ -2716,13 +2765,13 @@ hdy_header_bar_get_centering_policy (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_set_centering_policy:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_set_centering_policy: (attributes org.gtk.Method.set_property=centering-policy)
+ * @self: a header bar
  * @centering_policy: the centering policy
  *
  * Sets the policy @self must follow to horizontally align its center widget.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_header_bar_set_centering_policy (HdyHeaderBar       *self,
@@ -2744,15 +2793,14 @@ hdy_header_bar_set_centering_policy (HdyHeaderBar       *self,
 }
 
 /**
- * hdy_header_bar_get_transition_duration:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_get_transition_duration: (attributes org.gtk.Method.get_property=transition-duration)
+ * @self: a header bar
  *
- * Returns the amount of time (in milliseconds) that
- * transitions between pages in @self will take.
+ * Gets the amount of time that transitions between pages will take.
  *
- * Returns: the transition duration
+ * Returns: the transition duration, in milliseconds
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 guint
 hdy_header_bar_get_transition_duration (HdyHeaderBar *self)
@@ -2765,14 +2813,13 @@ hdy_header_bar_get_transition_duration (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_set_transition_duration:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_set_transition_duration: (attributes org.gtk.Method.set_property=transition-duration)
+ * @self: a header bar
  * @duration: the new duration, in milliseconds
  *
- * Sets the duration that transitions between pages in @self
- * will take.
+ * Sets the duration that transitions between pages will take.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_header_bar_set_transition_duration (HdyHeaderBar *self,
@@ -2790,15 +2837,14 @@ hdy_header_bar_set_transition_duration (HdyHeaderBar *self,
 }
 
 /**
- * hdy_header_bar_get_transition_running:
- * @self: a #HdyHeaderBar
+ * hdy_header_bar_get_transition_running: (attributes org.gtk.Method.get_property=transition-running)
+ * @self: a header bar
  *
- * Returns whether the @self is currently in a transition from one page to
- * another.
+ * Gets whether the @self is currently in a transition from one page to another.
  *
- * Returns: %TRUE if the transition is currently running, %FALSE otherwise.
+ * Returns: whether the transition is currently running
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 gboolean
 hdy_header_bar_get_transition_running (HdyHeaderBar *self)
@@ -2811,16 +2857,14 @@ hdy_header_bar_get_transition_running (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_get_interpolate_size:
- * @self: A #HdyHeaderBar
+ * hdy_header_bar_get_interpolate_size: (attributes org.gtk.Method.get_property=interpolate-size)
+ * @self: a header bar
  *
  * Gets whether @self should interpolate its size on visible child change.
  *
- * See hdy_header_bar_set_interpolate_size().
+ * Returns: whether @self interpolates its size on visible child change
  *
- * Returns: %TRUE if @self interpolates its size on visible child change, %FALSE if not
- *
- * Since: 0.0.10
+ * Since: 1.0
  */
 gboolean
 hdy_header_bar_get_interpolate_size (HdyHeaderBar *self)
@@ -2835,17 +2879,13 @@ hdy_header_bar_get_interpolate_size (HdyHeaderBar *self)
 }
 
 /**
- * hdy_header_bar_set_interpolate_size:
- * @self: A #HdyHeaderBar
- * @interpolate_size: %TRUE to interpolate the size
+ * hdy_header_bar_set_interpolate_size: (attributes org.gtk.Method.set_property=interpolate-size)
+ * @self: a header bar
+ * @interpolate_size: `TRUE` to interpolate the size
  *
- * Sets whether or not @self will interpolate the size of its opposing
- * orientation when changing the visible child. If %TRUE, @self will interpolate
- * its size between the one of the previous visible child and the one of the new
- * visible child, according to the set transition duration and the orientation,
- * e.g. if @self is horizontal, it will interpolate the its height.
+ * Sets whether @self should interpolate its size on visible child change.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_header_bar_set_interpolate_size (HdyHeaderBar *self,

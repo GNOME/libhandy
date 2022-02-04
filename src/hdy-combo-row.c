@@ -10,32 +10,33 @@
 #include <glib/gi18n-lib.h>
 
 /**
- * SECTION:hdy-combo-row
- * @short_description: A #GtkListBox row used to choose from a list of items.
- * @Title: HdyComboRow
+ * HdyComboRow:
  *
- * The #HdyComboRow widget allows the user to choose from a list of valid
+ * A [class@Gtk.ListBoxRow] used to choose from a list of items.
+ *
+ * The `HdyComboRow` widget allows the user to choose from a list of valid
  * choices. The row displays the selected choice. When activated, the row
  * displays a popover which allows the user to make a new choice.
  *
- * The #HdyComboRow uses the model-view pattern; the list of valid choices
- * is specified in the form of a #GListModel, and the display of the choices can
- * be adapted to the data in the model via widget creation functions.
+ * The [class@ComboRow] uses the model-view pattern; the list of valid choices
+ * is specified in the form of a [iface@Gio.ListModel], and the display of the
+ * choices can be adapted to the data in the model via widget creation
+ * functions.
  *
- * #HdyComboRow is #GtkListBoxRow:activatable if a model is set.
+ * `HdyComboRow` is [property@Gtk.ListBoxRow:activatable] if a model is set.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyComboRow has a main CSS node with name row.
+ * `HdyComboRow` has a main CSS node with name `row`.
  *
- * Its popover has the node name popover with the .combo style class, it
- * contains a #GtkScrolledWindow, which in turn contains a #GtkListBox, both are
- * accessible via their regular nodes.
+ * Its popover has the node name popover with the `.combo` style class, it
+ * contains a [class@Gtk.ScrolledWindow], which in turn contains a
+ * [class@Gtk.ListBox], both are accessible via their regular nodes.
  *
- * A checkmark of node and style class image.checkmark in the popover denotes
+ * A checkmark of node and style class `image.checkmark` in the popover denotes
  * the current item.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 
 /*
@@ -408,11 +409,11 @@ hdy_combo_row_class_init (HdyComboRowClass *klass)
   row_class->activate = hdy_combo_row_activate;
 
   /**
-   * HdyComboRow:selected-index:
+   * HdyComboRow:selected-index: (attributes org.gtk.Property.get=hdy_combo_row_get_selected_index org.gtk.Property.set=hdy_combo_row_set_selected_index)
    *
-   * The index of the selected item in its #GListModel.
+   * The index of the selected item in its [iface@Gio.ListModel].
    *
-   * Since: 0.0.7
+   * Since: 1.0
    */
   props[PROP_SELECTED_INDEX] =
       g_param_spec_int ("selected-index",
@@ -422,16 +423,16 @@ hdy_combo_row_class_init (HdyComboRowClass *klass)
                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyComboRow:use-subtitle:
+   * HdyComboRow:use-subtitle: (attributes org.gtk.Property.get=hdy_combo_row_get_use_subtitle org.gtk.Property.set=hdy_combo_row_set_use_subtitle)
    *
-   * %TRUE to set the current value as the subtitle.
+   * Whether to use the current value as the subtitle.
    *
    * If you use a custom widget creation function, you will need to give the row
-   * a name conversion closure with hdy_combo_row_set_get_name_func().
+   * a name conversion closure with [method@ComboRow.set_get_name_func].
    *
-   * If %TRUE, you should not access HdyActionRow:subtitle.
+   * If `TRUE`, you should not access [property@ActionRow:subtitle].
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_USE_SUBTITLE] =
     g_param_spec_boolean ("use-subtitle",
@@ -470,11 +471,11 @@ hdy_combo_row_init (HdyComboRow *self)
 /**
  * hdy_combo_row_new:
  *
- * Creates a new #HdyComboRow.
+ * Creates a new `HdyComboRow`.
  *
- * Returns: a new #HdyComboRow
+ * Returns: the newly created `HdyComboRow`
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 GtkWidget *
 hdy_combo_row_new (void)
@@ -484,13 +485,13 @@ hdy_combo_row_new (void)
 
 /**
  * hdy_combo_row_get_model:
- * @self: a #HdyComboRow
+ * @self: a combo row
  *
- * Gets the model bound to @self, or %NULL if none is bound.
+ * Gets the model bound to @self.
  *
- * Returns: (transfer none) (nullable): the #GListModel bound to @self or %NULL
+ * Returns: (transfer none) (nullable): the [iface@Gio.ListModel] bound to @self
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 GListModel *
 hdy_combo_row_get_model (HdyComboRow *self)
@@ -506,14 +507,14 @@ hdy_combo_row_get_model (HdyComboRow *self)
 
 /**
  * hdy_combo_row_bind_model:
- * @self: a #HdyComboRow
- * @model: (nullable): the #GListModel to be bound to @self
+ * @self: a combo row
+ * @model: (nullable): the [iface@Gio.ListModel] to be bound to @self
  * @create_list_widget_func: (nullable) (scope call): a function that creates
- *   widgets for items to display in the list, or %NULL in case you also passed
- *   %NULL as @model
+ *   widgets for items to display in the list, or `NULL` in case you also passed
+ *   `NULL` as @model
  * @create_current_widget_func: (nullable) (scope call): a function that creates
- *   widgets for items to display as the selected item, or %NULL in case you
- *   also passed %NULL as @model
+ *   widgets for items to display as the selected item, or `NULL` in case you
+ *   also passed `NULL` as @model
  * @user_data: user data passed to @create_list_widget_func and
  *   @create_current_widget_func
  * @user_data_free_func: function for freeing @user_data
@@ -524,9 +525,9 @@ hdy_combo_row_get_model (HdyComboRow *self)
  *
  * The contents of @self are cleared and then filled with widgets that represent
  * items from @model. @self is updated whenever @model changes. If @model is
- * %NULL, @self is left empty.
+ * `NULL`, @self is left empty.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_combo_row_bind_model (HdyComboRow                *self,
@@ -578,10 +579,10 @@ hdy_combo_row_bind_model (HdyComboRow                *self,
 
 /**
  * hdy_combo_row_bind_name_model:
- * @self: a #HdyComboRow
- * @model: (nullable): the #GListModel to be bound to @self
- * @get_name_func: (nullable): a function that creates names for items, or %NULL
- *   in case you also passed %NULL as @model
+ * @self: a combo row
+ * @model: (nullable): the [iface@Gio.ListModel] to be bound to @self
+ * @get_name_func: (nullable): a function that creates names for items, or
+ *   `NULL` in case you also passed `NULL` as @model
  * @user_data: user data passed to @get_name_func
  * @user_data_free_func: function for freeing @user_data
  *
@@ -591,12 +592,12 @@ hdy_combo_row_bind_model (HdyComboRow                *self,
  *
  * The contents of @self are cleared and then filled with widgets that represent
  * items from @model. @self is updated whenever @model changes. If @model is
- * %NULL, @self is left empty.
+ * `NULL`, @self is left empty.
  *
- * This is more convenient to use than hdy_combo_row_bind_model() if you want to
- * represent items of the model with names.
+ * This is more convenient to use than [method@ComboRow.bind_model] if you want
+ * to represent items of the model with names.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_combo_row_bind_name_model (HdyComboRow            *self,
@@ -621,28 +622,29 @@ hdy_combo_row_bind_name_model (HdyComboRow            *self,
 
 /**
  * hdy_combo_row_set_for_enum:
- * @self: a #HdyComboRow
- * @enum_type: the enumeration #GType to be bound to @self
- * @get_name_func: (nullable): a function that creates names for items, or %NULL
- *   in case you also passed %NULL as @model
+ * @self: a combo row
+ * @enum_type: the enumeration [alias@GLib.Type] to be bound to @self
+ * @get_name_func: (nullable): a function that creates names for items, or
+ *   `NULL` in case you also passed `NULL` as @model
  * @user_data: user data passed to @get_name_func
  * @user_data_free_func: function for freeing @user_data
  *
- * Creates a model for @enum_type and binds it to @self. The items of the model
- * will be #HdyEnumValueObject objects.
+ * Creates a model for @enum_type and binds it to @self.
+ *
+ * The items of the model will be [class@EnumValueObject] objects.
  *
  * If @self was already bound to a model, that previous binding is destroyed.
  *
  * The contents of @self are cleared and then filled with widgets that represent
  * items from @model. @self is updated whenever @model changes. If @model is
- * %NULL, @self is left empty.
+ * `NULL`, @self is left empty.
  *
- * This is more convenient to use than hdy_combo_row_bind_name_model() if you
+ * This is more convenient to use than [method@ComboRow.bind_name_model] if you
  * want to represent values of an enumeration with names.
  *
- * See hdy_enum_value_row_name().
+ * See [func@enum_value_row_name].
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_combo_row_set_for_enum (HdyComboRow                     *self,
@@ -671,14 +673,14 @@ hdy_combo_row_set_for_enum (HdyComboRow                     *self,
 }
 
 /**
- * hdy_combo_row_get_selected_index:
- * @self: a #GtkListBoxRow
+ * hdy_combo_row_get_selected_index: (attributes org.gtk.Method.get_property=selected-index)
+ * @self: a combo row
  *
- * Gets the index of the selected item in its #GListModel.
+ * Gets the index of the selected item in its [iface@Gio.ListModel].
  *
  * Returns: the index of the selected item, or -1 if no item is selected
  *
- * Since: 0.0.7
+ * Since: 1.0
  */
 gint
 hdy_combo_row_get_selected_index (HdyComboRow *self)
@@ -693,13 +695,13 @@ hdy_combo_row_get_selected_index (HdyComboRow *self)
 }
 
 /**
- * hdy_combo_row_set_selected_index:
- * @self: a #HdyComboRow
+ * hdy_combo_row_set_selected_index: (attributes org.gtk.Method.set_property=selected-index)
+ * @self: a combo row
  * @selected_index: the index of the selected item
  *
- * Sets the index of the selected item in its #GListModel.
+ * Sets the index of the selected item in its [iface@Gio.ListModel].
  *
- * Since: 0.0.7
+ * Since: 1.0
  */
 void
 hdy_combo_row_set_selected_index (HdyComboRow *self,
@@ -725,14 +727,15 @@ hdy_combo_row_set_selected_index (HdyComboRow *self,
 }
 
 /**
- * hdy_combo_row_get_use_subtitle:
- * @self: a #GtkListBoxRow
+ * hdy_combo_row_get_use_subtitle: (attributes org.gtk.Method.get_property=use-subtitle)
+ * @self: a combo row
  *
  * Gets whether the current value of @self should be displayed as its subtitle.
  *
- * Returns: whether the current value of @self should be displayed as its subtitle
+ * Returns: whether the current value of @self should be displayed as its
+ *   subtitle
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 gboolean
 hdy_combo_row_get_use_subtitle (HdyComboRow *self)
@@ -747,15 +750,15 @@ hdy_combo_row_get_use_subtitle (HdyComboRow *self)
 }
 
 /**
- * hdy_combo_row_set_use_subtitle:
- * @self: a #HdyComboRow
- * @use_subtitle: %TRUE to set the current value as the subtitle
+ * hdy_combo_row_set_use_subtitle: (attributes org.gtk.Method.set_property=use-subtitle)
+ * @self: a combo row
+ * @use_subtitle: `TRUE` to set the current value as the subtitle
  *
  * Sets whether the current value of @self should be displayed as its subtitle.
  *
- * If %TRUE, you should not access HdyActionRow:subtitle.
+ * If `TRUE`, you should not access [property@ActionRow:subtitle].
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_combo_row_set_use_subtitle (HdyComboRow *self,
@@ -782,15 +785,17 @@ hdy_combo_row_set_use_subtitle (HdyComboRow *self,
 
 /**
  * hdy_combo_row_set_get_name_func:
- * @self: a #HdyComboRow
- * @get_name_func: (nullable): a function that creates names for items, or %NULL
- *   in case you also passed %NULL as @model
+ * @self: a combo row
+ * @get_name_func: (nullable): a function that creates names for items, or
+ *   `NULL` in case you also passed `NULL` as @model
  * @user_data: user data passed to @get_name_func
  * @user_data_free_func: function for freeing @user_data
  *
- * Sets a closure to convert items into names. See HdyComboRow:use-subtitle.
+ * Sets a closure to convert items into names.
  *
- * Since: 0.0.10
+ * See [property@ComboRow:use-subtitle].
+ *
+ * Since: 1.0
  */
 void
 hdy_combo_row_set_get_name_func (HdyComboRow            *self,
@@ -816,13 +821,15 @@ hdy_combo_row_set_get_name_func (HdyComboRow            *self,
  * @value: the value from the enum from which to get a name
  * @user_data: (closure): unused user data
  *
- * This is a default implementation of #HdyComboRowGetEnumValueNameFunc to be
- * used with hdy_combo_row_set_for_enum(). If the enumeration has a nickname, it
- * will return it, otherwise it will return its name.
+ * Returns the name of a [class@EnumValueObject].
  *
- * Returns: (transfer full): a newly allocated displayable name that represents @value
+ * This is a default implementation of [callback@ComboRowGetEnumValueNameFunc]
+ * to be used with [method@ComboRow.set_for_enum]. If the enumeration has a
+ * nickname, it will return it, otherwise it will return its name.
  *
- * Since: 0.0.6
+ * Returns: (transfer full): a displayable name that represents @value
+ *
+ * Since: 1.0
  */
 gchar *
 hdy_enum_value_row_name (HdyEnumValueObject *value,

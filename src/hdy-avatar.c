@@ -21,24 +21,29 @@
 #define NUMBER_OF_COLORS 14
 #define LOAD_BUFFER_SIZE 65536
 /**
- * SECTION:hdy-avatar
- * @short_description: A widget displaying an image, with a generated fallback.
- * @Title: HdyAvatar
+ * HdyAvatar:
  *
- * #HdyAvatar is a widget to display a round avatar.
+ * A widget displaying an image, with a generated fallback.
+ *
+ * `HdyAvatar` is a widget to display a round avatar.
+ *
  * A provided image is made round before displaying, if no image is given this
- * widget generates a round fallback with the initials of the #HdyAvatar:text
- * on top of a colord background.
- * The color is picked based on the hash of the #HdyAvatar:text.
- * If #HdyAvatar:show-initials is set to %FALSE, `avatar-default-symbolic` is
- * shown in place of the initials.
- * Use hdy_avatar_set_loadable_icon() or #HdyAvatar:loadable-icon to set a
- * custom image.
+ * widget generates a round fallback with the initials of the
+ * [property@Avatar:text] on top of a colored background.
  *
- * # CSS nodes
+ * The color is picked based on the hash of the [property@Avatar:text].
  *
- * #HdyAvatar has a single CSS node with name avatar.
+ * If [property@Avatar:show-initials] is set to `FALSE`,
+ * `avatar-default-symbolic` is shown instead of the initials.
  *
+ * Use [method@Avatar.set_loadable_icon] or [property@Avatar:loadable-icon] to
+ * set a custom image.
+ *
+ * ## CSS nodes
+ *
+ * `HdyAvatar` has a single CSS node with name `avatar`.
+ *
+ * Since: 1.0
  */
 
 struct _HdyAvatar
@@ -861,9 +866,11 @@ hdy_avatar_class_init (HdyAvatarClass *klass)
   widget_class->size_allocate = hdy_avatar_size_allocate;
 
   /**
-   * HdyAvatar:size:
+   * HdyAvatar:size: (attributes org.gtk.Property.get=hdy_avatar_get_size org.gtk.Property.set=hdy_avatar_set_size)
    *
    * The avatar size of the avatar.
+   *
+   * Since: 1.0
    */
   props[PROP_SIZE] =
     g_param_spec_int ("size",
@@ -873,14 +880,14 @@ hdy_avatar_class_init (HdyAvatarClass *klass)
                       G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyAvatar:icon-name:
+   * HdyAvatar:icon-name: (attributes org.gtk.Property.get=hdy_avatar_get_icon_name org.gtk.Property.set=hdy_avatar_set_icon_name)
    *
-   * The name of the icon in the icon theme to use when the icon should be
-   * displayed.
-   * If no name is set, the avatar-default-symbolic icon will be used.
-   * If the name doesn't match a valid icon, it is an error and no icon will be
-   * displayed.
-   * If the icon theme is changed, the image will be updated automatically.
+   * The name of an icon to use as a fallback.
+   *
+   * If no name is set, the avatar-default-symbolic icon will be used. If the
+   * name doesn't match a valid icon, it is an error and no icon will be
+   * displayed. If the icon theme is changed, the image will be updated
+   * automatically.
    *
    * Since: 1.0
    */
@@ -892,10 +899,14 @@ hdy_avatar_class_init (HdyAvatarClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyAvatar:text:
+   * HdyAvatar:text: (attributes org.gtk.Property.get=hdy_avatar_get_text org.gtk.Property.set=hdy_avatar_set_text)
    *
-   * The text used for the initials and for generating the color.
-   * If #HdyAvatar:show-initials is %FALSE it's only used to generate the color.
+   * Sets the text used to generate the fallback initials and color.
+   *
+   * It's only used to generate the color if [property@Avatar:show-initials] is
+   * `FALSE`.
+   *
+   * Since: 1.0
    */
   props[PROP_TEXT] =
     g_param_spec_string ("text",
@@ -905,9 +916,11 @@ hdy_avatar_class_init (HdyAvatarClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyAvatar:show_initials:
+   * HdyAvatar:show-initials: (attributes org.gtk.Property.get=hdy_avatar_get_show_initials org.gtk.Property.set=hdy_avatar_set_show_initials)
    *
    * Whether to show the initials or the fallback icon on the generated avatar.
+   *
+   * Since: 1.0
    */
   props[PROP_SHOW_INITIALS] =
     g_param_spec_boolean ("show-initials",
@@ -917,9 +930,9 @@ hdy_avatar_class_init (HdyAvatarClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyAvatar:loadable-icon:
+   * HdyAvatar:loadable-icon: (attributes org.gtk.Property.get=hdy_avatar_get_loadable_icon org.gtk.Property.set=hdy_avatar_set_loadable_icon)
    *
-   * A #GLoadableIcon used to load the avatar.
+   * A [iface@Gio.LoadableIcon] used to load the avatar.
    *
    * Since: 1.2
    */
@@ -944,15 +957,15 @@ hdy_avatar_init (HdyAvatar *self)
 
 /**
  * hdy_avatar_new:
- * @size: The size of the avatar
- * @text: (nullable): The text used to generate the color and initials if
- * @show_initials is %TRUE. The color is selected at random if @text is empty.
- * @show_initials: whether to show the initials or the fallback icon on
- * top of the color generated based on @text.
+ * @size: the size of the avatar
+ * @text: (nullable): the text used to get the initials and color
+ * @show_initials: whether to use initials instead of an icon as fallback
  *
- * Creates a new #HdyAvatar.
+ * Creates a new `HdyAvatar`.
  *
- * Returns: the newly created #HdyAvatar
+ * Returns: the newly created `HdyAvatar`
+ *
+ * Since: 1.0
  */
 GtkWidget *
 hdy_avatar_new (gint         size,
@@ -967,13 +980,12 @@ hdy_avatar_new (gint         size,
 }
 
 /**
- * hdy_avatar_get_icon_name:
- * @self: a #HdyAvatar
+ * hdy_avatar_get_icon_name: (attributes org.gtk.Method.get_property=icon-name)
+ * @self: an avatar
  *
- * Gets the name of the icon in the icon theme to use when the icon should be
- * displayed.
+ * Gets the name of an icon to use as a fallback.
  *
- * Returns: (nullable) (transfer none): the name of the icon from the icon theme.
+ * Returns: (nullable): the icon name
  *
  * Since: 1.0
  */
@@ -986,16 +998,13 @@ hdy_avatar_get_icon_name (HdyAvatar *self)
 }
 
 /**
- * hdy_avatar_set_icon_name:
- * @self: a #HdyAvatar
+ * hdy_avatar_set_icon_name: (attributes org.gtk.Method.set_property=icon-name)
+ * @self: an avatar
  * @icon_name: (nullable): the name of the icon from the icon theme
  *
- * Sets the name of the icon in the icon theme to use when the icon should be
- * displayed.
- * If no name is set, the avatar-default-symbolic icon will be used.
- * If the name doesn't match a valid icon, it is an error and no icon will be
- * displayed.
- * If the icon theme is changed, the image will be updated automatically.
+ * Sets the name of an icon to use as a fallback.
+ *
+ * If no name is set, `avatar-default-symbolic` will be used.
  *
  * Since: 1.0
  */
@@ -1019,14 +1028,15 @@ hdy_avatar_set_icon_name (HdyAvatar   *self,
 }
 
 /**
- * hdy_avatar_get_text:
- * @self: a #HdyAvatar
+ * hdy_avatar_get_text: (attributes org.gtk.Method.get_property=text)
+ * @self: an avatar
  *
- * Get the text used to generate the fallback initials and color
+ * Gets the text used to generate the fallback initials and color.
  *
- * Returns: (nullable) (transfer none): returns the text used to generate
- * the fallback initials. This is the internal string used by
- * the #HdyAvatar, and must not be modified.
+ * Returns: (nullable): the text used to generate the fallback initials and
+ *   color
+ *
+ * Since: 1.0
  */
 const gchar *
 hdy_avatar_get_text (HdyAvatar *self)
@@ -1037,11 +1047,13 @@ hdy_avatar_get_text (HdyAvatar *self)
 }
 
 /**
- * hdy_avatar_set_text:
- * @self: a #HdyAvatar
+ * hdy_avatar_set_text: (attributes org.gtk.Method.set_property=text)
+ * @self: an avatar
  * @text: (nullable): the text used to get the initials and color
  *
- * Set the text used to generate the fallback initials color
+ * Set the text used to generate the fallback initials color.
+ *
+ * Since: 1.0
  */
 void
 hdy_avatar_set_text (HdyAvatar   *self,
@@ -1063,12 +1075,14 @@ hdy_avatar_set_text (HdyAvatar   *self,
 }
 
 /**
- * hdy_avatar_get_show_initials:
- * @self: a #HdyAvatar
+ * hdy_avatar_get_show_initials: (attributes org.gtk.Method.get_property=show-initials)
+ * @self: an avatar
  *
- * Returns whether initials are used for the fallback or the icon.
+ * Gets whether initials are used instead of an icon on the fallback avatar.
  *
- * Returns: %TRUE if the initials are used for the fallback.
+ * Returns: whether initials are used instead of an icon as fallback
+ *
+ * Since: 1.0
  */
 gboolean
 hdy_avatar_get_show_initials (HdyAvatar *self)
@@ -1079,12 +1093,13 @@ hdy_avatar_get_show_initials (HdyAvatar *self)
 }
 
 /**
- * hdy_avatar_set_show_initials:
- * @self: a #HdyAvatar
- * @show_initials: whether the initials should be shown on the fallback avatar
- * or the icon.
+ * hdy_avatar_set_show_initials: (attributes org.gtk.Method.set_property=show-initials)
+ * @self: an avatar
+ * @show_initials: whether to use initials instead of an icon as fallback
  *
- * Sets whether the initials should be shown on the fallback avatar or the icon.
+ * Sets whether to use initials instead of an icon on the fallback avatar.
+ *
+ * Since: 1.0
  */
 void
 hdy_avatar_set_show_initials (HdyAvatar *self,
@@ -1103,15 +1118,19 @@ hdy_avatar_set_show_initials (HdyAvatar *self,
 
 /**
  * hdy_avatar_set_image_load_func:
- * @self: a #HdyAvatar
+ * @self: an avatar
  * @load_image: (closure user_data) (nullable): callback to set a custom image
  * @user_data: (nullable): user data passed to @load_image
  * @destroy: (nullable): destroy notifier for @user_data
  *
- * A callback which is called when the custom image need to be reloaded for some
- * reason (e.g. scale-factor changes).
+ * A callback which is called when the custom image needs to be reloaded.
  *
- * Deprecated: 1.2: use hdy_avatar_set_loadable_icon() instead.
+ * It will be called on [property@Avatar:size] or
+ * [property@Gtk.Widget:scale-factor] changes.
+ *
+ * Since: 1.0
+ *
+ * Deprecated: 1.2: use [method@Avatar.set_loadable_icon] instead.
  */
 void
 hdy_avatar_set_image_load_func (HdyAvatar              *self,
@@ -1156,12 +1175,14 @@ hdy_avatar_set_image_load_func (HdyAvatar              *self,
 }
 
 /**
- * hdy_avatar_get_size:
- * @self: a #HdyAvatar
+ * hdy_avatar_get_size: (attributes org.gtk.Method.get_property=size)
+ * @self: an avatar
  *
- * Returns the size of the avatar.
+ * Gets the size of the avatar.
  *
- * Returns: the size of the avatar.
+ * Returns: the size of the avatar
+ *
+ * Since: 1.0
  */
 gint
 hdy_avatar_get_size (HdyAvatar *self)
@@ -1172,11 +1193,13 @@ hdy_avatar_get_size (HdyAvatar *self)
 }
 
 /**
- * hdy_avatar_set_size:
- * @self: a #HdyAvatar
- * @size: The size to be used for the avatar
+ * hdy_avatar_set_size: (attributes org.gtk.Method.set_property=size)
+ * @self: an avatar
+ * @size: the size to be used for the avatar
  *
  * Sets the size of the avatar.
+ *
+ * Since: 1.0
  */
 void
 hdy_avatar_set_size (HdyAvatar *self,
@@ -1196,13 +1219,15 @@ hdy_avatar_set_size (HdyAvatar *self,
 
 /**
  * hdy_avatar_draw_to_pixbuf:
- * @self: a #HdyAvatar
- * @size: The size of the pixbuf
- * @scale_factor: The scale factor
+ * @self: an avatar
+ * @size: the size of the pixbuf
+ * @scale_factor: the scale factor
  *
- * Renders @self into a pixbuf at @size and @scale_factor. This can be used to export the fallback avatar.
+ * Renders @self into a [class@GdkPixbuf.Pixbuf] at @size and @scale_factor.
  *
- * Returns: (transfer full): the pixbuf.
+ * This can be used to export the fallback avatar.
+ *
+ * Returns: (transfer full): the pixbuf
  *
  * Since: 1.2
  */
@@ -1256,14 +1281,16 @@ hdy_avatar_draw_to_pixbuf (HdyAvatar *self,
 
 /**
  * hdy_avatar_draw_to_pixbuf_async:
- * @self: a #HdyAvatar
- * @size: The size of the pixbuf
- * @scale_factor: The scale factor
- * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call when the avatar is generated
+ * @self: an avatar
+ * @size: the size of the pixbuf
+ * @scale_factor: the scale factor
+ * @cancellable: (nullable): a cancellable
+ * @callback: (scope async): a [callback@Gio.AsyncReadyCallback] to call when
+ *   the avatar is generated
  * @user_data: (closure): the data to pass to callback function
 
  * Renders asynchronously @self into a pixbuf at @size and @scale_factor.
+ *
  * This can be used to export the fallback avatar.
  *
  * Since: 1.2
@@ -1307,12 +1334,12 @@ hdy_avatar_draw_to_pixbuf_async (HdyAvatar           *self,
 
 /**
  * hdy_avatar_draw_to_pixbuf_finish:
- * @self: a #HdyAvatar
- * @async_result: a #GAsyncResult
+ * @self: an avatar
+ * @async_result: a [iface@Gio.AsyncResult]
  *
  * Finishes an asynchronous draw of an avatar to a pixbuf.
  *
- * Returns: (transfer full): a #GdkPixbuf
+ * Returns: (transfer full): the resulting pixbuf
  *
  * Since: 1.2
  */
@@ -1360,12 +1387,12 @@ hdy_avatar_draw_to_pixbuf_finish (HdyAvatar    *self,
 }
 
 /**
- * hdy_avatar_get_loadable_icon:
- * @self: a #HdyAvatar
+ * hdy_avatar_get_loadable_icon: (attributes org.gtk.Method.get_property=loadable-icon)
+ * @self: an avatar
  *
- * Gets the #GLoadableIcon set via hdy_avatar_set_loadable_icon().
+ * Gets the [iface@Gio.LoadableIcon] set via [method@Avatar.set_loadable_icon].
  *
- * Returns: (nullable) (transfer none): the #GLoadableIcon
+ * Returns: (nullable) (transfer none): the [iface@Gio.LoadableIcon]
  *
  * Since: 1.2
  */
@@ -1378,15 +1405,17 @@ hdy_avatar_get_loadable_icon (HdyAvatar *self)
 }
 
 /**
- * hdy_avatar_set_loadable_icon:
- * @self: a #HdyAvatar
- * @icon: (nullable): a #GLoadableIcon
+ * hdy_avatar_set_loadable_icon: (attributes org.gtk.Method.set_property=loadable-icon)
+ * @self: an avatar
+ * @icon: (nullable): a [iface@Gio.LoadableIcon]
  *
- * Sets the #GLoadableIcon to use as an avatar.
- * The previous avatar is displayed till the new avatar is loaded,
- * to immediately remove the custom avatar set the loadable-icon to %NULL.
+ * Sets the [iface@Gio.LoadableIcon] to use as an avatar.
  *
- * The #GLoadableIcon set via this function is prefered over a set #HdyAvatarImageLoadFunc.
+ * The previous avatar is displayed till the new avatar is loaded, to
+ * immediately remove the custom avatar set the loadable-icon to `NULL`.
+ *
+ * The [iface@Gio.LoadableIcon] set via this function is preferred over a set
+ * [callback@AvatarImageLoadFunc].
  *
  * Since: 1.2
  */

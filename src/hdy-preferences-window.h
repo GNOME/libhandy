@@ -24,7 +24,7 @@ G_DECLARE_DERIVABLE_TYPE (HdyPreferencesWindow, hdy_preferences_window, HDY, PRE
 
 /**
  * HdyPreferencesWindowClass
- * @parent_class: The parent class
+ * @parent_class: the parent class
  */
 struct _HdyPreferencesWindowClass
 {

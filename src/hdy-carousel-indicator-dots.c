@@ -22,19 +22,21 @@
 #define DOTS_MARGIN 6
 
 /**
- * SECTION:hdy-carousel-indicator-dots
- * @short_description: A dots indicator for #HdyCarousel
- * @title: HdyCarouselIndicatorDots
- * @See_also: #HdyCarousel, #HdyCarouselIndicatorLines
+ * HdyCarouselIndicatorDots:
  *
- * The #HdyCarouselIndicatorDots widget can be used to show a set of dots for each
- * page of a given #HdyCarousel. The dot representing the carousel's active page
- * is larger and more opaque than the others, the transition to the active and
+ * A dots indicator for [class@Carousel].
+ *
+ * The `HdyCarouselIndicatorDots` widget shows a set of dots for each page of a
+ * given [class@Carousel]. The dot representing the carousel's active page is
+ * larger and more opaque than the others, the transition to the active and
  * inactive state is gradual to match the carousel's position.
  *
- * # CSS nodes
+ * See also [class@CarouselIndicatorLines].
  *
- * #HdyCarouselIndicatorDots has a single CSS node with name carouselindicatordots.
+ * ## CSS nodes
+ *
+ * `HdyCarouselIndicatorDots` has a single CSS node with name
+ * `carouselindicatordots`.
  *
  * Since: 1.0
  */
@@ -381,9 +383,9 @@ hdy_carousel_indicator_dots_class_init (HdyCarouselIndicatorDotsClass *klass)
   widget_class->draw = hdy_carousel_indicator_dots_draw;
 
   /**
-   * HdyCarouselIndicatorDots:carousel:
+   * HdyCarouselIndicatorDots:carousel: (attributes org.gtk.Property.get=hdy_carousel_indicator_dots_get_carousel org.gtk.Property.set=hdy_carousel_indicator_dots_set_carousel)
    *
-   * The #HdyCarousel the indicator uses.
+   * The [class@Carousel] the indicator uses.
    *
    * Since: 1.0
    */
@@ -411,9 +413,9 @@ hdy_carousel_indicator_dots_init (HdyCarouselIndicatorDots *self)
 /**
  * hdy_carousel_indicator_dots_new:
  *
- * Create a new #HdyCarouselIndicatorDots widget.
+ * Creates a new `HdyCarouselIndicatorDots`.
  *
- * Returns: (transfer full): The newly created #HdyCarouselIndicatorDots widget
+ * Returns: The newly created `HdyCarouselIndicatorDots`
  *
  * Since: 1.0
  */
@@ -424,14 +426,12 @@ hdy_carousel_indicator_dots_new (void)
 }
 
 /**
- * hdy_carousel_indicator_dots_get_carousel:
- * @self: a #HdyCarouselIndicatorDots
+ * hdy_carousel_indicator_dots_get_carousel: (attributes org.gtk.Method.get_property=carousel)
+ * @self: an indicator
  *
- * Get the #HdyCarousel the indicator uses.
+ * Get the [class@Carousel] the indicator uses.
  *
- * See: hdy_carousel_indicator_dots_set_carousel()
- *
- * Returns: (nullable) (transfer none): the #HdyCarousel, or %NULL if none has been set
+ * Returns: (nullable) (transfer none): the [class@Carousel]
  *
  * Since: 1.0
  */
@@ -445,11 +445,11 @@ hdy_carousel_indicator_dots_get_carousel (HdyCarouselIndicatorDots *self)
 }
 
 /**
- * hdy_carousel_indicator_dots_set_carousel:
- * @self: a #HdyCarouselIndicatorDots
- * @carousel: (nullable): a #HdyCarousel
+ * hdy_carousel_indicator_dots_set_carousel: (attributes org.gtk.Method.set_property=carousel)
+ * @self: an indicator
+ * @carousel: (nullable): a carousel
  *
- * Sets the #HdyCarousel to use.
+ * Sets the [class@Carousel] to use.
  *
  * Since: 1.0
  */

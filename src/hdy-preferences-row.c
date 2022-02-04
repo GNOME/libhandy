@@ -10,19 +10,19 @@
 #include "hdy-preferences-row.h"
 
 /**
- * SECTION:hdy-preferences-row
- * @short_description: A #GtkListBox row used to present preferences.
- * @Title: HdyPreferencesRow
+ * HdyPreferencesRow:
  *
- * The #HdyPreferencesRow widget has a title that #HdyPreferencesWindow will use
- * to let the user look for a preference. It doesn't present the title in any
- * way and it lets you present the preference as you please.
+ * A [class@Gtk.ListBoxRow] used to present preferences.
  *
- * #HdyActionRow and its derivatives are convenient to use as preference rows as
- * they take care of presenting the preference's title while letting you compose
- * the inputs of the preference around it.
+ * The `HdyPreferencesRow` widget has a title that [class@PreferencesWindow]
+ * will use to let the user look for a preference. It doesn't present the title
+ * in any way and lets you present the preference as you please.
  *
- * Since: 0.0.10
+ * [class@ActionRow] and its derivatives are convenient to use as preference
+ * rows as they take care of presenting the preference's title while letting you
+ * compose the inputs of the preference around it.
+ *
+ * Since: 1.0
  */
 
 typedef struct
@@ -104,11 +104,11 @@ hdy_preferences_row_class_init (HdyPreferencesRowClass *klass)
   object_class->finalize = hdy_preferences_row_finalize;
 
   /**
-   * HdyPreferencesRow:title:
+   * HdyPreferencesRow:title: (attributes org.gtk.Property.get=hdy_preferences_row_get_title org.gtk.Property.set=hdy_preferences_row_set_title)
    *
    * The title of the preference represented by this row.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_TITLE] =
     g_param_spec_string ("title",
@@ -118,12 +118,11 @@ hdy_preferences_row_class_init (HdyPreferencesRowClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyPreferencesRow:use-underline:
+   * HdyPreferencesRow:use-underline: (attributes org.gtk.Property.get=hdy_preferences_row_get_use_underline org.gtk.Property.set=hdy_preferences_row_set_use_underline)
    *
-   * Whether an embedded underline in the text of the title indicates a
-   * mnemonic.
+   * Whether an embedded underline in the title indicates a mnemonic.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_USE_UNDERLINE] =
     g_param_spec_boolean ("use-underline",
@@ -143,11 +142,11 @@ hdy_preferences_row_init (HdyPreferencesRow *self)
 /**
  * hdy_preferences_row_new:
  *
- * Creates a new #HdyPreferencesRow.
+ * Creates a new `HdyPreferencesRow`.
  *
- * Returns: a new #HdyPreferencesRow
+ * Returns: the newly created `HdyPreferencesRow`
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkWidget *
 hdy_preferences_row_new (void)
@@ -156,15 +155,15 @@ hdy_preferences_row_new (void)
 }
 
 /**
- * hdy_preferences_row_get_title:
- * @self: a #HdyPreferencesRow
+ * hdy_preferences_row_get_title: (attributes org.gtk.Method.get_property=title)
+ * @self: a preferences row
  *
  * Gets the title of the preference represented by @self.
  *
  * Returns: (transfer none) (nullable): the title of the preference represented
- *          by @self, or %NULL.
+ *   by @self
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 const gchar *
 hdy_preferences_row_get_title (HdyPreferencesRow *self)
@@ -179,13 +178,13 @@ hdy_preferences_row_get_title (HdyPreferencesRow *self)
 }
 
 /**
- * hdy_preferences_row_set_title:
- * @self: a #HdyPreferencesRow
- * @title: (nullable): the title, or %NULL.
+ * hdy_preferences_row_set_title: (attributes org.gtk.Method.set_property=title)
+ * @self: a preferences row
+ * @title: (nullable): the title
  *
  * Sets the title of the preference represented by @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_preferences_row_set_title (HdyPreferencesRow *self,
@@ -207,16 +206,14 @@ hdy_preferences_row_set_title (HdyPreferencesRow *self,
 }
 
 /**
- * hdy_preferences_row_get_use_underline:
- * @self: a #HdyPreferencesRow
+ * hdy_preferences_row_get_use_underline: (attributes org.gtk.Method.get_property=use-underline)
+ * @self: a preferences row
  *
- * Gets whether an embedded underline in the text of the title indicates a
- * mnemonic. See hdy_preferences_row_set_use_underline().
+ * Gets whether an embedded underline in the title indicates a mnemonic.
  *
- * Returns: %TRUE if an embedded underline in the title indicates the mnemonic
- *          accelerator keys.
+ * Returns: whether an embedded underline in the title indicates a mnemonic
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 gboolean
 hdy_preferences_row_get_use_underline (HdyPreferencesRow *self)
@@ -231,14 +228,13 @@ hdy_preferences_row_get_use_underline (HdyPreferencesRow *self)
 }
 
 /**
- * hdy_preferences_row_set_use_underline:
- * @self: a #HdyPreferencesRow
- * @use_underline: %TRUE if underlines in the text indicate mnemonics
+ * hdy_preferences_row_set_use_underline: (attributes org.gtk.Method.set_property=use-underline)
+ * @self: a preferences row
+ * @use_underline: `TRUE` if underlines in the text indicate mnemonics
  *
- * If true, an underline in the text of the title indicates the next character
- * should be used for the mnemonic accelerator key.
+ * Sets whether an embedded underline in the title indicates a mnemonic.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_preferences_row_set_use_underline (HdyPreferencesRow *self,

@@ -10,13 +10,13 @@
 #include "hdy-keypad-button-private.h"
 
 /**
- * PRIVATE:hdy-keypad-button
- * @short_description: A button on a #HdyKeypad keypad
- * @Title: HdyKeypadButton
+ * HdyKeypadButton:
  *
- * The #HdyKeypadButton widget is a single button on an #HdyKeypad. It
- * can represent a single symbol (typically a digit) plus an arbitrary
- * number of symbols that are displayed below it.
+ * A button on a [class@Keypad] keypad
+ *
+ * The [class@KeypadButton] widget is a single button on an [class@Keypad]. It
+ * can represent a single symbol (typically a digit) plus an arbitrary number of
+ * symbols that are displayed below it.
  */
 
 enum {
@@ -259,12 +259,12 @@ hdy_keypad_button_init (HdyKeypadButton *self)
 
 /**
  * hdy_keypad_button_new:
- * @symbols: (nullable): the symbols displayed on the #HdyKeypadButton
+ * @symbols: (nullable): the symbols displayed on the keypad button
  *
- * Create a new #HdyKeypadButton which displays @symbols,
- * where the first char is used as the main and the other symbols are shown below
+ * Creates a new [class@KeypadButton] which displays @symbols, where the first
+ * char is used as the main and the other symbols are shown below.
  *
- * Returns: the newly created #HdyKeypadButton widget
+ * Returns: the newly created `HdyKeypadButton`
  */
 GtkWidget *
 hdy_keypad_button_new (const gchar *symbols)
@@ -274,9 +274,9 @@ hdy_keypad_button_new (const gchar *symbols)
 
 /**
  * hdy_keypad_button_get_digit:
- * @self: a #HdyKeypadButton
+ * @self: a keypad button
  *
- * Get the #HdyKeypadButton's digit.
+ * Get the [class@KeypadButton]'s digit.
  *
  * Returns: the button's digit
  */
@@ -293,11 +293,11 @@ hdy_keypad_button_get_digit (HdyKeypadButton *self)
 
 /**
  * hdy_keypad_button_get_symbols:
- * @self: a #HdyKeypadButton
+ * @self: a keypad button
  *
- * Get the #HdyKeypadButton's symbols.
+ * Get the [class@KeypadButton]'s symbols.
  *
- * Returns: the button's symbols including the digit.
+ * Returns: the button's symbols including the digit
  */
 const char*
 hdy_keypad_button_get_symbols (HdyKeypadButton *self)
@@ -309,11 +309,10 @@ hdy_keypad_button_get_symbols (HdyKeypadButton *self)
 
 /**
  * hdy_keypad_button_show_symbols:
- * @self: a #HdyKeypadButton
+ * @self: a keypad button
  * @visible: whether the second line should be shown or not
  *
- * Sets the visibility of the second line of symbols for #HdyKeypadButton
- *
+ * Sets the visibility of the second line of symbols for [class@KeypadButton].
  */
 void
 hdy_keypad_button_show_symbols (HdyKeypadButton *self, gboolean visible)

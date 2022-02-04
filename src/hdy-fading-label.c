@@ -13,12 +13,12 @@
 #include "hdy-bidi-private.h"
 
 /**
- * PRIVATE:hdy-fading-label
- * @short_description: A helper object for #HdyTab
- * @title: HdyFadingLabel
- * @stability: Private
+ * HdyFadingLabel:
  *
- * The HdyFadingLabel widget allows to ellipsize a label with a fading effect.
+ * A helper object for [class@Tab]
+ *
+ * The [class@FadingLabel] widget allows to ellipsize a label with a fading
+ * effect.
  *
  * Since: 1.2
  */

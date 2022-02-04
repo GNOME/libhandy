@@ -10,14 +10,14 @@
 #include "hdy-value-object.h"
 
 /**
- * SECTION:hdy-value-object
- * @short_description: An object representing a #GValue.
- * @Title: HdyValueObject
+ * HdyValueObject:
  *
- * The #HdyValueObject object represents a #GValue, allowing it to be
- * used with #GListModel.
+ * An object representing a [struct@GObject.Value].
  *
- * Since: 0.0.8
+ * The `HdyValueObject` object represents a [struct@GObject.Value], allowing it
+ * to be used with [iface@Gio.ListModel].
+ *
+ * Since: 1.0
  */
 
 struct _HdyValueObject
@@ -39,12 +39,13 @@ static GParamSpec *props [N_PROPS];
 
 /**
  * hdy_value_object_new:
- * @value: the #GValue to store
+ * @value: the value to store
  *
- * Create a new #HdyValueObject.
+ * Creates a new `HdyValueObject`.
  *
- * Returns: a new #HdyValueObject
- * Since: 0.0.8
+ * Returns: a new `HdyValueObject`
+ *
+ * Since: 1.0
  */
 HdyValueObject *
 hdy_value_object_new (const GValue *value)
@@ -56,14 +57,17 @@ hdy_value_object_new (const GValue *value)
 
 /**
  * hdy_value_object_new_collect: (skip)
- * @type: the #GType of the value
+ * @type: the type of the value
  * @...: the value to store
  *
- * Creates a new #HdyValueObject. This is a convenience method which uses
- * the G_VALUE_COLLECT() macro internally.
+ * Creates a new `HdyValueObject`.
  *
- * Returns: a new #HdyValueObject
- * Since: 0.0.8
+ * This is a convenience method which uses the `G_VALUE_COLLECT` macro
+ * internally.
+ *
+ * Returns: a new `HdyValueObject`
+ *
+ * Since: 1.0
  */
 HdyValueObject*
 hdy_value_object_new_collect (GType type, ...)
@@ -90,11 +94,14 @@ hdy_value_object_new_collect (GType type, ...)
  * hdy_value_object_new_string: (skip)
  * @string: (transfer none): the string to store
  *
- * Creates a new #HdyValueObject. This is a convenience method to create a
- * #HdyValueObject that stores a string.
+ * Creates a new `HdyValueObject`.
  *
- * Returns: a new #HdyValueObject
- * Since: 0.0.8
+ * This is a convenience method to create a [class@ValueObject] that stores a
+ * string.
+ *
+ * Returns: a new `HdyValueObject`
+ *
+ * Since: 1.0
  */
 HdyValueObject*
 hdy_value_object_new_string (const gchar *string)
@@ -110,11 +117,14 @@ hdy_value_object_new_string (const gchar *string)
  * hdy_value_object_new_take_string: (skip)
  * @string: (transfer full): the string to store
  *
- * Creates a new #HdyValueObject. This is a convenience method to create a
- * #HdyValueObject that stores a string taking ownership of it.
+ * Creates a new `HdyValueObject`.
  *
- * Returns: a new #HdyValueObject
- * Since: 0.0.8
+ * This is a convenience method to create a [class@ValueObject] that stores a
+ * string taking ownership of it.
+ *
+ * Returns: a new `HdyValueObject`
+ *
+ * Since: 1.0
  */
 HdyValueObject*
 hdy_value_object_new_take_string (gchar *string)
@@ -187,6 +197,13 @@ hdy_value_object_class_init (HdyValueObjectClass *klass)
   object_class->get_property = hdy_value_object_get_property;
   object_class->set_property = hdy_value_object_set_property;
 
+  /**
+   * HdyValueObject:value: (attributes org.gtk.Property.get=hdy_value_object_get_value)
+   *
+   * The contained value.
+   *
+   * Since: 1.0
+   */
   props[PROP_VALUE] =
     g_param_spec_boxed ("value", C_("HdyValueObjectClass", "Value"),
                         C_("HdyValueObjectClass", "The contained value"),
@@ -204,13 +221,14 @@ hdy_value_object_init (HdyValueObject *self)
 }
 
 /**
- * hdy_value_object_get_value:
- * @value: the #HdyValueObject
+ * hdy_value_object_get_value: (attributes org.gtk.Method.get_property=value)
+ * @value: the value
  *
  * Return the contained value.
  *
- * Returns: (transfer none): the contained #GValue
- * Since: 0.0.8
+ * Returns: (transfer none): the contained [struct@GObject.Value]
+ *
+ * Since: 1.0
  */
 const GValue*
 hdy_value_object_get_value (HdyValueObject *value)
@@ -220,12 +238,12 @@ hdy_value_object_get_value (HdyValueObject *value)
 
 /**
  * hdy_value_object_copy_value:
- * @value: the #HdyValueObject
- * @dest: #GValue with correct type to copy into
+ * @value: the value
+ * @dest: value with correct type to copy into
  *
- * Copy data from the contained #GValue into @dest.
+ * Copy data from the contained [struct@GObject.Value] into @dest.
  *
- * Since: 0.0.8
+ * Since: 1.0
  */
 void
 hdy_value_object_copy_value (HdyValueObject *value,
@@ -236,12 +254,13 @@ hdy_value_object_copy_value (HdyValueObject *value,
 
 /**
  * hdy_value_object_get_string:
- * @value: the #HdyValueObject
+ * @value: the value
  *
- * Returns the contained string if the value is of type #G_TYPE_STRING.
+ * Returns the contained string if the value is of type `G_TYPE_STRING`.
  *
  * Returns: (transfer none): the contained string
- * Since: 0.0.8
+ *
+ * Since: 1.0
  */
 const gchar*
 hdy_value_object_get_string (HdyValueObject *value)
@@ -251,17 +270,16 @@ hdy_value_object_get_string (HdyValueObject *value)
 
 /**
  * hdy_value_object_dup_string:
- * @value: the #HdyValueObject
+ * @value: the value
  *
- * Returns a copy of the contained string if the value is of type
- * #G_TYPE_STRING.
+ * Gets a copy of the contained string if the value is of type `G_TYPE_STRING`.
  *
  * Returns: (transfer full): a copy of the contained string
- * Since: 0.0.8
+ *
+ * Since: 1.0
  */
 gchar*
 hdy_value_object_dup_string (HdyValueObject *value)
 {
   return g_value_dup_string (&value->value);
 }
-

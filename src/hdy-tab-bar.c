@@ -13,24 +13,23 @@
 #include "hdy-tab-box-private.h"
 
 /**
- * SECTION:hdy-tab-bar
- * @short_description: A tab bar for #HdyTabView
- * @title: HdyTabBar
- * @See_also: #HdyTabView
+ * HdyTabBar:
  *
- * The #HdyTabBar widget is a tab bar that can be used with conjunction with
- * #HdyTabView.
+ * A tab bar for [class@TabView].
  *
- * #HdyTabBar can autohide and can optionally contain action widgets on both
+ * The `HdyTabBar` widget is a tab bar that can be used with conjunction with
+ * [class@TabView].
+ *
+ * `HdyTabBar` can autohide and can optionally contain action widgets on both
  * sides of the tabs.
  *
- * When there's not enough space to show all the tabs, #HdyTabBar will scroll
+ * When there's not enough space to show all the tabs, `HdyTabBar` will scroll
  * them. Pinned tabs always stay visible and aren't a part of the scrollable
  * area.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyTabBar has a single CSS node with name tabbar.
+ * `HdyTabBar` has a single CSS node with name `tabbar`.
  *
  * Since: 1.2
  */
@@ -506,9 +505,9 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
   container_class->forall = hdy_tab_bar_forall;
 
   /**
-   * HdyTabBar:view:
+   * HdyTabBar:view: (attributes org.gtk.Property.get=hdy_tab_bar_get_view org.gtk.Property.set=hdy_tab_bar_set_view)
    *
-   * The #HdyTabView the tab bar controls.
+   * The [class@TabView] the tab bar controls.
    *
    * Since: 1.2
    */
@@ -520,7 +519,7 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyTabBar:start-action-widget:
+   * HdyTabBar:start-action-widget: (attributes org.gtk.Property.get=hdy_tab_bar_get_start_action_widget org.gtk.Property.set=hdy_tab_bar_set_start_action_widget)
    *
    * The widget shown before the tabs.
    *
@@ -534,7 +533,7 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyTabBar:end-action-widget:
+   * HdyTabBar:end-action-widget: (attributes org.gtk.Property.get=hdy_tab_bar_get_end_action_widget org.gtk.Property.set=hdy_tab_bar_set_end_action_widget)
    *
    * The widget shown after the tabs.
    *
@@ -548,14 +547,15 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyTabBar:autohide:
+   * HdyTabBar:autohide: (attributes org.gtk.Property.get=hdy_tab_bar_get_autohide org.gtk.Property.set=hdy_tab_bar_set_autohide)
    *
    * Whether tabs automatically hide.
    *
-   * If set to %TRUE, the tab bar disappears when the associated #HdyTabView
-   * has 0 or 1 tab, no pinned tabs, and no tab is being transferred.
+   * If set to `TRUE`, the tab bar disappears when the associated
+   * [class@TabView] has 0 or 1 tab, no pinned tabs, and no tab is being
+   * transferred.
    *
-   * See #HdyTabBar:tabs-revealed.
+   * See [property@TabBar:tabs-revealed].
    *
    * Since: 1.2
    */
@@ -567,11 +567,11 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyTabBar:tabs-revealed:
+   * HdyTabBar:tabs-revealed: (attributes org.gtk.Property.get=hdy_tab_bar_get_tabs_revealed)
    *
    * Whether tabs are currently revealed.
    *
-   * See HdyTabBar:autohide.
+   * See [property@TabBar:autohide].
    *
    * Since: 1.2
    */
@@ -583,11 +583,11 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
                           G_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyTabBar:expand-tabs:
+   * HdyTabBar:expand-tabs: (attributes org.gtk.Property.get=hdy_tab_bar_get_expand_tabs org.gtk.Property.set=hdy_tab_bar_set_expand_tabs)
    *
    * Whether tabs should expand.
    *
-   * If set to %TRUE, the tabs will always vary width filling the whole width
+   * If set to `TRUE`, the tabs will always vary width filling the whole width
    * when possible, otherwise tabs will always have the minimum possible size.
    *
    * Since: 1.2
@@ -600,11 +600,11 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyTabBar:inverted:
+   * HdyTabBar:inverted: (attributes org.gtk.Property.get=hdy_tab_bar_get_inverted org.gtk.Property.set=hdy_tab_bar_set_inverted)
    *
    * Whether tabs use inverted layout.
    *
-   * If set to %TRUE, non-pinned tabs will have the close button at the
+   * If set to `TRUE`, non-pinned tabs will have the close button at the
    * beginning and the indicator at the end rather than the opposite.
    *
    * Since: 1.2
@@ -617,7 +617,7 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyTabBar:extra-drag-dest-targets:
+   * HdyTabBar:extra-drag-dest-targets: (attributes org.gtk.Property.get=hdy_tab_bar_get_extra_drag_dest_targets org.gtk.Property.set=hdy_tab_bar_set_extra_drag_dest_targets)
    *
    * Extra drag destination targets.
    *
@@ -627,8 +627,8 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
    * If a tab is hovered for a certain period of time while dragging the
    * content, it will be automatically selected.
    *
-   * After content is dropped, the #HdyTabBar::extra-drag-data-received signal
-   * can be used to retrieve and process the drag data.
+   * After content is dropped, the [signal@TabBar::extra-drag-data-received]
+   * signal can be used to retrieve and process the drag data.
    *
    * Since: 1.2
    */
@@ -640,11 +640,11 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
                         G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyTabBar:is-overflowing:
+   * HdyTabBar:is-overflowing: (attributes org.gtk.Property.get=hdy_tab_bar_get_is_overflowing)
    *
    * Whether the tab bar is overflowing.
    *
-   * If set to %TRUE, all tabs cannot be displayed at once and require
+   * If set to `TRUE`, all tabs cannot be displayed at once and require
    * scrolling.
    *
    * Since: 1.2
@@ -660,17 +660,18 @@ hdy_tab_bar_class_init (HdyTabBarClass *klass)
 
   /**
    * HdyTabBar::extra-drag-data-received:
-   * @self: a #HdyTabBar
-   * @page: the #HdyTabPage matching the tab the content was dropped onto
+   * @self: a tab bar
+   * @page: the tab page matching the tab the content was dropped onto
    * @context: the drag context
    * @data: the received data
-   * @info: the info that has been registered with the target in the #GtkTargetList
+   * @info: the info that has been registered with the target in the
+   *   [struct@Gtk.TargetList]
    * @time: the timestamp at which the data was received
    *
-   * This signal is emitted when content allowed via
-   * #HdyTabBar:extra-drag-dest-targets is dropped onto a tab.
+   * Emitted when content allowed via [property@TabBar:extra-drag-dest-targets]
+   * is dropped onto a tab.
    *
-   * See #GtkWidget::drag-data-received.
+   * See [signal@Gtk.Widget::drag-data-received].
    *
    * Since: 1.2
    */
@@ -784,9 +785,9 @@ hdy_tab_bar_tabs_have_visible_focus (HdyTabBar *self)
 /**
  * hdy_tab_bar_new:
  *
- * Creates a new #HdyTabBar widget.
+ * Creates a new `HdyTabBar` widget.
  *
- * Returns: a new #HdyTabBar
+ * Returns: a new `HdyTabBar`
  *
  * Since: 1.2
  */
@@ -797,12 +798,12 @@ hdy_tab_bar_new (void)
 }
 
 /**
- * hdy_tab_bar_get_view:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_get_view: (attributes org.gtk.Method.get_property=view)
+ * @self: a tab bar
  *
- * Gets the #HdyTabView @self controls.
+ * Gets the [class@TabView] @self controls.
  *
- * Returns: (transfer none) (nullable): the #HdyTabView @self controls
+ * Returns: (transfer none) (nullable): the [class@TabView] @self controls
  *
  * Since: 1.2
  */
@@ -815,11 +816,11 @@ hdy_tab_bar_get_view (HdyTabBar *self)
 }
 
 /**
- * hdy_tab_bar_set_view:
- * @self: a #HdyTabBar
- * @view: (nullable): a #HdyTabView
+ * hdy_tab_bar_set_view: (attributes org.gtk.Method.set_property=view)
+ * @self: a tab bar
+ * @view: (nullable): a tab view
  *
- * Sets the #HdyTabView @self controls.
+ * Sets the [class@TabView] @self controls.
  *
  * Since: 1.2
  */
@@ -893,12 +894,12 @@ hdy_tab_bar_set_view (HdyTabBar  *self,
 }
 
 /**
- * hdy_tab_bar_get_start_action_widget:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_get_start_action_widget: (attributes org.gtk.Method.get_property=start-action-widget)
+ * @self: a tab bar
  *
  * Gets the widget shown before the tabs.
  *
- * Returns: (transfer none) (nullable): the widget shown before the tabs, or %NULL
+ * Returns: (transfer none) (nullable): the widget shown before the tabs
  *
  * Since: 1.2
  */
@@ -911,9 +912,9 @@ hdy_tab_bar_get_start_action_widget (HdyTabBar *self)
 }
 
 /**
- * hdy_tab_bar_set_start_action_widget:
- * @self: a #HdyTabBar
- * @widget: (transfer none) (nullable): the widget to show before the tabs, or %NULL
+ * hdy_tab_bar_set_start_action_widget: (attributes org.gtk.Method.set_property=start-action-widget)
+ * @self: a tab bar
+ * @widget: (transfer none) (nullable): the widget to show before the tabs
  *
  * Sets the widget to show before the tabs.
  *
@@ -945,12 +946,12 @@ hdy_tab_bar_set_start_action_widget (HdyTabBar *self,
 }
 
 /**
- * hdy_tab_bar_get_end_action_widget:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_get_end_action_widget: (attributes org.gtk.Method.get_property=end-action-widget)
+ * @self: a tab bar
  *
  * Gets the widget shown after the tabs.
  *
- * Returns: (transfer none) (nullable): the widget shown after the tabs, or %NULL
+ * Returns: (transfer none) (nullable): the widget shown after the tabs
  *
  * Since: 1.2
  */
@@ -963,9 +964,9 @@ hdy_tab_bar_get_end_action_widget (HdyTabBar *self)
 }
 
 /**
- * hdy_tab_bar_set_end_action_widget:
- * @self: a #HdyTabBar
- * @widget: (transfer none) (nullable): the widget to show after the tabs, or %NULL
+ * hdy_tab_bar_set_end_action_widget: (attributes org.gtk.Method.set_property=end-action-widget)
+ * @self: a tab bar
+ * @widget: (transfer none) (nullable): the widget to show after the tabs
  *
  * Sets the widget to show after the tabs.
  *
@@ -997,10 +998,10 @@ hdy_tab_bar_set_end_action_widget (HdyTabBar *self,
 }
 
 /**
- * hdy_tab_bar_get_autohide:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_get_autohide: (attributes org.gtk.Method.get_property=autohide)
+ * @self: a tab bar
  *
- * Gets whether the tabs automatically hide, see hdy_tab_bar_set_autohide().
+ * Gets whether the tabs automatically hide.
  *
  * Returns: whether the tabs automatically hide
  *
@@ -1015,18 +1016,19 @@ hdy_tab_bar_get_autohide (HdyTabBar *self)
 }
 
 /**
- * hdy_tab_bar_set_autohide:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_set_autohide: (attributes org.gtk.Method.set_property=autohide)
+ * @self: a tab bar
  * @autohide: whether the tabs automatically hide
  *
  * Sets whether the tabs automatically hide.
  *
- * If @autohide is %TRUE, the tab bar disappears when the associated #HdyTabView
- * has 0 or 1 tab, no pinned tabs, and no tab is being transferred.
+ * If @autohide is `TRUE`, the tab bar disappears when the associated
+ * [class@TabView] has 0 or 1 tab, no pinned tabs, and no tab is being
+ * transferred.
  *
  * Autohide is enabled by default.
  *
- * See #HdyTabBar:tabs-revealed.
+ * See [property@TabBar:tabs-revealed].
  *
  * Since: 1.2
  */
@@ -1049,10 +1051,10 @@ hdy_tab_bar_set_autohide (HdyTabBar *self,
 }
 
 /**
- * hdy_tab_bar_get_tabs_revealed:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_get_tabs_revealed: (attributes org.gtk.Method.get_property=tabs-revealed)
+ * @self: a tab bar
  *
- * Gets the value of the #HdyTabBar:tabs-revealed property.
+ * Gets the value of the [property@TabBar:tabs-revealed] property.
  *
  * Returns: whether the tabs are current revealed
  *
@@ -1067,10 +1069,10 @@ hdy_tab_bar_get_tabs_revealed (HdyTabBar *self)
 }
 
 /**
- * hdy_tab_bar_get_expand_tabs:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_get_expand_tabs: (attributes org.gtk.Method.get_property=expand-tabs)
+ * @self: a tab bar
  *
- * Gets whether tabs should expand, see hdy_tab_bar_set_expand_tabs().
+ * Gets whether tabs should expand.
  *
  * Returns: whether tabs should expand
  *
@@ -1085,13 +1087,13 @@ hdy_tab_bar_get_expand_tabs (HdyTabBar *self)
 }
 
 /**
- * hdy_tab_bar_set_expand_tabs:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_set_expand_tabs: (attributes org.gtk.Method.set_property=expand-tabs)
+ * @self: a tab bar
  * @expand_tabs: whether to expand tabs
  *
  * Sets whether tabs should expand.
  *
- * If @expand_tabs is %TRUE, the tabs will always vary width filling the whole
+ * If @expand_tabs is `TRUE`, the tabs will always vary width filling the whole
  * width when possible, otherwise tabs will always have the minimum possible
  * size.
  *
@@ -1116,10 +1118,10 @@ hdy_tab_bar_set_expand_tabs (HdyTabBar *self,
 }
 
 /**
- * hdy_tab_bar_get_inverted:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_get_inverted: (attributes org.gtk.Method.get_property=inverted)
+ * @self: a tab bar
  *
- * Gets whether tabs use inverted layout, see hdy_tab_bar_set_inverted().
+ * Gets whether tabs use inverted layout.
  *
  * Returns: whether tabs use inverted layout
  *
@@ -1134,13 +1136,13 @@ hdy_tab_bar_get_inverted (HdyTabBar *self)
 }
 
 /**
- * hdy_tab_bar_set_inverted:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_set_inverted: (attributes org.gtk.Method.set_property=inverted)
+ * @self: a tab bar
  * @inverted: whether tabs use inverted layout
  *
  * Sets whether tabs tabs use inverted layout.
  *
- * If @inverted is %TRUE, non-pinned tabs will have the close button at the
+ * If @inverted is `TRUE`, non-pinned tabs will have the close button at the
  * beginning and the indicator at the end rather than the opposite.
  *
  * Since: 1.2
@@ -1162,13 +1164,12 @@ hdy_tab_bar_set_inverted (HdyTabBar *self,
 }
 
 /**
- * hdy_tab_bar_get_extra_drag_dest_targets:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_get_extra_drag_dest_targets: (attributes org.gtk.Method.get_property=extra-drag-dest-targets)
+ * @self: a tab bar
  *
- * Gets extra drag destination targets, see
- * hdy_tab_bar_set_extra_drag_dest_targets().
+ * Gets extra drag destination targets.
  *
- * Returns: (transfer none) (nullable): extra drag targets, or %NULL
+ * Returns: (transfer none) (nullable): extra drag targets
  *
  * Since: 1.2
  */
@@ -1181,9 +1182,9 @@ hdy_tab_bar_get_extra_drag_dest_targets (HdyTabBar *self)
 }
 
 /**
- * hdy_tab_bar_set_extra_drag_dest_targets:
- * @self: a #HdyTabBar
- * @extra_drag_dest_targets: (transfer none) (nullable): extra drag targets, or %NULL
+ * hdy_tab_bar_set_extra_drag_dest_targets: (attributes org.gtk.Method.set_property=extra-drag-dest-targets)
+ * @self: a tab bar
+ * @extra_drag_dest_targets: (transfer none) (nullable): extra drag targets
  *
  * Sets extra drag destination targets.
  *
@@ -1193,8 +1194,8 @@ hdy_tab_bar_get_extra_drag_dest_targets (HdyTabBar *self)
  * If a tab is hovered for a certain period of time while dragging the content,
  * it will be automatically selected.
  *
- * After content is dropped, the #HdyTabBar::extra-drag-data-received signal can
- * be used to retrieve and process the drag data.
+ * After content is dropped, the [signal@TabBar::extra-drag-data-received]
+ * signal can be used to retrieve and process the drag data.
  *
  * Since: 1.2
  */
@@ -1222,8 +1223,8 @@ hdy_tab_bar_set_extra_drag_dest_targets (HdyTabBar     *self,
 }
 
 /**
- * hdy_tab_bar_get_is_overflowing:
- * @self: a #HdyTabBar
+ * hdy_tab_bar_get_is_overflowing: (attributes org.gtk.Method.get_property=is-overflowing)
+ * @self: a tab bar
  *
  * Gets whether @self is overflowing.
  *

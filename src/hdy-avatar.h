@@ -27,13 +27,18 @@ G_DECLARE_FINAL_TYPE (HdyAvatar, hdy_avatar, HDY, AVATAR, GtkDrawingArea)
  * @size: the required size of the avatar
  * @user_data: (closure): user data
  *
- * The returned #GdkPixbuf is expected to be square with width and height set
- * to @size. The image is cropped to a circle without any scaling or transformation.
+ * Callback for loading an [class@Avatar]'s image.
  *
- * Returns: (nullable) (transfer full): the #GdkPixbuf to use as a custom avatar
- * or %NULL to fallback to the generated avatar.
+ * The returned [class@GdkPixbuf.Pixbuf] is expected to be square with width and
+ * height set to @size. The image is cropped to a circle without any scaling or
+ * transformation.
  *
- * Deprecated: 1.2: use hdy_avatar_set_loadable_icon() instead.
+ * Returns: (nullable) (transfer full): the pixbuf to use as a custom avatar or
+ *   `NULL` to fallback to the generated avatar
+ *
+ * Since: 1.0
+ *
+ * Deprecated: 1.2: use [method@Avatar.set_loadable_icon] instead.
  */
 HDY_DEPRECATED_TYPE_IN_1_2_FOR (hdy_avatar_set_loadable_icon)
 typedef GdkPixbuf *(*HdyAvatarImageLoadFunc) (gint     size,

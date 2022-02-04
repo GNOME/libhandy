@@ -17,51 +17,55 @@
 #include "hdy-swipe-tracker-private.h"
 
 /**
- * SECTION:hdy-flap
- * @short_description: An adaptive container acting like a box or an overlay.
- * @Title: HdyFlap
+ * HdyFlap:
  *
- * The #HdyFlap widget can display its children like a #GtkBox does or like a
- * #GtkOverlay does, according to the #HdyFlap:fold-policy value.
+ * An adaptive container acting like a box or an overlay.
  *
- * #HdyFlap has at most three children: #HdyFlap:content, #HdyFlap:flap and
- * #HdyFlap:separator. Content is the primary child, flap is displayed next to
- * it when unfolded, or overlays it when folded. Flap can be shown or hidden by
- * changing the #HdyFlap:reveal-flap value, as well as via swipe gestures if
- * #HdyFlap:swipe-to-open and/or #HdyFlap:swipe-to-close are set to %TRUE.
+ * The `HdyFlap` widget can display its children like a [class@Gtk.Box] does or
+ * like a [class@Gtk.Overlay] does, according to the
+ * [property@Flap:fold-policy] value.
  *
- * Optionally, a separator can be provided, which would be displayed between
- * the content and the flap when there's no shadow to separate them, depending
- * on the transition type.
+ * `HdyFlap` has at most three children: [property@Flap:content],
+ * [property@Flap:flap] and [property@Flap:separator]. Content is the primary
+ * child, flap is displayed next to it when unfolded, or overlays it when
+ * folded. Flap can be shown or hidden by changing the
+ * [property@Flap:reveal-flap] value, as well as via swipe gestures if
+ * [property@Flap:swipe-to-open] and/or [property@Flap:swipe-to-close] are set
+ * to `TRUE`.
  *
- * #HdyFlap:flap is transparent by default; add the .background style class to
- * it if this is unwanted.
+ * Optionally, a separator can be provided, which would be displayed between the
+ * content and the flap when there's no shadow to separate them, depending on
+ * the transition type.
  *
- * If #HdyFlap:modal is set to %TRUE, content becomes completely inaccessible
- * when the flap is revealed when folded.
+ * [property@Flap:flap] is transparent by default; add the `.background` style
+ * class to it if this is unwanted.
+ *
+ * If [property@Flap:modal] is set to `TRUE`, content becomes completely
+ * inaccessible when the flap is revealed while folded.
  *
  * The position of the flap and separator children relative to the content is
- * determined by orientation, as well as  #HdyFlap:flap-position value.
+ * determined by orientation, as well as the [property@Flap:flap-position]
+ * value.
  *
  * Folding the flap will automatically hide the flap widget, and unfolding it
  * will automatically reveal it. If this behavior is not desired, the
- * #HdyFlap:locked property can be used to override it.
+ * [property@Flap:locked] property can be used to override it.
  *
  * Common use cases include sidebars, header bars that need to be able to
  * overlap the window content (for example, in fullscreen mode) and bottom
  * sheets.
  *
- * # HdyFlap as GtkBuildable
+ * ## HdyFlap as GtkBuildable
  *
- * The #HdyFlap implementation of the #GtkBuildable interface supports setting
- * the flap child by specifying “flap” as the “type” attribute of a
- * &lt;child&gt; element, and separator by specifying “separator”. Specifying
+ * The `HdyFlap` implementation of the [iface@Gtk.Buildable] interface supports
+ * setting the flap child by specifying “flap” as the “type” attribute of a
+ * <child> element, and separator by specifying “separator”. Specifying
  * “content” child type or omitting it results in setting the content child.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyFlap has a single CSS node with name flap. The node will get the style
- * classes .folded when it is folded, and .unfolded when it's not.
+ * `HdyFlap` has a single CSS node with name `flap`. The node will get the style
+ * classes `.folded` when it is folded, and `.unfolded` when it's not.
  *
  * Since: 1.2
  */
@@ -74,8 +78,7 @@
  * @HDY_FLAP_FOLD_POLICY_AUTO: Fold and unfold the flap based on available
  *   space.
  *
- * These enumeration values describe the possible folding behavior in a #HdyFlap
- * widget.
+ * Describes the possible folding behavior of a [class@Flap] widget.
  *
  * Since: 1.2
  */
@@ -90,9 +93,11 @@
  *   neither the flap nor content overlap each other. Both widgets can be
  *   swiped.
  *
+ * Describes transitions types of a [class@Flap] widget.
+ *
  * These enumeration values describe the possible transitions between children
- * in a #HdyFlap widget, as well as which areas can be swiped via
- * #HdyFlap:swipe-to-open and #HdyFlap:swipe-to-close.
+ * in a [class@Flap] widget, as well as which areas can be swiped via
+ * [property@Flap:swipe-to-open] and [property@Flap:swipe-to-close].
  *
  * New values may be added to this enum over time.
  *
@@ -1515,9 +1520,11 @@ hdy_flap_class_init (HdyFlapClass *klass)
   container_class->forall = hdy_flap_forall;
 
   /**
-   * HdyFlap:content:
+   * HdyFlap:content: (attributes org.gtk.Property.get=hdy_flap_get_content org.gtk.Property.set=hdy_flap_set_content)
    *
-   * The content widget, always displayed when unfolded, and partially visible
+   * The content widget.
+   *
+   * It's always displayed when unfolded, and partially visible
    * when folded.
    *
    * Since: 1.2
@@ -1530,10 +1537,11 @@ hdy_flap_class_init (HdyFlapClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:flap:
+   * HdyFlap:flap: (attributes org.gtk.Property.get=hdy_flap_get_flap org.gtk.Property.set=hdy_flap_set_flap)
    *
-   * The flap widget, only visible when #HdyFlap:reveal-progress is greater than
-   * 0.
+   * The flap widget.
+   *
+   * It's only visible when [property@Flap:reveal-progress] is greater than 0.
    *
    * Since: 1.2
    */
@@ -1545,11 +1553,13 @@ hdy_flap_class_init (HdyFlapClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:separator:
+   * HdyFlap:separator: (attributes org.gtk.Property.get=hdy_flap_get_separator org.gtk.Property.set=hdy_flap_set_separator)
    *
-   * The separator widget, displayed between content and flap when there's no
-   * shadow to display. When exactly it's visible depends on the
-   * #HdyFlap:transition-type value. If %NULL, no separator will be used.
+   * The separator widget.
+   *
+   * It's displayed between content and flap when there's no shadow to display.
+   * When exactly it's visible depends on the [property@Flap:transition-type]
+   * value. If `NULL`, no separator will be used.
    *
    * Since: 1.2
    */
@@ -1561,10 +1571,12 @@ hdy_flap_class_init (HdyFlapClass *klass)
                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:flap-position:
+   * HdyFlap:flap-position: (attributes org.gtk.Property.get=hdy_flap_get_flap_position org.gtk.Property.set=hdy_flap_set_flap_position)
    *
-   * The flap position for @self. If @GTK_PACK_START, the flap is displayed
-   * before the content, if @GTK_PACK_END, it's displayed after the content.
+   * The flap position.
+   *
+   * If `GTK_PACK_START`, the flap is displayed before the content, if
+   * `GTK_PACK_END`, it's displayed after the content.
    *
    * Since: 1.2
    */
@@ -1577,7 +1589,7 @@ hdy_flap_class_init (HdyFlapClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:reveal-flap:
+   * HdyFlap:reveal-flap: (attributes org.gtk.Property.get=hdy_flap_get_reveal_flap org.gtk.Property.set=hdy_flap_set_reveal_flap)
    *
    * Whether the flap widget is revealed.
    *
@@ -1591,7 +1603,7 @@ hdy_flap_class_init (HdyFlapClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:reveal-duration:
+   * HdyFlap:reveal-duration: (attributes org.gtk.Property.get=hdy_flap_get_reveal_duration org.gtk.Property.set=hdy_flap_set_reveal_duration)
    *
    * The reveal transition animation duration, in milliseconds.
    *
@@ -1606,10 +1618,12 @@ hdy_flap_class_init (HdyFlapClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:reveal-progress:
+   * HdyFlap:reveal-progress: (attributes org.gtk.Property.get=hdy_flap_get_reveal_progress)
    *
-   * The current reveal transition progress. 0 means fully hidden, 1 means fully
-   * revealed See #HdyFlap:reveal-flap.
+   * The current reveal transition progress.
+   *
+   * 0 means fully hidden, 1 means fully revealed. See
+   * [property@Flap:reveal-flap].
    *
    * Since: 1.2
    */
@@ -1621,10 +1635,11 @@ hdy_flap_class_init (HdyFlapClass *klass)
                           G_PARAM_READABLE);
 
   /**
-   * HdyFlap:fold-policy:
+   * HdyFlap:fold-policy: (attributes org.gtk.Property.get=hdy_flap_get_fold_policy org.gtk.Property.set=hdy_flap_set_fold_policy)
    *
-   * The current fold policy. See #HdyFlapFoldPolicy for available
-   * policies.
+   * The current fold policy.
+   *
+   * See [enum@FlapFoldPolicy] for available policies.
    *
    * Since: 1.2
    */
@@ -1637,7 +1652,7 @@ hdy_flap_class_init (HdyFlapClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:fold-duration:
+   * HdyFlap:fold-duration: (attributes org.gtk.Property.get=hdy_flap_get_fold_duration org.gtk.Property.set=hdy_flap_set_fold_duration)
    *
    * The fold transition animation duration, in milliseconds.
    *
@@ -1652,11 +1667,11 @@ hdy_flap_class_init (HdyFlapClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:folded:
+   * HdyFlap:folded: (attributes org.gtk.Property.get=hdy_flap_get_folded)
    *
    * Whether the flap is currently folded.
    *
-   * See #HdyFlap:fold-policy.
+   * See [property@Flap:fold-policy].
    *
    * Since: 1.2
    */
@@ -1668,13 +1683,13 @@ hdy_flap_class_init (HdyFlapClass *klass)
                           G_PARAM_READABLE);
 
   /**
-   * HdyFlap:locked:
+   * HdyFlap:locked: (attributes org.gtk.Property.get=hdy_flap_get_locked org.gtk.Property.set=hdy_flap_set_locked)
    *
    * Whether the flap is locked.
    *
-   * If %FALSE, folding when the flap is revealed automatically closes it, and
-   * unfolding it when the flap is not revealed opens it. If %TRUE,
-   * #HdyFlap:reveal-flap value never changes on its own.
+   * If `FALSE`, folding when the flap is revealed automatically closes it, and
+   * unfolding it when the flap is not revealed opens it. If `TRUE`,
+   * [property@Flap:reveal-flap] value never changes on its own.
    *
    * Since: 1.2
    */
@@ -1686,14 +1701,13 @@ hdy_flap_class_init (HdyFlapClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:transition-type:
+   * HdyFlap:transition-type: (attributes org.gtk.Property.get=hdy_flap_get_transition_type org.gtk.Property.set=hdy_flap_set_transition_type)
    *
-   * The type of animation that will be used for reveal and fold transitions
-   * in @self.
+   * the type of animation used for reveal and fold transitions.
    *
-   * #HdyFlap:flap is transparent by default, which means the content will be
-   * seen through it with %HDY_FLAP_TRANSITION_TYPE_OVER transitions; add the
-   * .background style class to it if this is unwanted.
+   * [property@Flap:flap] is transparent by default, which means the content
+   * will be seen through it with `HDY_FLAP_TRANSITION_TYPE_OVER` transitions;
+   * add the `.background` style class to it if this is unwanted.
    *
    * Since: 1.2
    */
@@ -1706,13 +1720,13 @@ hdy_flap_class_init (HdyFlapClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:modal:
+   * HdyFlap:modal: (attributes org.gtk.Property.get=hdy_flap_get_modal org.gtk.Property.set=hdy_flap_set_modal)
    *
    * Whether the flap is modal.
    *
-   * If %TRUE, clicking the content widget while flap is revealed, as well as
-   * pressing Escape key, will close the flap. If %FALSE, clicks are passed
-   * through to the content widget.
+   * If `TRUE`, clicking the content widget while flap is revealed, as well as
+   * pressing the <kbd>Esc</kbd> key, will close the flap. If `FALSE`, clicks
+   * are passed through to the content widget.
    *
    * Since: 1.2
    */
@@ -1724,11 +1738,12 @@ hdy_flap_class_init (HdyFlapClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:swipe-to-open:
+   * HdyFlap:swipe-to-open: (attributes org.gtk.Property.get=hdy_flap_get_swipe_to_open org.gtk.Property.set=hdy_flap_set_swipe_to_open)
    *
    * Whether the flap can be opened with a swipe gesture.
    *
-   * The area that can be swiped depends on the #HdyFlap:transition-type value.
+   * The area that can be swiped depends on the [property@Flap:transition-type]
+   * value.
    *
    * Since: 1.2
    */
@@ -1740,11 +1755,12 @@ hdy_flap_class_init (HdyFlapClass *klass)
                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyFlap:swipe-to-close:
+   * HdyFlap:swipe-to-close: (attributes org.gtk.Property.get=hdy_flap_get_swipe_to_close org.gtk.Property.set=hdy_flap_set_swipe_to_close)
    *
    * Whether the flap can be closed with a swipe gesture.
    *
-   * The area that can be swiped depends on the #HdyFlap:transition-type value.
+   * The area that can be swiped depends on the [property@Flap:transition-type]
+   * value.
    *
    * Since: 1.2
    */
@@ -2011,9 +2027,9 @@ hdy_flap_swipeable_init (HdySwipeableInterface *iface)
 /**
  * hdy_flap_new:
  *
- * Creates a new #HdyFlap.
+ * Creates a new `HdyFlap`.
  *
- * Returns: a new #HdyFlap
+ * Returns: the newly created `HdyFlap`
  *
  * Since: 1.2
  */
@@ -2024,8 +2040,8 @@ hdy_flap_new (void)
 }
 
 /**
- * hdy_flap_get_content:
- * @self: a #HdyFlap
+ * hdy_flap_get_content: (attributes org.gtk.Method.get_property=content)
+ * @self: a flap
  *
  * Gets the content widget for @self
  *
@@ -2042,12 +2058,13 @@ hdy_flap_get_content (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_content:
- * @self: a #HdyFlap
- * @content: (nullable): the content widget, or %NULL
+ * hdy_flap_set_content: (attributes org.gtk.Method.set_property=content)
+ * @self: a flap
+ * @content: (nullable): the content widget
  *
- * Sets the content widget for @self, always displayed when unfolded, and
- * partially visible when folded.
+ * Sets the content widget for @self.
+ *
+ * It is always displayed when unfolded, and partially visible when folded.
  *
  * Since: 1.2
  */
@@ -2075,8 +2092,8 @@ hdy_flap_set_content (HdyFlap   *self,
 }
 
 /**
- * hdy_flap_get_flap:
- * @self: a #HdyFlap
+ * hdy_flap_get_flap: (attributes org.gtk.Method.get_property=flap)
+ * @self: a flap
  *
  * Gets the flap widget for @self
  *
@@ -2093,12 +2110,11 @@ hdy_flap_get_flap (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_flap:
- * @self: a #HdyFlap
- * @flap: (nullable): the flap widget, or %NULL
+ * hdy_flap_set_flap: (attributes org.gtk.Method.set_property=flap)
+ * @self: a flap
+ * @flap: (nullable): the flap widget
  *
- * Sets the flap widget for @self, only visible when #HdyFlap:reveal-progress is
- * greater than 0.
+ * Sets the flap widget for @self.
  *
  * Since: 1.2
  */
@@ -2127,8 +2143,8 @@ hdy_flap_set_flap (HdyFlap   *self,
 }
 
 /**
- * hdy_flap_get_separator:
- * @self: a #HdyFlap
+ * hdy_flap_get_separator: (attributes org.gtk.Method.get_property=separator)
+ * @self: a flap
  *
  * Gets the separator widget for @self.
  *
@@ -2145,13 +2161,11 @@ hdy_flap_get_separator (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_separator:
- * @self: a #HdyFlap
- * @separator: (nullable): the separator widget, or %NULL
+ * hdy_flap_set_separator: (attributes org.gtk.Method.set_property=separator)
+ * @self: a flap
+ * @separator: (nullable): the separator widget
  *
- * Sets the separator widget for @self, displayed between content and flap when
- * there's no shadow to display. When exactly it's visible depends on the
- * #HdyFlap:transition-type value. If %NULL, no separator will be used.
+ * Sets the separator widget for @self.
  *
  * Since: 1.2
  */
@@ -2179,8 +2193,8 @@ hdy_flap_set_separator (HdyFlap   *self,
 }
 
 /**
- * hdy_flap_get_flap_position:
- * @self: a #HdyFlap
+ * hdy_flap_get_flap_position: (attributes org.gtk.Method.get_property=flap-position)
+ * @self: a flap
  *
  * Gets the flap position for @self.
  *
@@ -2197,12 +2211,11 @@ hdy_flap_get_flap_position (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_flap_position:
- * @self: a #HdyFlap
+ * hdy_flap_set_flap_position: (attributes org.gtk.Method.set_property=flap-position)
+ * @self: a flap
  * @position: the new value
  *
- * Sets the flap position for @self. If @GTK_PACK_START, the flap is displayed
- * before the content, if @GTK_PACK_END, it's displayed after the content.
+ * Sets the flap position for @self.
  *
  * Since: 1.2
  */
@@ -2226,12 +2239,12 @@ hdy_flap_set_flap_position (HdyFlap     *self,
 }
 
 /**
- * hdy_flap_get_reveal_flap:
- * @self: a #HdyFlap
+ * hdy_flap_get_reveal_flap: (attributes org.gtk.Method.get_property=reveal-flap)
+ * @self: a flap
  *
  * Gets whether the flap widget is revealed for @self.
  *
- * Returns: %TRUE if the flap widget is revealed, %FALSE otherwise.
+ * Returns: whether flap widget is revealed
  *
  * Since: 1.2
  */
@@ -2244,9 +2257,9 @@ hdy_flap_get_reveal_flap (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_reveal_flap:
- * @self: a #HdyFlap
- * @reveal_flap: %TRUE to reveal the flap widget, %FALSE otherwise
+ * hdy_flap_set_reveal_flap: (attributes org.gtk.Method.set_property=reveal-flap)
+ * @self: a flap
+ * @reveal_flap: `TRUE` to reveal the flap widget, `FALSE` otherwise
  *
  * Sets whether the flap widget is revealed for @self.
  *
@@ -2262,13 +2275,12 @@ hdy_flap_set_reveal_flap (HdyFlap  *self,
 }
 
 /**
- * hdy_flap_get_reveal_duration:
- * @self: a #HdyFlap
+ * hdy_flap_get_reveal_duration: (attributes org.gtk.Method.get_property=reveal-duration)
+ * @self: a flap
  *
- * Returns the amount of time (in milliseconds) that reveal transitions in @self
- * will take.
+ * Gets the amount of time that reveal transitions will take.
  *
- * Returns: the reveal transition duration
+ * Returns: the reveal transition duration, in milliseconds
  *
  * Since: 1.2
  */
@@ -2281,8 +2293,8 @@ hdy_flap_get_reveal_duration (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_reveal_duration:
- * @self: a #HdyFlap
+ * hdy_flap_set_reveal_duration: (attributes org.gtk.Method.set_property=reveal-duration)
+ * @self: a flap
  * @duration: the new duration, in milliseconds
  *
  * Sets the duration that reveal transitions in @self will take.
@@ -2304,11 +2316,10 @@ hdy_flap_set_reveal_duration (HdyFlap *self,
 }
 
 /**
- * hdy_flap_get_reveal_progress:
- * @self: a #HdyFlap
+ * hdy_flap_get_reveal_progress: (attributes org.gtk.Method.get_property=reveal-progress)
+ * @self: a flap
  *
- * Gets the current reveal transition progress for @self. 0 means fully hidden,
- * 1 means fully revealed. See #HdyFlap:reveal-flap.
+ * Gets the current reveal transition progress for @self.
  *
  * Returns: the current reveal progress for @self
  *
@@ -2323,10 +2334,10 @@ hdy_flap_get_reveal_progress (HdyFlap *self)
 }
 
 /**
- * hdy_flap_get_fold_policy:
- * @self: a #HdyFlap
+ * hdy_flap_get_fold_policy: (attributes org.gtk.Method.get_property=fold-policy)
+ * @self: a flap
  *
- * Gets the current fold policy of @self. See hdy_flap_set_fold_policy().
+ * Gets the current fold policy of @self.
  *
  * Returns: the current fold policy of @self
  *
@@ -2341,12 +2352,11 @@ hdy_flap_get_fold_policy (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_fold_policy:
- * @self: a #HdyFlap
- * @policy: Fold policy
+ * hdy_flap_set_fold_policy: (attributes org.gtk.Method.set_property=fold-policy)
+ * @self: a flap
+ * @policy: a fold policy
  *
- * Sets the current fold policy for @self. See #HdyFlapFoldPolicy for available
- * policies.
+ * Sets the current fold policy for @self.
  *
  * Since: 1.2
  */
@@ -2383,13 +2393,12 @@ hdy_flap_set_fold_policy (HdyFlap           *self,
 }
 
 /**
- * hdy_flap_get_fold_duration:
- * @self: a #HdyFlap
+ * hdy_flap_get_fold_duration: (attributes org.gtk.Method.get_property=fold-duration)
+ * @self: a flap
  *
- * Returns the amount of time (in milliseconds) that fold transitions in @self
- * will take.
+ * Gets the amount of time that fold transitions will take.
  *
- * Returns: the fold transition duration
+ * Returns: the fold transition duration, in milliseconds
  *
  * Since: 1.2
  */
@@ -2402,11 +2411,11 @@ hdy_flap_get_fold_duration (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_fold_duration:
- * @self: a #HdyFlap
+ * hdy_flap_set_fold_duration: (attributes org.gtk.Method.set_property=fold-duration)
+ * @self: a flap
  * @duration: the new duration, in milliseconds
  *
- * Sets the duration that fold transitions in @self will take.
+ * Sets the duration that fold transitions will take.
  *
  * Since: 1.2
  */
@@ -2425,14 +2434,12 @@ hdy_flap_set_fold_duration (HdyFlap *self,
 }
 
 /**
- * hdy_flap_get_folded:
- * @self: a #HdyFlap
+ * hdy_flap_get_folded: (attributes org.gtk.Method.get_property=folded)
+ * @self: a flap
  *
  * Gets whether @self is currently folded.
  *
- * See #HdyFlap:fold-policy.
- *
- * Returns: %TRUE if @self is currently folded, %FALSE otherwise
+ * Returns: `TRUE` if @self is currently folded
  *
  * Since: 1.2
  */
@@ -2445,12 +2452,12 @@ hdy_flap_get_folded (HdyFlap *self)
 }
 
 /**
- * hdy_flap_get_locked:
- * @self: a #HdyFlap
+ * hdy_flap_get_locked: (attributes org.gtk.Method.get_property=locked)
+ * @self: a flap
  *
  * Gets whether @self is locked.
  *
- * Returns: %TRUE if @self is locked, %FALSE otherwise
+ * Returns: whether @self is locked
  *
  * Since: 1.2
  */
@@ -2463,15 +2470,15 @@ hdy_flap_get_locked (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_locked:
- * @self: a #HdyFlap
+ * hdy_flap_set_locked: (attributes org.gtk.Method.set_property=locked)
+ * @self: a flap
  * @locked: the new value
  *
  * Sets whether @self is locked.
  *
- * If %FALSE, folding @self when the flap is revealed automatically closes it,
- * and unfolding it when the flap is not revealed opens it. If %TRUE,
- * #HdyFlap:reveal-flap value never changes on its own.
+ * If `FALSE`, folding @self when the flap is revealed automatically closes it,
+ * and unfolding it when the flap is not revealed opens it. If `TRUE`,
+ * [property@Flap:reveal-flap] value never changes on its own.
  *
  * Since: 1.2
  */
@@ -2492,11 +2499,10 @@ hdy_flap_set_locked (HdyFlap  *self,
 }
 
 /**
- * hdy_flap_get_transition_type:
- * @self: a #HdyFlap
+ * hdy_flap_get_transition_type: (attributes org.gtk.Method.get_property=transition-type)
+ * @self: a flap
  *
- * Gets the type of animation that will be used for reveal and fold transitions
- * in @self.
+ * Gets the type of animation used for reveal and fold transitions in @self.
  *
  * Returns: the current transition type of @self
  *
@@ -2511,16 +2517,11 @@ hdy_flap_get_transition_type (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_transition_type:
- * @self: a #HdyFlap
+ * hdy_flap_set_transition_type: (attributes org.gtk.Method.set_property=transition-type)
+ * @self: a flap
  * @transition_type: the new transition type
  *
- * Sets the type of animation that will be used for reveal and fold transitions
- * in @self.
- *
- * #HdyFlap:flap is transparent by default, which means the content will be seen
- * through it with %HDY_FLAP_TRANSITION_TYPE_OVER transitions; add the
- * .background style class to it if this is unwanted.
+ * Sets the type of animation used for reveal and fold transitions in @self.
  *
  * Since: 1.2
  */
@@ -2545,12 +2546,12 @@ hdy_flap_set_transition_type (HdyFlap               *self,
 }
 
 /**
- * hdy_flap_get_modal:
- * @self: a #HdyFlap
+ * hdy_flap_get_modal: (attributes org.gtk.Method.get_property=modal)
+ * @self: a flap
  *
- * Gets whether the @self is modal. See hdy_flap_set_modal().
+ * Gets whether the @self is modal.
  *
- * Returns: %TRUE if @self is modal
+ * Returns: whether @self is modal
  *
  * Since: 1.2
  */
@@ -2563,15 +2564,15 @@ hdy_flap_get_modal (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_modal:
- * @self: a #HdyFlap
- * @modal: Whether @self can be closed with a click
+ * hdy_flap_set_modal: (attributes org.gtk.Method.set_property=modal)
+ * @self: a flap
+ * @modal: whether @self can be closed with a click
  *
  * Sets whether the @self can be closed with a click.
  *
- * If @modal is %TRUE, clicking the content widget while flap is revealed, or
- * pressing Escape key, will close the flap. If %FALSE, clicks are passed
- * through to the content widget.
+ * If @modal is `TRUE`, clicking the content widget while flap is revealed, or
+ * pressing the <kbd>Esc</kbd> key, will close the flap. If `FALSE`, clicks are
+ * passed through to the content widget.
  *
  * Since: 1.2
  */
@@ -2599,12 +2600,12 @@ hdy_flap_set_modal (HdyFlap  *self,
 }
 
 /**
- * hdy_flap_get_swipe_to_open:
- * @self: a #HdyFlap
+ * hdy_flap_get_swipe_to_open: (attributes org.gtk.Method.get_property=swipe-to-open)
+ * @self: a flap
  *
  * Gets whether @self can be opened with a swipe gesture.
  *
- * Returns: %TRUE if @self can be opened with a swipe gesture
+ * Returns: `TRUE` if @self can be opened with a swipe gesture
  *
  * Since: 1.2
  */
@@ -2617,13 +2618,14 @@ hdy_flap_get_swipe_to_open (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_swipe_to_open:
- * @self: a #HdyFlap
- * @swipe_to_open: Whether @self can be opened with a swipe gesture
+ * hdy_flap_set_swipe_to_open: (attributes org.gtk.Method.set_property=swipe-to-open)
+ * @self: a flap
+ * @swipe_to_open: whether @self can be opened with a swipe gesture
  *
  * Sets whether @self can be opened with a swipe gesture.
  *
- * The area that can be swiped depends on the #HdyFlap:transition-type value.
+ * The area that can be swiped depends on the [property@Flap:transition-type]
+ * value.
  *
  * Since: 1.2
  */
@@ -2646,12 +2648,12 @@ hdy_flap_set_swipe_to_open (HdyFlap  *self,
 }
 
 /**
- * hdy_flap_get_swipe_to_close:
- * @self: a #HdyFlap
+ * hdy_flap_get_swipe_to_close: (attributes org.gtk.Method.get_property=swipe-to-close)
+ * @self: a flap
  *
  * Gets whether @self can be closed with a swipe gesture.
  *
- * Returns: %TRUE if @self can be closed with a swipe gesture
+ * Returns: `TRUE` if @self can be closed with a swipe gesture
  *
  * Since: 1.2
  */
@@ -2664,13 +2666,13 @@ hdy_flap_get_swipe_to_close (HdyFlap *self)
 }
 
 /**
- * hdy_flap_set_swipe_to_close:
- * @self: a #HdyFlap
- * @swipe_to_close: Whether @self can be closed with a swipe gesture
+ * hdy_flap_set_swipe_to_close: (attributes org.gtk.Method.set_property=swipe-to-close)
+ * @self: a flap
+ * @swipe_to_close: whether @self can be closed with a swipe gesture
  *
  * Sets whether @self can be closed with a swipe gesture.
  *
- * The area that can be swiped depends on the #HdyFlap:transition-type value.
+ * The area that can be swiped depends on the [property@Flap:transition-type] value.
  *
  * Since: 1.2
  */

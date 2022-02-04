@@ -17,34 +17,38 @@
 #include "hdy-swipeable.h"
 
 /**
- * PRIVATE:hdy-stackable-box
- * @short_description: An adaptive container acting like a box or a stack.
- * @Title: HdyStackableBox
- * @stability: Private
- * @See_also: #HdyDeck, #HdyLeaflet
+ * HdyStackableBox:
  *
- * The #HdyStackableBox object can arrange the widgets it manages like #GtkBox
- * does or like a #GtkStack does, adapting to size changes by switching between
- * the two modes. These modes are named respectively “unfoled” and “folded”.
+ * An adaptive container acting like a box or a stack.
+ *
+ * The `HdyStackableBox` object can arrange the widgets it manages like
+ * [class@Gtk.Box] does or like a [class@Gtk.Stack] does, adapting to size
+ * changes by switching between the two modes. These modes are named
+ * respectively “unfoled” and “folded”.
  *
  * When there is enough space the children are displayed side by side, otherwise
  * only one is displayed. The threshold is dictated by the preferred minimum
  * sizes of the children.
  *
- * #HdyStackableBox is used as an internal implementation of #HdyDeck and
- * #HdyLeaflet.
+ * `HdyStackableBox` is used as an internal implementation of [class@Deck] and
+ * [class@Leaflet].
  *
  * Since: 1.0
  */
 
 /**
  * HdyStackableBoxTransitionType:
- * @HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER: Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
- * @HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER: Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
- * @HDY_STACKABLE_BOX_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down according to the orientation, text direction and the children order
+ * @HDY_STACKABLE_BOX_TRANSITION_TYPE_OVER: Cover the old page or uncover the
+ *   new page, sliding from or towards the end according to orientation, text
+ *   direction and children order
+ * @HDY_STACKABLE_BOX_TRANSITION_TYPE_UNDER: Uncover the new page or cover the
+ *   old page, sliding from or towards the start according to orientation, text
+ *   direction and children order
+ * @HDY_STACKABLE_BOX_TRANSITION_TYPE_SLIDE: Slide from left, right, up or down
+ *   according to the orientation, text direction and the children order
  *
  * This enumeration value describes the possible transitions between modes and
- * children in a #HdyStackableBox widget.
+ * children in a [class@StackableBox] widget.
  *
  * New values may be added to this enumeration over time.
  *
@@ -692,11 +696,11 @@ hdy_stackable_box_start_mode_transition (HdyStackableBox *self,
 
 /**
  * hdy_stackable_box_get_folded:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  *
  * Gets whether @self is folded.
  *
- * Returns: whether @self is folded.
+ * Returns: whether @self is folded
  *
  * Since: 1.0
  */
@@ -738,16 +742,16 @@ hdy_stackable_box_set_folded (HdyStackableBox *self,
 
 /**
  * hdy_stackable_box_set_homogeneous:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @folded: the fold
  * @orientation: the orientation
- * @homogeneous: %TRUE to make @self homogeneous
+ * @homogeneous: `TRUE` to make @self homogeneous
  *
- * Sets the #HdyStackableBox to be homogeneous or not for the given fold and orientation.
- * If it is homogeneous, the #HdyStackableBox will request the same
- * width or height for all its children depending on the orientation.
- * If it isn't and it is folded, the widget may change width or height
- * when a different child becomes visible.
+ * Sets the [class@StackableBox] to be homogeneous or not for the given fold and
+ * orientation. If it is homogeneous, the [class@StackableBox] will request the
+ * same width or height for all its children depending on the orientation. If it
+ * isn't and it is folded, the widget may change width or height when a
+ * different child becomes visible.
  *
  * Since: 1.0
  */
@@ -775,14 +779,14 @@ hdy_stackable_box_set_homogeneous (HdyStackableBox *self,
 
 /**
  * hdy_stackable_box_get_homogeneous:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @folded: the fold
  * @orientation: the orientation
  *
- * Gets whether @self is homogeneous for the given fold and orientation.
- * See hdy_stackable_box_set_homogeneous().
+ * Gets whether @self is homogeneous for the given fold and orientation. See
+ * [method@StackableBox.set_homogeneous].
  *
- * Returns: whether @self is homogeneous for the given fold and orientation.
+ * Returns: whether @self is homogeneous for the given fold and orientation
  *
  * Since: 1.0
  */
@@ -800,10 +804,10 @@ hdy_stackable_box_get_homogeneous (HdyStackableBox *self,
 
 /**
  * hdy_stackable_box_get_transition_type:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  *
- * Gets the type of animation that will be used
- * for transitions between modes and children in @self.
+ * Gets the type of animation that will be used for transitions between modes
+ * and children in @self.
  *
  * Returns: the current transition type of @self
  *
@@ -819,7 +823,7 @@ hdy_stackable_box_get_transition_type (HdyStackableBox *self)
 
 /**
  * hdy_stackable_box_set_transition_type:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @transition: the new transition type
  *
  * Sets the type of animation that will be used for transitions between modes
@@ -847,12 +851,11 @@ hdy_stackable_box_set_transition_type (HdyStackableBox               *self,
 
 /**
  * hdy_stackable_box_get_mode_transition_duration:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  *
- * Returns the amount of time (in milliseconds) that
- * transitions between modes in @self will take.
+ * Returns the amount of time that transitions between modes in @self will take.
  *
- * Returns: the mode transition duration
+ * Returns: the mode transition duration, in milliseconds
  *
  * Since: 1.0
  */
@@ -866,11 +869,10 @@ hdy_stackable_box_get_mode_transition_duration (HdyStackableBox *self)
 
 /**
  * hdy_stackable_box_set_mode_transition_duration:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @duration: the new duration, in milliseconds
  *
- * Sets the duration that transitions between modes in @self
- * will take.
+ * Sets the duration that transitions between modes in @self will take.
  *
  * Since: 1.0
  */
@@ -890,12 +892,11 @@ hdy_stackable_box_set_mode_transition_duration (HdyStackableBox *self,
 
 /**
  * hdy_stackable_box_get_child_transition_duration:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  *
- * Returns the amount of time (in milliseconds) that
- * transitions between children in @self will take.
+ * Gets the amount of time that transitions between children in @self will take.
  *
- * Returns: the child transition duration
+ * Returns: the child transition duration, in milliseconds
  *
  * Since: 1.0
  */
@@ -909,11 +910,10 @@ hdy_stackable_box_get_child_transition_duration (HdyStackableBox *self)
 
 /**
  * hdy_stackable_box_set_child_transition_duration:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @duration: the new duration, in milliseconds
  *
- * Sets the duration that transitions between children in @self
- * will take.
+ * Sets the duration that transitions between children in @self will take.
  *
  * Since: 1.0
  */
@@ -933,7 +933,7 @@ hdy_stackable_box_set_child_transition_duration (HdyStackableBox *self,
 
 /**
  * hdy_stackable_box_get_visible_child:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  *
  * Gets the visible child widget.
  *
@@ -954,13 +954,14 @@ hdy_stackable_box_get_visible_child (HdyStackableBox *self)
 
 /**
  * hdy_stackable_box_set_visible_child:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @visible_child: the new child
  *
  * Makes @visible_child visible using a transition determined by
- * HdyStackableBox:transition-type and HdyStackableBox:child-transition-duration.
- * The transition can be cancelled by the user, in which case visible child will
- * change back to the previously visible child.
+ * [property@StackableBox:transition-type] and
+ * [property@StackableBox:child-transition-duration]. The transition can be
+ * cancelled by the user, in which case visible child will change back to the
+ * previously visible child.
  *
  * Since: 1.0
  */
@@ -984,7 +985,7 @@ hdy_stackable_box_set_visible_child (HdyStackableBox *self,
 
 /**
  * hdy_stackable_box_get_visible_child_name:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  *
  * Gets the name of the currently visible child widget.
  *
@@ -1005,12 +1006,12 @@ hdy_stackable_box_get_visible_child_name (HdyStackableBox *self)
 
 /**
  * hdy_stackable_box_set_visible_child_name:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @name: the name of a child
  *
  * Makes the child with the name @name visible.
  *
- * See hdy_stackable_box_set_visible_child() for more details.
+ * See [method@StackableBox.set_visible_child] for more details.
  *
  * Since: 1.0
  */
@@ -1034,12 +1035,11 @@ hdy_stackable_box_set_visible_child_name (HdyStackableBox *self,
 
 /**
  * hdy_stackable_box_get_child_transition_running:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  *
- * Returns whether @self is currently in a transition from one page to
- * another.
+ * Returns whether @self is currently in a transition from one page to another.
  *
- * Returns: %TRUE if the transition is currently running, %FALSE otherwise.
+ * Returns: `TRUE` if the transition is currently running
  *
  * Since: 1.0
  */
@@ -1054,14 +1054,14 @@ hdy_stackable_box_get_child_transition_running (HdyStackableBox *self)
 
 /**
  * hdy_stackable_box_set_interpolate_size:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @interpolate_size: the new value
  *
- * Sets whether or not @self will interpolate its size when
- * changing the visible child. If the #HdyStackableBox:interpolate-size
- * property is set to %TRUE, @self will interpolate its size between
- * the current one and the one it'll take after changing the
- * visible child, according to the set transition duration.
+ * Sets whether or not @self will interpolate its size when changing the visible
+ * child. If the [property@StackableBox:interpolate-size] property is set to
+ * `TRUE`, @self will interpolate its size between the current one and the one
+ * it'll take after changing the visible child, according to the set transition
+ * duration.
  *
  * Since: 1.0
  */
@@ -1082,12 +1082,12 @@ hdy_stackable_box_set_interpolate_size (HdyStackableBox *self,
 
 /**
  * hdy_stackable_box_get_interpolate_size:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  *
- * Returns whether the #HdyStackableBox is set up to interpolate between
- * the sizes of children on page switch.
+ * Returns whether the [class@StackableBox] is set up to interpolate between the
+ * sizes of children on page switch.
  *
- * Returns: %TRUE if child sizes are interpolated
+ * Returns: `TRUE` if child sizes are interpolated
  *
  * Since: 1.0
  */
@@ -1101,11 +1101,11 @@ hdy_stackable_box_get_interpolate_size (HdyStackableBox *self)
 
 /**
  * hdy_stackable_box_set_can_swipe_back:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @can_swipe_back: the new value
  *
  * Sets whether or not @self allows switching to the previous child that has
- * 'navigatable' child property set to %TRUE via a swipe gesture
+ * 'navigatable' child property set to `TRUE` via a swipe gesture
  *
  * Since: 1.0
  */
@@ -1127,12 +1127,13 @@ hdy_stackable_box_set_can_swipe_back (HdyStackableBox *self,
 }
 
 /**
- * hdy_stackable_box_get_can_swipe_back
- * @self: a #HdyStackableBox
+ * hdy_stackable_box_get_can_swipe_back:
+ * @self: a stackable box
  *
- * Returns whether the #HdyStackableBox allows swiping to the previous child.
+ * Returns whether the [class@StackableBox] allows swiping to the previous
+ * child.
  *
- * Returns: %TRUE if back swipe is enabled.
+ * Returns: `TRUE` if back swipe is enabled
  *
  * Since: 1.0
  */
@@ -1146,11 +1147,11 @@ hdy_stackable_box_get_can_swipe_back (HdyStackableBox *self)
 
 /**
  * hdy_stackable_box_set_can_swipe_forward:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @can_swipe_forward: the new value
  *
  * Sets whether or not @self allows switching to the next child that has
- * 'navigatable' child property set to %TRUE via a swipe gesture.
+ * 'navigatable' child property set to `TRUE` via a swipe gesture.
  *
  * Since: 1.0
  */
@@ -1172,12 +1173,12 @@ hdy_stackable_box_set_can_swipe_forward (HdyStackableBox *self,
 }
 
 /**
- * hdy_stackable_box_get_can_swipe_forward
- * @self: a #HdyStackableBox
+ * hdy_stackable_box_get_can_swipe_forward:
+ * @self: a stackable box
  *
- * Returns whether the #HdyStackableBox allows swiping to the next child.
+ * Returns whether the [class@StackableBox] allows swiping to the next child.
  *
- * Returns: %TRUE if forward swipe is enabled.
+ * Returns: `TRUE` if forward swipe is enabled
  *
  * Since: 1.0
  */
@@ -1214,16 +1215,15 @@ find_swipeable_child (HdyStackableBox        *self,
 }
 
 /**
- * hdy_stackable_box_get_adjacent_child
- * @self: a #HdyStackableBox
+ * hdy_stackable_box_get_adjacent_child:
+ * @self: a stackable box
  * @direction: the direction
  *
  * Gets the previous or next child that doesn't have 'navigatable' child
- * property set to %FALSE, or %NULL if it doesn't exist. This will be the same
- * widget hdy_stackable_box_navigate() will navigate to.
+ * property set to `FALSE`, or `NULL` if it doesn't exist. This will be the same
+ * widget [method@Stackablebox.navigate] will navigate to.
  *
- * Returns: (nullable) (transfer none): the previous or next child, or
- *   %NULL if it doesn't exist.
+ * Returns: (nullable) (transfer none): the previous or next navigatable child
  *
  * Since: 1.0
  */
@@ -1244,15 +1244,15 @@ hdy_stackable_box_get_adjacent_child (HdyStackableBox        *self,
 }
 
 /**
- * hdy_stackable_box_navigate
- * @self: a #HdyStackableBox
+ * hdy_stackable_box_navigate:
+ * @self: a stackable box
  * @direction: the direction
  *
- * Switches to the previous or next child that doesn't have 'navigatable'
- * child property set to %FALSE, similar to performing a swipe gesture to go
- * in @direction.
+ * Switches to the previous or next child that doesn't have 'navigatable' child
+ * property set to `FALSE`, similar to performing a swipe gesture to go in
+ * @direction.
  *
- * Returns: %TRUE if visible child was changed, %FALSE otherwise.
+ * Returns: `TRUE` if visible child was changed
  *
  * Since: 1.0
  */
@@ -1276,10 +1276,10 @@ hdy_stackable_box_navigate (HdyStackableBox        *self,
 
 /**
  * hdy_stackable_box_get_child_by_name:
- * @self: a #HdyStackableBox
+ * @self: a stackable box
  * @name: the name of the child to find
  *
- * Finds the child of @self with the name given as the argument. Returns %NULL
+ * Finds the child of @self with the name given as the argument. Returns `NULL`
  * if there is no child with this name.
  *
  * Returns: (transfer none) (nullable): the requested child of @self
@@ -3025,9 +3025,9 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
   /**
    * HdyStackableBox:folded:
    *
-   * %TRUE if the widget is folded.
+   * `TRUE` if the widget is folded.
    *
-   * The #HdyStackableBox will be folded if the size allocated to it is smaller
+   * The [class@StackableBox] will be folded if the size allocated to it is smaller
    * than the sum of the natural size of its children, it will be unfolded
    * otherwise.
    */
@@ -3041,7 +3041,7 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
   /**
    * HdyStackableBox:hhomogeneous_folded:
    *
-   * %TRUE if the widget allocates the same width for all children when folded.
+   * `TRUE` if the widget allocates the same width for all children when folded.
    */
   props[PROP_HHOMOGENEOUS_FOLDED] =
     g_param_spec_boolean ("hhomogeneous-folded",
@@ -3053,7 +3053,7 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
   /**
    * HdyStackableBox:vhomogeneous_folded:
    *
-   * %TRUE if the widget allocates the same height for all children when folded.
+   * `TRUE` if the widget allocates the same height for all children when folded.
    */
   props[PROP_VHOMOGENEOUS_FOLDED] =
     g_param_spec_boolean ("vhomogeneous-folded",
@@ -3065,7 +3065,7 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
   /**
    * HdyStackableBox:hhomogeneous_unfolded:
    *
-   * %TRUE if the widget allocates the same width for all children when unfolded.
+   * `TRUE` if the widget allocates the same width for all children when unfolded.
    */
   props[PROP_HHOMOGENEOUS_UNFOLDED] =
     g_param_spec_boolean ("hhomogeneous-unfolded",
@@ -3077,7 +3077,7 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
   /**
    * HdyStackableBox:vhomogeneous_unfolded:
    *
-   * %TRUE if the widget allocates the same height for all children when unfolded.
+   * `TRUE` if the widget allocates the same height for all children when unfolded.
    */
   props[PROP_VHOMOGENEOUS_UNFOLDED] =
     g_param_spec_boolean ("vhomogeneous-unfolded",
@@ -3151,7 +3151,7 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
    * HdyStackableBox:can-swipe-back:
    *
    * Whether or not the widget allows switching to the previous child that has
-   * 'navigatable' child property set to %TRUE via a swipe gesture.
+   * 'navigatable' child property set to `TRUE` via a swipe gesture.
    *
    * Since: 1.0
    */
@@ -3166,7 +3166,7 @@ hdy_stackable_box_class_init (HdyStackableBoxClass *klass)
    * HdyStackableBox:can-swipe-forward:
    *
    * Whether or not the widget allows switching to the next child that has
-   * 'navigatable' child property set to %TRUE via a swipe gesture.
+   * 'navigatable' child property set to `TRUE` via a swipe gesture.
    *
    * Since: 1.0
    */

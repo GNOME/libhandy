@@ -43,7 +43,7 @@ typedef enum {
 
 /**
  * HdyHeaderBarClass
- * @parent_class: The parent class
+ * @parent_class: the parent class
  */
 struct _HdyHeaderBarClass
 {

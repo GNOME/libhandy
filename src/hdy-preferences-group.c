@@ -13,22 +13,22 @@
 #include "hdy-preferences-row.h"
 
 /**
- * SECTION:hdy-preferences-group
- * @short_description: A group gathering preferences rows.
- * @Title: HdyPreferencesGroup
+ * HdyPreferencesGroup:
  *
- * A #HdyPreferencesGroup represents a group or tightly related preferences,
- * which in turn are represented by HdyPreferencesRow.
+ * A group of preference rows.
+ *
+ * A `HdyPreferencesGroup` represents a group or tightly related preferences,
+ * which in turn are represented by [class@PreferencesRow].
  *
  * To summarize the role of the preferences it gathers, a group can have both a
- * title and a description. The title will be used by #HdyPreferencesWindow to
- * let the user look for a preference.
+ * title and a description. The title will be used by [class@PreferencesWindow]
+ * to let the user look for a preference.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyPreferencesGroup has a single CSS node with name preferencesgroup.
+ * `HdyPreferencesGroup` has a single CSS node with name `preferencesgroup`.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 
 typedef struct
@@ -269,11 +269,11 @@ hdy_preferences_group_class_init (HdyPreferencesGroupClass *klass)
   container_class->forall = hdy_preferences_group_forall;
 
   /**
-   * HdyPreferencesGroup:description:
+   * HdyPreferencesGroup:description: (attributes org.gtk.Property.get=hdy_preferences_group_get_description org.gtk.Property.set=hdy_preferences_group_set_description)
    *
    * The description for this group of preferences.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_DESCRIPTION] =
     g_param_spec_string ("description",
@@ -283,11 +283,11 @@ hdy_preferences_group_class_init (HdyPreferencesGroupClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyPreferencesGroup:title:
+   * HdyPreferencesGroup:title: (attributes org.gtk.Property.get=hdy_preferences_group_get_title org.gtk.Property.set=hdy_preferences_group_set_title)
    *
    * The title for this group of preferences.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_TITLE] =
     g_param_spec_string ("title",
@@ -297,7 +297,7 @@ hdy_preferences_group_class_init (HdyPreferencesGroupClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyPreferencesGroup:use-markup:
+   * HdyPreferencesGroup:use-markup: (attributes org.gtk.Property.get=hdy_preferences_group_get_use_markup org.gtk.Property.set=hdy_preferences_group_set_use_markup)
    *
    * Whether to use markup for the title and description.
    *
@@ -337,11 +337,11 @@ hdy_preferences_group_init (HdyPreferencesGroup *self)
 /**
  * hdy_preferences_group_new:
  *
- * Creates a new #HdyPreferencesGroup.
+ * Creates a new `HdyPreferencesGroup`.
  *
- * Returns: a new #HdyPreferencesGroup
+ * Returns: the newly created `HdyPreferencesGroup`
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkWidget *
 hdy_preferences_group_new (void)
@@ -350,14 +350,14 @@ hdy_preferences_group_new (void)
 }
 
 /**
- * hdy_preferences_group_get_title:
- * @self: a #HdyPreferencesGroup
+ * hdy_preferences_group_get_title: (attributes org.gtk.Method.get_property=title)
+ * @self: a preferences group
  *
  * Gets the title of @self.
  *
- * Returns: the title of @self.
+ * Returns: the title of @self
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 const gchar *
 hdy_preferences_group_get_title (HdyPreferencesGroup *self)
@@ -372,13 +372,13 @@ hdy_preferences_group_get_title (HdyPreferencesGroup *self)
 }
 
 /**
- * hdy_preferences_group_set_title:
- * @self: a #HdyPreferencesGroup
+ * hdy_preferences_group_set_title: (attributes org.gtk.Method.set_property=title)
+ * @self: a preferences group
  * @title: the title
  *
  * Sets the title for @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_preferences_group_set_title (HdyPreferencesGroup *self,
@@ -400,13 +400,12 @@ hdy_preferences_group_set_title (HdyPreferencesGroup *self,
 }
 
 /**
- * hdy_preferences_group_get_description:
- * @self: a #HdyPreferencesGroup
+ * hdy_preferences_group_get_description: (attributes org.gtk.Method.get_property=description)
+ * @self: a preferences group
  *
+ * Returns: the description of @self
  *
- * Returns: the description of @self.
- *
- * Since: 0.0.10
+ * Since: 1.0
  */
 const gchar *
 hdy_preferences_group_get_description (HdyPreferencesGroup *self)
@@ -421,13 +420,13 @@ hdy_preferences_group_get_description (HdyPreferencesGroup *self)
 }
 
 /**
- * hdy_preferences_group_set_description:
- * @self: a #HdyPreferencesGroup
+ * hdy_preferences_group_set_description: (attributes org.gtk.Method.set_property=description)
+ * @self: a preferences group
  * @description: the description
  *
  * Sets the description for @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_preferences_group_set_description (HdyPreferencesGroup *self,
@@ -449,12 +448,12 @@ hdy_preferences_group_set_description (HdyPreferencesGroup *self,
 }
 
 /**
- * hdy_preferences_group_get_use_markup:
- * @self: a #HdyPreferencesGroup
+ * hdy_preferences_group_get_use_markup: (attributes org.gtk.Method.get_property=use-markup)
+ * @self: a preferences group
  *
  * Gets whether @self uses markup for the title and description.
  *
- * Returns: Whether @self uses markup for its labels.
+ * Returns: whether @self uses markup for its labels
  *
  * Since: 1.4
  */
@@ -471,8 +470,8 @@ hdy_preferences_group_get_use_markup (HdyPreferencesGroup *self)
 }
 
 /**
- * hdy_preferences_group_set_use_markup:
- * @self: a #HdyPreferencesGroup
+ * hdy_preferences_group_set_use_markup: (attributes org.gtk.Method.set_property=use-markup)
+ * @self: a preferences group
  * @use_markup: whether to use markup
  *
  * Sets whether @self uses markup for the title and description.
@@ -520,14 +519,14 @@ add_preferences_to_model (HdyPreferencesRow *row,
   g_list_store_append (model, row);
 }
 
-/**
+/*< private >
  * hdy_preferences_group_add_preferences_to_model: (skip)
- * @self: a #HdyPreferencesGroup
+ * @self: a preferences group
  * @model: the model
  *
  * Add preferences from @self to the model.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_preferences_group_add_preferences_to_model (HdyPreferencesGroup *self,

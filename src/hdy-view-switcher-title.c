@@ -12,23 +12,26 @@
 #include "hdy-squeezer.h"
 
 /**
- * SECTION:hdy-view-switcher-title
- * @short_description: A view switcher title.
- * @title: HdyViewSwitcherTitle
- * @See_also: #HdyHeaderBar, #HdyViewSwitcher, #HdyViewSwitcherBar
+ * HdyViewSwitcherTitle:
  *
- * A widget letting you switch between multiple views offered by a #GtkStack,
- * via an #HdyViewSwitcher. It is designed to be used as the title widget of a
- * #HdyHeaderBar, and will display the window's title when the window is too
- * narrow to fit the view switcher e.g. on mobile phones, or if there are less
- * than two views.
+ * A view switcher title.
  *
- * You can conveniently bind the #HdyViewSwitcherBar:reveal property to
- * #HdyViewSwitcherTitle:title-visible to automatically reveal the view switcher
- * bar when the title label is displayed in place of the view switcher.
+ * A widget letting you switch between multiple views contained by a
+ * [class@Gtk.Stack], via an [class@ViewSwitcher].
  *
- * An example of the UI definition for a common use case:
- * |[
+ * It is designed to be used as the title widget of a [class@HeaderBar], and
+ * will display the window's title when the window is too narrow to fit the view
+ * switcher e.g. on mobile phones, or if there are less than two views.
+ *
+ * `HdyViewSwitcherTitle` is intended to be used together with
+ * [class@ViewSwitcherBar].
+ *
+ * A common use case is to bind the [property@ViewSwitcherBar:reveal] property
+ * to [property@ViewSwitcherTitle:title-visible] to automatically reveal the
+ * view switcher bar when the title label is displayed in place of the view
+ * switcher, as follows:
+ *
+ * ```xml
  * <object class="GtkWindow"/>
  *   <child type="titlebar">
  *     <object class="HdyHeaderBar">
@@ -58,11 +61,11 @@
  *     </object>
  *   </child>
  * </object>
- * ]|
+ * ```
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyViewSwitcherTitle has a single CSS node with name viewswitchertitle.
+ * `HdyViewSwitcherTitle` has a single CSS node with name `viewswitchertitle`.
  *
  * Since: 1.0
  */
@@ -218,10 +221,9 @@ hdy_view_switcher_title_class_init (HdyViewSwitcherTitleClass *klass)
   object_class->set_property = hdy_view_switcher_title_set_property;
 
   /**
-   * HdyViewSwitcherTitle:policy:
+   * HdyViewSwitcherTitle:policy: (attributes org.gtk.Property.get=hdy_view_switcher_title_get_policy org.gtk.Property.set=hdy_view_switcher_title_set_policy)
    *
-   * The #HdyViewSwitcherPolicy the #HdyViewSwitcher should use to determine
-   * which mode to use.
+   * The policy used to determine which mode to use.
    *
    * Since: 1.0
    */
@@ -233,9 +235,9 @@ hdy_view_switcher_title_class_init (HdyViewSwitcherTitleClass *klass)
                        G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyViewSwitcherTitle:stack:
+   * HdyViewSwitcherTitle:stack: (attributes org.gtk.Property.get=hdy_view_switcher_title_get_stack org.gtk.Property.set=hdy_view_switcher_title_set_stack)
    *
-   * The #GtkStack the #HdyViewSwitcher controls.
+   * The [class@Gtk.Stack] the [class@ViewSwitcher] controls.
    *
    * Since: 1.0
    */
@@ -247,9 +249,12 @@ hdy_view_switcher_title_class_init (HdyViewSwitcherTitleClass *klass)
                          G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyViewSwitcherTitle:title:
+   * HdyViewSwitcherTitle:title: (attributes org.gtk.Property.get=hdy_view_switcher_title_get_title org.gtk.Property.set=hdy_view_switcher_title_set_title)
    *
-   * The title of the #HdyViewSwitcher.
+   * The title of the [class@ViewSwitcher].
+   *
+   * The title should give a user additional details. A good title should not
+   * include the application name.
    *
    * Since: 1.0
    */
@@ -261,9 +266,11 @@ hdy_view_switcher_title_class_init (HdyViewSwitcherTitleClass *klass)
                          G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyViewSwitcherTitle:subtitle:
+   * HdyViewSwitcherTitle:subtitle: (attributes org.gtk.Property.get=hdy_view_switcher_title_get_subtitle org.gtk.Property.set=hdy_view_switcher_title_set_subtitle)
    *
-   * The subtitle of the #HdyViewSwitcher.
+   * The subtitle of the [class@ViewSwitcher].
+   *
+   * The subtitle should give a user additional details.
    *
    * Since: 1.0
    */
@@ -275,9 +282,16 @@ hdy_view_switcher_title_class_init (HdyViewSwitcherTitleClass *klass)
                          G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyViewSwitcherTitle:view-switcher-enabled:
+   * HdyViewSwitcherTitle:view-switcher-enabled: (attributes org.gtk.Property.get=hdy_view_switcher_title_get_view_switcher_enabled org.gtk.Property.set=hdy_view_switcher_title_set_view_switcher_enabled)
    *
    * Whether the bar should be revealed or hidden.
+   *
+   * If it is disabled, the title will be displayed instead. This allows to
+   * programmatically hide the view switcher even if it fits in the available
+   * space.
+   *
+   * This can be used e.g. to ensure the view switcher is hidden below a certain
+   * window width, or any other constraint you find suitable.
    *
    * Since: 1.0
    */
@@ -289,7 +303,7 @@ hdy_view_switcher_title_class_init (HdyViewSwitcherTitleClass *klass)
                          G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyViewSwitcherTitle:title-visible:
+   * HdyViewSwitcherTitle:title-visible: (attributes org.gtk.Property.get=hdy_view_switcher_title_get_title_visible)
    *
    * Whether the bar should be revealed or hidden.
    *
@@ -333,9 +347,9 @@ hdy_view_switcher_title_init (HdyViewSwitcherTitle *self)
 /**
  * hdy_view_switcher_title_new:
  *
- * Creates a new #HdyViewSwitcherTitle widget.
+ * Creates a new `HdyViewSwitcherTitle`.
  *
- * Returns: a new #HdyViewSwitcherTitle
+ * Returns: the newly created `HdyViewSwitcherTitle`
  *
  * Since: 1.0
  */
@@ -346,8 +360,8 @@ hdy_view_switcher_title_new (void)
 }
 
 /**
- * hdy_view_switcher_title_get_policy:
- * @self: a #HdyViewSwitcherTitle
+ * hdy_view_switcher_title_get_policy: (attributes org.gtk.Method.get_property=policy)
+ * @self: a view switcher title
  *
  * Gets the policy of @self.
  *
@@ -364,8 +378,8 @@ hdy_view_switcher_title_get_policy (HdyViewSwitcherTitle *self)
 }
 
 /**
- * hdy_view_switcher_title_set_policy:
- * @self: a #HdyViewSwitcherTitle
+ * hdy_view_switcher_title_set_policy: (attributes org.gtk.Method.set_property=policy)
+ * @self: a view switcher title
  * @policy: the new policy
  *
  * Sets the policy of @self.
@@ -389,12 +403,12 @@ hdy_view_switcher_title_set_policy (HdyViewSwitcherTitle  *self,
 }
 
 /**
- * hdy_view_switcher_title_get_stack:
- * @self: a #HdyViewSwitcherTitle
+ * hdy_view_switcher_title_get_stack: (attributes org.gtk.Method.get_property=stack)
+ * @self: a view switcher title
  *
- * Get the #GtkStack being controlled by the #HdyViewSwitcher.
+ * Gets the stack controlled by @self.
  *
- * Returns: (nullable) (transfer none): the #GtkStack, or %NULL if none has been set
+ * Returns: (nullable) (transfer none): the stack
  *
  * Since: 1.0
  */
@@ -407,11 +421,11 @@ hdy_view_switcher_title_get_stack (HdyViewSwitcherTitle *self)
 }
 
 /**
- * hdy_view_switcher_title_set_stack:
- * @self: a #HdyViewSwitcherTitle
- * @stack: (nullable): a #GtkStack
+ * hdy_view_switcher_title_set_stack: (attributes org.gtk.Method.set_property=policy)
+ * @self: a view switcher title
+ * @stack: (nullable): a stack
  *
- * Sets the #GtkStack to control.
+ * Sets the [class@Gtk.Stack] to control.
  *
  * Since: 1.0
  */
@@ -445,12 +459,12 @@ hdy_view_switcher_title_set_stack (HdyViewSwitcherTitle *self,
 }
 
 /**
- * hdy_view_switcher_title_get_title:
- * @self: a #HdyViewSwitcherTitle
+ * hdy_view_switcher_title_get_title: (attributes org.gtk.Method.get_property=title)
+ * @self: a view switcher title
  *
- * Gets the title of @self. See hdy_view_switcher_title_set_title().
+ * Gets the title of @self.
  *
- * Returns: (transfer none) (nullable): the title of @self, or %NULL.
+ * Returns: (transfer none) (nullable): the title of @self
  *
  * Since: 1.0
  */
@@ -463,12 +477,11 @@ hdy_view_switcher_title_get_title (HdyViewSwitcherTitle *self)
 }
 
 /**
- * hdy_view_switcher_title_set_title:
- * @self: a #HdyViewSwitcherTitle
- * @title: (nullable): a title, or %NULL
+ * hdy_view_switcher_title_set_title: (attributes org.gtk.Method.set_property=title)
+ * @self: a view switcher title
+ * @title: (nullable): a title
  *
- * Sets the title of @self. The title should give a user additional details. A
- * good title should not include the application name.
+ * Sets the title of @self.
  *
  * Since: 1.0
  */
@@ -488,12 +501,12 @@ hdy_view_switcher_title_set_title (HdyViewSwitcherTitle *self,
 }
 
 /**
- * hdy_view_switcher_title_get_subtitle:
- * @self: a #HdyViewSwitcherTitle
+ * hdy_view_switcher_title_get_subtitle: (attributes org.gtk.Method.get_property=subtitle)
+ * @self: a view switcher title
  *
- * Gets the subtitle of @self. See hdy_view_switcher_title_set_subtitle().
+ * Gets the subtitle of @self.
  *
- * Returns: (transfer none) (nullable): the subtitle of @self, or %NULL.
+ * Returns: (transfer none) (nullable): the subtitle of @self
  *
  * Since: 1.0
  */
@@ -506,12 +519,11 @@ hdy_view_switcher_title_get_subtitle (HdyViewSwitcherTitle *self)
 }
 
 /**
- * hdy_view_switcher_title_set_subtitle:
- * @self: a #HdyViewSwitcherTitle
- * @subtitle: (nullable): a subtitle, or %NULL
+ * hdy_view_switcher_title_set_subtitle: (attributes org.gtk.Method.set_property=subtitle)
+ * @self: a view switcher title
+ * @subtitle: (nullable): a subtitle
  *
- * Sets the subtitle of @self. The subtitle should give a user additional
- * details.
+ * Sets the subtitle of @self.
  *
  * Since: 1.0
  */
@@ -531,14 +543,12 @@ hdy_view_switcher_title_set_subtitle (HdyViewSwitcherTitle *self,
 }
 
 /**
- * hdy_view_switcher_title_get_view_switcher_enabled:
- * @self: a #HdyViewSwitcherTitle
+ * hdy_view_switcher_title_get_view_switcher_enabled: (attributes org.gtk.Method.get_property=view-switcher-enabled)
+ * @self: a view switcher title
  *
  * Gets whether @self's view switcher is enabled.
  *
- * See hdy_view_switcher_title_set_view_switcher_enabled().
- *
- * Returns: %TRUE if the view switcher is enabled, %FALSE otherwise.
+ * Returns: whether the view switcher is enabled
  *
  * Since: 1.0
  */
@@ -551,16 +561,11 @@ hdy_view_switcher_title_get_view_switcher_enabled (HdyViewSwitcherTitle *self)
 }
 
 /**
- * hdy_view_switcher_title_set_view_switcher_enabled:
- * @self: a #HdyViewSwitcherTitle
- * @enabled: %TRUE to enable the view switcher, %FALSE to disable it
+ * hdy_view_switcher_title_set_view_switcher_enabled: (attributes org.gtk.Method.set_property=view-switcher-enabled)
+ * @self: a view switcher title
+ * @enabled: `TRUE` to enable the view switcher, `FALSE` to disable it
  *
- * Make @self enable or disable its view switcher. If it is disabled, the title
- * will be displayed instead. This allows to programmatically and prematurely
- * hide the view switcher of @self even if it fits in the available space.
- *
- * This can be used e.g. to ensure the view switcher is hidden below a certain
- * window width, or any other constraint you find suitable.
+ * Sets whether @self's view switcher is enabled.
  *
  * Since: 1.0
  */
@@ -582,12 +587,12 @@ hdy_view_switcher_title_set_view_switcher_enabled (HdyViewSwitcherTitle *self,
 }
 
 /**
- * hdy_view_switcher_title_get_title_visible:
- * @self: a #HdyViewSwitcherTitle
+ * hdy_view_switcher_title_get_title_visible: (attributes org.gtk.Method.get_property=title-visible)
+ * @self: a view switcher title
  *
- * Get whether the title label of @self is visible.
+ * Gets whether the title of @self is currently visible.
  *
- * Returns: %TRUE if the title label of @self is visible, %FALSE if not.
+ * Returns: whether the title of @self is currently visible
  *
  * Since: 1.0
  */

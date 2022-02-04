@@ -8,16 +8,6 @@
 
 #include "hdy-animation-private.h"
 
-/**
- * SECTION:hdy-animation
- * @short_description: Animation helpers
- * @title: Animation Helpers
- *
- * Animation helpers.
- *
- * Since: 0.0.11
- */
-
 G_DEFINE_BOXED_TYPE (HdyAnimation, hdy_animation, hdy_animation_ref, hdy_animation_unref)
 
 struct _HdyAnimation
@@ -207,14 +197,16 @@ hdy_animation_get_value (HdyAnimation *self)
 
 /**
  * hdy_get_enable_animations:
- * @widget: a #GtkWidget
+ * @widget: a widget
  *
- * Returns whether animations are enabled for that widget. This should be used
- * when implementing an animated widget to know whether to animate it or not.
+ * Checks whether animations are enabled for @widget.
  *
- * Returns: %TRUE if animations are enabled for @widget.
+ * This should be used when implementing an animated widget to know whether to
+ * animate it or not.
  *
- * Since: 0.0.11
+ * Returns: whether animations are enabled for @widget
+ *
+ * Since: 1.0
  */
 gboolean
 hdy_get_enable_animations (GtkWidget *widget)
@@ -238,9 +230,9 @@ hdy_get_enable_animations (GtkWidget *widget)
  *
  * Computes the linear interpolation between @a and @b for @t.
  *
- * Returns: the linear interpolation between @a and @b for @t.
+ * Returns: the linear interpolation between @a and @b for @t
  *
- * Since: 0.0.11
+ * Since: 1.0
  */
 gdouble
 hdy_lerp (gdouble a, gdouble b, gdouble t)
@@ -256,11 +248,11 @@ hdy_lerp (gdouble a, gdouble b, gdouble t)
  * hdy_ease_out_cubic:
  * @t: the term
  *
- * Computes the ease out for @t.
+ * Computes the ease out for a value.
  *
- * Returns: the ease out for @t.
+ * Returns: the ease out for @t
  *
- * Since: 0.0.11
+ * Since: 1.0
  */
 gdouble
 hdy_ease_out_cubic (gdouble t)

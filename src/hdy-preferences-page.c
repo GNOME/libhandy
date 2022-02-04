@@ -12,18 +12,18 @@
 #include "hdy-preferences-group-private.h"
 
 /**
- * SECTION:hdy-preferences-page
- * @short_description: A page from the preferences window.
- * @Title: HdyPreferencesPage
+ * HdyPreferencesPage:
  *
- * The #HdyPreferencesPage widget gathers preferences groups into a single page
+ * A page from [class@PreferencesWindow].
+ *
+ * The `HdyPreferencesPage` widget gathers preferences groups into a single page
  * of a preferences window.
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyPreferencesPage has a single CSS node with name preferencespage.
+ * `HdyPreferencesPage` has a single CSS node with name `preferencespage`.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 
 typedef struct
@@ -162,11 +162,11 @@ hdy_preferences_page_class_init (HdyPreferencesPageClass *klass)
   container_class->forall = hdy_preferences_page_forall;
 
   /**
-   * HdyPreferencesPage:icon-name:
+   * HdyPreferencesPage:icon-name: (attributes org.gtk.Property.get=hdy_preferences_page_get_icon_name org.gtk.Property.set=hdy_preferences_page_set_icon_name)
    *
    * The icon name for this page of preferences.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_ICON_NAME] =
     g_param_spec_string ("icon-name",
@@ -176,11 +176,11 @@ hdy_preferences_page_class_init (HdyPreferencesPageClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyPreferencesPage:title:
+   * HdyPreferencesPage:title: (attributes org.gtk.Property.get=hdy_preferences_page_get_title org.gtk.Property.set=hdy_preferences_page_set_title)
    *
    * The title for this page of preferences.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_TITLE] =
     g_param_spec_string ("title",
@@ -208,11 +208,11 @@ hdy_preferences_page_init (HdyPreferencesPage *self)
 /**
  * hdy_preferences_page_new:
  *
- * Creates a new #HdyPreferencesPage.
+ * Creates a new `HdyPreferencesPage`.
  *
- * Returns: a new #HdyPreferencesPage
+ * Returns: the newly created `HdyPreferencesPage`
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkWidget *
 hdy_preferences_page_new (void)
@@ -221,14 +221,14 @@ hdy_preferences_page_new (void)
 }
 
 /**
- * hdy_preferences_page_get_icon_name:
- * @self: a #HdyPreferencesPage
+ * hdy_preferences_page_get_icon_name: (attributes org.gtk.Method.get_property=icon-name)
+ * @self: a preferences page
  *
- * Gets the icon name for @self, or %NULL.
+ * Gets the icon name for @self.
  *
- * Returns: (transfer none) (nullable): the icon name for @self, or %NULL.
+ * Returns: (transfer none) (nullable): the icon name for @self
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 const gchar *
 hdy_preferences_page_get_icon_name (HdyPreferencesPage *self)
@@ -243,13 +243,13 @@ hdy_preferences_page_get_icon_name (HdyPreferencesPage *self)
 }
 
 /**
- * hdy_preferences_page_set_icon_name:
- * @self: a #HdyPreferencesPage
- * @icon_name: (nullable): the icon name, or %NULL
+ * hdy_preferences_page_set_icon_name: (attributes org.gtk.Method.set_property=icon-name)
+ * @self: a preferences page
+ * @icon_name: (nullable): the icon name
  *
  * Sets the icon name for @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_preferences_page_set_icon_name (HdyPreferencesPage *self,
@@ -271,14 +271,14 @@ hdy_preferences_page_set_icon_name (HdyPreferencesPage *self,
 }
 
 /**
- * hdy_preferences_page_get_title:
- * @self: a #HdyPreferencesPage
+ * hdy_preferences_page_get_title: (attributes org.gtk.Method.get_property=title)
+ * @self: a preferences page
  *
- * Gets the title of @self, or %NULL.
+ * Gets the title of @self.
  *
- * Returns: (transfer none) (nullable): the title of the @self, or %NULL.
+ * Returns: (transfer none) (nullable): the title of the @self
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 const gchar *
 hdy_preferences_page_get_title (HdyPreferencesPage *self)
@@ -293,13 +293,13 @@ hdy_preferences_page_get_title (HdyPreferencesPage *self)
 }
 
 /**
- * hdy_preferences_page_set_title:
- * @self: a #HdyPreferencesPage
- * @title: (nullable): the title of the page, or %NULL
+ * hdy_preferences_page_set_title: (attributes org.gtk.Method.set_property=title)
+ * @self: a preferences page
+ * @title: (nullable): the title of the page
  *
  * Sets the title of @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_preferences_page_set_title (HdyPreferencesPage *self,
@@ -320,14 +320,14 @@ hdy_preferences_page_set_title (HdyPreferencesPage *self,
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_TITLE]);
 }
 
-/**
- * hdy_preferences_page_add_preferences_to_model: (skip)
- * @self: a #HdyPreferencesPage
+/*< private >
+ * hdy_preferences_page_add_preferences_to_model:
+ * @self: a preferences page
  * @model: the model
  *
  * Add preferences from @self to the model.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_preferences_page_add_preferences_to_model (HdyPreferencesPage *self,

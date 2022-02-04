@@ -17,27 +17,28 @@
 #include "hdy-view-switcher-button-private.h"
 
 /**
- * SECTION:hdy-view-switcher
- * @short_description: An adaptive view switcher.
- * @title: HdyViewSwitcher
+ * HdyViewSwitcher:
+ *
+ * An adaptive view switcher.
  *
  * An adaptive view switcher, designed to switch between multiple views in a
- * similar fashion than a #GtkStackSwitcher.
+ * similar fashion than a [class@Gtk.StackSwitcher].
  *
  * Depending on the available width, the view switcher can adapt from a wide
  * mode showing the view's icon and title side by side, to a narrow mode showing
  * the view's icon and title one on top of the other, in a more compact way.
  * This can be controlled via the policy property.
  *
- * To look good in a header bar, an #HdyViewSwitcher requires to fill its full
- * height. Contrary to #GtkHeaderBar, #HdyHeaderBar doesn't force a vertical
- * alignment on its title widget, so we recommend it over #GtkHeaderBar.
+ * To look good in a header bar, an `HdyViewSwitcher` requires to fill its full
+ * height. Contrary to [class@Gtk.HeaderBar], [class@HeaderBar] doesn't force a
+ * vertical alignment on its title widget, so we recommend it over
+ * [class@Gtk.HeaderBar].
  *
- * # CSS nodes
+ * ## CSS nodes
  *
- * #HdyViewSwitcher has a single CSS node with name viewswitcher.
+ * `HdyViewSwitcher` has a single CSS node with name `viewswitcher`.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 
 /**
@@ -45,6 +46,10 @@
  * @HDY_VIEW_SWITCHER_POLICY_AUTO: Automatically adapt to the best fitting mode
  * @HDY_VIEW_SWITCHER_POLICY_NARROW: Force the narrow mode
  * @HDY_VIEW_SWITCHER_POLICY_WIDE: Force the wide mode
+ *
+ * Describes the adaptive modes of [class@ViewSwitcher].
+ *
+ * Since: 1.0
  */
 
 #define MIN_NAT_BUTTON_WIDTH 100
@@ -500,12 +505,11 @@ hdy_view_switcher_class_init (HdyViewSwitcherClass *klass)
   widget_class->drag_leave = hdy_view_switcher_drag_leave;
 
   /**
-   * HdyViewSwitcher:policy:
+   * HdyViewSwitcher:policy: (attributes org.gtk.Property.get=hdy_view_switcher_get_policy org.gtk.Property.set=hdy_view_switcher_set_policy)
    *
-   * The #HdyViewSwitcherPolicy the view switcher should use to determine which
-   * mode to use.
+   * The policy to determine which mode to use.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_POLICY] =
     g_param_spec_enum ("policy",
@@ -515,17 +519,18 @@ hdy_view_switcher_class_init (HdyViewSwitcherClass *klass)
                        G_PARAM_EXPLICIT_NOTIFY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
-   * HdyViewSwitcher:narrow-ellipsize:
+   * HdyViewSwitcher:narrow-ellipsize: (attributes org.gtk.Property.get=hdy_view_switcher_get_narrow_ellipsize org.gtk.Property.set=hdy_view_switcher_set_narrow_ellipsize)
    *
-   * The preferred place to ellipsize the string, if the narrow mode label does
-   * not have enough room to display the entire string, specified as a
-   * #PangoEllipsizeMode.
+   * The preferred place to ellipsize the string.
    *
-   * Note that setting this property to a value other than %PANGO_ELLIPSIZE_NONE
-   * has the side-effect that the label requests only enough space to display
-   * the ellipsis.
+   * If the narrow mode label does not have enough room to display the entire
+   * string, specified as a [enum@Pango.EllipsizeMode].
    *
-   * Since: 0.0.10
+   * Note that setting this property to a value other than
+   * `PANGO_ELLIPSIZE_NONE` has the side-effect that the label requests only
+   * enough space to display the ellipsis.
+   *
+   * Since: 1.0
    */
   props[PROP_NARROW_ELLIPSIZE] =
     g_param_spec_enum ("narrow-ellipsize",
@@ -536,11 +541,11 @@ hdy_view_switcher_class_init (HdyViewSwitcherClass *klass)
                        G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdyViewSwitcher:stack:
+   * HdyViewSwitcher:stack: (attributes org.gtk.Property.get=hdy_view_switcher_get_stack org.gtk.Property.set=hdy_view_switcher_set_stack)
    *
-   * The #GtkStack the view switcher controls.
+   * The [class@Gtk.Stack] the view switcher controls.
    *
-   * Since: 0.0.10
+   * Since: 1.0
    */
   props[PROP_STACK] =
     g_param_spec_object ("stack",
@@ -573,11 +578,11 @@ hdy_view_switcher_init (HdyViewSwitcher *self)
 /**
  * hdy_view_switcher_new:
  *
- * Creates a new #HdyViewSwitcher widget.
+ * Creates a new `HdyViewSwitcher`.
  *
- * Returns: a new #HdyViewSwitcher
+ * Returns: the newly created `HdyViewSwitcher`
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkWidget *
 hdy_view_switcher_new (void)
@@ -586,14 +591,14 @@ hdy_view_switcher_new (void)
 }
 
 /**
- * hdy_view_switcher_get_policy:
- * @self: a #HdyViewSwitcher
+ * hdy_view_switcher_get_policy: (attributes org.gtk.Method.get_property=policy)
+ * @self: a view switcher
  *
  * Gets the policy of @self.
  *
  * Returns: the policy of @self
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 HdyViewSwitcherPolicy
 hdy_view_switcher_get_policy (HdyViewSwitcher *self)
@@ -604,13 +609,13 @@ hdy_view_switcher_get_policy (HdyViewSwitcher *self)
 }
 
 /**
- * hdy_view_switcher_set_policy:
- * @self: a #HdyViewSwitcher
+ * hdy_view_switcher_set_policy: (attributes org.gtk.Method.set_property=policy)
+ * @self: a view switcher
  * @policy: the new policy
  *
  * Sets the policy of @self.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_view_switcher_set_policy (HdyViewSwitcher       *self,
@@ -629,15 +634,14 @@ hdy_view_switcher_set_policy (HdyViewSwitcher       *self,
 }
 
 /**
- * hdy_view_switcher_get_narrow_ellipsize:
- * @self: a #HdyViewSwitcher
+ * hdy_view_switcher_get_narrow_ellipsize: (attributes org.gtk.Method.get_property=narrow-ellipsize)
+ * @self: a view switcher
  *
- * Get the ellipsizing position of the narrow mode label. See
- * hdy_view_switcher_set_narrow_ellipsize().
+ * Get the ellipsizing position of the narrow mode label.
  *
- * Returns: #PangoEllipsizeMode
+ * Returns: a [enum@Pango.EllipsizeMode]
  *
- * Since: 0.0.10
+ * Since: 1.0
  **/
 PangoEllipsizeMode
 hdy_view_switcher_get_narrow_ellipsize (HdyViewSwitcher *self)
@@ -648,14 +652,13 @@ hdy_view_switcher_get_narrow_ellipsize (HdyViewSwitcher *self)
 }
 
 /**
- * hdy_view_switcher_set_narrow_ellipsize:
- * @self: a #HdyViewSwitcher
- * @mode: a #PangoEllipsizeMode
+ * hdy_view_switcher_set_narrow_ellipsize: (attributes org.gtk.Method.set_property=narrow-ellipsize)
+ * @self: a view switcher
+ * @mode: a [enum@Pango.EllipsizeMode]
  *
- * Set the mode used to ellipsize the text in narrow mode if there is not
- * enough space to render the entire string.
+ * Sets the mode used to ellipsize the text in narrow mode.
  *
- * Since: 0.0.10
+ * Since: 1.0
  **/
 void
 hdy_view_switcher_set_narrow_ellipsize (HdyViewSwitcher    *self,
@@ -680,16 +683,14 @@ hdy_view_switcher_set_narrow_ellipsize (HdyViewSwitcher    *self,
 }
 
 /**
- * hdy_view_switcher_get_stack:
- * @self: a #HdyViewSwitcher
+ * hdy_view_switcher_get_stack: (attributes org.gtk.Method.get_property=stack)
+ * @self: a view switcher
  *
- * Get the #GtkStack being controlled by the #HdyViewSwitcher.
+ * Gets the stack controlled by @self.
  *
- * See: hdy_view_switcher_set_stack()
+ * Returns: (nullable) (transfer none): the stack
  *
- * Returns: (nullable) (transfer none): the #GtkStack, or %NULL if none has been set
- *
- * Since: 0.0.10
+ * Since: 1.0
  */
 GtkStack *
 hdy_view_switcher_get_stack (HdyViewSwitcher *self)
@@ -700,13 +701,13 @@ hdy_view_switcher_get_stack (HdyViewSwitcher *self)
 }
 
 /**
- * hdy_view_switcher_set_stack:
- * @self: a #HdyViewSwitcher
- * @stack: (nullable): a #GtkStack
+ * hdy_view_switcher_set_stack: (attributes org.gtk.Method.set_property=stack)
+ * @self: a view switcher
+ * @stack: (nullable): a stack
  *
- * Sets the #GtkStack to control.
+ * Sets the [class@Gtk.Stack] to control.
  *
- * Since: 0.0.10
+ * Since: 1.0
  */
 void
 hdy_view_switcher_set_stack (HdyViewSwitcher *self,

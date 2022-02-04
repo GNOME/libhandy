@@ -1,83 +1,47 @@
 if get_option('gtk_doc')
 
-subdir('xml')
-
-private_headers = [
-    'config.h',
-    'gtkprogresstrackerprivate.h',
-    'gtk-window-private.h',
-    'hdy-animation-private.h',
-    'hdy-avatar-icon-private.h',
-    'hdy-bidi-private.h',
-    'hdy-carousel-box-private.h',
-    'hdy-css-private.h',
-    'hdy-enums.h',
-    'hdy-enums-private.h',
-    'hdy-fading-label-private.h',
-    'hdy-main-private.h',
-    'hdy-nothing-private.h',
-    'hdy-keypad-button-private.h',
-    'hdy-preferences-group-private.h',
-    'hdy-preferences-page-private.h',
-    'hdy-settings-private.h',
-    'hdy-shadow-helper-private.h',
-    'hdy-stackable-box-private.h',
-    'hdy-swipe-tracker-private.h',
-    'hdy-tab-private.h',
-    'hdy-tab-bar-private.h',
-    'hdy-tab-box-private.h',
-    'hdy-tab-view-private.h',
-    'hdy-types.h',
-    'hdy-view-switcher-button-private.h',
-    'hdy-window-handle-controller-private.h',
-    'hdy-window-mixin-private.h',
+expand_content_md_files = [
+  'build-howto.md',
+  'hdy-migrating-0-0-to-1.md',
+  'visual-index.md',
 ]
 
-images = [
-  'images/avatar.png',
-  'images/header-bar.png',
-  'images/keypad.png',
-  'images/list.png',
-  'images/preferences-window.png',
-  'images/search.png',
-  'images/view-switcher.png',
-  'images/view-switcher-bar.png',
-]
+toml_data = configuration_data()
+toml_data.set('VERSION', meson.project_version())
 
-content_files = [
-  'build-howto.xml',
-  'hdy-migrating-0-0-to-1.xml',
-  'visual-index.xml',
-]
+libhandy_toml = configure_file(
+  input: 'libhandy.toml.in',
+  output: 'libhandy.toml',
+  configuration: toml_data
+)
 
-glib_prefix  = dependency('glib-2.0').get_pkgconfig_variable('prefix')
-glib_docpath = glib_prefix / 'share' / 'gtk-doc' / 'html'
-docpath      = get_option('datadir') / 'gtk-doc' / 'html'
+dependency('gi-docgen', version: '>= 2021.1',
+           fallback: ['gi-docgen', 'dummy_dep'],
+           native: true,
+           required: get_option('gtk_doc'))
 
-gnome.gtkdoc('libhandy',
-     module_version: apiversion,
-           main_xml: 'handy-docs.xml',
-            src_dir: [
-                       meson.source_root() / 'src',
-                       meson.build_root()  / 'src',
-                     ],
-       dependencies: libhandy_dep,
-  gobject_typesfile: 'libhandy.types',
-          scan_args: [
-                       '--rebuild-types',
-                       '--ignore-headers=' + ' '.join(private_headers),
-                     ],
-       fixxref_args: [
-                       '--html-dir=@0@'.format(docpath),
-                       '--extra-dir=@0@'.format(glib_docpath / 'glib'),
-                       '--extra-dir=@0@'.format(glib_docpath / 'gobject'),
-                       '--extra-dir=@0@'.format(glib_docpath / 'gio'),
-                       '--extra-dir=@0@'.format(glib_docpath / 'gi'),
-                       '--extra-dir=@0@'.format(glib_docpath / 'gtk3'),
-                       '--extra-dir=@0@'.format(glib_docpath / 'gdk-pixbuf'),
-                     ],
-      content_files: content_files,
-        html_assets: images,
-            install: true)
+gidocgen = find_program('gi-docgen')
+
+docs_dir = datadir / 'doc'
+
+custom_target('libhandy-doc',
+  input: [ libhandy_toml, libhandy_gir[0] ],
+  output: 'libhandy-@0@'.format(apiversion),
+  command: [
+    gidocgen,
+    'generate',
+    '--quiet',
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../src'),
+    '--config=@INPUT0@',
+    '--output-dir=@OUTPUT@',
+    '--no-namespace-dir',
+    '--content-dir=@0@'.format(meson.current_source_dir()),
+    '@INPUT1@',
+  ],
+  depend_files: [ expand_content_md_files ],
+  build_by_default: true,
+  install: true,
+  install_dir: docs_dir,
+)
 
 endif

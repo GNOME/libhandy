@@ -22,17 +22,18 @@ doc:
   stage: build
   variables:
     MESON_ARGS: >-
+      -Dexamples=false
       -Dgtk_doc=true
       -Dtests=false
-      -Dintrospection=disabled
       -Dvapi=false
   before_script:
     - dnf -y update
-    - dnf -y install gcc gtk-doc gtk3-devel meson
+    - dnf -y install gcc git gobject-introspection-devel gtk3-devel meson pip
+    - pip install Jinja2 pygments toml typogrify
   script:
     - meson --prefix=/app ${MESON_ARGS} _build
-    - ninja -C _build libhandy-1-doc
-    - mv _build/doc/html/ _doc/
+    - ninja -C _build
+    - mv _build/doc/libhandy-1 _doc/
   artifacts:
     paths:
       - _doc

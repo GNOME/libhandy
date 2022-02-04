@@ -47,35 +47,34 @@
 #include "hdy-search-bar.h"
 
 /**
- * SECTION:hdy-search-bar
- * @short_description: A toolbar to integrate a search entry with.
- * @Title: HdySearchBar
+ * HdySearchBar:
  *
- * #HdySearchBar is a container made to have a search entry (possibly
- * with additional connex widgets, such as drop-down menus, or buttons)
- * built-in. The search bar would appear when a search is started through
- * typing on the keyboard, or the application’s search mode is toggled on.
+ * A toolbar to integrate a search entry with.
  *
- * For keyboard presses to start a search, events will need to be
- * forwarded from the top-level window that contains the search bar.
- * See hdy_search_bar_handle_event() for example code. Common shortcuts
- * such as Ctrl+F should be handled as an application action, or through
- * the menu items.
+ * `HdySearchBar` is a container made to have a search entry (possibly with
+ * additional connex widgets, such as drop-down menus, or buttons) built-in. The
+ * search bar would appear when a search is started through typing on the
+ * keyboard, or the application’s search mode is toggled on.
  *
- * You will also need to tell the search bar about which entry you
- * are using as your search entry using hdy_search_bar_connect_entry().
- * The following example shows you how to create a more complex search
- * entry.
+ * For keyboard presses to start a search, events will need to be forwarded from
+ * the top-level window that contains the search bar. See
+ * [method@SearchBar.handle_event] for example code. Common shortcuts such as
+ * <kbd>Ctrl</kbd>+<kbd>F</kbd> should be handled as an application action, or
+ * through the menu items.
  *
- * HdySearchBar is very similar to #GtkSearchBar, the main difference being that
- * it allows the search entry to fill all the available space. This allows you
- * to control your search entry's width with a #HdyClamp.
+ * You will also need to tell the search bar about which entry you are using as
+ * your search entry using [method@SearchBar.connect_entry]. The following
+ * example shows you how to create a more complex search entry.
  *
- * # CSS nodes
+ * `HdySearchBar` is very similar to [class@Gtk.SearchBar], the main difference
+ * being that it allows the search entry to fill all the available space. This
+ * allows you to control your search entry's width with a [class@Clamp].
  *
- * #HdySearchBar has a single CSS node with name searchbar.
+ * ## CSS nodes
  *
- * Since: 0.0.6
+ * `HdySearchBar` has a single CSS node with name `searchbar`.
+ *
+ * Since: 1.0
  */
 
 typedef struct {
@@ -204,24 +203,25 @@ hdy_search_bar_handle_event_for_entry (HdySearchBar *self,
 
 /**
  * hdy_search_bar_handle_event:
- * @self: a #HdySearchBar
- * @event: a #GdkEvent containing key press events
+ * @self: a search bar
+ * @event: a [struct@Gdk.Event] containing key press events
  *
- * This function should be called when the top-level
- * window which contains the search bar received a key event.
+ * Handles key press events.
  *
- * If the key event is handled by the search bar, the bar will
- * be shown, the entry populated with the entered text and %GDK_EVENT_STOP
- * will be returned. The caller should ensure that events are
- * not propagated further.
+ * This function should be called when the top-level window which contains the
+ * search bar received a key event.
+ *
+ * If the key event is handled by the search bar, the bar will be shown, the
+ * entry populated with the entered text and `GDK_EVENT_STOP` will be returned.
+ * The caller should ensure that events are not propagated further.
  *
  * If no entry has been connected to the search bar, using
- * hdy_search_bar_connect_entry(), this function will return
- * immediately with a warning.
+ * [method@SearchBar.connect_entry], this function will return immediately with
+ * a warning.
  *
  * ## Showing the search bar on key presses
  *
- * |[<!-- language="C" -->
+ * ```c
  * static gboolean
  * on_key_press_event (GtkWidget *widget,
  *                     GdkEvent  *event,
@@ -237,20 +237,20 @@ hdy_search_bar_handle_event_for_entry (HdySearchBar *self,
  *   GtkWidget *window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
  *   GtkWindow *search_bar = hdy_search_bar_new ();
  *
- *  // Add more widgets to the window...
+ *   // Add more widgets to the window...
  *
  *   g_signal_connect (window,
  *                    "key-press-event",
  *                     G_CALLBACK (on_key_press_event),
  *                     search_bar);
  * }
- * ]|
+ * ```
  *
- * Returns: %GDK_EVENT_STOP if the key press event resulted
- *     in text being entered in the search entry (and revealing
- *     the search bar if necessary), %GDK_EVENT_PROPAGATE otherwise.
+ * Returns: `GDK_EVENT_STOP` if the key press event resulted in text being
+ *   entered in the search entry (and revealing the search bar if necessary),
+ *   `GDK_EVENT_PROPAGATE` otherwise.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 gboolean
 hdy_search_bar_handle_event (HdySearchBar *self,
@@ -440,11 +440,11 @@ hdy_search_bar_class_init (HdySearchBarClass *klass)
   container_class->add = hdy_search_bar_add;
 
   /**
-   * HdySearchBar:search-mode-enabled:
+   * HdySearchBar:search-mode-enabled: (attributes org.gtk.Property.get=hdy_search_bar_get_search_mode org.gtk.Property.set=hdy_search_bar_set_search_mode)
    *
    * Whether the search mode is on and the search bar shown.
    *
-   * See hdy_search_bar_set_search_mode() for details.
+   * Since: 1.0
    */
   props[PROP_SEARCH_MODE_ENABLED] =
     g_param_spec_boolean ("search-mode-enabled",
@@ -454,9 +454,11 @@ hdy_search_bar_class_init (HdySearchBarClass *klass)
                           G_PARAM_READWRITE|G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * HdySearchBar:show-close-button:
+   * HdySearchBar:show-close-button: (attributes org.gtk.Property.get=hdy_search_bar_get_show_close_button org.gtk.Property.set=hdy_search_bar_set_show_close_button)
    *
    * Whether to show the close button in the toolbar.
+   *
+   * Since: 1.0
    */
   props[PROP_SHOW_CLOSE_BUTTON] =
     g_param_spec_boolean ("show-close-button",
@@ -504,13 +506,14 @@ hdy_search_bar_init (HdySearchBar *self)
 /**
  * hdy_search_bar_new:
  *
- * Creates a #HdySearchBar. You will need to tell it about
- * which widget is going to be your text entry using
- * hdy_search_bar_connect_entry().
+ * Creates a new `HdySearchBar.
  *
- * Returns: a new #HdySearchBar
+ * You will need to tell it about which widget is going to be your text entry
+ * using [method@SearchBar.connect_entry].
  *
- * Since: 0.0.6
+ * Returns: the newly created `HdySearchBar`
+ *
+ * Since: 1.0
  */
 GtkWidget *
 hdy_search_bar_new (void)
@@ -547,15 +550,15 @@ hdy_search_bar_set_entry (HdySearchBar *self,
 
 /**
  * hdy_search_bar_connect_entry:
- * @self: a #HdySearchBar
- * @entry: a #GtkEntry
+ * @self: a search bar
+ * @entry: an entry
  *
- * Connects the #GtkEntry widget passed as the one to be used in
- * this search bar. The entry should be a descendant of the search bar.
- * This is only required if the entry isn’t the direct child of the
- * search bar (as in our main example).
+ * Sets the entry widget passed as the one to be used in this search bar.
  *
- * Since: 0.0.6
+ * The entry should be a descendant of the search bar. This is only required if
+ * the entry isn’t the direct child of the search bar (as in our main example).
+ *
+ * Since: 1.0
  */
 void
 hdy_search_bar_connect_entry (HdySearchBar *self,
@@ -568,14 +571,14 @@ hdy_search_bar_connect_entry (HdySearchBar *self,
 }
 
 /**
- * hdy_search_bar_get_search_mode:
- * @self: a #HdySearchBar
+ * hdy_search_bar_get_search_mode: (attributes org.gtk.Method.get_property=search-mode-enabled)
+ * @self: a search bar
  *
- * Returns whether the search mode is on or off.
+ * Gets whether the search mode is on.
  *
  * Returns: whether search mode is toggled on
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 gboolean
 hdy_search_bar_get_search_mode (HdySearchBar *self)
@@ -588,13 +591,13 @@ hdy_search_bar_get_search_mode (HdySearchBar *self)
 }
 
 /**
- * hdy_search_bar_set_search_mode:
- * @self: a #HdySearchBar
+ * hdy_search_bar_set_search_mode: (attributes org.gtk.Method.set_property=search-mode-enabled)
+ * @self: a search bar
  * @search_mode: the new state of the search mode
  *
  * Switches the search mode on or off.
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 void
 hdy_search_bar_set_search_mode (HdySearchBar *self,
@@ -608,14 +611,14 @@ hdy_search_bar_set_search_mode (HdySearchBar *self,
 }
 
 /**
- * hdy_search_bar_get_show_close_button:
- * @self: a #HdySearchBar
+ * hdy_search_bar_get_show_close_button: (attributes org.gtk.Method.get_property=show-close-button)
+ * @self: a search bar
  *
- * Returns whether the close button is shown.
+ * Gets whether the close button is shown.
  *
  * Returns: whether the close button is shown
  *
- * Since: 0.0.6
+ * Since: 1.0
  */
 gboolean
 hdy_search_bar_get_show_close_button (HdySearchBar *self)
@@ -628,16 +631,17 @@ hdy_search_bar_get_show_close_button (HdySearchBar *self)
 }
 
 /**
- * hdy_search_bar_set_show_close_button:
- * @self: a #HdySearchBar
+ * hdy_search_bar_set_show_close_button: (attributes org.gtk.Method.set_property=show-close-button)
+ * @self: a search bar
  * @visible: whether the close button will be shown or not
  *
- * Shows or hides the close button. Applications that
- * already have a “search” toggle button should not show a close
- * button in their search bar, as it duplicates the role of the
- * toggle button.
+ * Shows or hides the close button.
  *
- * Since: 0.0.6
+ * Applications that already have a “search” toggle button should not show a
+ * close button in their search bar, as it duplicates the role of the toggle
+ * button.
+ *
+ * Since: 1.0
  */
 void
 hdy_search_bar_set_show_close_button (HdySearchBar *self,
