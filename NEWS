@@ -1,3 +1,37 @@
+==============
+Version 1.5.90
+==============
+
+- Documentation
+  - Port to gi-docgen
+  - Use "Since: 1.0" for pre-1.0 symbols
+  - Various cleanups and consistency updates
+- Demo
+  - Fix keyboard navigation
+  - Don't make rows containing buttons activatable
+  - Set minimum width on the view switcher window
+- HdyCarousel
+  - Properly remove mouse wheel timer
+- HdyClamp
+  - Fix measuring
+- HdyKeypad
+  - Fix keyboard navigation
+- HdyStyleManager
+  - Properly reset animations after style changes
+- HdySwipeTracker
+  - Fix a runtime warning
+- HdyTabView
+  - Propagate Alt+[0-9] when trying to switch to the selected tab
+- HdyViewSwitcher
+  - Properly center button labels
+- Build and CI cleanups
+- Remove unused distro packaging
+- Translation updates:
+  - Czech
+  - Romanian
+  - Slovenian
+  - Spanish
+
 =============
 Version 1.5.0
 =============
