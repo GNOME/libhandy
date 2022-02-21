@@ -75,7 +75,7 @@ animation_cb (GtkWidget     *widget,
 
   g_assert (self->tick_cb_id > 0);
 
-  gtk_widget_queue_draw (GTK_WIDGET (self));
+  gtk_widget_queue_resize (GTK_WIDGET (self));
 
   frame_time = gdk_frame_clock_get_frame_time (frame_clock) / 1000;
 
@@ -106,13 +106,13 @@ animate (HdyCarouselIndicatorLines *self,
   gint64 frame_time;
 
   if (duration <= 0 || !hdy_get_enable_animations (GTK_WIDGET (self))) {
-    gtk_widget_queue_draw (GTK_WIDGET (self));
+    gtk_widget_queue_resize (GTK_WIDGET (self));
     return;
   }
 
   frame_clock = gtk_widget_get_frame_clock (GTK_WIDGET (self));
   if (!frame_clock) {
-    gtk_widget_queue_draw (GTK_WIDGET (self));
+    gtk_widget_queue_resize (GTK_WIDGET (self));
     return;
   }
 
@@ -229,11 +229,27 @@ hdy_carousel_indicator_lines_measure (GtkWidget      *widget,
   gint size = 0;
 
   if (orientation == self->orientation) {
-    gint n_pages = 0;
-    if (self->carousel)
-      n_pages = hdy_carousel_get_n_pages (self->carousel);
+    gint i, n_points = 0;
+    gdouble indicator_length, line_size;
+    g_autofree gdouble *points = NULL;
+    g_autofree gdouble *sizes = NULL;
 
-    size = MAX (0, (LINE_LENGTH + LINE_SPACING) * n_pages - LINE_SPACING);
+    if (self->carousel)
+      points = hdy_swipeable_get_snap_points (HDY_SWIPEABLE (self->carousel), &n_points);
+
+    sizes = g_new0 (gdouble, n_points);
+
+    if (n_points > 0)
+      sizes[0] = points[0] + 1;
+    for (i = 1; i < n_points; i++)
+      sizes[i] = points[i] - points[i - 1];
+
+    line_size = LINE_LENGTH + LINE_SPACING;
+    indicator_length = 0;
+    for (i = 0; i < n_points; i++)
+      indicator_length += line_size * sizes[i];
+
+    size = ceil (indicator_length);
   } else {
     size = LINE_WIDTH;
   }
@@ -478,7 +494,7 @@ hdy_carousel_indicator_lines_set_carousel (HdyCarouselIndicatorLines *self,
                              G_CONNECT_SWAPPED);
   }
 
-  gtk_widget_queue_draw (GTK_WIDGET (self));
+  gtk_widget_queue_resize (GTK_WIDGET (self));
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_CAROUSEL]);
 }

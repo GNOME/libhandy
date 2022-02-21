@@ -76,7 +76,7 @@ animation_cb (GtkWidget     *widget,
 
   g_assert (self->tick_cb_id > 0);
 
-  gtk_widget_queue_draw (GTK_WIDGET (self));
+  gtk_widget_queue_resize (GTK_WIDGET (self));
 
   frame_time = gdk_frame_clock_get_frame_time (frame_clock) / 1000;
 
@@ -107,13 +107,13 @@ animate (HdyCarouselIndicatorDots *self,
   gint64 frame_time;
 
   if (duration <= 0 || !hdy_get_enable_animations (GTK_WIDGET (self))) {
-    gtk_widget_queue_draw (GTK_WIDGET (self));
+    gtk_widget_queue_resize (GTK_WIDGET (self));
     return;
   }
 
   frame_clock = gtk_widget_get_frame_clock (GTK_WIDGET (self));
   if (!frame_clock) {
-    gtk_widget_queue_draw (GTK_WIDGET (self));
+    gtk_widget_queue_resize (GTK_WIDGET (self));
     return;
   }
 
@@ -231,11 +231,27 @@ hdy_carousel_indicator_dots_measure (GtkWidget      *widget,
   gint size = 0;
 
   if (orientation == self->orientation) {
-    gint n_pages = 0;
-    if (self->carousel)
-      n_pages = hdy_carousel_get_n_pages (self->carousel);
+    gint i, n_points = 0;
+    gdouble indicator_length, dot_size;
+    g_autofree gdouble *points = NULL;
+    g_autofree gdouble *sizes = NULL;
 
-    size = MAX (0, (2 * DOTS_RADIUS_SELECTED + DOTS_SPACING) * n_pages - DOTS_SPACING);
+    if (self->carousel)
+      points = hdy_swipeable_get_snap_points (HDY_SWIPEABLE (self->carousel), &n_points);
+
+    sizes = g_new0 (gdouble, n_points);
+
+    if (n_points > 0)
+      sizes[0] = points[0] + 1;
+    for (i = 1; i < n_points; i++)
+      sizes[i] = points[i] - points[i - 1];
+
+    dot_size = 2 * DOTS_RADIUS_SELECTED + DOTS_SPACING;
+    indicator_length = 0;
+    for (i = 0; i < n_points; i++)
+      indicator_length += dot_size * sizes[i];
+
+    size = ceil (indicator_length);
   } else {
     size = 2 * DOTS_RADIUS_SELECTED;
   }
@@ -480,7 +496,7 @@ hdy_carousel_indicator_dots_set_carousel (HdyCarouselIndicatorDots *self,
                              G_CONNECT_SWAPPED);
   }
 
-  gtk_widget_queue_draw (GTK_WIDGET (self));
+  gtk_widget_queue_resize (GTK_WIDGET (self));
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_CAROUSEL]);
 }
