@@ -1,4 +1,14 @@
 ==============
+Version 1.5.91
+==============
+
+- HdyAvatar
+  - Fix invalid UTF-8 handling
+- HdyStyleManager
+  - Don't disable non-CSS animations during style changes
+- Fix carousel indicator sizing
+
+==============
 Version 1.5.90
 ==============
 
