@@ -1,15 +1,15 @@
 # Hungarian translation for libhandy.
-# Copyright (C) 2021 Free Software Foundation, Inc.
+# Copyright (C) 2021, 2022 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libhandy package.
 #
 # Balázs Meskó <mesko.balazs at fsf dot hu>, 2021.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2021.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2021-09-14 21:15+0000\n"
-"PO-Revision-Date: 2021-09-15 00:37+0200\n"
+"POT-Creation-Date: 2022-01-20 13:19+0000\n"
+"PO-Revision-Date: 2022-03-14 00:51+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -40,8 +40,8 @@ msgid ""
 "The decoration layout does not apply to header bars which do not show window "
 "controls"
 msgstr ""
-"A díszítés elrendezése nem érvényes azokra a fejlécsávokra, amelyek nem"
-" jelenítenek meg ablakvezérlőket"
+"A díszítés elrendezése nem érvényes azokra a fejlécsávokra, amelyek nem "
+"jelenítenek meg ablakvezérlőket"
 
 #: glade/glade-hdy-leaflet.c:19
 msgid "This property only applies when the leaflet is folded"
@@ -96,8 +96,8 @@ msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
 msgstr ""
-"Ha be van állítva, akkor a szövegben egy aláhúzás jelzi, hogy a következő"
-" karaktert kell használni a hívóbetű gyorsítóbillentyűjének"
+"Ha be van állítva, akkor a szövegben egy aláhúzás jelzi, hogy a következő "
+"karaktert kell használni a hívóbetű gyorsítóbillentyűjének"
 
 #: src/hdy-action-row.c:428
 msgid "Number of title lines"
@@ -116,71 +116,71 @@ msgid "The desired number of subtitle lines"
 msgstr "A feliratsorok kívánt száma"
 
 #: src/hdy-carousel-box.c:1093 src/hdy-carousel-box.c:1094
-#: src/hdy-carousel.c:598 src/hdy-carousel.c:599 src/hdy-tab-view.c:1104
+#: src/hdy-carousel.c:599 src/hdy-carousel.c:600 src/hdy-tab-view.c:1107
 msgid "Number of pages"
 msgstr "Oldalak száma"
 
-#: src/hdy-carousel-box.c:1109 src/hdy-carousel.c:615 src/hdy-header-bar.c:2090
+#: src/hdy-carousel-box.c:1109 src/hdy-carousel.c:616 src/hdy-header-bar.c:2090
 msgid "Position"
 msgstr "Pozíció"
 
-#: src/hdy-carousel-box.c:1110 src/hdy-carousel.c:616
+#: src/hdy-carousel-box.c:1110 src/hdy-carousel.c:617
 msgid "Current scrolling position"
 msgstr "Jelenlegi görgetési pozíció"
 
-#: src/hdy-carousel-box.c:1125 src/hdy-carousel.c:646 src/hdy-header-bar.c:2118
+#: src/hdy-carousel-box.c:1125 src/hdy-carousel.c:647 src/hdy-header-bar.c:2118
 msgid "Spacing"
 msgstr "Térköz"
 
-#: src/hdy-carousel-box.c:1126 src/hdy-carousel.c:647
+#: src/hdy-carousel-box.c:1126 src/hdy-carousel.c:648
 msgid "Spacing between pages"
 msgstr "Oldalak közti térköz"
 
-#: src/hdy-carousel-box.c:1142 src/hdy-carousel.c:721
+#: src/hdy-carousel-box.c:1142 src/hdy-carousel.c:722
 msgid "Reveal duration"
 msgstr "Felfedés időtartama"
 
-#: src/hdy-carousel-box.c:1143 src/hdy-carousel.c:722
+#: src/hdy-carousel-box.c:1143 src/hdy-carousel.c:723
 msgid "Page reveal duration"
 msgstr "Oldal felfedésének időtartama"
 
-#: src/hdy-carousel.c:632
+#: src/hdy-carousel.c:633
 msgid "Interactive"
 msgstr "Interaktív"
 
-#: src/hdy-carousel.c:633
+#: src/hdy-carousel.c:634
 msgid "Whether the widget can be swiped"
 msgstr "A felületi elem pöccinthető-e"
 
-#: src/hdy-carousel.c:662
+#: src/hdy-carousel.c:663
 msgid "Animation duration"
 msgstr "Animáció időtartama"
 
-#: src/hdy-carousel.c:663
+#: src/hdy-carousel.c:664
 msgid "Default animation duration"
 msgstr "Animáció alapértelmezett időtartama"
 
-#: src/hdy-carousel.c:677 src/hdy-swipe-tracker.c:1089
+#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1108
 msgid "Allow mouse drag"
 msgstr "Egérrel történő húzás engedélyezése"
 
-#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1090
+#: src/hdy-carousel.c:679 src/hdy-swipe-tracker.c:1109
 msgid "Whether to allow dragging with mouse pointer"
 msgstr "Engedélyezze-e az egérmutatóval történő húzást"
 
-#: src/hdy-carousel.c:692
+#: src/hdy-carousel.c:693
 msgid "Allow scroll wheel"
 msgstr "Egérgörgő engedélyezése"
 
-#: src/hdy-carousel.c:693
+#: src/hdy-carousel.c:694
 msgid "Whether the widget will respond to scroll wheel events"
 msgstr "A felületi elem válaszolni fog-e az egérgörgő eseményeire"
 
-#: src/hdy-carousel.c:707 src/hdy-swipe-tracker.c:1104
+#: src/hdy-carousel.c:708 src/hdy-swipe-tracker.c:1123
 msgid "Allow long swipes"
 msgstr "Hosszú pöccintések engedélyezése"
 
-#: src/hdy-carousel.c:708
+#: src/hdy-carousel.c:709
 msgid "Whether to allow swiping for more than one page at a time"
 msgstr "Engedélyezze-e egyszerre több oldal pöccintését"
 
@@ -190,19 +190,19 @@ msgstr "Engedélyezze-e egyszerre több oldal pöccintését"
 msgid "Carousel"
 msgstr "Körhinta"
 
-#: src/hdy-clamp.c:412
+#: src/hdy-clamp.c:433
 msgid "Maximum size"
 msgstr "Legnagyobb méret"
 
-#: src/hdy-clamp.c:413
+#: src/hdy-clamp.c:434
 msgid "The maximum size allocated to the child"
 msgstr "A gyermeknek kiosztandó legnagyobb méret"
 
-#: src/hdy-clamp.c:437
+#: src/hdy-clamp.c:458
 msgid "Tightening threshold"
 msgstr "Szorítási küszöbszint"
 
-#: src/hdy-clamp.c:438
+#: src/hdy-clamp.c:459
 msgid "The size from which the clamp will tighten its grip on the child"
 msgstr "A méret, amelytől kezdve a fogantyú megszorítja a gyermeket"
 
@@ -612,8 +612,8 @@ msgstr "Szimbólumok"
 #: src/hdy-keypad-button.c:233
 msgid "The keypad symbols of the button. The first symbol is used as the digit"
 msgstr ""
-"A gombhoz tartozó számbillentyűzeti szimbólumok, az első szimbólum"
-" számjegyként van használva"
+"A gombhoz tartozó számbillentyűzeti szimbólumok, az első szimbólum "
+"számjegyként van használva"
 
 #: src/hdy-keypad-button.c:239
 msgid "Show symbols"
@@ -828,11 +828,11 @@ msgstr "Bezárás gomb megjelenítése"
 msgid "Whether to show the close button in the toolbar"
 msgstr "Megjelenjen-e a bezárás gomb az eszköztáron"
 
-#: src/hdy-shadow-helper.c:257
+#: src/hdy-shadow-helper.c:256
 msgid "Widget"
 msgstr "Felületi elem"
 
-#: src/hdy-shadow-helper.c:258
+#: src/hdy-shadow-helper.c:257
 msgid "The widget the shadow will be drawn for"
 msgstr "A felületi elem, amelyhez az árnyék meg lesz rajzolva"
 
@@ -868,7 +868,7 @@ msgstr "Y-igazítás"
 msgid "The vertical alignment, from 0 (top) to 1 (bottom)"
 msgstr "A függőleges igazítás, 0 (felül) és 1 (alul) között"
 
-#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1059
+#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1078
 msgid "Enabled"
 msgstr "Engedélyezve"
 
@@ -916,33 +916,67 @@ msgstr "Az ikon alatt megjelenítendő cím"
 msgid "The description to be displayed below the title"
 msgstr "A cím alatt megjelenítendő leírás"
 
-#: src/hdy-swipe-tracker.c:1044
+#: src/hdy-style-manager.c:577
+msgid "Color Scheme"
+msgstr "Színséma"
+
+#: src/hdy-style-manager.c:578
+#| msgid "The current fold policy"
+msgid "The current color scheme"
+msgstr "A jelenlegi színséma"
+
+#: src/hdy-style-manager.c:600
+msgid "System supports color schemes"
+msgstr "A rendszer támogatja a színsémákat"
+
+#: src/hdy-style-manager.c:601
+msgid "Whether the system supports color schemes"
+msgstr "A rendszer támogatja-e a színsémákat"
+
+#: src/hdy-style-manager.c:617
+msgid "Dark"
+msgstr "Sötét"
+
+#: src/hdy-style-manager.c:618
+#| msgid "Whether the indicator icon is activatable"
+msgid "Whether the application is using dark appearance"
+msgstr "Az alkalmazás sötét megjelenést használ-e"
+
+#: src/hdy-style-manager.c:633
+msgid "High Contrast"
+msgstr "Nagy kontraszt"
+
+#: src/hdy-style-manager.c:634
+msgid "Whether the application is using high contrast appearance"
+msgstr "Az alkalmazás nagy kontrasztú megjelenést használ-e"
+
+#: src/hdy-swipe-tracker.c:1063
 msgid "Swipeable"
 msgstr "Pöccinthető"
 
-#: src/hdy-swipe-tracker.c:1045
+#: src/hdy-swipe-tracker.c:1064
 msgid "The swipeable the swipe tracker is attached to"
 msgstr "A pöccinthető elem, amelyhez a pöccintéskövető hozzá van rendelve"
 
-#: src/hdy-swipe-tracker.c:1060
+#: src/hdy-swipe-tracker.c:1079
 msgid "Whether the swipe tracker processes events"
 msgstr "A pöccintéskövető dolgoz-e fel eseményeket"
 
-#: src/hdy-swipe-tracker.c:1074
+#: src/hdy-swipe-tracker.c:1093
 msgid "Reversed"
 msgstr "Fordított"
 
-#: src/hdy-swipe-tracker.c:1075
+#: src/hdy-swipe-tracker.c:1094
 msgid "Whether swipe direction is reversed"
 msgstr "A pöccintési irány fordított-e"
 
-#: src/hdy-swipe-tracker.c:1105
+#: src/hdy-swipe-tracker.c:1124
 msgid "Whether to allow swiping for more than one snap point at a time"
 msgstr ""
-"Engedélyezi-e az egyszerre több mint egy rögzítési pont felé történő"
-" pöccintést"
+"Engedélyezi-e az egyszerre több mint egy rögzítési pont felé történő "
+"pöccintést"
 
-#: src/hdy-tab-bar.c:517 src/hdy-tab-box.c:3508 src/hdy-tab-box.c:3509
+#: src/hdy-tab-bar.c:517 src/hdy-tab-box.c:3509 src/hdy-tab-box.c:3510
 #: src/hdy-tab.c:906 src/hdy-tab.c:907
 msgid "View"
 msgstr "Nézet"
@@ -1011,28 +1045,28 @@ msgstr "Túlcsordulás"
 msgid "Whether the tab bar is overflowing"
 msgstr "A lapsáv túlcsordul-e"
 
-#: src/hdy-tab-box.c:3494 src/hdy-tab-box.c:3495 src/hdy-tab.c:913
+#: src/hdy-tab-box.c:3495 src/hdy-tab-box.c:3496 src/hdy-tab.c:913
 #: src/hdy-tab.c:914 src/hdy-tab-view.c:415
 msgid "Pinned"
 msgstr "Rögzített"
 
-#: src/hdy-tab-box.c:3501 src/hdy-tab-box.c:3502
+#: src/hdy-tab-box.c:3502 src/hdy-tab-box.c:3503
 msgid "Tab Bar"
 msgstr "Lapsáv"
 
-#: src/hdy-tab-box.c:3515 src/hdy-tab-box.c:3516
+#: src/hdy-tab-box.c:3516 src/hdy-tab-box.c:3517
 msgid "Adjustment"
 msgstr "Igazítás"
 
-#: src/hdy-tab-box.c:3522 src/hdy-tab-box.c:3523
+#: src/hdy-tab-box.c:3523 src/hdy-tab-box.c:3524
 msgid "Needs Attention Left"
 msgstr "Figyelmet kér a bal oldalon"
 
-#: src/hdy-tab-box.c:3529 src/hdy-tab-box.c:3530
+#: src/hdy-tab-box.c:3530 src/hdy-tab-box.c:3531
 msgid "Needs Attention Right"
 msgstr "Figyelmet kér a jobb oldalon"
 
-#: src/hdy-tab-box.c:3536 src/hdy-tab-box.c:3537
+#: src/hdy-tab-box.c:3537 src/hdy-tab-box.c:3538
 msgid "Resize Frozen"
 msgstr "Átméretezés befagyasztva"
 
@@ -1132,55 +1166,55 @@ msgstr "Figyelmet kér"
 msgid "Whether the page needs attention"
 msgstr "Az oldal figyelmet kér-e"
 
-#: src/hdy-tab-view.c:1105
+#: src/hdy-tab-view.c:1108
 msgid "The number of pages in the tab view"
 msgstr "A lapnézetben lévő oldalak száma"
 
-#: src/hdy-tab-view.c:1120
+#: src/hdy-tab-view.c:1123
 msgid "Number of pinned pages"
 msgstr "Rögzített oldalak száma"
 
-#: src/hdy-tab-view.c:1121
+#: src/hdy-tab-view.c:1124
 msgid "The number of pinned pages in the tab view"
 msgstr "A lapnézetben lévő rögzített oldalak száma"
 
-#: src/hdy-tab-view.c:1140
+#: src/hdy-tab-view.c:1143
 msgid "Is transferring page"
 msgstr "Oldalt helyez át"
 
-#: src/hdy-tab-view.c:1141
+#: src/hdy-tab-view.c:1144
 msgid "Whether a page is being transferred"
 msgstr "Egy oldal épp áthelyezés alatt van-e"
 
-#: src/hdy-tab-view.c:1154
+#: src/hdy-tab-view.c:1157
 msgid "Selected page"
 msgstr "Kiválasztott oldal"
 
-#: src/hdy-tab-view.c:1155
+#: src/hdy-tab-view.c:1158
 msgid "The currently selected page"
 msgstr "A jelenleg kiválasztott oldal"
 
-#: src/hdy-tab-view.c:1175
+#: src/hdy-tab-view.c:1178
 msgid "Default icon"
 msgstr "Alapértelmezett ikon"
 
-#: src/hdy-tab-view.c:1176
+#: src/hdy-tab-view.c:1179
 msgid "Default page icon"
 msgstr "Alapértelmezett oldalikon"
 
-#: src/hdy-tab-view.c:1193
+#: src/hdy-tab-view.c:1196
 msgid "Menu model"
 msgstr "Menümodell"
 
-#: src/hdy-tab-view.c:1194
+#: src/hdy-tab-view.c:1197
 msgid "Tab context menu model"
 msgstr "Lap helyimenü-modellje"
 
-#: src/hdy-tab-view.c:1222
+#: src/hdy-tab-view.c:1225
 msgid "Shortcut widget"
 msgstr "Gyorsbillentyű felületi elem"
 
-#: src/hdy-tab-view.c:1223
+#: src/hdy-tab-view.c:1226
 msgid "Tab shortcut widget"
 msgstr "Lap gyorsbillentyű felületi elem"
 
@@ -1255,9 +1289,8 @@ msgid ""
 "The preferred place to ellipsize the string, if the narrow mode label does "
 "not have enough room to display the entire string"
 msgstr ""
-"A karakterlánc hármaspontozásának előnyben részesített helye, ha a keskeny"
-" módú "
-"címke nem fér el úgy, hogy megjelenítse az egész karakterláncot"
+"A karakterlánc hármaspontozásának előnyben részesített helye, ha a keskeny "
+"módú címke nem fér el úgy, hogy megjelenítse az egész karakterláncot"
 
 #: src/hdy-view-switcher-title.c:286
 msgid "View switcher enabled"
