@@ -216,14 +216,6 @@ get_system_theme_name (void)
   return g_value_dup_string (&value);
 }
 
-static gboolean
-check_current_theme_exists (gboolean dark)
-{
-  g_autofree gchar *theme_name = get_system_theme_name ();
-
-  return check_theme_exists (theme_name, dark ? "dark" : NULL);
-}
-
 static void
 warn_prefer_dark_theme (HdyStyleManager *self)
 {
@@ -321,15 +313,25 @@ update_stylesheet (HdyStyleManager *self)
                 "gtk-application-prefer-dark-theme", self->dark,
                 NULL);
 
-  if (hdy_settings_get_high_contrast (self->settings))
+  if (hdy_settings_get_high_contrast (self->settings)) {
     g_object_set (gtk_settings,
                   "gtk-theme-name",
                   self->dark ? "HighContrastInverse" : "HighContrast",
                   NULL);
-  else if (check_current_theme_exists (self->dark))
-    gtk_settings_reset_property (gtk_settings, "gtk-theme-name");
-  else
-    g_object_set (gtk_settings, "gtk-theme-name", "Adwaita", NULL);
+  } else {
+    g_autofree gchar *theme_name = get_system_theme_name ();
+    gboolean override_theme = FALSE;
+
+    if (g_str_has_suffix (theme_name, "-dark")) {
+      theme_name[strlen (theme_name) - 5] = '\0';
+      override_theme = TRUE;
+    }
+
+    if (!check_theme_exists (theme_name, self->dark ? "dark" : NULL))
+      g_object_set (gtk_settings, "gtk-theme-name", "Adwaita", NULL);
+    else if (override_theme)
+      g_object_set (gtk_settings, "gtk-theme-name", theme_name, NULL);
+  }
 
   g_signal_handlers_unblock_by_func (gtk_settings,
                                      G_CALLBACK (warn_prefer_dark_theme),
