@@ -1,3 +1,14 @@
+=============
+Version 1.6.0
+=============
+
+- Fix introspection-related build warnings
+- AdwStyleManager
+  - Make color-scheme work with GTK themes ending in -dark
+- Translation updates:
+  - Basque
+  - Hungarian
+
 ==============
 Version 1.5.91
 ==============
