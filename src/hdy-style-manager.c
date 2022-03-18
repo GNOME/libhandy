@@ -331,6 +331,8 @@ update_stylesheet (HdyStyleManager *self)
       g_object_set (gtk_settings, "gtk-theme-name", "Adwaita", NULL);
     else if (override_theme)
       g_object_set (gtk_settings, "gtk-theme-name", theme_name, NULL);
+    else
+      gtk_settings_reset_property (gtk_settings, "gtk-theme-name");
   }
 
   g_signal_handlers_unblock_by_func (gtk_settings,
