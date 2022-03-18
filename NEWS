@@ -1,4 +1,12 @@
 =============
+Version 1.6.1
+=============
+
+- HdyStyleManager
+  - Correctly reset the theme if we're not overriding it.
+    Fixes switching away from HighContrast.
+
+=============
 Version 1.6.0
 =============
 
