@@ -574,7 +574,7 @@ hdy_style_manager_class_init (HdyStyleManagerClass *klass)
    *
    * The [property@StyleManager:system-supports-color-schemes] property can be
    * used to check if the current environment provides a color scheme
-   * dddpreference.
+   * preference.
    *
    * Since: 1.6
    */
