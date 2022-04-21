@@ -2,7 +2,7 @@
 version = "@VERSION@"
 description = "Building blocks for modern adaptive GNOME apps"
 authors = "Purism SPC"
-license = "GPL-2.1-or-later"
+license = "LGPL-2.1-or-later"
 browse_url = "https://gitlab.gnome.org/GNOME/libhandy/"
 repository_url = "https://gitlab.gnome.org/GNOME/libhandy.git"
 website_url = "https://gnome.pages.gitlab.gnome.org/libhandy"
