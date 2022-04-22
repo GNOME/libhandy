@@ -1,4 +1,16 @@
 =============
+Version 1.6.2
+=============
+
+- Fix license in docs
+- Fix a Meson error when using as a subproject
+- Fix a typo in HdyStyleManager docs
+- Translation updates:
+  - Dutch
+  - Indonesian
+  - Persian
+
+=============
 Version 1.6.1
 =============
 
