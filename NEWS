@@ -1,4 +1,26 @@
 =============
+Version 1.4.1
+=============
+
+- HdyCarousel
+  - Add a missing check in hdy_carousel_scroll_to()
+- HdySwipeTracker
+  - Fix a memory leak
+- Don't change background of non-activatable boxed list rows on press
+- Translation updates:
+  - Basque
+  - Chinese (China)
+  - Dutch
+  - Galician
+  - Hungarian
+  - Indonesian
+  - Persian
+  - Portuguese
+  - Romanian
+  - Serbian
+  - Swedish
+
+=============
 Version 1.4.0
 =============
 
