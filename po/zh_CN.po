@@ -3,20 +3,21 @@
 # This file is distributed under the same license as the libhandy package.
 # Damned <damnedlies@163.com>, 2020.
 # Dingzhong Chen <wsxy162@gmail.com>, 2020-2021.
+# lumingzh <lumingzh@qq.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2021-08-12 12:05+0000\n"
-"PO-Revision-Date: 2021-09-17 17:13+0800\n"
-"Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
+"POT-Creation-Date: 2022-01-20 13:19+0000\n"
+"PO-Revision-Date: 2022-04-13 20:09+0800\n"
+"Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 40.0\n"
+"X-Generator: Gtranslator 42.0\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: glade/glade-hdy-carousel.c:160 glade/glade-hdy-header-bar.c:118
@@ -112,72 +113,71 @@ msgid "The desired number of subtitle lines"
 msgstr "所需的副标题行数"
 
 #: src/hdy-carousel-box.c:1093 src/hdy-carousel-box.c:1094
-#: src/hdy-carousel.c:598 src/hdy-carousel.c:599 src/hdy-tab-view.c:1104
+#: src/hdy-carousel.c:599 src/hdy-carousel.c:600 src/hdy-tab-view.c:1107
 msgid "Number of pages"
 msgstr "页数"
 
-#: src/hdy-carousel-box.c:1109 src/hdy-carousel.c:615 src/hdy-header-bar.c:2090
+#: src/hdy-carousel-box.c:1109 src/hdy-carousel.c:616 src/hdy-header-bar.c:2090
 msgid "Position"
 msgstr "位置"
 
-#: src/hdy-carousel-box.c:1110 src/hdy-carousel.c:616
+#: src/hdy-carousel-box.c:1110 src/hdy-carousel.c:617
 msgid "Current scrolling position"
 msgstr "当前滚动位置"
 
-#: src/hdy-carousel-box.c:1125 src/hdy-carousel.c:646 src/hdy-header-bar.c:2118
+#: src/hdy-carousel-box.c:1125 src/hdy-carousel.c:647 src/hdy-header-bar.c:2118
 msgid "Spacing"
 msgstr "间距"
 
-#: src/hdy-carousel-box.c:1126 src/hdy-carousel.c:647
+#: src/hdy-carousel-box.c:1126 src/hdy-carousel.c:648
 msgid "Spacing between pages"
 msgstr "页面间距"
 
-#: src/hdy-carousel-box.c:1142 src/hdy-carousel.c:721
+#: src/hdy-carousel-box.c:1142 src/hdy-carousel.c:722
 msgid "Reveal duration"
 msgstr "显示时长"
 
-#: src/hdy-carousel-box.c:1143 src/hdy-carousel.c:722
+#: src/hdy-carousel-box.c:1143 src/hdy-carousel.c:723
 msgid "Page reveal duration"
 msgstr "页面显示的持续时间"
 
-#: src/hdy-carousel.c:632
+#: src/hdy-carousel.c:633
 msgid "Interactive"
 msgstr "交互式"
 
-#: src/hdy-carousel.c:633
+#: src/hdy-carousel.c:634
 msgid "Whether the widget can be swiped"
 msgstr "是否可以滑动该部件"
 
-#: src/hdy-carousel.c:662
+#: src/hdy-carousel.c:663
 msgid "Animation duration"
 msgstr "动画时长"
 
-#: src/hdy-carousel.c:663
+#: src/hdy-carousel.c:664
 msgid "Default animation duration"
 msgstr "默认的动画持续时间"
 
-#: src/hdy-carousel.c:677 src/hdy-swipe-tracker.c:1089
+#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1108
 msgid "Allow mouse drag"
 msgstr "允许鼠标拖动"
 
-#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1090
+#: src/hdy-carousel.c:679 src/hdy-swipe-tracker.c:1109
 msgid "Whether to allow dragging with mouse pointer"
 msgstr "是否允许使用鼠标指针进行拖动"
 
-#: src/hdy-carousel.c:692
+#: src/hdy-carousel.c:693
 msgid "Allow scroll wheel"
 msgstr "允许滚轮"
 
-#: src/hdy-carousel.c:693
-#| msgid "Whether the swipe tracker processes events"
+#: src/hdy-carousel.c:694
 msgid "Whether the widget will respond to scroll wheel events"
 msgstr "部件是否会响应滚轮事件"
 
-#: src/hdy-carousel.c:707 src/hdy-swipe-tracker.c:1104
+#: src/hdy-carousel.c:708 src/hdy-swipe-tracker.c:1123
 msgid "Allow long swipes"
 msgstr "允许长滑"
 
-#: src/hdy-carousel.c:708
+#: src/hdy-carousel.c:709
 msgid "Whether to allow swiping for more than one page at a time"
 msgstr "是否允许一次滑动多页"
 
@@ -187,19 +187,19 @@ msgstr "是否允许一次滑动多页"
 msgid "Carousel"
 msgstr "轮播"
 
-#: src/hdy-clamp.c:412
+#: src/hdy-clamp.c:433
 msgid "Maximum size"
 msgstr "最大尺寸"
 
-#: src/hdy-clamp.c:413
+#: src/hdy-clamp.c:434
 msgid "The maximum size allocated to the child"
 msgstr "分配给子部件的最大尺寸"
 
-#: src/hdy-clamp.c:437
+#: src/hdy-clamp.c:458
 msgid "Tightening threshold"
 msgstr "紧缩界限"
 
-#: src/hdy-clamp.c:438
+#: src/hdy-clamp.c:459
 msgid "The size from which the clamp will tighten its grip on the child"
 msgstr "子部件能被夹钳（clamp）拧紧的最小尺寸"
 
@@ -761,7 +761,6 @@ msgid "Use markup"
 msgstr "使用标记"
 
 #: src/hdy-preferences-group.c:309
-#| msgid "Whether or not the title bar is in selection mode"
 msgid "Whether to use markup for the title and description"
 msgstr "是否在标题和描述上使用标记语言"
 
@@ -819,11 +818,11 @@ msgstr "显示关闭按钮"
 msgid "Whether to show the close button in the toolbar"
 msgstr "是否在工具栏中显示关闭按钮"
 
-#: src/hdy-shadow-helper.c:257
+#: src/hdy-shadow-helper.c:256
 msgid "Widget"
 msgstr "部件"
 
-#: src/hdy-shadow-helper.c:258
+#: src/hdy-shadow-helper.c:257
 msgid "The widget the shadow will be drawn for"
 msgstr "要绘制阴影的部件"
 
@@ -859,7 +858,7 @@ msgstr "Y 对齐"
 msgid "The vertical alignment, from 0 (top) to 1 (bottom)"
 msgstr "垂直对齐，从 0（顶部）到 1（底部）"
 
-#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1059
+#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1078
 msgid "Enabled"
 msgstr "已启用"
 
@@ -905,31 +904,63 @@ msgstr "显示于图标下方的标题"
 msgid "The description to be displayed below the title"
 msgstr "显示于标题下方的描述"
 
-#: src/hdy-swipe-tracker.c:1044
+#: src/hdy-style-manager.c:577
+msgid "Color Scheme"
+msgstr "配色"
+
+#: src/hdy-style-manager.c:578
+msgid "The current color scheme"
+msgstr "当前配色"
+
+#: src/hdy-style-manager.c:600
+msgid "System supports color schemes"
+msgstr "系统支持配色"
+
+#: src/hdy-style-manager.c:601
+msgid "Whether the system supports color schemes"
+msgstr "系统是否支持配色"
+
+#: src/hdy-style-manager.c:617
+msgid "Dark"
+msgstr "暗色"
+
+#: src/hdy-style-manager.c:618
+msgid "Whether the application is using dark appearance"
+msgstr "应用程序是否使用暗色外观"
+
+#: src/hdy-style-manager.c:633
+msgid "High Contrast"
+msgstr "高对比度"
+
+#: src/hdy-style-manager.c:634
+msgid "Whether the application is using high contrast appearance"
+msgstr "应用程序是否使用高对比度外观"
+
+#: src/hdy-swipe-tracker.c:1063
 msgid "Swipeable"
 msgstr "可滑动部件"
 
-#: src/hdy-swipe-tracker.c:1045
+#: src/hdy-swipe-tracker.c:1064
 msgid "The swipeable the swipe tracker is attached to"
 msgstr "滑动跟踪器关联的可滑动部件"
 
-#: src/hdy-swipe-tracker.c:1060
+#: src/hdy-swipe-tracker.c:1079
 msgid "Whether the swipe tracker processes events"
 msgstr "滑动跟踪器是否处理事件"
 
-#: src/hdy-swipe-tracker.c:1074
+#: src/hdy-swipe-tracker.c:1093
 msgid "Reversed"
 msgstr "反转"
 
-#: src/hdy-swipe-tracker.c:1075
+#: src/hdy-swipe-tracker.c:1094
 msgid "Whether swipe direction is reversed"
 msgstr "滑动方向是否已反转"
 
-#: src/hdy-swipe-tracker.c:1105
+#: src/hdy-swipe-tracker.c:1124
 msgid "Whether to allow swiping for more than one snap point at a time"
 msgstr "是否允许一次滑动多个吸附点"
 
-#: src/hdy-tab-bar.c:517 src/hdy-tab-box.c:3508 src/hdy-tab-box.c:3509
+#: src/hdy-tab-bar.c:517 src/hdy-tab-box.c:3509 src/hdy-tab-box.c:3510
 #: src/hdy-tab.c:906 src/hdy-tab.c:907
 msgid "View"
 msgstr "视图"
@@ -998,28 +1029,28 @@ msgstr "溢出"
 msgid "Whether the tab bar is overflowing"
 msgstr "标签页栏是否已装满溢出"
 
-#: src/hdy-tab-box.c:3494 src/hdy-tab-box.c:3495 src/hdy-tab.c:913
+#: src/hdy-tab-box.c:3495 src/hdy-tab-box.c:3496 src/hdy-tab.c:913
 #: src/hdy-tab.c:914 src/hdy-tab-view.c:415
 msgid "Pinned"
 msgstr "固定"
 
-#: src/hdy-tab-box.c:3501 src/hdy-tab-box.c:3502
+#: src/hdy-tab-box.c:3502 src/hdy-tab-box.c:3503
 msgid "Tab Bar"
 msgstr "标签页栏"
 
-#: src/hdy-tab-box.c:3515 src/hdy-tab-box.c:3516
+#: src/hdy-tab-box.c:3516 src/hdy-tab-box.c:3517
 msgid "Adjustment"
 msgstr "调整量"
 
-#: src/hdy-tab-box.c:3522 src/hdy-tab-box.c:3523
+#: src/hdy-tab-box.c:3523 src/hdy-tab-box.c:3524
 msgid "Needs Attention Left"
 msgstr "左侧需要注意"
 
-#: src/hdy-tab-box.c:3529 src/hdy-tab-box.c:3530
+#: src/hdy-tab-box.c:3530 src/hdy-tab-box.c:3531
 msgid "Needs Attention Right"
 msgstr "右侧需要注意"
 
-#: src/hdy-tab-box.c:3536 src/hdy-tab-box.c:3537
+#: src/hdy-tab-box.c:3537 src/hdy-tab-box.c:3538
 msgid "Resize Frozen"
 msgstr "禁止调整大小"
 
@@ -1119,55 +1150,55 @@ msgstr "需要注意"
 msgid "Whether the page needs attention"
 msgstr "页面是否需要注意"
 
-#: src/hdy-tab-view.c:1105
+#: src/hdy-tab-view.c:1108
 msgid "The number of pages in the tab view"
 msgstr "标签页视图里的页面数量"
 
-#: src/hdy-tab-view.c:1120
+#: src/hdy-tab-view.c:1123
 msgid "Number of pinned pages"
 msgstr "固定页面数"
 
-#: src/hdy-tab-view.c:1121
+#: src/hdy-tab-view.c:1124
 msgid "The number of pinned pages in the tab view"
 msgstr "标签页视图中固定的页面数量"
 
-#: src/hdy-tab-view.c:1140
+#: src/hdy-tab-view.c:1143
 msgid "Is transferring page"
 msgstr "页面转移中"
 
-#: src/hdy-tab-view.c:1141
+#: src/hdy-tab-view.c:1144
 msgid "Whether a page is being transferred"
 msgstr "页面是否正处于转移过程"
 
-#: src/hdy-tab-view.c:1154
+#: src/hdy-tab-view.c:1157
 msgid "Selected page"
 msgstr "所选页"
 
-#: src/hdy-tab-view.c:1155
+#: src/hdy-tab-view.c:1158
 msgid "The currently selected page"
 msgstr "当前选中的页面"
 
-#: src/hdy-tab-view.c:1175
+#: src/hdy-tab-view.c:1178
 msgid "Default icon"
 msgstr "默认图标"
 
-#: src/hdy-tab-view.c:1176
+#: src/hdy-tab-view.c:1179
 msgid "Default page icon"
 msgstr "默认的页面图标"
 
-#: src/hdy-tab-view.c:1193
+#: src/hdy-tab-view.c:1196
 msgid "Menu model"
 msgstr "菜单模型"
 
-#: src/hdy-tab-view.c:1194
+#: src/hdy-tab-view.c:1197
 msgid "Tab context menu model"
 msgstr "标签页栏右键菜单模型"
 
-#: src/hdy-tab-view.c:1222
+#: src/hdy-tab-view.c:1225
 msgid "Shortcut widget"
 msgstr "快捷部件"
 
-#: src/hdy-tab-view.c:1223
+#: src/hdy-tab-view.c:1226
 msgid "Tab shortcut widget"
 msgstr "标签页栏的快捷部件"
 
