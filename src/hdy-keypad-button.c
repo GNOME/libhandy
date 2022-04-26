@@ -41,7 +41,7 @@ G_DEFINE_TYPE (HdyKeypadButton, hdy_keypad_button, GTK_TYPE_BUTTON)
 static void
 format_label(HdyKeypadButton *self)
 {
-  g_autofree gchar *text = NULL;
+  gchar *text = NULL;
   gchar *secondary_text = NULL;
 
   if (self->symbols != NULL && *(self->symbols) != '\0') {
@@ -51,6 +51,8 @@ format_label(HdyKeypadButton *self)
 
   gtk_label_set_label (self->label, text);
   gtk_label_set_label (self->secondary_label, secondary_text);
+
+  g_free (text);
 }
 
 static void

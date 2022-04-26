@@ -333,10 +333,10 @@ update_decoration_layouts (HdyHeaderGroup *self)
   GSList *children;
   GtkSettings *settings;
   HdyHeaderGroupChild *start_child = NULL, *end_child = NULL;
-  g_autofree gchar *layout = NULL;
-  g_autofree gchar *start_layout = NULL;
-  g_autofree gchar *end_layout = NULL;
-  g_auto(GStrv) ends = NULL;
+  gchar *layout;
+  gchar *start_layout;
+  gchar *end_layout;
+  GStrv ends;
 
   g_return_if_fail (HDY_IS_HEADER_GROUP (self));
 
@@ -356,6 +356,8 @@ update_decoration_layouts (HdyHeaderGroup *self)
   if (self->decorate_all) {
     for (; children != NULL; children = children->next)
       hdy_header_group_child_set_decoration_layout (HDY_HEADER_GROUP_CHILD (children->data), layout);
+
+    g_free (layout);
 
     return;
   }
@@ -380,6 +382,8 @@ update_decoration_layouts (HdyHeaderGroup *self)
   if (start_child == end_child) {
     hdy_header_group_child_set_decoration_layout (start_child, layout);
 
+    g_free (layout);
+
     return;
   }
 
@@ -393,6 +397,11 @@ update_decoration_layouts (HdyHeaderGroup *self)
   }
   hdy_header_group_child_set_decoration_layout (start_child, start_layout);
   hdy_header_group_child_set_decoration_layout (end_child, end_layout);
+
+  g_free (end_layout);
+  g_free (start_layout);
+  g_strfreev (ends);
+  g_free (layout);
 }
 
 static void

@@ -69,7 +69,7 @@ static GParamSpec *props[LAST_PROP];
 static gchar *
 strip_mnemonic (const gchar *src)
 {
-  g_autofree gchar *new_str = g_new (gchar, strlen (src) + 1);
+  gchar *new_str = g_new (gchar, strlen (src) + 1);
   gchar *dest = new_str;
   gboolean underscore = FALSE;
 
@@ -80,6 +80,8 @@ strip_mnemonic (const gchar *src)
     c = g_utf8_get_char (src);
     if (c == (gunichar) -1) {
       g_warning ("Invalid input string");
+
+      g_free (new_str);
 
       return NULL;
     }
@@ -104,7 +106,7 @@ strip_mnemonic (const gchar *src)
 
   *dest = 0;
 
-  return g_steal_pointer (&new_str);
+  return new_str;
 }
 
 static gboolean
@@ -112,9 +114,10 @@ filter_search_results (HdyActionRow         *row,
                        HdyPreferencesWindow *self)
 {
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
-  g_autofree gchar *text = g_utf8_casefold (gtk_entry_get_text (GTK_ENTRY (priv->search_entry)), -1);
-  g_autofree gchar *title = g_utf8_casefold (hdy_preferences_row_get_title (HDY_PREFERENCES_ROW (row)), -1);
-  g_autofree gchar *subtitle = NULL;
+  gchar *text = g_utf8_casefold (gtk_entry_get_text (GTK_ENTRY (priv->search_entry)), -1);
+  gchar *title = g_utf8_casefold (hdy_preferences_row_get_title (HDY_PREFERENCES_ROW (row)), -1);
+  gchar *subtitle = NULL;
+  gboolean result = FALSE;
 
   /* The CSS engine works in such a way that invisible children are treated as
    * visible widgets, which breaks the expectations of the .preferences  style
@@ -140,21 +143,24 @@ filter_search_results (HdyActionRow         *row,
     priv->n_last_search_results++;
     gtk_widget_show (GTK_WIDGET (row));
 
-    return TRUE;
+    result = TRUE;
+  } else {
+    subtitle = g_utf8_casefold (hdy_action_row_get_subtitle (row), -1);
+
+    if (!!strstr (subtitle, text)) {
+      priv->n_last_search_results++;
+      gtk_widget_show (GTK_WIDGET (row));
+
+      result = TRUE;
+    } else {
+      gtk_widget_hide (GTK_WIDGET (row));
+    }
   }
 
-  subtitle = g_utf8_casefold (hdy_action_row_get_subtitle (row), -1);
-
-  if (!!strstr (subtitle, text)) {
-    priv->n_last_search_results++;
-    gtk_widget_show (GTK_WIDGET (row));
-
-    return TRUE;
-  }
-
-  gtk_widget_hide (GTK_WIDGET (row));
-
-  return FALSE;
+  g_free (subtitle);
+  g_free (title);
+  g_free (text);
+  return result;
 }
 
 static GtkWidget *
@@ -194,8 +200,10 @@ new_search_row_for_preference (HdyPreferencesRow    *row,
   if (group_title && !hdy_view_switcher_title_get_title_visible (priv->view_switcher_title))
     hdy_action_row_set_subtitle (widget, group_title);
   if (group_title) {
-    g_autofree gchar *subtitle = g_strdup_printf ("%s → %s", page_title != NULL ? page_title : _("Untitled page"), group_title);
+    gchar *subtitle = g_strdup_printf ("%s → %s", page_title != NULL ? page_title : _("Untitled page"), group_title);
     hdy_action_row_set_subtitle (widget, subtitle);
+
+    g_free (subtitle);
   } else if (page_title)
     hdy_action_row_set_subtitle (widget, page_title);
 
@@ -211,7 +219,7 @@ static void
 update_search_results (HdyPreferencesWindow *self)
 {
   HdyPreferencesWindowPrivate *priv = hdy_preferences_window_get_instance_private (self);
-  g_autoptr (GListStore) model;
+  GListStore *model;
 
   model = g_list_store_new (HDY_TYPE_PREFERENCES_ROW);
   gtk_container_foreach (GTK_CONTAINER (priv->pages_stack), (GtkCallback) hdy_preferences_page_add_preferences_to_model, model);
@@ -219,6 +227,8 @@ update_search_results (HdyPreferencesWindow *self)
   for (guint i = 0; i < g_list_model_get_n_items (G_LIST_MODEL (model)); i++)
     gtk_container_add (GTK_CONTAINER (priv->search_results),
                        new_search_row_for_preference ((HdyPreferencesRow *) g_list_model_get_item (G_LIST_MODEL (model), i), self));
+
+  g_object_unref (model);
 }
 
 static void
