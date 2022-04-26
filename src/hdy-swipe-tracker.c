@@ -201,13 +201,15 @@ get_range (HdySwipeTracker *self,
            gdouble         *first,
            gdouble         *last)
 {
-  g_autofree gdouble *points = NULL;
+  gdouble *points;
   gint n;
 
   points = hdy_swipeable_get_snap_points (self->swipeable, &n);
 
   *first = points[0];
   *last = points[n - 1];
+
+  g_free (points);
 }
 
 static void
@@ -241,7 +243,7 @@ gesture_prepare (HdySwipeTracker        *self,
 static void
 trim_history (HdySwipeTracker *self)
 {
-  g_autoptr (GdkEvent) event = gtk_get_current_event ();
+  GdkEvent *event = gtk_get_current_event ();
   guint32 threshold_time = gdk_event_get_time (event) - EVENT_HISTORY_THRESHOLD_MS;
   guint i;
 
@@ -255,13 +257,15 @@ trim_history (HdySwipeTracker *self)
 
   if (i > 0)
     g_array_remove_range (self->event_history, 0, i);
+
+  gdk_event_free (event);
 }
 
 static void
 append_to_history (HdySwipeTracker *self,
                    gdouble          delta)
 {
-  g_autoptr (GdkEvent) event = gtk_get_current_event ();
+  GdkEvent *event = gtk_get_current_event ();
   EventHistoryRecord record;
 
   trim_history (self);
@@ -270,6 +274,8 @@ append_to_history (HdySwipeTracker *self,
   record.time = gdk_event_get_time (event);
 
   g_array_append_val (self->event_history, record);
+
+  gdk_event_free (event);
 }
 
 static gdouble
@@ -400,11 +406,13 @@ gesture_update (HdySwipeTracker *self,
     return;
 
   if (!self->allow_long_swipes) {
-    g_autofree gdouble *points = NULL;
+    gdouble *points;
     gint n;
 
     points = hdy_swipeable_get_snap_points (self->swipeable, &n);
     get_bounds (self, points, n, self->initial_progress, &lower, &upper);
+
+    g_free (points);
   } else {
     get_range (self, &lower, &upper);
   }
@@ -423,7 +431,7 @@ get_end_progress (HdySwipeTracker *self,
                   gboolean         is_touchpad)
 {
   gdouble pos, decel, slope;
-  g_autofree gdouble *points = NULL;
+  gdouble *points;
   gint n;
   gdouble lower, upper;
 
@@ -432,8 +440,13 @@ get_end_progress (HdySwipeTracker *self,
 
   points = hdy_swipeable_get_snap_points (self->swipeable, &n);
 
-  if (ABS (velocity) < (is_touchpad ? VELOCITY_THRESHOLD_TOUCHPAD : VELOCITY_THRESHOLD_TOUCH))
-    return points[find_closest_point (points, n, self->progress)];
+  if (ABS (velocity) < (is_touchpad ? VELOCITY_THRESHOLD_TOUCHPAD : VELOCITY_THRESHOLD_TOUCH)) {
+    pos = points[find_closest_point (points, n, self->progress)];
+
+    g_free (points);
+
+    return pos;
+  }
 
   decel = is_touchpad ? DECELERATION_TOUCHPAD : DECELERATION_TOUCH;
   slope = decel / (1.0 - decel) / 1000.0;
@@ -460,6 +473,8 @@ get_end_progress (HdySwipeTracker *self,
 
   pos = CLAMP (pos, lower, upper);
   pos = points[find_point_for_projection (self, points, n, pos, velocity)];
+
+  g_free (points);
 
   return pos;
 }

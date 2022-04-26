@@ -133,7 +133,7 @@ hdy_gtk_window_get_icon_for_size (GtkWindow *window,
 {
   GtkWindowIconInfo *info;
   const gchar *name;
-  g_autoptr (GList) default_icon_list = gtk_window_get_default_icon_list ();
+  GList *default_icon_list;
 
   info = ensure_icon_info (window);
 
@@ -151,8 +151,14 @@ hdy_gtk_window_get_icon_for_size (GtkWindow *window,
         return icon_from_list (info->icon_list, size);
     }
 
-  if (default_icon_list != NULL)
-    return icon_from_list (default_icon_list, size);
+  default_icon_list = gtk_window_get_default_icon_list ();
+  if (default_icon_list != NULL) {
+    GdkPixbuf *ret = icon_from_list (default_icon_list, size);
+
+    g_object_unref (default_icon_list);
+
+    return ret;
+  }
 
   if (gtk_window_get_default_icon_name () != NULL)
     return icon_from_name (gtk_window_get_default_icon_name (), size);

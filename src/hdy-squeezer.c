@@ -735,7 +735,7 @@ hdy_squeezer_draw (GtkWidget *widget,
     if (gtk_progress_tracker_get_state (&self->tracker) != GTK_PROGRESS_STATE_AFTER) {
       if (self->last_visible_surface == NULL &&
           self->last_visible_child != NULL) {
-        g_autoptr (cairo_t) pattern_cr = NULL;
+        cairo_t *pattern_cr;
 
         gtk_widget_get_allocation (self->last_visible_child->widget,
                                    &self->last_visible_surface_allocation);
@@ -749,6 +749,8 @@ hdy_squeezer_draw (GtkWidget *widget,
          * bin_window offset.
          */
         gtk_widget_draw (self->last_visible_child->widget, pattern_cr);
+
+        cairo_destroy (pattern_cr);
       }
 
       cairo_rectangle (cr,

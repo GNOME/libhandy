@@ -58,8 +58,8 @@ hdy_themes_get_theme_name (gboolean *prefer_dark_theme)
 static void
 hdy_themes_update (GtkCssProvider *css_provider)
 {
-  g_autofree gchar *theme_name = NULL;
-  g_autofree gchar *resource_path = NULL;
+  gchar *theme_name;
+  gchar *resource_path;
   gboolean prefer_dark_theme = FALSE;
 
   g_assert (GTK_IS_CSS_PROVIDER (css_provider));
@@ -85,12 +85,15 @@ hdy_themes_update (GtkCssProvider *css_provider)
   }
 
   gtk_css_provider_load_from_resource (css_provider, resource_path);
+
+  g_free (resource_path);
+  g_free (theme_name);
 }
 
 static void
 load_fallback_style (void)
 {
-  g_autoptr (GtkCssProvider) css_provider = NULL;
+  GtkCssProvider *css_provider;
 
   css_provider = gtk_css_provider_new ();
   gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
@@ -98,6 +101,8 @@ load_fallback_style (void)
                                              GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
 
   gtk_css_provider_load_from_resource (css_provider, HDY_THEMES_PATH"fallback.css");
+
+  g_object_unref (css_provider);
 }
 
 /**
@@ -112,7 +117,7 @@ static void
 hdy_style_init (void)
 {
   static gsize guard = 0;
-  g_autoptr (GtkCssProvider) css_provider = NULL;
+  GtkCssProvider *css_provider;
   GtkSettings *settings;
 
   if (!g_once_init_enter (&guard))
@@ -136,6 +141,8 @@ hdy_style_init (void)
   hdy_themes_update (css_provider);
 
   load_fallback_style ();
+
+  g_object_unref (css_provider);
 
   g_once_init_leave (&guard, 1);
 }

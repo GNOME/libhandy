@@ -89,13 +89,15 @@ update_arrow (HdyExpanderRow *self)
   GtkWidget *previous_sibling = NULL;
 
   if (parent) {
-    g_autoptr (GList) siblings = gtk_container_get_children (GTK_CONTAINER (parent));
+    GList *siblings = gtk_container_get_children (GTK_CONTAINER (parent));
     GList *l;
 
     for (l = siblings; l != NULL && l->next != NULL && l->next->data != self; l = l->next);
 
     if (l && l->next && l->next->data == self)
       previous_sibling = l->data;
+
+    g_list_free (siblings);
   }
 
   if (priv->expanded)
