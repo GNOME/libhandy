@@ -322,8 +322,9 @@ titlebar_action (HdyWindowHandleController *self,
                  guint                      button)
 {
   GtkSettings *settings;
-  g_autofree gchar *action = NULL;
+  gchar *action;
   GtkWindow *window = get_window (self);
+  gboolean result;
 
   if (!window)
     return FALSE;
@@ -350,10 +351,9 @@ titlebar_action (HdyWindowHandleController *self,
   if (action == NULL)
     return FALSE;
 
-  if (g_str_equal (action, "none"))
-    return FALSE;
-
-  if (g_str_has_prefix (action, "toggle-maximize")) {
+  if (g_str_equal (action, "none")) {
+    result = FALSE;
+  } else if (g_str_has_prefix (action, "toggle-maximize")) {
     /*
      * gtk header bar won't show the maximize button if the following
      * properties are not met, apply the same to title bar actions for
@@ -363,30 +363,28 @@ titlebar_action (HdyWindowHandleController *self,
         gtk_window_get_type_hint (window) == GDK_WINDOW_TYPE_HINT_NORMAL)
           hdy_gtk_window_toggle_maximized (window);
 
-    return TRUE;
-  }
-
-  if (g_str_equal (action, "lower")) {
+    result = TRUE;
+  } else if (g_str_equal (action, "lower")) {
     gdk_window_lower (gtk_widget_get_window (GTK_WIDGET (window)));
 
-    return TRUE;
-  }
-
-  if (g_str_equal (action, "minimize")) {
+    result = TRUE;
+  } else if (g_str_equal (action, "minimize")) {
     gdk_window_iconify (gtk_widget_get_window (GTK_WIDGET (window)));
 
-    return TRUE;
-  }
-
-  if (g_str_equal (action, "menu")) {
+    result = TRUE;
+  } else if (g_str_equal (action, "menu")) {
     do_popup (self, (GdkEventButton*) event);
 
-    return TRUE;
+    result = TRUE;
+  } else {
+    g_warning ("Unsupported titlebar action %s", action);
+
+    result = FALSE;
   }
 
-  g_warning ("Unsupported titlebar action %s", action);
+  g_free (action);
 
-  return FALSE;
+  return result;
 }
 
 static void

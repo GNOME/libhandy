@@ -87,16 +87,21 @@ create_list_label (gpointer item,
                    gpointer user_data)
 {
   HdyComboRowGetName *get_name = (HdyComboRowGetName *) user_data;
-  g_autofree gchar *name = get_name->func (item, get_name->func_data);
+  gchar *name = get_name->func (item, get_name->func_data);
+  GtkWidget *widget;
 
-  return g_object_new (GTK_TYPE_LABEL,
-                       "ellipsize", PANGO_ELLIPSIZE_END,
-                       "label", name,
-                       "max-width-chars", 20,
-                       "valign", GTK_ALIGN_CENTER,
-                       "visible", TRUE,
-                       "xalign", 0.0,
-                        NULL);
+  widget = g_object_new (GTK_TYPE_LABEL,
+                         "ellipsize", PANGO_ELLIPSIZE_END,
+                         "label", name,
+                         "max-width-chars", 20,
+                         "valign", GTK_ALIGN_CENTER,
+                         "visible", TRUE,
+                         "xalign", 0.0,
+                          NULL);
+
+  g_free (name);
+
+  return widget;
 }
 
 static GtkWidget *
@@ -104,19 +109,24 @@ create_current_label (gpointer item,
                       gpointer user_data)
 {
   HdyComboRowGetName *get_name = (HdyComboRowGetName *) user_data;
-  g_autofree gchar *name = NULL;
+  gchar *name = NULL;
+  GtkWidget *widget;
 
   if (get_name->func)
     name = get_name->func (item, get_name->func_data);
 
-  return g_object_new (GTK_TYPE_LABEL,
-                       "ellipsize", PANGO_ELLIPSIZE_END,
-                       "halign", GTK_ALIGN_END,
-                       "label", name,
-                       "valign", GTK_ALIGN_CENTER,
-                       "visible", TRUE,
-                       "xalign", 0.0,
-                        NULL);
+  widget = g_object_new (GTK_TYPE_LABEL,
+                         "ellipsize", PANGO_ELLIPSIZE_END,
+                         "halign", GTK_ALIGN_END,
+                         "label", name,
+                         "valign", GTK_ALIGN_CENTER,
+                         "visible", TRUE,
+                         "xalign", 0.0,
+                          NULL);
+
+  g_free (name);
+
+  return widget;
 }
 
 static void
@@ -178,8 +188,7 @@ static void
 update (HdyComboRow *self)
 {
   HdyComboRowPrivate *priv = hdy_combo_row_get_instance_private (self);
-  g_autoptr(GObject) item = NULL;
-  g_autofree gchar *name = NULL;
+  GObject *item;
   GtkWidget *widget;
   guint n_items = priv->bound_model ? g_list_model_get_n_items (priv->bound_model) : 0;
   gint i;
@@ -209,16 +218,22 @@ update (HdyComboRow *self)
 
   item = g_list_model_get_item (priv->bound_model, priv->selected_index);
   if (priv->use_subtitle) {
+    gchar *name = NULL;
+
     if (priv->get_name != NULL && priv->get_name->func)
       name = priv->get_name->func (item, priv->get_name->func_data);
     else if (priv->get_name_internal != NULL && priv->get_name_internal->func)
       name = priv->get_name_internal->func (item, priv->get_name_internal->func_data);
     hdy_action_row_set_subtitle (HDY_ACTION_ROW (self), name);
+
+    g_free (name);
   }
   else {
     widget = priv->create_current_widget_func (item, priv->create_widget_func_data);
     gtk_container_add (GTK_CONTAINER (priv->current), widget);
   }
+
+  g_object_unref (item);
 }
 
 static void
@@ -653,7 +668,7 @@ hdy_combo_row_set_for_enum (HdyComboRow                     *self,
                             gpointer                         user_data,
                             GDestroyNotify                   user_data_free_func)
 {
-  g_autoptr (GListStore) store = g_list_store_new (HDY_TYPE_ENUM_VALUE_OBJECT);
+  GListStore *store = g_list_store_new (HDY_TYPE_ENUM_VALUE_OBJECT);
   /* g_autoptr for GEnumClass would require glib > 2.56 */
   GEnumClass *enum_class = NULL;
   gsize i;
@@ -663,13 +678,16 @@ hdy_combo_row_set_for_enum (HdyComboRow                     *self,
   enum_class = g_type_class_ref (enum_type);
   for (i = 0; i < enum_class->n_values; i++)
     {
-      g_autoptr(HdyEnumValueObject) obj = hdy_enum_value_object_new (&enum_class->values[i]);
+      HdyEnumValueObject *obj = hdy_enum_value_object_new (&enum_class->values[i]);
 
       g_list_store_append (store, obj);
+
+      g_object_unref (obj);
     }
 
   hdy_combo_row_bind_name_model (self, G_LIST_MODEL (store), (HdyComboRowGetNameFunc) get_name_func, user_data, user_data_free_func);
   g_type_class_unref (enum_class);
+  g_object_unref (store);
 }
 
 /**

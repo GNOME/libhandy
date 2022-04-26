@@ -77,7 +77,7 @@ update_child_context (HdyWindowMixin  *self,
                       GtkStyleContext *context,
                       const gchar     *name)
 {
-  g_autoptr (GtkWidgetPath) path = gtk_widget_path_new ();
+  GtkWidgetPath *path = gtk_widget_path_new ();
   GtkStyleContext *parent = gtk_widget_get_style_context (GTK_WIDGET (self->window));
   gint position;
 
@@ -87,6 +87,8 @@ update_child_context (HdyWindowMixin  *self,
 
   gtk_style_context_set_path (context, path);
   gtk_style_context_set_state (context, gtk_style_context_get_state (parent));
+
+  gtk_widget_path_unref (path);
 }
 
 static void
@@ -214,7 +216,7 @@ create_masks (HdyWindowMixin *self,
     return;
 
   for (i = 0; i < HDY_N_CORNERS; i++) {
-    g_autoptr (cairo_t) mask_cr = NULL;
+    cairo_t *mask_cr;
 
     self->masks[i] =
       cairo_surface_create_similar_image (cairo_get_target (cr),
@@ -232,6 +234,8 @@ create_masks (HdyWindowMixin *self,
                r,
                0, G_PI * 2);
     cairo_fill (mask_cr);
+
+    cairo_destroy (mask_cr);
   }
 }
 
@@ -347,8 +351,8 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
     GdkRectangle clip = { 0 };
     gint width, height, x, y, w, h, r, scale_factor;
     GtkWidget *titlebar;
-    g_autoptr (cairo_surface_t) surface = NULL;
-    g_autoptr (cairo_t) surface_cr = NULL;
+    cairo_surface_t *surface;
+    cairo_t *surface_cr;
     GtkBorder shadow;
 
     /* Use the parent drawing unless we have a reason to use masking */
@@ -452,9 +456,15 @@ hdy_window_mixin_draw (HdyWindowMixin *self,
                      HDY_CORNER_BOTTOM_RIGHT, x + w - r, y + h - r);
 
       cairo_surface_flush (surface);
+
     }
 
     cairo_restore (cr);
+
+    cairo_destroy (surface_cr);
+
+    if (should_mask_corners)
+      cairo_surface_destroy (surface);
   }
 
   data.self = self;
