@@ -233,8 +233,8 @@ hdy_carousel_indicator_dots_measure (GtkWidget      *widget,
   if (orientation == self->orientation) {
     gint i, n_points = 0;
     gdouble indicator_length, dot_size;
-    g_autofree gdouble *points = NULL;
-    g_autofree gdouble *sizes = NULL;
+    gdouble *points = NULL;
+    gdouble *sizes;
 
     if (self->carousel)
       points = hdy_swipeable_get_snap_points (HDY_SWIPEABLE (self->carousel), &n_points);
@@ -252,6 +252,9 @@ hdy_carousel_indicator_dots_measure (GtkWidget      *widget,
       indicator_length += dot_size * sizes[i];
 
     size = ceil (indicator_length);
+
+    g_free (sizes);
+    g_free (points);
   } else {
     size = 2 * DOTS_RADIUS_SELECTED;
   }
@@ -296,8 +299,7 @@ hdy_carousel_indicator_dots_draw (GtkWidget *widget,
   HdyCarouselIndicatorDots *self = HDY_CAROUSEL_INDICATOR_DOTS (widget);
   gint i, n_points;
   gdouble position;
-  g_autofree gdouble *points = NULL;
-  g_autofree gdouble *sizes = NULL;
+  gdouble *points;
 
   if (!self->carousel)
     return GDK_EVENT_PROPAGATE;
@@ -305,20 +307,25 @@ hdy_carousel_indicator_dots_draw (GtkWidget *widget,
   points = hdy_swipeable_get_snap_points (HDY_SWIPEABLE (self->carousel), &n_points);
   position = hdy_carousel_get_position (self->carousel);
 
-  if (n_points < 2)
-    return GDK_EVENT_PROPAGATE;
+  if (n_points >= 2) {
+    gdouble *sizes;
 
-  if (self->orientation == GTK_ORIENTATION_HORIZONTAL &&
-      gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
-    position = points[n_points - 1] - position;
+    if (self->orientation == GTK_ORIENTATION_HORIZONTAL &&
+        gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+      position = points[n_points - 1] - position;
 
-  sizes = g_new0 (gdouble, n_points);
+    sizes = g_new0 (gdouble, n_points);
 
-  sizes[0] = points[0] + 1;
-  for (i = 1; i < n_points; i++)
-    sizes[i] = points[i] - points[i - 1];
+    sizes[0] = points[0] + 1;
+    for (i = 1; i < n_points; i++)
+      sizes[i] = points[i] - points[i - 1];
 
-  draw_dots (widget, cr, self->orientation, position, sizes, n_points);
+    draw_dots (widget, cr, self->orientation, position, sizes, n_points);
+
+    g_free (sizes);
+  }
+
+  g_free (points);
 
   return GDK_EVENT_PROPAGATE;
 }

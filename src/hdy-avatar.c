@@ -115,10 +115,11 @@ static GdkPixbuf *
 make_round_image (GdkPixbuf *pixbuf,
                   gdouble    size)
 {
-  g_autoptr (cairo_surface_t) surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, size, size);
-  g_autoptr (cairo_t) cr = cairo_create (surface);
+  cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, size, size);
+  cairo_t *cr = cairo_create (surface);
   gint width = gdk_pixbuf_get_width (pixbuf);
   gint height = gdk_pixbuf_get_height (pixbuf);
+  GdkPixbuf *result;
 
   /* Clip a circle */
   cairo_arc (cr, size / 2.0, size / 2.0, size / 2.0, 0, 2 * G_PI);
@@ -128,35 +129,47 @@ make_round_image (GdkPixbuf *pixbuf,
   gdk_cairo_set_source_pixbuf (cr, pixbuf, (size - width) / 2, (size - height) / 2);
   cairo_paint (cr);
 
-  return gdk_pixbuf_get_from_surface (surface, 0, 0, size, size);
+  result = gdk_pixbuf_get_from_surface (surface, 0, 0, size, size);
+
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+
+  return result;
 }
 
 static gchar *
 extract_initials_from_text (const gchar *text)
 {
   GString *initials;
-  g_autofree gchar *p = g_utf8_strup (text, -1);
-  g_autofree gchar *normalized = g_utf8_normalize (g_strstrip (p), -1, G_NORMALIZE_DEFAULT_COMPOSE);
+  gchar *p = g_utf8_strup (text, -1);
+  gchar *normalized = g_utf8_normalize (g_strstrip (p), -1, G_NORMALIZE_DEFAULT_COMPOSE);
   gunichar unichar;
   gchar *q = NULL;
+  gchar *ret;
 
-  if (normalized == NULL)
-    return NULL;
+  if (normalized != NULL) {
+    initials = g_string_new ("");
 
-  initials = g_string_new ("");
+    unichar = g_utf8_get_char (normalized);
+    g_string_append_unichar (initials, unichar);
 
-  unichar = g_utf8_get_char (normalized);
-  g_string_append_unichar (initials, unichar);
+    q = g_utf8_strrchr (normalized, -1, ' ');
+    if (q != NULL) {
+      unichar = g_utf8_get_char (g_utf8_next_char (q));
 
-  q = g_utf8_strrchr (normalized, -1, ' ');
-  if (q != NULL) {
-    unichar = g_utf8_get_char (g_utf8_next_char (q));
+      if (unichar != 0)
+        g_string_append_unichar (initials, unichar);
+    }
 
-    if (unichar != 0)
-      g_string_append_unichar (initials, unichar);
+    ret = g_string_free (initials, FALSE);
+  } else {
+    ret = NULL;
   }
 
-  return g_string_free (initials, FALSE);
+  g_free (normalized);
+  g_free (p);
+
+  return ret;
 }
 
 static GdkPixbuf *
@@ -219,49 +232,50 @@ load_from_stream_async_cb (GObject      *stream,
                            GAsyncResult *res,
                            gpointer      data)
 {
-  g_autoptr (GTask) task = data;
+  GTask *task = data;
   GdkPixbufLoader *loader = g_task_get_task_data (task);
-  g_autoptr (GBytes) bytes = NULL;
+  GBytes *bytes;
   GError *error = NULL;
+  gboolean return_error = FALSE;
+  gboolean is_zero_size = FALSE;
 
   bytes = g_input_stream_read_bytes_finish (G_INPUT_STREAM (stream), res, &error);
   if (bytes == NULL) {
-    gdk_pixbuf_loader_close (loader, NULL);
+    return_error = TRUE;
+  } else if (g_bytes_get_size (bytes) == 0) {
+    is_zero_size = TRUE;
+
+    if (!gdk_pixbuf_loader_close (loader, &error))
+      return_error = TRUE;
+  } else if (!gdk_pixbuf_loader_write (loader,
+                                       g_bytes_get_data (bytes, NULL),
+                                       g_bytes_get_size (bytes),
+                                      &error)) {
+    return_error = TRUE;
+  }
+
+  if (return_error) {
+    if (!is_zero_size)
+      gdk_pixbuf_loader_close (loader, NULL);
+
     g_task_return_error (task, error);
-
-    return;
+  } else {
+    if (is_zero_size) {
+      g_task_return_pointer (task,
+                             g_object_ref (gdk_pixbuf_loader_get_pixbuf (loader)),
+                             g_object_unref);
+	} else {
+      g_input_stream_read_bytes_async (G_INPUT_STREAM (stream),
+                                       LOAD_BUFFER_SIZE,
+                                       G_PRIORITY_DEFAULT,
+                                       g_task_get_cancellable (task),
+                                       load_from_stream_async_cb,
+                                       g_object_ref (task));
+	}
   }
 
-  if (g_bytes_get_size (bytes) == 0) {
-    if (!gdk_pixbuf_loader_close (loader, &error)) {
-      g_task_return_error (task, error);
-
-      return;
-    }
-
-    g_task_return_pointer (task,
-                           g_object_ref (gdk_pixbuf_loader_get_pixbuf (loader)),
-                           g_object_unref);
-
-    return;
-  }
-
-  if (!gdk_pixbuf_loader_write (loader,
-                                g_bytes_get_data (bytes, NULL),
-                                g_bytes_get_size (bytes),
-                                &error)) {
-    gdk_pixbuf_loader_close (loader, NULL);
-    g_task_return_error (task, error);
-
-    return;
-  }
-
-  g_input_stream_read_bytes_async (G_INPUT_STREAM (stream),
-                                   LOAD_BUFFER_SIZE,
-                                   G_PRIORITY_DEFAULT,
-                                   g_task_get_cancellable (task),
-                                   load_from_stream_async_cb,
-                                   g_object_ref (task));
+  g_bytes_unref (bytes);
+  g_object_unref (task);
 }
 
 static void
@@ -270,14 +284,16 @@ icon_load_async_cb (GLoadableIcon *icon,
                     GTask         *task)
 {
   GdkPixbufLoader *loader = g_task_get_task_data (task);
-  g_autoptr (GInputStream) stream = NULL;
-  g_autoptr (GError) error = NULL;
+  GInputStream *stream;
+  GError *error = NULL;
 
   stream = g_loadable_icon_load_finish (icon, res, NULL, &error);
   if (stream == NULL) {
     gdk_pixbuf_loader_close (loader, NULL);
     g_task_return_error (task, g_steal_pointer (&error));
     g_object_unref (task);
+
+    g_clear_error (&error);
 
     return;
   }
@@ -288,6 +304,8 @@ icon_load_async_cb (GLoadableIcon *icon,
                                    g_task_get_cancellable (task),
                                    load_from_stream_async_cb,
                                    task);
+
+  g_object_unref (stream);
 }
 
 static GdkPixbuf *
@@ -304,8 +322,8 @@ load_from_gicon_async_for_display_cb (HdyAvatar    *self,
                                       GAsyncResult *res,
                                       gpointer     *user_data)
 {
-  g_autoptr (GError) error = NULL;
-  g_autoptr (GdkPixbuf) pixbuf = NULL;
+  GError *error = NULL;
+  GdkPixbuf *pixbuf = NULL;
 
   pixbuf = load_from_gicon_async_finish (res, &error);
 
@@ -321,7 +339,7 @@ load_from_gicon_async_for_display_cb (HdyAvatar    *self,
   self->currently_loading_size = -1;
 
   if (pixbuf) {
-    g_autoptr (GdkPixbuf) custom_image = NULL;
+    GdkPixbuf *custom_image = NULL;
     GtkStyleContext *context = gtk_widget_get_style_context (GTK_WIDGET (self));
     gint width = gtk_widget_get_allocated_width (GTK_WIDGET (self));
     gint height = gtk_widget_get_allocated_height (GTK_WIDGET (self));
@@ -339,7 +357,14 @@ load_from_gicon_async_for_display_cb (HdyAvatar    *self,
 
     g_set_object (&self->round_image, custom_image);
     gtk_widget_queue_draw (GTK_WIDGET (self));
+
+    if (custom_image != NULL)
+      g_object_unref (custom_image);
+
+    g_object_unref (pixbuf);
   }
+
+  g_clear_error (&error);
 }
 
 static void
@@ -348,8 +373,8 @@ load_from_gicon_async_for_export_cb (HdyAvatar    *self,
                                      gpointer     *user_data)
 {
   GTask *task = G_TASK (user_data);
-  g_autoptr (GError) error = NULL;
-  g_autoptr (GdkPixbuf) pixbuf = NULL;
+  GError *error = NULL;
+  GdkPixbuf *pixbuf;
 
   pixbuf = load_from_gicon_async_finish (res, &error);
 
@@ -362,6 +387,11 @@ load_from_gicon_async_for_export_cb (HdyAvatar    *self,
   g_task_return_pointer (task,
                          g_steal_pointer (&pixbuf),
                          g_object_unref);
+
+  if (pixbuf != NULL)
+    g_object_unref (pixbuf);
+
+  g_clear_error (&error);
   g_object_unref (task);
 }
 
@@ -435,50 +465,61 @@ static GdkPixbuf *
 load_icon_sync (GLoadableIcon *icon,
                 gint           size)
 {
-  g_autoptr (GError) error = NULL;
-  g_autoptr (GInputStream) stream = g_loadable_icon_load (icon, size, NULL, NULL, &error);
-  g_autoptr (GdkPixbufLoader) loader = gdk_pixbuf_loader_new ();
-  g_autoptr (GdkPixbuf) pixbuf = NULL;
+  GError *error = NULL;
+  GInputStream *stream = g_loadable_icon_load (icon, size, NULL, NULL, &error);
+  GdkPixbufLoader *loader = gdk_pixbuf_loader_new ();
+  GdkPixbuf *pixbuf = NULL;
+  gboolean failed = FALSE;
 
   if (error) {
     g_warning ("Failed to load icon: %s", error->message);
-    return NULL;
+    failed = TRUE;
   }
 
-  g_signal_connect (loader, "size-prepared",
-                    G_CALLBACK (size_prepared_cb),
-                    GINT_TO_POINTER (size));
+  if (!failed) {
+    g_signal_connect (loader, "size-prepared",
+                      G_CALLBACK (size_prepared_cb),
+                      GINT_TO_POINTER (size));
 
-  pixbuf = load_from_stream (loader, stream, NULL, &error);
+    pixbuf = load_from_stream (loader, stream, NULL, &error);
 
-  if (error) {
-    g_warning ("Failed to load pixbuf from GLoadableIcon: %s", error->message);
-    return NULL;
+    if (error) {
+      g_warning ("Failed to load pixbuf from GLoadableIcon: %s", error->message);
+      failed = TRUE;
+    }
+
+    g_object_unref (stream);
   }
 
-  return g_steal_pointer (&pixbuf);
+  g_object_unref (loader);
+  g_clear_error (&error);
+
+  return pixbuf;
 }
 
 static void
 set_class_color (HdyAvatar *self)
 {
   GtkStyleContext *context = gtk_widget_get_style_context (GTK_WIDGET (self));
-  g_autofree GRand *rand = NULL;
-  g_autofree gchar *new_class = NULL;
-  g_autofree gchar *old_class = g_strdup_printf ("color%d", self->color_class);
+  gchar *new_class;
+  gchar *old_class = g_strdup_printf ("color%d", self->color_class);
 
   gtk_style_context_remove_class (context, old_class);
 
   if (self->text == NULL || strlen (self->text) == 0) {
     /* Use a random color if we don't have a text */
-    rand = g_rand_new ();
+    GRand *rand = g_rand_new ();
     self->color_class = g_rand_int_range (rand, 1, NUMBER_OF_COLORS);
+    g_rand_free (rand);
   } else {
     self->color_class = (g_str_hash (self->text) % NUMBER_OF_COLORS) + 1;
   }
 
   new_class = g_strdup_printf ("color%d", self->color_class);
   gtk_style_context_add_class (context, new_class);
+
+  g_free (old_class);
+  g_free (new_class);
 }
 
 static void
@@ -502,13 +543,15 @@ clear_pango_layout (HdyAvatar *self)
 static void
 ensure_pango_layout (HdyAvatar *self)
 {
-  g_autofree gchar *initials = NULL;
+  gchar *initials;
 
   if (self->layout != NULL || self->text == NULL || strlen (self->text) == 0)
     return;
 
   initials = extract_initials_from_text (self->text);
   self->layout = gtk_widget_create_pango_layout (GTK_WIDGET (self), initials);
+
+  g_free (initials);
 }
 
 static void
@@ -660,10 +703,10 @@ draw_for_size (HdyAvatar *self,
   gdouble y = (gdouble)(height - size) / 2.0;
   const gchar *icon_name;
   GdkRGBA color;
-  g_autoptr (GtkIconInfo) icon = NULL;
-  g_autoptr (GdkPixbuf) pixbuf = NULL;
-  g_autoptr (GError) error = NULL;
-  g_autoptr (cairo_surface_t) surface = NULL;
+  GtkIconInfo *icon;
+  GdkPixbuf *pixbuf;
+  GError *error = NULL;
+  cairo_surface_t *surface;
 
   set_class_contrasted (self, size);
 
@@ -673,6 +716,8 @@ draw_for_size (HdyAvatar *self,
     gtk_render_icon_surface (context, cr, surface, x, y);
     gtk_render_background (context, cr, x, y, size, size);
     gtk_render_frame (context, cr, x, y, size, size);
+
+    cairo_surface_destroy (surface);
     return;
   }
 
@@ -707,17 +752,23 @@ draw_for_size (HdyAvatar *self,
   pixbuf = gtk_icon_info_load_symbolic (icon, &color, NULL, NULL, NULL, NULL, &error);
   if (error != NULL) {
     g_critical ("Failed to load icon `%s': %s", icon_name, error->message);
-    return;
+
+    g_clear_error (&error);
+  } else {
+    surface = gdk_cairo_surface_create_from_pixbuf (pixbuf, scale_factor,
+                                                    gtk_widget_get_window (GTK_WIDGET (self)));
+
+    width = cairo_image_surface_get_width (surface);
+    height = cairo_image_surface_get_height (surface);
+    gtk_render_icon_surface (context, cr, surface,
+                             (((gdouble) size - ((gdouble) width / (gdouble) scale_factor)) / 2.0) + x,
+                             (((gdouble) size - ((gdouble) height / (gdouble) scale_factor)) / 2.0) + y);
+    cairo_surface_destroy (surface);
   }
 
-  surface = gdk_cairo_surface_create_from_pixbuf (pixbuf, scale_factor,
-                                                  gtk_widget_get_window (GTK_WIDGET (self)));
-
-  width = cairo_image_surface_get_width (surface);
-  height = cairo_image_surface_get_height (surface);
-  gtk_render_icon_surface (context, cr, surface,
-                           (((gdouble) size - ((gdouble) width / (gdouble) scale_factor)) / 2.0) + x,
-                           (((gdouble) size - ((gdouble) height / (gdouble) scale_factor)) / 2.0) + y);
+  g_object_unref (icon);
+  if (pixbuf != NULL)
+    g_object_unref (pixbuf);
 }
 
 static gboolean
@@ -1138,7 +1189,7 @@ hdy_avatar_set_image_load_func (HdyAvatar              *self,
                                 gpointer                user_data,
                                 GDestroyNotify          destroy)
 {
-  g_autoptr (HdyAvatarIcon) icon = NULL;
+  HdyAvatarIcon *icon = NULL;
 
   g_return_if_fail (HDY_IS_AVATAR (self));
   g_return_if_fail (user_data != NULL || (user_data == NULL && destroy == NULL));
@@ -1156,22 +1207,24 @@ hdy_avatar_set_image_load_func (HdyAvatar              *self,
   g_set_object (&self->load_func_icon, icon);
 
   /* Don't update the custom avatar when we have a user set GLoadableIcon */
-  if (self->icon)
-    return;
+  if (!self->icon) {
+    if (self->load_func_icon) {
+      gint scale_factor = gtk_widget_get_scale_factor (GTK_WIDGET (self));
 
-  if (self->load_func_icon) {
-    gint scale_factor = gtk_widget_get_scale_factor (GTK_WIDGET (self));
-
-    self->cancellable = g_cancellable_new ();
-    self->currently_loading_size = self->size * scale_factor;
-    load_icon_async (self,
-                     self->currently_loading_size,
-                     self->cancellable,
-                     (GAsyncReadyCallback) load_from_gicon_async_for_display_cb,
-                     NULL);
-  } else {
-    gtk_widget_queue_draw (GTK_WIDGET (self));
+      self->cancellable = g_cancellable_new ();
+      self->currently_loading_size = self->size * scale_factor;
+      load_icon_async (self,
+                       self->currently_loading_size,
+                       self->cancellable,
+                       (GAsyncReadyCallback) load_from_gicon_async_for_display_cb,
+                       NULL);
+    } else {
+      gtk_widget_queue_draw (GTK_WIDGET (self));
+    }
   }
+
+  if (icon != NULL)
+    g_object_unref (icon);
 }
 
 /**
@@ -1236,13 +1289,14 @@ hdy_avatar_draw_to_pixbuf (HdyAvatar *self,
                            gint       size,
                            gint       scale_factor)
 {
-  g_autoptr (cairo_surface_t) surface = NULL;
-  g_autoptr (cairo_t) cr = NULL;
-  g_autoptr (GdkPixbuf) custom_image = NULL;
-  g_autoptr (GdkPixbuf) pixbuf_from_icon = NULL;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  GdkPixbuf *custom_image = NULL;
+  GdkPixbuf *pixbuf_from_icon = NULL;
   gint scaled_size = size * scale_factor;
   GtkStyleContext *context;
   GtkAllocation bounds;
+  GdkPixbuf *result;
 
   g_return_val_if_fail (HDY_IS_AVATAR (self), NULL);
   g_return_val_if_fail (size > 0, NULL);
@@ -1274,9 +1328,18 @@ hdy_avatar_draw_to_pixbuf (HdyAvatar *self,
 
   draw_for_size (self, cr, custom_image, size, size, scale_factor);
 
-  return gdk_pixbuf_get_from_surface (surface, 0, 0,
-                                      bounds.width * scale_factor,
-                                      bounds.height * scale_factor);
+  result = gdk_pixbuf_get_from_surface (surface, 0, 0,
+                                        bounds.width * scale_factor,
+                                        bounds.height * scale_factor);
+
+  if (custom_image != NULL)
+    g_object_unref (custom_image);
+  if (pixbuf_from_icon != NULL)
+    g_object_unref (pixbuf_from_icon);
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+
+  return result;
 }
 
 /**
@@ -1303,7 +1366,7 @@ hdy_avatar_draw_to_pixbuf_async (HdyAvatar           *self,
                                  GAsyncReadyCallback  callback,
                                  gpointer             user_data)
 {
-  g_autoptr (GTask) task = NULL;
+  GTask *task;
   gint scaled_size = size * scale_factor;
   SizeData *data;
 
@@ -1327,9 +1390,11 @@ hdy_avatar_draw_to_pixbuf_async (HdyAvatar           *self,
                      scaled_size,
                      cancellable,
                      (GAsyncReadyCallback) load_from_gicon_async_for_export_cb,
-                     g_steal_pointer (&task));
+                     task);
   else
     g_task_return_pointer (task, NULL, NULL);
+
+  g_object_unref (task);
 }
 
 /**
@@ -1348,13 +1413,14 @@ hdy_avatar_draw_to_pixbuf_finish (HdyAvatar    *self,
                                   GAsyncResult *async_result)
 {
   GTask *task;
-  g_autoptr (GdkPixbuf) pixbuf_from_icon = NULL;
-  g_autoptr (GdkPixbuf) custom_image = NULL;
-  g_autoptr (cairo_surface_t) surface = NULL;
-  g_autoptr (cairo_t) cr = NULL;
+  GdkPixbuf *pixbuf_from_icon;
+  GdkPixbuf *custom_image;
+  cairo_surface_t *surface;
+  cairo_t *cr;
   SizeData *data;
   GtkStyleContext *context;
   GtkAllocation bounds;
+  GdkPixbuf *result;
 
   g_return_val_if_fail (G_IS_TASK (async_result), NULL);
 
@@ -1381,9 +1447,18 @@ hdy_avatar_draw_to_pixbuf_finish (HdyAvatar    *self,
                                       data->size * data->scale_factor);
   draw_for_size (self, cr, custom_image, data->size, data->size, data->scale_factor);
 
-  return gdk_pixbuf_get_from_surface (surface, 0, 0,
-                                      bounds.width * data->scale_factor,
-                                      bounds.height * data->scale_factor);
+  result = gdk_pixbuf_get_from_surface (surface, 0, 0,
+                                        bounds.width * data->scale_factor,
+                                        bounds.height * data->scale_factor);
+
+  if (custom_image != NULL)
+    g_object_unref (custom_image);
+  if (pixbuf_from_icon != NULL)
+    g_object_unref (pixbuf_from_icon);
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+
+  return result;
 }
 
 /**

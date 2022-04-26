@@ -76,7 +76,7 @@ static void
 update_listbox_visibility (HdyPreferencesGroup *self)
 {
   HdyPreferencesGroupPrivate *priv = hdy_preferences_group_get_instance_private (self);
-  g_autoptr(GList) children = NULL;
+  GList *children;
 
   /* We must wait until the listbox has been built and added. */
   if (priv->listbox == NULL)
@@ -85,6 +85,8 @@ update_listbox_visibility (HdyPreferencesGroup *self)
   children = gtk_container_get_children (GTK_CONTAINER (priv->listbox));
 
   gtk_widget_set_visible (GTK_WIDGET (priv->listbox), children != NULL);
+
+  g_list_free (children);
 }
 
 static gboolean

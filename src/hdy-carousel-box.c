@@ -433,7 +433,7 @@ animation_cb (GtkWidget     *widget,
               gpointer       user_data)
 {
   HdyCarouselBox *self = HDY_CAROUSEL_BOX (widget);
-  g_autoptr (GList) children = NULL;
+  GList *children;
   GList *l;
   gboolean should_continue;
   gdouble position_shift;
@@ -470,6 +470,8 @@ animation_cb (GtkWidget     *widget,
 
   if (!should_continue)
     self->tick_cb_id = 0;
+
+  g_list_free (children);
 
   return should_continue;
 }
@@ -569,7 +571,7 @@ hdy_carousel_box_draw (GtkWidget *widget,
       continue;
 
     if (info->dirty_region && !info->removing) {
-      g_autoptr (cairo_t) surface_cr = NULL;
+      cairo_t *surface_cr;
       GtkAllocation child_alloc;
 
       if (!info->surface) {
@@ -605,6 +607,8 @@ hdy_carousel_box_draw (GtkWidget *widget,
 
       cairo_region_destroy (info->dirty_region);
       info->dirty_region = NULL;
+
+      cairo_destroy (surface_cr);
     }
 
     if (!info->surface)
@@ -960,7 +964,7 @@ hdy_carousel_box_forall (GtkContainer *container,
                          gpointer      callback_data)
 {
   HdyCarouselBox *self = HDY_CAROUSEL_BOX (container);
-  g_autoptr (GList) children = NULL;
+  GList *children;
   GList *l;
 
   children = g_list_copy (self->children);
@@ -970,6 +974,8 @@ hdy_carousel_box_forall (GtkContainer *container,
     if (!child->removing)
        (* callback) (child->widget, callback_data);
   }
+
+  g_list_free (children);
 }
 
 static void

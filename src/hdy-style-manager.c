@@ -109,8 +109,8 @@ find_theme_dir (const gchar *dir,
                 const gchar *name,
                 const gchar *variant)
 {
-  g_autofree gchar *file = NULL;
-  g_autofree gchar *base = NULL;
+  gchar *file;
+  gchar *base;
   gchar *path;
   gint i;
 
@@ -125,7 +125,8 @@ find_theme_dir (const gchar *dir,
     base = g_build_filename (dir, name, NULL);
 
   for (i = MINOR; i >= 0; i = i - 2) {
-    g_autofree gchar *subsubdir = NULL;
+    gchar *subsubdir;
+    gboolean do_break = FALSE;
 
     if (i < 14)
       i = 0;
@@ -134,11 +135,18 @@ find_theme_dir (const gchar *dir,
     path = g_build_filename (base, subsubdir, file, NULL);
 
     if (g_file_test (path, G_FILE_TEST_EXISTS))
-      break;
+      do_break = TRUE;
 
-    g_free (path);
-    path = NULL;
+    g_free (subsubdir);
+
+    if (do_break)
+      break;
+    else
+      g_free (path);
   }
+
+  g_free (base);
+  g_free (file);
 
   return path;
 }
@@ -149,7 +157,7 @@ static gchar *
 find_theme (const gchar *name,
             const gchar *variant)
 {
-  g_autofree gchar *dir = NULL;
+  gchar *dir;
   const gchar *const *dirs;
   gchar *path;
   gint i;
@@ -176,6 +184,8 @@ find_theme (const gchar *name,
   dir = get_theme_dir ();
   path = find_theme_dir (dir, NULL, name, variant);
 
+  g_free (dir);
+
   return path;
 }
 
@@ -183,8 +193,9 @@ static gboolean
 check_theme_exists (const gchar *name,
                     const gchar *variant)
 {
-  g_autofree gchar *resource_path = NULL;
-  g_autofree gchar *path = NULL;
+  gchar *resource_path;
+  gchar *path = NULL;
+  gboolean result;
 
   /* try loading the resource for the theme. This is mostly meant for built-in
    * themes.
@@ -195,25 +206,35 @@ check_theme_exists (const gchar *name,
     resource_path = g_strdup_printf ("/org/gtk/libgtk/theme/%s/gtk.css", name);
 
   if (g_resources_get_info (resource_path, 0, NULL, NULL, NULL))
-    return TRUE;
+    result = TRUE;
+  else {
+    /* Next try looking for files in the various theme directories. */
+    path = find_theme (name, variant);
+    result = path != NULL;
+  }
 
-  /* Next try looking for files in the various theme directories. */
-  path = find_theme (name, variant);
+  g_free (path);
+  g_free (resource_path);
 
-  return path != NULL;
+  return result;
 }
 
 static gchar *
 get_system_theme_name (void)
 {
   GdkScreen *screen = gdk_screen_get_default ();
-  g_auto (GValue) value = G_VALUE_INIT;
+  GValue value = G_VALUE_INIT;
+  gchar *ret;
 
   g_value_init (&value, G_TYPE_STRING);
   if (!gdk_screen_get_setting (screen, "gtk-theme-name", &value))
-    return g_strdup ("Adwaita");
+    ret = g_strdup ("Adwaita");
+  else
+    ret = g_value_dup_string (&value);
 
-  return g_value_dup_string (&value);
+  g_value_unset (&value);
+
+  return ret;
 }
 
 static void
@@ -319,7 +340,7 @@ update_stylesheet (HdyStyleManager *self)
                   self->dark ? "HighContrastInverse" : "HighContrast",
                   NULL);
   } else {
-    g_autofree gchar *theme_name = get_system_theme_name ();
+    gchar *theme_name = get_system_theme_name ();
     gboolean override_theme = FALSE;
 
     if (g_str_has_suffix (theme_name, "-dark")) {
@@ -333,6 +354,8 @@ update_stylesheet (HdyStyleManager *self)
       g_object_set (gtk_settings, "gtk-theme-name", theme_name, NULL);
     else
       gtk_settings_reset_property (gtk_settings, "gtk-theme-name");
+
+    g_free (theme_name);
   }
 
   g_signal_handlers_unblock_by_func (gtk_settings,
@@ -654,7 +677,7 @@ static void
 hdy_style_manager_ensure (void)
 {
   GdkDisplayManager *display_manager = gdk_display_manager_get ();
-  g_autoptr (GSList) displays = NULL;
+  GSList *displays;
   GSList *l;
 
   if (display_style_managers)
@@ -675,6 +698,8 @@ hdy_style_manager_ensure (void)
                     "display-opened",
                     G_CALLBACK (register_display),
                     NULL);
+
+  g_slist_free (displays);
 }
 
 /**

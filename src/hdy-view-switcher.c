@@ -97,8 +97,8 @@ update_button (HdyViewSwitcher       *self,
                GtkWidget             *widget,
                HdyViewSwitcherButton *button)
 {
-  g_autofree gchar *title = NULL;
-  g_autofree gchar *icon_name = NULL;
+  gchar *title = NULL;
+  gchar *icon_name = NULL;
   gboolean needs_attention;
 
   gtk_container_child_get (GTK_CONTAINER (self->stack), widget,
@@ -116,6 +116,9 @@ update_button (HdyViewSwitcher       *self,
 
   gtk_widget_set_visible (GTK_WIDGET (button),
                           gtk_widget_get_visible (widget) && (title != NULL || icon_name != NULL));
+
+  g_free (icon_name);
+  g_free (title);
 }
 
 static void
@@ -226,7 +229,7 @@ static void
 add_button_for_stack_child (HdyViewSwitcher *self,
                             GtkWidget       *stack_child)
 {
-  g_autoptr (GList) children = gtk_container_get_children (GTK_CONTAINER (self->box));
+  GList *children = gtk_container_get_children (GTK_CONTAINER (self->box));
   HdyViewSwitcherButton *button = HDY_VIEW_SWITCHER_BUTTON (hdy_view_switcher_button_new ());
 
   g_object_set_data (G_OBJECT (button), "stack-child", stack_child);
@@ -247,6 +250,8 @@ add_button_for_stack_child (HdyViewSwitcher *self,
   g_signal_connect (stack_child, "child-notify::position", G_CALLBACK (on_position_updated), self);
 
   g_hash_table_insert (self->buttons, stack_child, button);
+
+  g_list_free (children);
 }
 
 static void
@@ -394,7 +399,7 @@ hdy_view_switcher_get_preferred_width (GtkWidget *widget,
                                        gint      *nat)
 {
   HdyViewSwitcher *self = HDY_VIEW_SWITCHER (widget);
-  g_autoptr (GList) children = gtk_container_get_children (GTK_CONTAINER (self->box));
+  GList *children = gtk_container_get_children (GTK_CONTAINER (self->box));
   gint max_h_min = 0, max_h_nat = 0, max_v_min = 0, max_v_nat = 0;
   gint n_children = 0;
 
@@ -436,13 +441,15 @@ hdy_view_switcher_get_preferred_width (GtkWidget *widget,
   }
 
   hdy_css_measure (widget, GTK_ORIENTATION_HORIZONTAL, min, nat);
+
+  g_list_free (children);
 }
 
 static gint
 is_narrow (HdyViewSwitcher *self,
            gint             width)
 {
-  g_autoptr (GList) children = gtk_container_get_children (GTK_CONTAINER (self->box));
+  GList *children;
   gint max_h_min = 0;
   gint n_children = 0;
 
@@ -452,6 +459,7 @@ is_narrow (HdyViewSwitcher *self,
   if (self->policy == HDY_VIEW_SWITCHER_POLICY_WIDE)
     return FALSE;
 
+  children = gtk_container_get_children (GTK_CONTAINER (self->box));
   for (GList *l = children; l != NULL; l = g_list_next (l)) {
     gint h_min = 0;
 
@@ -464,6 +472,7 @@ is_narrow (HdyViewSwitcher *self,
     n_children++;
   }
 
+  g_list_free (children);
   return (max_h_min * n_children) > width;
 }
 
@@ -473,7 +482,7 @@ hdy_view_switcher_size_allocate (GtkWidget     *widget,
 {
   HdyViewSwitcher *self = HDY_VIEW_SWITCHER (widget);
 
-  g_autoptr (GList) children = gtk_container_get_children (GTK_CONTAINER (self->box));
+  GList *children = gtk_container_get_children (GTK_CONTAINER (self->box));
   GtkOrientation orientation;
 
   hdy_css_size_allocate (widget, allocation);
@@ -486,6 +495,8 @@ hdy_view_switcher_size_allocate (GtkWidget     *widget,
     gtk_orientable_set_orientation (GTK_ORIENTABLE (l->data), orientation);
 
   GTK_WIDGET_CLASS (hdy_view_switcher_parent_class)->size_allocate (widget, allocation);
+
+  g_list_free (children);
 }
 
 static void

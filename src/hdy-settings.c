@@ -363,8 +363,8 @@ static void
 init_gsettings (HdySettings *self)
 {
   GSettingsSchemaSource *source;
-  g_autoptr (GSettingsSchema) schema = NULL;
-  g_autoptr (GSettingsSchema) a11y_schema = NULL;
+  GSettingsSchema *schema;
+  GSettingsSchema *a11y_schema;
 
 #ifndef G_OS_WIN32
   /* While we can access gsettings in flatpak, we can't do anything useful with
@@ -402,6 +402,11 @@ init_gsettings (HdySettings *self)
                               G_CALLBACK (gsettings_high_contrast_changed_cb),
                               self);
   }
+
+  if (a11y_schema != NULL)
+    g_settings_schema_unref (a11y_schema);
+  if (schema != NULL)
+    g_settings_schema_unref (schema);
 }
 
 /* Legacy */
@@ -409,7 +414,8 @@ init_gsettings (HdySettings *self)
 static gboolean
 is_theme_high_contrast (void)
 {
-  g_autofree gchar *icon_theme_name = NULL;
+  gchar *icon_theme_name;
+  gboolean result;
 
   /* We're using icon theme here as we control gtk-theme-name and it
    * interferes with the notifications. */
@@ -417,8 +423,11 @@ is_theme_high_contrast (void)
                 "gtk-icon-theme-name", &icon_theme_name,
                 NULL);
 
-  return !g_strcmp0 (icon_theme_name, "HighContrast") ||
-         !g_strcmp0 (icon_theme_name, "HighContrastInverse");
+  result = !g_strcmp0 (icon_theme_name, "HighContrast") ||
+           !g_strcmp0 (icon_theme_name, "HighContrastInverse");
+
+  g_free (icon_theme_name);
+  return result;
 }
 
 static void

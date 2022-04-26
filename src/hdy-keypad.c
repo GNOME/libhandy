@@ -58,17 +58,18 @@ symbol_clicked (HdyKeypad *self,
                 gchar      symbol)
 {
   HdyKeypadPrivate *priv = hdy_keypad_get_instance_private (self);
-  g_autofree gchar *string = g_strdup_printf ("%c", symbol);
+  gchar *string = g_strdup_printf ("%c", symbol);
 
-  if (!priv->entry)
-    return;
+  if (priv->entry) {
+    g_signal_emit_by_name (priv->entry, "insert-at-cursor", string, NULL);
+    /* Set focus to the entry only when it can get focus
+     * https://gitlab.gnome.org/GNOME/gtk/issues/2204
+     */
+    if (gtk_widget_get_can_focus (GTK_WIDGET (priv->entry)))
+      gtk_entry_grab_focus_without_selecting (priv->entry);
+  }
 
-  g_signal_emit_by_name (priv->entry, "insert-at-cursor", string, NULL);
-  /* Set focus to the entry only when it can get focus
-   * https://gitlab.gnome.org/GNOME/gtk/issues/2204
-   */
-  if (gtk_widget_get_can_focus (GTK_WIDGET (priv->entry)))
-    gtk_entry_grab_focus_without_selecting (priv->entry);
+  g_free (string);
 }
 
 

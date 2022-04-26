@@ -72,9 +72,10 @@ hdy_value_object_new (const GValue *value)
 HdyValueObject*
 hdy_value_object_new_collect (GType type, ...)
 {
-  g_auto(GValue) value = G_VALUE_INIT;
-  g_autofree gchar *error = NULL;
+  GValue value = G_VALUE_INIT;
+  gchar *error = NULL;
   va_list var_args;
+  HdyValueObject *ret;
 
   va_start (var_args, type);
 
@@ -85,9 +86,14 @@ hdy_value_object_new_collect (GType type, ...)
   if (error)
     g_critical ("%s: %s", G_STRFUNC, error);
 
-  return g_object_new (HDY_TYPE_VALUE_OBJECT,
-                       "value", &value,
-                       NULL);
+  ret = g_object_new (HDY_TYPE_VALUE_OBJECT,
+                      "value", &value,
+                      NULL);
+
+  g_value_unset (&value);
+  g_free (error);
+
+  return ret;
 }
 
 /**
@@ -106,11 +112,16 @@ hdy_value_object_new_collect (GType type, ...)
 HdyValueObject*
 hdy_value_object_new_string (const gchar *string)
 {
-  g_auto(GValue) value = G_VALUE_INIT;
+  GValue value = G_VALUE_INIT;
+  HdyValueObject *ret;
 
   g_value_init (&value, G_TYPE_STRING);
   g_value_set_string (&value, string);
-  return hdy_value_object_new (&value);
+  ret = hdy_value_object_new (&value);
+
+  g_value_unset (&value);
+
+  return ret;
 }
 
 /**
@@ -129,11 +140,16 @@ hdy_value_object_new_string (const gchar *string)
 HdyValueObject*
 hdy_value_object_new_take_string (gchar *string)
 {
-  g_auto(GValue) value = G_VALUE_INIT;
+  GValue value = G_VALUE_INIT;
+  HdyValueObject *ret;
 
   g_value_init (&value, G_TYPE_STRING);
   g_value_take_string (&value, string);
-  return hdy_value_object_new (&value);
+  ret = hdy_value_object_new (&value);
+
+  g_value_unset (&value);
+
+  return ret;
 }
 
 static void

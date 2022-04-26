@@ -2302,7 +2302,7 @@ void
 hdy_stackable_box_remove (HdyStackableBox *self,
                           GtkWidget       *widget)
 {
-  g_autoptr (HdyStackableBoxChildInfo) child_info = find_child_info_for_widget (self, widget);
+  HdyStackableBoxChildInfo *child_info = find_child_info_for_widget (self, widget);
   gboolean contains_child = child_info != NULL;
 
   g_return_if_fail (contains_child);
@@ -2326,6 +2326,8 @@ hdy_stackable_box_remove (HdyStackableBox *self,
   unregister_window (self, child_info);
 
   gtk_widget_unparent (widget);
+
+  free_child_info (child_info);
 }
 
 void
@@ -2338,7 +2340,7 @@ hdy_stackable_box_forall (HdyStackableBox *self,
    * looping through it, for example by calling hdy_stackable_box_remove() on all
    * children when destroying the HdyStackableBox_private_offset.
    */
-  g_autoptr (GList) children_copy = g_list_copy (self->children);
+  GList *children_copy = g_list_copy (self->children);
   GList *children;
   HdyStackableBoxChildInfo *child_info;
 
@@ -2351,6 +2353,8 @@ hdy_stackable_box_forall (HdyStackableBox *self,
   g_list_free (self->children_reversed);
   self->children_reversed = g_list_copy (self->children);
   self->children_reversed = g_list_reverse (self->children_reversed);
+
+  g_list_free (children);
 }
 
 static void

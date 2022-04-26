@@ -60,7 +60,7 @@ create_context (HdyShadowHelper *self,
                 const gchar     *name,
                 GtkPanDirection  direction)
 {
-  g_autoptr(GtkWidgetPath) path = NULL;
+  GtkWidgetPath *path;
   GtkStyleContext *context;
   gint pos;
   const gchar *direction_name;
@@ -80,6 +80,8 @@ create_context (HdyShadowHelper *self,
   gtk_style_context_set_path (context, path);
 
   g_type_class_unref (enum_class);
+
+  gtk_widget_path_unref (path);
 
   return context;
 }
@@ -116,9 +118,9 @@ create_element_pattern (GtkStyleContext *context,
                         gint             height,
                         gint             scale)
 {
-  g_autoptr (cairo_surface_t) surface =
+  cairo_surface_t *surface =
     cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width * scale, height * scale);
-  g_autoptr (cairo_t) cr = cairo_create (surface);
+  cairo_t *cr = cairo_create (surface);
   cairo_pattern_t *pattern;
 
   cairo_surface_set_device_scale (surface, scale, scale);
@@ -127,6 +129,9 @@ create_element_pattern (GtkStyleContext *context,
   gtk_render_frame (context, cr, 0, 0, width, height);
 
   pattern = cairo_pattern_create_for_surface (surface);
+
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
 
   return pattern;
 }
@@ -137,10 +142,10 @@ cache_shadow (HdyShadowHelper *self,
               gint             height,
               GtkPanDirection  direction)
 {
-  g_autoptr(GtkStyleContext) dim_context = NULL;
-  g_autoptr(GtkStyleContext) shadow_context = NULL;
-  g_autoptr(GtkStyleContext) border_context = NULL;
-  g_autoptr(GtkStyleContext) outline_context = NULL;
+  GtkStyleContext *dim_context;
+  GtkStyleContext *shadow_context;
+  GtkStyleContext *border_context;
+  GtkStyleContext *outline_context = NULL;
   gint shadow_size, border_size, outline_size, scale;
 
   scale = gtk_widget_get_scale_factor (self->widget);
@@ -183,6 +188,11 @@ cache_shadow (HdyShadowHelper *self,
   self->last_width = width;
   self->last_height = height;
   self->last_scale = scale;
+
+  g_object_unref (outline_context);
+  g_object_unref (border_context);
+  g_object_unref (shadow_context);
+  g_object_unref (dim_context);
 }
 
 static void

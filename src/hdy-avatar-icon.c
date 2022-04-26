@@ -78,22 +78,20 @@ load_pixbuf_cb (GObject      *source_object,
                 GAsyncResult *res,
                 gpointer      data)
 {
-  g_autoptr (GTask) task = G_TASK (data);
-  g_autoptr (GError) error = NULL;
-  g_autoptr (GInputStream) stream = NULL;
+  GTask *task = G_TASK (data);
+  GError *error = NULL;
+  GInputStream *stream;
 
-  if (g_task_return_error_if_cancelled (task))
-    return;
+  if (!g_task_return_error_if_cancelled (task)) {
+    stream = g_loadable_icon_load_finish (G_LOADABLE_ICON (source_object), res, NULL, &error);
 
-  stream = g_loadable_icon_load_finish (G_LOADABLE_ICON (source_object), res, NULL, &error);
-
-  if (stream == NULL) {
-    g_task_return_error (task, g_steal_pointer (&error));
-
-    return;
+    if (stream != NULL)
+      g_task_return_pointer (task, stream, g_object_unref);
+    else
+      g_task_return_error (task, error);
   }
 
-  g_task_return_pointer (task, g_steal_pointer (&stream), g_object_unref);
+  g_object_unref (task);
 }
 
 static void
@@ -104,8 +102,8 @@ hdy_avatar_icon_load_async (GLoadableIcon       *icon,
                             gpointer             user_data)
 {
   HdyAvatarIcon *self;
-  g_autoptr (GTask) task = NULL;
-  g_autoptr (GdkPixbuf) pixbuf = NULL;
+  GTask *task;
+  GdkPixbuf *pixbuf = NULL;
   g_return_if_fail (HDY_IS_AVATAR_ICON (icon));
 
   self = HDY_AVATAR_ICON (icon);
@@ -123,12 +121,16 @@ hdy_avatar_icon_load_async (GLoadableIcon       *icon,
                                 size,
                                 cancellable,
                                 load_pixbuf_cb,
-                                g_steal_pointer (&task));
+                                task);
+
+    g_object_unref (pixbuf);
   } else {
     g_task_return_new_error (task,
                              HDY_AVATAR_ICON_ERROR,
                              HDY_AVATAR_ICON_ERROR_EMPTY,
                              "No pixbuf set");
+
+    g_object_unref (task);
   }
 }
 

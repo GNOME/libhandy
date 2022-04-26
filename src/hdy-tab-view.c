@@ -774,7 +774,7 @@ insert_page (HdyTabView *self,
              gint        position,
              gboolean    pinned)
 {
-  g_autoptr (HdyTabPage) page =
+  HdyTabPage *page =
     g_object_new (HDY_TYPE_TAB_PAGE,
                   "child", child,
                   "parent", parent,
@@ -786,6 +786,8 @@ insert_page (HdyTabView *self,
 
   if (!self->selected_page)
     hdy_tab_view_set_selected_page (self, page);
+
+  g_object_unref (page);
 
   return page;
 }
@@ -2389,13 +2391,15 @@ HdyTabPage *
 hdy_tab_view_get_nth_page (HdyTabView *self,
                            gint        position)
 {
-  g_autoptr (HdyTabPage) page = NULL;
+  HdyTabPage *page;
 
   g_return_val_if_fail (HDY_IS_TAB_VIEW (self), NULL);
   g_return_val_if_fail (position >= 0, NULL);
   g_return_val_if_fail (position < self->n_pages, NULL);
 
   page = g_list_model_get_item (G_LIST_MODEL (self->pages), (guint) position);
+
+  g_object_unref (page);
 
   return page;
 }
