@@ -10,7 +10,7 @@
 static void
 test_hdy_search_bar_add (void)
 {
-  g_autoptr (HdySearchBar) bar = NULL;
+  HdySearchBar *bar;
   GtkWidget *entry;
 
   bar = g_object_ref_sink (HDY_SEARCH_BAR (hdy_search_bar_new ()));
@@ -20,13 +20,15 @@ test_hdy_search_bar_add (void)
   g_assert_nonnull (entry);
 
   gtk_container_add (GTK_CONTAINER (bar), entry);
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_search_bar_connect_entry (void)
 {
-  g_autoptr (HdySearchBar) bar = NULL;
+  HdySearchBar *bar;
   GtkWidget *box, *entry;
 
   bar = g_object_ref_sink (HDY_SEARCH_BAR (hdy_search_bar_new ()));
@@ -41,13 +43,15 @@ test_hdy_search_bar_connect_entry (void)
   gtk_container_add (GTK_CONTAINER (box), entry);
   gtk_container_add (GTK_CONTAINER (bar), box);
   hdy_search_bar_connect_entry (bar, GTK_ENTRY (entry));
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_search_bar_search_mode (void)
 {
-  g_autoptr (HdySearchBar) bar = NULL;
+  HdySearchBar *bar;
 
   bar = g_object_ref_sink (HDY_SEARCH_BAR (hdy_search_bar_new ()));
   g_assert_nonnull (bar);
@@ -59,13 +63,15 @@ test_hdy_search_bar_search_mode (void)
 
   hdy_search_bar_set_search_mode (bar, FALSE);
   g_assert_false (hdy_search_bar_get_search_mode (bar));
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_search_bar_show_close_button (void)
 {
-  g_autoptr (HdySearchBar) bar = NULL;
+  HdySearchBar *bar;
 
   bar = g_object_ref_sink (HDY_SEARCH_BAR (hdy_search_bar_new ()));
   g_assert_nonnull (bar);
@@ -77,6 +83,8 @@ test_hdy_search_bar_show_close_button (void)
 
   hdy_search_bar_set_show_close_button (bar, FALSE);
   g_assert_false (hdy_search_bar_get_show_close_button (bar));
+
+  g_object_unref (bar);
 }
 
 

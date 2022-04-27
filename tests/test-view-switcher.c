@@ -10,7 +10,7 @@
 static void
 test_hdy_view_switcher_policy (void)
 {
-  g_autoptr (HdyViewSwitcher) view_switcher = NULL;
+  HdyViewSwitcher *view_switcher;
 
   view_switcher = g_object_ref_sink (HDY_VIEW_SWITCHER (hdy_view_switcher_new ()));
   g_assert_nonnull (view_switcher);
@@ -25,13 +25,15 @@ test_hdy_view_switcher_policy (void)
 
   hdy_view_switcher_set_policy (view_switcher, HDY_VIEW_SWITCHER_POLICY_AUTO);
   g_assert_cmpint (hdy_view_switcher_get_policy (view_switcher), ==, HDY_VIEW_SWITCHER_POLICY_AUTO);
+
+  g_object_unref (view_switcher);
 }
 
 
 static void
 test_hdy_view_switcher_narrow_ellipsize (void)
 {
-  g_autoptr (HdyViewSwitcher) view_switcher = NULL;
+  HdyViewSwitcher *view_switcher;
 
   view_switcher = g_object_ref_sink (HDY_VIEW_SWITCHER (hdy_view_switcher_new ()));
   g_assert_nonnull (view_switcher);
@@ -43,13 +45,15 @@ test_hdy_view_switcher_narrow_ellipsize (void)
 
   hdy_view_switcher_set_narrow_ellipsize (view_switcher, PANGO_ELLIPSIZE_NONE);
   g_assert_cmpint (hdy_view_switcher_get_narrow_ellipsize (view_switcher), ==, PANGO_ELLIPSIZE_NONE);
+
+  g_object_unref (view_switcher);
 }
 
 
 static void
 test_hdy_view_switcher_stack (void)
 {
-  g_autoptr (HdyViewSwitcher) view_switcher = NULL;
+  HdyViewSwitcher *view_switcher;
   GtkStack *stack;
 
   view_switcher = g_object_ref_sink (HDY_VIEW_SWITCHER (hdy_view_switcher_new ()));
@@ -65,6 +69,8 @@ test_hdy_view_switcher_stack (void)
 
   hdy_view_switcher_set_stack (view_switcher, NULL);
   g_assert_null (hdy_view_switcher_get_stack (view_switcher));
+
+  g_object_unref (view_switcher);
 }
 
 

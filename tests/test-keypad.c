@@ -20,7 +20,7 @@ notify_cb (GtkWidget *widget,
 static void
 test_hdy_keypad_row_spacing (void)
 {
-  g_autoptr (HdyKeypad) keypad = NULL;
+  HdyKeypad *keypad;
   guint row_spacing = 0;
 
   keypad = g_object_ref_sink (HDY_KEYPAD (hdy_keypad_new (FALSE, TRUE)));
@@ -47,13 +47,15 @@ test_hdy_keypad_row_spacing (void)
   g_assert_cmpuint (row_spacing, ==, 12);
 
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (keypad);
 }
 
 
 static void
 test_hdy_keypad_column_spacing (void)
 {
-  g_autoptr (HdyKeypad) keypad = NULL;
+  HdyKeypad *keypad;
   guint column_spacing = 0;
 
   keypad = g_object_ref_sink (HDY_KEYPAD (hdy_keypad_new (FALSE, TRUE)));
@@ -80,13 +82,15 @@ test_hdy_keypad_column_spacing (void)
   g_assert_cmpuint (column_spacing, ==, 12);
 
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (keypad);
 }
 
 
 static void
 test_hdy_keypad_letters_visible (void)
 {
-  g_autoptr (HdyKeypad) keypad = NULL;
+  HdyKeypad *keypad;
   gboolean letters_visible = FALSE;
 
   keypad = g_object_ref_sink (HDY_KEYPAD (hdy_keypad_new (FALSE, TRUE)));
@@ -113,13 +117,15 @@ test_hdy_keypad_letters_visible (void)
   g_assert_true (letters_visible);
 
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (keypad);
 }
 
 
 static void
 test_hdy_keypad_symbols_visible (void)
 {
-  g_autoptr (HdyKeypad) keypad = NULL;
+  HdyKeypad *keypad;
   gboolean symbols_visible = TRUE;
 
   keypad = g_object_ref_sink (HDY_KEYPAD (hdy_keypad_new (FALSE, TRUE)));
@@ -146,14 +152,16 @@ test_hdy_keypad_symbols_visible (void)
   g_assert_false (symbols_visible);
 
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (keypad);
 }
 
 
 static void
 test_hdy_keypad_entry (void)
 {
-  g_autoptr (HdyKeypad) keypad = NULL;
-  g_autoptr (GtkEntry) entry = NULL;
+  HdyKeypad *keypad;
+  GtkEntry *entry;
 
   keypad = g_object_ref_sink (HDY_KEYPAD (hdy_keypad_new (FALSE, TRUE)));
   entry = g_object_ref_sink (GTK_ENTRY (gtk_entry_new ()));
@@ -172,14 +180,17 @@ test_hdy_keypad_entry (void)
   g_assert_cmpint (notified, ==, 2);
 
   g_assert_null (hdy_keypad_get_entry (keypad));
+
+  g_object_unref (entry);
+  g_object_unref (keypad);
 }
 
 
 static void
 test_hdy_keypad_start_action (void)
 {
-  g_autoptr (HdyKeypad) keypad = NULL;
-  g_autoptr (GtkWidget) button = NULL;
+  HdyKeypad *keypad;
+  GtkWidget *button;
 
   keypad = g_object_ref_sink (HDY_KEYPAD (hdy_keypad_new (FALSE, TRUE)));
   button = g_object_ref_sink (gtk_button_new ());
@@ -198,14 +209,17 @@ test_hdy_keypad_start_action (void)
   g_assert_cmpint (notified, ==, 2);
 
   g_assert_null (hdy_keypad_get_start_action (keypad));
+
+  g_object_unref (button);
+  g_object_unref (keypad);
 }
 
 
 static void
 test_hdy_keypad_end_action (void)
 {
-  g_autoptr (HdyKeypad) keypad = NULL;
-  g_autoptr (GtkWidget) button = NULL;
+  HdyKeypad *keypad;
+  GtkWidget *button;
 
   keypad = g_object_ref_sink (HDY_KEYPAD (hdy_keypad_new (FALSE, TRUE)));
   button = g_object_ref_sink (gtk_button_new ());
@@ -224,6 +238,9 @@ test_hdy_keypad_end_action (void)
   g_assert_cmpint (notified, ==, 2);
 
   g_assert_null (hdy_keypad_get_end_action (keypad));
+
+  g_object_unref (button);
+  g_object_unref (keypad);
 }
 
 

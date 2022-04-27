@@ -10,7 +10,7 @@
 static void
 test_hdy_preferences_group_add (void)
 {
-  g_autoptr (HdyPreferencesGroup) group = NULL;
+  HdyPreferencesGroup *group;
   HdyPreferencesRow *row;
   GtkWidget *widget;
 
@@ -27,13 +27,15 @@ test_hdy_preferences_group_add (void)
 
   g_assert (G_TYPE_CHECK_INSTANCE_TYPE (gtk_widget_get_parent (GTK_WIDGET (row)), GTK_TYPE_LIST_BOX));
   g_assert (G_TYPE_CHECK_INSTANCE_TYPE (gtk_widget_get_parent (widget), GTK_TYPE_BOX));
+
+  g_object_unref (group);
 }
 
 
 static void
 test_hdy_preferences_group_title (void)
 {
-  g_autoptr (HdyPreferencesGroup) group = NULL;
+  HdyPreferencesGroup *group;
 
   group = g_object_ref_sink (HDY_PREFERENCES_GROUP (hdy_preferences_group_new ()));
   g_assert_nonnull (group);
@@ -45,13 +47,15 @@ test_hdy_preferences_group_title (void)
 
   hdy_preferences_group_set_title (group, NULL);
   g_assert_cmpstr (hdy_preferences_group_get_title (group), ==, "");
+
+  g_object_unref (group);
 }
 
 
 static void
 test_hdy_preferences_group_description (void)
 {
-  g_autoptr (HdyPreferencesGroup) group = NULL;
+  HdyPreferencesGroup *group;
 
   group = g_object_ref_sink (HDY_PREFERENCES_GROUP (hdy_preferences_group_new ()));
   g_assert_nonnull (group);
@@ -63,6 +67,8 @@ test_hdy_preferences_group_description (void)
 
   hdy_preferences_group_set_description (group, NULL);
   g_assert_cmpstr (hdy_preferences_group_get_description (group), ==, "");
+
+  g_object_unref (group);
 }
 
 

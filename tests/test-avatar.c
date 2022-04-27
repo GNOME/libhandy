@@ -111,47 +111,55 @@ did_draw_something (GtkWidget *widget)
 static void
 test_hdy_avatar_generate (void)
 {
-  g_autoptr (GtkWidget) avatar = g_object_ref_sink (hdy_avatar_new (TEST_SIZE, "", TRUE));
+  GtkWidget *avatar = g_object_ref_sink (hdy_avatar_new (TEST_SIZE, "", TRUE));
   g_assert (HDY_IS_AVATAR (avatar));
 
   g_assert_true (did_draw_something (GTK_WIDGET (avatar)));
+
+  g_object_unref (avatar);
 }
 
 
 static void
 test_hdy_avatar_icon_name (void)
 {
-  g_autoptr (HdyAvatar) avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (128, NULL, TRUE)));
+  HdyAvatar *avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (128, NULL, TRUE)));
 
   g_assert_null (hdy_avatar_get_icon_name (avatar));
   hdy_avatar_set_icon_name (avatar, TEST_ICON_NAME);
   g_assert_cmpstr (hdy_avatar_get_icon_name (avatar), ==, TEST_ICON_NAME);
 
   g_assert_true (did_draw_something (GTK_WIDGET (avatar)));
+
+  g_object_unref (avatar);
 }
 
 static void
 test_hdy_avatar_text (void)
 {
-  g_autoptr (HdyAvatar) avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (128, NULL, TRUE)));
+  HdyAvatar *avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (128, NULL, TRUE)));
 
   g_assert_null (hdy_avatar_get_text (avatar));
   hdy_avatar_set_text (avatar, TEST_STRING);
   g_assert_cmpstr (hdy_avatar_get_text (avatar), ==, TEST_STRING);
 
   g_assert_true (did_draw_something (GTK_WIDGET (avatar)));
+
+  g_object_unref (avatar);
 }
 
 static void
 test_hdy_avatar_size (void)
 {
-  g_autoptr (HdyAvatar) avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (TEST_SIZE, NULL, TRUE)));
+  HdyAvatar *avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (TEST_SIZE, NULL, TRUE)));
 
   g_assert_cmpint (hdy_avatar_get_size (avatar), ==, TEST_SIZE);
   hdy_avatar_set_size (avatar, TEST_SIZE / 2);
   g_assert_cmpint (hdy_avatar_get_size (avatar), ==, TEST_SIZE / 2);
 
   g_assert_true (did_draw_something (GTK_WIDGET (avatar)));
+
+  g_object_unref (avatar);
 }
 
 static void
@@ -204,8 +212,8 @@ test_hdy_avatar_custom_image (void)
 static void
 test_hdy_avatar_draw_to_pixbuf (void)
 {
-  g_autoptr (HdyAvatar) avatar = NULL;
-  g_autoptr (GdkPixbuf) pixbuf = NULL;
+  HdyAvatar *avatar;
+  GdkPixbuf *pixbuf;
 
   avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (TEST_SIZE, NULL, TRUE)));
 
@@ -213,6 +221,9 @@ test_hdy_avatar_draw_to_pixbuf (void)
 
   g_assert_cmpint (gdk_pixbuf_get_width (pixbuf), ==, TEST_SIZE * 2);
   g_assert_cmpint (gdk_pixbuf_get_height (pixbuf), ==, TEST_SIZE * 2);
+
+  g_object_unref (pixbuf);
+  g_object_unref (avatar);
 }
 
 static void
@@ -220,16 +231,18 @@ draw_to_pixbuf_async (HdyAvatar    *avatar,
                       GAsyncResult *res,
                       gpointer      user_data)
 {
-  g_autoptr (GdkPixbuf) pixbuf = hdy_avatar_draw_to_pixbuf_finish (avatar, res);
+  GdkPixbuf *pixbuf = hdy_avatar_draw_to_pixbuf_finish (avatar, res);
 
   g_assert_cmpint (gdk_pixbuf_get_width (pixbuf), ==, TEST_SIZE * 2);
   g_assert_cmpint (gdk_pixbuf_get_height (pixbuf), ==, TEST_SIZE * 2);
+
+  g_object_unref (pixbuf);
 }
 
 static void
 test_hdy_avatar_draw_to_pixbuf_async (void)
 {
-  g_autoptr (HdyAvatar) avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (TEST_SIZE, NULL, TRUE)));
+  HdyAvatar *avatar = g_object_ref_sink (HDY_AVATAR (hdy_avatar_new (TEST_SIZE, NULL, TRUE)));
 
   hdy_avatar_draw_to_pixbuf_async (avatar,
                                    TEST_SIZE * 2,
@@ -237,13 +250,15 @@ test_hdy_avatar_draw_to_pixbuf_async (void)
                                    NULL,
                                    (GAsyncReadyCallback) draw_to_pixbuf_async,
                                    NULL);
+
+  g_object_unref (avatar);
 }
 
 static void
 test_hdy_avatar_loadable_icon (void)
 {
-  GtkWidget* avatar = NULL;
-  g_autoptr (GdkPixbuf) pixbuf = NULL;
+  GtkWidget* avatar;
+  GdkPixbuf *pixbuf;
 
   avatar = hdy_avatar_new (TEST_SIZE, NULL, TRUE);
   g_assert_nonnull (avatar);
@@ -259,6 +274,8 @@ test_hdy_avatar_loadable_icon (void)
   gdk_pixbuf_fill (pixbuf, 0);
   hdy_avatar_set_loadable_icon (HDY_AVATAR (avatar), G_LOADABLE_ICON (pixbuf));
   g_assert_false (did_draw_something (avatar));
+
+  g_object_unref (pixbuf);
   g_object_unref (avatar);
 }
 
