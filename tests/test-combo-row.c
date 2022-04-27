@@ -17,10 +17,10 @@ notify_cb (GtkWidget *widget, gpointer data)
 static void
 test_hdy_combo_row_set_for_enum (void)
 {
-  g_autoptr (HdyComboRow) row = NULL;
+  HdyComboRow *row;
   GListModel *model;
-  g_autoptr (HdyEnumValueObject) value1 = NULL;
-  g_autoptr (HdyEnumValueObject) value2 = NULL;
+  HdyEnumValueObject *value1 = NULL;
+  HdyEnumValueObject *value2 = NULL;
 
   row = g_object_ref_sink (HDY_COMBO_ROW (hdy_combo_row_new ()));
   g_assert_nonnull (row);
@@ -40,12 +40,16 @@ test_hdy_combo_row_set_for_enum (void)
   value2 = g_list_model_get_item (model, 1);
   g_assert_true (HDY_IS_ENUM_VALUE_OBJECT (value2));
   g_assert_cmpstr (hdy_enum_value_object_get_nick (value2), ==, "vertical");
+
+  g_object_unref (value2);
+  g_object_unref (value1);
+  g_object_unref (row);
 }
 
 static void
 test_hdy_combo_row_selected_index (void)
 {
-  g_autoptr (HdyComboRow) row = NULL;
+  HdyComboRow *row;
   gint selected_index = 0;
 
   row = HDY_COMBO_ROW (g_object_ref_sink (hdy_combo_row_new ()));
@@ -71,12 +75,14 @@ test_hdy_combo_row_selected_index (void)
   g_object_set (row, "selected-index", 1, NULL);
   g_assert_cmpint (hdy_combo_row_get_selected_index (row), ==, 1);
   g_assert_cmpint (notified, ==, 3);
+
+  g_object_unref (row);
 }
 
 static void
 test_hdy_combo_row_use_subtitle (void)
 {
-  g_autoptr (HdyComboRow) row = NULL;
+  HdyComboRow *row;
   gboolean use_subtitle = FALSE;
 
   row = g_object_ref_sink (HDY_COMBO_ROW (hdy_combo_row_new ()));
@@ -98,6 +104,8 @@ test_hdy_combo_row_use_subtitle (void)
   g_object_get (row, "use-subtitle", &use_subtitle, NULL);
   g_assert_false (use_subtitle);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (row);
 }
 
 

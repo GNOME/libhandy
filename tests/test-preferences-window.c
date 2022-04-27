@@ -10,7 +10,7 @@
 static void
 test_hdy_preferences_window_add (void)
 {
-  g_autoptr (HdyPreferencesWindow) window = NULL;
+  HdyPreferencesWindow *window;
   HdyPreferencesPage *page;
   GtkWidget *widget;
 
@@ -26,6 +26,8 @@ test_hdy_preferences_window_add (void)
   g_test_expect_message (HDY_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "Can't add children of type GtkSwitch to HdyPreferencesWindow");
   gtk_container_add (GTK_CONTAINER (window), widget);
   g_test_assert_expected_messages ();
+
+  g_object_unref (window);
 }
 
 

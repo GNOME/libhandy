@@ -17,7 +17,7 @@ notify_cb (GtkWidget *widget, gpointer data)
 static void
 test_hdy_carousel_indicator_lines_carousel (void)
 {
-  g_autoptr (HdyCarouselIndicatorLines) lines = NULL;
+  HdyCarouselIndicatorLines *lines;
   HdyCarousel *carousel;
 
   lines = g_object_ref_sink (HDY_CAROUSEL_INDICATOR_LINES (hdy_carousel_indicator_lines_new ()));
@@ -39,6 +39,8 @@ test_hdy_carousel_indicator_lines_carousel (void)
   hdy_carousel_indicator_lines_set_carousel (lines, NULL);
   g_assert_null (hdy_carousel_indicator_lines_get_carousel (lines));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (lines);
 }
 
 gint

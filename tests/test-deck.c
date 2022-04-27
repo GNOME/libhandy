@@ -10,7 +10,7 @@
 static void
 test_hdy_deck_adjacent_child (void)
 {
-  g_autoptr (HdyDeck) deck = NULL;
+  HdyDeck *deck;
   GtkWidget *children[2];
   gint i;
   GtkWidget *result;
@@ -40,13 +40,15 @@ test_hdy_deck_adjacent_child (void)
 
   result = hdy_deck_get_adjacent_child (deck, HDY_NAVIGATION_DIRECTION_FORWARD);
   g_assert_null (result);
+
+  g_object_unref (deck);
 }
 
 
 static void
 test_hdy_deck_navigate (void)
 {
-  g_autoptr (HdyDeck) deck = NULL;
+  HdyDeck *deck;
   GtkWidget *children[2];
   gint i;
   gboolean result;
@@ -82,13 +84,15 @@ test_hdy_deck_navigate (void)
   result = hdy_deck_navigate (deck, HDY_NAVIGATION_DIRECTION_BACK);
   g_assert_true (result);
   g_assert_true (hdy_deck_get_visible_child (deck) == children[0]);
+
+  g_object_unref (deck);
 }
 
 
 static void
 test_hdy_deck_prepend (void)
 {
-  g_autoptr (HdyDeck) deck = NULL;
+  HdyDeck *deck;
   GtkWidget *labels[2];
   gint i;
   GList *children = NULL;
@@ -111,13 +115,15 @@ test_hdy_deck_prepend (void)
   g_assert_cmpint (g_list_index (children, labels[0]), ==, 0);
   g_assert_cmpint (g_list_index (children, labels[1]), ==, 1);
   g_list_free (children);
+
+  g_object_unref (deck);
 }
 
 
 static void
 test_hdy_deck_insert_child_after (void)
 {
-  g_autoptr (HdyDeck) deck = NULL;
+  HdyDeck *deck;
   GtkWidget *labels[3];
   gint i;
   GList *children = NULL;
@@ -144,13 +150,15 @@ test_hdy_deck_insert_child_after (void)
   g_assert_cmpint (g_list_index (children, labels[1]), ==, 1);
   g_assert_cmpint (g_list_index (children, labels[2]), ==, 2);
   g_list_free (children);
+
+  g_object_unref (deck);
 }
 
 
 static void
 test_hdy_deck_reorder_child_after (void)
 {
-  g_autoptr (HdyDeck) deck = NULL;
+  HdyDeck *deck;
   GtkWidget *labels[3];
   gint i;
   GList *children = NULL;
@@ -184,6 +192,8 @@ test_hdy_deck_reorder_child_after (void)
   g_assert_cmpint (g_list_index (children, labels[1]), ==, 1);
   g_assert_cmpint (g_list_index (children, labels[0]), ==, 2);
   g_list_free (children);
+
+  g_object_unref (deck);
 }
 
 

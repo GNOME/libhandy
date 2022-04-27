@@ -10,7 +10,7 @@
 static void
 test_hdy_expander_row_add (void)
 {
-  g_autoptr (HdyExpanderRow) row = NULL;
+  HdyExpanderRow *row;
   GtkWidget *sw;
 
   row = g_object_ref_sink (HDY_EXPANDER_ROW (hdy_expander_row_new ()));
@@ -20,13 +20,15 @@ test_hdy_expander_row_add (void)
   g_assert_nonnull (sw);
 
   gtk_container_add (GTK_CONTAINER (row), sw);
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_expander_row_subtitle (void)
 {
-  g_autoptr (HdyExpanderRow) row = NULL;
+  HdyExpanderRow *row;
 
   row = g_object_ref_sink (HDY_EXPANDER_ROW (hdy_expander_row_new ()));
   g_assert_nonnull (row);
@@ -35,13 +37,15 @@ test_hdy_expander_row_subtitle (void)
 
   hdy_expander_row_set_subtitle (row, "Dummy subtitle");
   g_assert_cmpstr (hdy_expander_row_get_subtitle (row), ==, "Dummy subtitle");
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_expander_row_icon_name (void)
 {
-  g_autoptr (HdyExpanderRow) row = NULL;
+  HdyExpanderRow *row;
 
   row = g_object_ref_sink (HDY_EXPANDER_ROW (hdy_expander_row_new ()));
   g_assert_nonnull (row);
@@ -50,13 +54,15 @@ test_hdy_expander_row_icon_name (void)
 
   hdy_expander_row_set_icon_name (row, "dummy-icon-name");
   g_assert_cmpstr (hdy_expander_row_get_icon_name (row), ==, "dummy-icon-name");
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_expander_row_use_undeline (void)
 {
-  g_autoptr (HdyExpanderRow) row = NULL;
+  HdyExpanderRow *row;
 
   row = g_object_ref_sink (HDY_EXPANDER_ROW (hdy_expander_row_new ()));
   g_assert_nonnull (row);
@@ -68,13 +74,15 @@ test_hdy_expander_row_use_undeline (void)
 
   hdy_expander_row_set_use_underline (row, FALSE);
   g_assert_false (hdy_expander_row_get_use_underline (row));
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_expander_row_expanded (void)
 {
-  g_autoptr (HdyExpanderRow) row = NULL;
+  HdyExpanderRow *row;
 
   row = g_object_ref_sink (HDY_EXPANDER_ROW (hdy_expander_row_new ()));
   g_assert_nonnull (row);
@@ -86,13 +94,15 @@ test_hdy_expander_row_expanded (void)
 
   hdy_expander_row_set_expanded (row, FALSE);
   g_assert_false (hdy_expander_row_get_expanded (row));
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_expander_row_enable_expansion (void)
 {
-  g_autoptr (HdyExpanderRow) row = NULL;
+  HdyExpanderRow *row;
 
   row = g_object_ref_sink (HDY_EXPANDER_ROW (hdy_expander_row_new ()));
   g_assert_nonnull (row);
@@ -113,13 +123,15 @@ test_hdy_expander_row_enable_expansion (void)
   hdy_expander_row_set_enable_expansion (row, TRUE);
   g_assert_true (hdy_expander_row_get_enable_expansion (row));
   g_assert_true (hdy_expander_row_get_expanded (row));
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_expander_row_show_enable_switch (void)
 {
-  g_autoptr (HdyExpanderRow) row = NULL;
+  HdyExpanderRow *row;
 
   row = g_object_ref_sink (HDY_EXPANDER_ROW (hdy_expander_row_new ()));
   g_assert_nonnull (row);
@@ -131,6 +143,8 @@ test_hdy_expander_row_show_enable_switch (void)
 
   hdy_expander_row_set_show_enable_switch (row, FALSE);
   g_assert_false (hdy_expander_row_get_show_enable_switch (row));
+
+  g_object_unref (row);
 }
 
 
