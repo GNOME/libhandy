@@ -10,7 +10,7 @@
 static void
 test_hdy_view_switcher_bar_policy (void)
 {
-  g_autoptr (HdyViewSwitcherBar) bar = NULL;
+  HdyViewSwitcherBar *bar;
 
   bar = g_object_ref_sink (HDY_VIEW_SWITCHER_BAR (hdy_view_switcher_bar_new ()));
   g_assert_nonnull (bar);
@@ -25,13 +25,15 @@ test_hdy_view_switcher_bar_policy (void)
 
   hdy_view_switcher_bar_set_policy (bar, HDY_VIEW_SWITCHER_POLICY_NARROW);
   g_assert_cmpint (hdy_view_switcher_bar_get_policy (bar), ==, HDY_VIEW_SWITCHER_POLICY_NARROW);
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_view_switcher_bar_stack (void)
 {
-  g_autoptr (HdyViewSwitcherBar) bar = NULL;
+  HdyViewSwitcherBar *bar;
   GtkStack *stack;
 
   bar = g_object_ref_sink (HDY_VIEW_SWITCHER_BAR (hdy_view_switcher_bar_new ()));
@@ -47,13 +49,15 @@ test_hdy_view_switcher_bar_stack (void)
 
   hdy_view_switcher_bar_set_stack (bar, NULL);
   g_assert_null (hdy_view_switcher_bar_get_stack (bar));
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_view_switcher_bar_reveal (void)
 {
-  g_autoptr (HdyViewSwitcherBar) bar = NULL;
+  HdyViewSwitcherBar *bar;
 
   bar = g_object_ref_sink (HDY_VIEW_SWITCHER_BAR (hdy_view_switcher_bar_new ()));
   g_assert_nonnull (bar);
@@ -65,6 +69,8 @@ test_hdy_view_switcher_bar_reveal (void)
 
   hdy_view_switcher_bar_set_reveal (bar, FALSE);
   g_assert_false (hdy_view_switcher_bar_get_reveal (bar));
+
+  g_object_unref (bar);
 }
 
 

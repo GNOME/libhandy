@@ -10,7 +10,7 @@
 static void
 test_hdy_leaflet_adjacent_child (void)
 {
-  g_autoptr (HdyLeaflet) leaflet = NULL;
+  HdyLeaflet *leaflet;
   GtkWidget *children[3];
   gint i;
   GtkWidget *result;
@@ -52,13 +52,15 @@ test_hdy_leaflet_adjacent_child (void)
 
   result = hdy_leaflet_get_adjacent_child (leaflet, HDY_NAVIGATION_DIRECTION_FORWARD);
   g_assert_null (result);
+
+  g_object_unref (leaflet);
 }
 
 
 static void
 test_hdy_leaflet_navigate (void)
 {
-  g_autoptr (HdyLeaflet) leaflet = NULL;
+  HdyLeaflet *leaflet;
   GtkWidget *children[3];
   gint i;
   gboolean result;
@@ -98,13 +100,15 @@ test_hdy_leaflet_navigate (void)
   result = hdy_leaflet_navigate (leaflet, HDY_NAVIGATION_DIRECTION_BACK);
   g_assert_true (result);
   g_assert_true (hdy_leaflet_get_visible_child (leaflet) == children[0]);
+
+  g_object_unref (leaflet);
 }
 
 
 static void
 test_hdy_leaflet_prepend (void)
 {
-  g_autoptr (HdyLeaflet) leaflet = NULL;
+  HdyLeaflet *leaflet;
   GtkWidget *labels[2];
   gint i;
   GList *children = NULL;
@@ -127,13 +131,15 @@ test_hdy_leaflet_prepend (void)
   g_assert_cmpint (g_list_index (children, labels[0]), ==, 0);
   g_assert_cmpint (g_list_index (children, labels[1]), ==, 1);
   g_list_free (children);
+
+  g_object_unref (leaflet);
 }
 
 
 static void
 test_hdy_leaflet_insert_child_after (void)
 {
-  g_autoptr (HdyLeaflet) leaflet = NULL;
+  HdyLeaflet *leaflet;
   GtkWidget *labels[3];
   gint i;
   GList *children = NULL;
@@ -160,13 +166,15 @@ test_hdy_leaflet_insert_child_after (void)
   g_assert_cmpint (g_list_index (children, labels[1]), ==, 1);
   g_assert_cmpint (g_list_index (children, labels[2]), ==, 2);
   g_list_free (children);
+
+  g_object_unref (leaflet);
 }
 
 
 static void
 test_hdy_leaflet_reorder_child_after (void)
 {
-  g_autoptr (HdyLeaflet) leaflet = NULL;
+  HdyLeaflet *leaflet;
   GtkWidget *labels[3];
   gint i;
   GList *children = NULL;
@@ -200,6 +208,8 @@ test_hdy_leaflet_reorder_child_after (void)
   g_assert_cmpint (g_list_index (children, labels[1]), ==, 1);
   g_assert_cmpint (g_list_index (children, labels[0]), ==, 2);
   g_list_free (children);
+
+  g_object_unref (leaflet);
 }
 
 

@@ -18,7 +18,7 @@ activated_cb (GtkWidget *widget, gpointer data)
 static void
 test_hdy_action_row_add (void)
 {
-  g_autoptr (HdyActionRow) row = NULL;
+  HdyActionRow *row;
   GtkWidget *sw;
 
   row = g_object_ref_sink (HDY_ACTION_ROW (hdy_action_row_new ()));
@@ -28,13 +28,15 @@ test_hdy_action_row_add (void)
   g_assert_nonnull (sw);
 
   gtk_container_add (GTK_CONTAINER (row), sw);
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_action_row_add_prefix (void)
 {
-  g_autoptr (HdyActionRow) row = NULL;
+  HdyActionRow *row;
   GtkWidget *radio;
 
   row = g_object_ref_sink (HDY_ACTION_ROW (hdy_action_row_new ()));
@@ -44,13 +46,15 @@ test_hdy_action_row_add_prefix (void)
   g_assert_nonnull (radio);
 
   hdy_action_row_add_prefix (row, radio);
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_action_row_subtitle (void)
 {
-  g_autoptr (HdyActionRow) row = NULL;
+  HdyActionRow *row;
 
   row = g_object_ref_sink (HDY_ACTION_ROW (hdy_action_row_new ()));
   g_assert_nonnull (row);
@@ -59,13 +63,15 @@ test_hdy_action_row_subtitle (void)
 
   hdy_action_row_set_subtitle (row, "Dummy subtitle");
   g_assert_cmpstr (hdy_action_row_get_subtitle (row), ==, "Dummy subtitle");
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_action_row_icon_name (void)
 {
-  g_autoptr (HdyActionRow) row = NULL;
+  HdyActionRow *row;
 
   row = g_object_ref_sink (HDY_ACTION_ROW (hdy_action_row_new ()));
   g_assert_nonnull (row);
@@ -74,13 +80,15 @@ test_hdy_action_row_icon_name (void)
 
   hdy_action_row_set_icon_name (row, "dummy-icon-name");
   g_assert_cmpstr (hdy_action_row_get_icon_name (row), ==, "dummy-icon-name");
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_action_row_use_underline (void)
 {
-  g_autoptr (HdyActionRow) row = NULL;
+  HdyActionRow *row;
 
   row = g_object_ref_sink (HDY_ACTION_ROW (hdy_action_row_new ()));
   g_assert_nonnull (row);
@@ -92,13 +100,15 @@ test_hdy_action_row_use_underline (void)
 
   hdy_action_row_set_use_underline (row, FALSE);
   g_assert_false (hdy_action_row_get_use_underline (row));
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_action_row_title_lines (void)
 {
-  g_autoptr (HdyActionRow) row = NULL;
+  HdyActionRow *row;
 
   row = g_object_ref_sink (HDY_ACTION_ROW (hdy_action_row_new ()));
   g_assert_nonnull (row);
@@ -113,13 +123,15 @@ test_hdy_action_row_title_lines (void)
 
   hdy_action_row_set_title_lines (row, 0);
   g_assert_cmpint (hdy_action_row_get_title_lines (row), ==, 0);
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_action_row_subtitle_lines (void)
 {
-  g_autoptr (HdyActionRow) row = NULL;
+  HdyActionRow *row;
 
   row = g_object_ref_sink (HDY_ACTION_ROW (hdy_action_row_new ()));
   g_assert_nonnull (row);
@@ -134,13 +146,15 @@ test_hdy_action_row_subtitle_lines (void)
 
   hdy_action_row_set_subtitle_lines (row, 0);
   g_assert_cmpint (hdy_action_row_get_subtitle_lines (row), ==, 0);
+
+  g_object_unref (row);
 }
 
 
 static void
 test_hdy_action_row_activate (void)
 {
-  g_autoptr (HdyActionRow) row = NULL;
+  HdyActionRow *row;
 
   row = g_object_ref_sink (HDY_ACTION_ROW (hdy_action_row_new ()));
   g_assert_nonnull (row);
@@ -150,6 +164,8 @@ test_hdy_action_row_activate (void)
 
   hdy_action_row_activate (row);
   g_assert_cmpint (activated, ==, 1);
+
+  g_object_unref (row);
 }
 
 

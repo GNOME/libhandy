@@ -17,7 +17,7 @@ notify_cb (GtkWidget *widget, gpointer data)
 static void
 test_hdy_status_page_icon_name (void)
 {
-  g_autoptr (HdyStatusPage) status_page = NULL;
+  HdyStatusPage *status_page;
   const gchar *icon_name = NULL;
 
   status_page = HDY_STATUS_PAGE (g_object_ref_sink (hdy_status_page_new ()));
@@ -39,13 +39,15 @@ test_hdy_status_page_icon_name (void)
   g_object_set (status_page, "icon-name", "other-icon-symbolic", NULL);
   g_assert_cmpstr (hdy_status_page_get_icon_name (status_page), ==, "other-icon-symbolic");
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (status_page);
 }
 
 static void
 test_hdy_status_page_title (void)
 {
-  g_autoptr (HdyStatusPage) status_page = NULL;
-  g_autofree gchar *title = NULL;
+  HdyStatusPage *status_page;
+  gchar *title;
 
   status_page = HDY_STATUS_PAGE (g_object_ref_sink (hdy_status_page_new ()));
   g_assert_nonnull (status_page);
@@ -66,13 +68,16 @@ test_hdy_status_page_title (void)
   g_object_set (status_page, "title", "Other Title", NULL);
   g_assert_cmpstr (hdy_status_page_get_title (status_page), ==, "Other Title");
   g_assert_cmpint (notified, ==, 2);
+
+  g_free (title);
+  g_object_unref (status_page);
 }
 
 static void
 test_hdy_status_page_description (void)
 {
-  g_autoptr (HdyStatusPage) status_page = NULL;
-  g_autofree gchar *description = NULL;
+  HdyStatusPage *status_page;
+  gchar *description;
 
   status_page = HDY_STATUS_PAGE (g_object_ref_sink (hdy_status_page_new ()));
   g_assert_nonnull (status_page);
@@ -93,6 +98,9 @@ test_hdy_status_page_description (void)
   g_object_set (status_page, "description", "Other description", NULL);
   g_assert_cmpstr (hdy_status_page_get_description (status_page), ==, "Other description");
   g_assert_cmpint (notified, ==, 2);
+
+  g_free (description);
+  g_object_unref (status_page);
 }
 
 gint

@@ -10,10 +10,12 @@
 static void
 test_hdy_window_handle_new (void)
 {
-  g_autoptr (GtkWidget) handle = NULL;
+  GtkWidget *handle;
 
   handle = g_object_ref_sink (hdy_window_handle_new ());
   g_assert_nonnull (handle);
+
+  g_object_unref (handle);
 }
 
 

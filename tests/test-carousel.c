@@ -101,7 +101,7 @@ test_hdy_carousel_scroll_to (void)
 static void
 test_hdy_carousel_interactive (void)
 {
-  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
+  HdyCarousel *carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   gboolean interactive;
 
   notified = 0;
@@ -122,12 +122,14 @@ test_hdy_carousel_interactive (void)
   /* Setting the same value should not notify */
   hdy_carousel_set_interactive (carousel, TRUE);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (carousel);
 }
 
 static void
 test_hdy_carousel_spacing (void)
 {
-  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
+  HdyCarousel *carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   guint spacing;
 
   notified = 0;
@@ -148,12 +150,14 @@ test_hdy_carousel_spacing (void)
   /* Setting the same value should not notify */
   hdy_carousel_set_spacing (carousel, 6);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (carousel);
 }
 
 static void
 test_hdy_carousel_animation_duration (void)
 {
-  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
+  HdyCarousel *carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   guint duration;
 
   notified = 0;
@@ -174,12 +178,14 @@ test_hdy_carousel_animation_duration (void)
   /* Setting the same value should not notify */
   hdy_carousel_set_animation_duration (carousel, 500);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (carousel);
 }
 
 static void
 test_hdy_carousel_allow_mouse_drag (void)
 {
-  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
+  HdyCarousel *carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   gboolean allow_mouse_drag;
 
   notified = 0;
@@ -200,12 +206,14 @@ test_hdy_carousel_allow_mouse_drag (void)
   /* Setting the same value should not notify */
   hdy_carousel_set_allow_mouse_drag (carousel, TRUE);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (carousel);
 }
 
 static void
 test_hdy_carousel_allow_long_swipes (void)
 {
-  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
+  HdyCarousel *carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   gboolean allow_long_swipes;
 
   notified = 0;
@@ -226,12 +234,14 @@ test_hdy_carousel_allow_long_swipes (void)
   /* Setting the same value should not notify */
   hdy_carousel_set_allow_long_swipes (carousel, FALSE);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (carousel);
 }
 
 static void
 test_hdy_carousel_reveal_duration (void)
 {
-  g_autoptr (HdyCarousel) carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
+  HdyCarousel *carousel = g_object_ref_sink (HDY_CAROUSEL (hdy_carousel_new ()));
   guint duration;
 
   notified = 0;
@@ -252,6 +262,8 @@ test_hdy_carousel_reveal_duration (void)
   /* Setting the same value should not notify */
   hdy_carousel_set_reveal_duration (carousel, 500);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (carousel);
 }
 
 gint

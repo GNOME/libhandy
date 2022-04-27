@@ -19,8 +19,8 @@ notify_cb (GtkWidget *widget, gpointer data)
 static void
 test_hdy_tab_bar_view (void)
 {
-  g_autoptr (HdyTabBar) bar = NULL;
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabBar *bar;
+  HdyTabView *view;
 
   bar = g_object_ref_sink (HDY_TAB_BAR (hdy_tab_bar_new ()));
   g_assert_nonnull (bar);
@@ -42,12 +42,15 @@ test_hdy_tab_bar_view (void)
   g_object_set (bar, "view", NULL, NULL);
   g_assert_null (hdy_tab_bar_get_view (bar));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
+  g_object_unref (bar);
 }
 
 static void
 test_hdy_tab_bar_start_action_widget (void)
 {
-  g_autoptr (HdyTabBar) bar = NULL;
+  HdyTabBar *bar;
   GtkWidget *widget = NULL;
 
   bar = g_object_ref_sink (HDY_TAB_BAR (hdy_tab_bar_new ()));
@@ -70,12 +73,14 @@ test_hdy_tab_bar_start_action_widget (void)
   g_object_set (bar, "start-action-widget", NULL, NULL);
   g_assert_null (hdy_tab_bar_get_start_action_widget (bar));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (bar);
 }
 
 static void
 test_hdy_tab_bar_end_action_widget (void)
 {
-  g_autoptr (HdyTabBar) bar = NULL;
+  HdyTabBar *bar;
   GtkWidget *widget = NULL;
 
   bar = g_object_ref_sink (HDY_TAB_BAR (hdy_tab_bar_new ()));
@@ -98,12 +103,14 @@ test_hdy_tab_bar_end_action_widget (void)
   g_object_set (bar, "end-action-widget", NULL, NULL);
   g_assert_null (hdy_tab_bar_get_end_action_widget (bar));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (bar);
 }
 
 static void
 test_hdy_tab_bar_autohide (void)
 {
-  g_autoptr (HdyTabBar) bar = NULL;
+  HdyTabBar *bar;
   gboolean autohide = FALSE;
 
   bar = g_object_ref_sink (HDY_TAB_BAR (hdy_tab_bar_new ()));
@@ -125,13 +132,15 @@ test_hdy_tab_bar_autohide (void)
   g_object_set (bar, "autohide", TRUE, NULL);
   g_assert_true (hdy_tab_bar_get_autohide (bar));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (bar);
 }
 
 static void
 test_hdy_tab_bar_tabs_revealed (void)
 {
-  g_autoptr (HdyTabBar) bar = NULL;
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabBar *bar;
+  HdyTabView *view;
   gboolean tabs_revealed = FALSE;
   HdyTabPage *page;
 
@@ -178,12 +187,15 @@ test_hdy_tab_bar_tabs_revealed (void)
   hdy_tab_bar_set_autohide (bar, FALSE);
   g_assert_true (hdy_tab_bar_get_tabs_revealed (bar));
   g_assert_cmpint (notified, ==, 7);
+
+  g_object_unref (view);
+  g_object_unref (bar);
 }
 
 static void
 test_hdy_tab_bar_expand_tabs (void)
 {
-  g_autoptr (HdyTabBar) bar = NULL;
+  HdyTabBar *bar;
   gboolean expand_tabs = FALSE;
 
   bar = g_object_ref_sink (HDY_TAB_BAR (hdy_tab_bar_new ()));
@@ -205,12 +217,14 @@ test_hdy_tab_bar_expand_tabs (void)
   g_object_set (bar, "expand-tabs", TRUE, NULL);
   g_assert_true (hdy_tab_bar_get_expand_tabs (bar));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (bar);
 }
 
 static void
 test_hdy_tab_bar_inverted (void)
 {
-  g_autoptr (HdyTabBar) bar = NULL;
+  HdyTabBar *bar;
   gboolean inverted = FALSE;
 
   bar = g_object_ref_sink (HDY_TAB_BAR (hdy_tab_bar_new ()));
@@ -232,6 +246,8 @@ test_hdy_tab_bar_inverted (void)
   g_object_set (bar, "inverted", FALSE, NULL);
   g_assert_false (hdy_tab_bar_get_inverted (bar));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (bar);
 }
 
 gint

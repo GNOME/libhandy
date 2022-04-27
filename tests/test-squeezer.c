@@ -10,7 +10,7 @@
 static void
 test_hdy_squeezer_homogeneous (void)
 {
-  g_autoptr (HdySqueezer) squeezer = NULL;
+  HdySqueezer *squeezer;
 
   squeezer = g_object_ref_sink (HDY_SQUEEZER (hdy_squeezer_new ()));
   g_assert_nonnull (squeezer);
@@ -22,13 +22,15 @@ test_hdy_squeezer_homogeneous (void)
 
   hdy_squeezer_set_homogeneous (squeezer, TRUE);
   g_assert_true (hdy_squeezer_get_homogeneous (squeezer));
+
+  g_object_unref (squeezer);
 }
 
 
 static void
 test_hdy_squeezer_transition_duration (void)
 {
-  g_autoptr (HdySqueezer) squeezer = NULL;
+  HdySqueezer *squeezer;
 
   squeezer = g_object_ref_sink (HDY_SQUEEZER (hdy_squeezer_new ()));
   g_assert_nonnull (squeezer);
@@ -40,13 +42,15 @@ test_hdy_squeezer_transition_duration (void)
 
   hdy_squeezer_set_transition_duration (squeezer, -1);
   g_assert_cmpuint (hdy_squeezer_get_transition_duration (squeezer), ==, G_MAXUINT);
+
+  g_object_unref (squeezer);
 }
 
 
 static void
 test_hdy_squeezer_transition_type (void)
 {
-  g_autoptr (HdySqueezer) squeezer = NULL;
+  HdySqueezer *squeezer;
 
   squeezer = g_object_ref_sink (HDY_SQUEEZER (hdy_squeezer_new ()));
   g_assert_nonnull (squeezer);
@@ -58,25 +62,29 @@ test_hdy_squeezer_transition_type (void)
 
   hdy_squeezer_set_transition_type (squeezer, HDY_SQUEEZER_TRANSITION_TYPE_NONE);
   g_assert_cmpuint (hdy_squeezer_get_transition_type (squeezer), ==, HDY_SQUEEZER_TRANSITION_TYPE_NONE);
+
+  g_object_unref (squeezer);
 }
 
 
 static void
 test_hdy_squeezer_transition_running (void)
 {
-  g_autoptr (HdySqueezer) squeezer = NULL;
+  HdySqueezer *squeezer;
 
   squeezer = g_object_ref_sink (HDY_SQUEEZER (hdy_squeezer_new ()));
   g_assert_nonnull (squeezer);
 
   g_assert_false (hdy_squeezer_get_transition_running (squeezer));
+
+  g_object_unref (squeezer);
 }
 
 
 static void
 test_hdy_squeezer_show_hide_child (void)
 {
-  g_autoptr (HdySqueezer) squeezer = NULL;
+  HdySqueezer *squeezer;
   GtkWidget *child;
 
   squeezer = g_object_ref_sink (HDY_SQUEEZER (hdy_squeezer_new ()));
@@ -99,13 +107,15 @@ test_hdy_squeezer_show_hide_child (void)
 
   gtk_container_remove (GTK_CONTAINER (squeezer), child);
   g_assert_null (hdy_squeezer_get_visible_child (squeezer));
+
+  g_object_unref (squeezer);
 }
 
 
 static void
 test_hdy_squeezer_interpolate_size (void)
 {
-  g_autoptr (HdySqueezer) squeezer = NULL;
+  HdySqueezer *squeezer;
 
   squeezer = g_object_ref_sink (HDY_SQUEEZER (hdy_squeezer_new ()));
   g_assert_nonnull (squeezer);
@@ -117,13 +127,15 @@ test_hdy_squeezer_interpolate_size (void)
 
   hdy_squeezer_set_interpolate_size (squeezer, FALSE);
   g_assert_false (hdy_squeezer_get_interpolate_size (squeezer));
+
+  g_object_unref (squeezer);
 }
 
 
 static void
 test_hdy_squeezer_child_enabled (void)
 {
-  g_autoptr (HdySqueezer) squeezer = NULL;
+  HdySqueezer *squeezer;
   GtkWidget *child;
 
   squeezer = g_object_ref_sink (HDY_SQUEEZER (hdy_squeezer_new ()));
@@ -139,6 +151,8 @@ test_hdy_squeezer_child_enabled (void)
 
   hdy_squeezer_set_child_enabled (squeezer, child, TRUE);
   g_assert_true (hdy_squeezer_get_child_enabled (squeezer, child));
+
+  g_object_unref (squeezer);
 }
 
 
