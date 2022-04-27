@@ -10,7 +10,7 @@
 static void
 test_hdy_preferences_page_add (void)
 {
-  g_autoptr (HdyPreferencesPage) page = NULL;
+  HdyPreferencesPage *page;
   HdyPreferencesGroup *group;
   GtkWidget *widget;
 
@@ -26,13 +26,15 @@ test_hdy_preferences_page_add (void)
   g_test_expect_message (HDY_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "Can't add children of type GtkSwitch to HdyPreferencesPage");
   gtk_container_add (GTK_CONTAINER (page), widget);
   g_test_assert_expected_messages ();
+
+  g_object_unref (page);
 }
 
 
 static void
 test_hdy_preferences_page_title (void)
 {
-  g_autoptr (HdyPreferencesPage) page = NULL;
+  HdyPreferencesPage *page;
 
   page = g_object_ref_sink (HDY_PREFERENCES_PAGE (hdy_preferences_page_new ()));
   g_assert_nonnull (page);
@@ -44,13 +46,15 @@ test_hdy_preferences_page_title (void)
 
   hdy_preferences_page_set_title (page, NULL);
   g_assert_null (hdy_preferences_page_get_title (page));
+
+  g_object_unref (page);
 }
 
 
 static void
 test_hdy_preferences_page_icon_name (void)
 {
-  g_autoptr (HdyPreferencesPage) page = NULL;
+  HdyPreferencesPage *page;
 
   page = g_object_ref_sink (HDY_PREFERENCES_PAGE (hdy_preferences_page_new ()));
   g_assert_nonnull (page);
@@ -62,6 +66,8 @@ test_hdy_preferences_page_icon_name (void)
 
   hdy_preferences_page_set_icon_name (page, NULL);
   g_assert_null (hdy_preferences_page_get_icon_name (page));
+
+  g_object_unref (page);
 }
 
 

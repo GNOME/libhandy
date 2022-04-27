@@ -11,9 +11,9 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_hdy_swipe_group_add_remove (void)
 {
-  g_autoptr (HdySwipeGroup) group = NULL;
-  g_autoptr (HdySwipeable) swipeable1 = NULL;
-  g_autoptr (HdySwipeable) swipeable2 = NULL;
+  HdySwipeGroup *group;
+  HdySwipeable *swipeable1;
+  HdySwipeable *swipeable2;
 
   group = hdy_swipe_group_new ();
 
@@ -33,6 +33,10 @@ test_hdy_swipe_group_add_remove (void)
 
   hdy_swipe_group_remove_swipeable (group, swipeable1);
   g_assert_cmpint (g_slist_length (hdy_swipe_group_get_swipeables (group)), ==, 0);
+
+  g_object_unref (swipeable2);
+  g_object_unref (swipeable1);
+  g_object_unref (group);
 }
 
 G_GNUC_END_IGNORE_DEPRECATIONS

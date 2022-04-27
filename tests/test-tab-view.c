@@ -59,7 +59,7 @@ assert_page_positions (HdyTabView  *view,
 static void
 test_hdy_tab_view_n_pages (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page;
   gint n_pages;
 
@@ -93,12 +93,14 @@ test_hdy_tab_view_n_pages (void)
   hdy_tab_view_close_page (view, page);
   g_assert_cmpint (hdy_tab_view_get_n_pages (view), ==, 2);
   g_assert_cmpint (notified, ==, 4);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_n_pinned_pages (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page;
   gint n_pages;
 
@@ -132,16 +134,18 @@ test_hdy_tab_view_n_pinned_pages (void)
   hdy_tab_view_set_page_pinned (view, page, FALSE);
   g_assert_cmpint (hdy_tab_view_get_n_pinned_pages (view), ==, 1);
   g_assert_cmpint (notified, ==, 3);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_default_icon (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
-  g_autoptr (GIcon) icon = NULL;
-  g_autoptr (GIcon) icon1 = g_themed_icon_new ("go-previous-symbolic");
-  g_autoptr (GIcon) icon2 = g_themed_icon_new ("go-next-symbolic");
-  g_autofree gchar *icon_str = NULL;
+  HdyTabView *view;
+  GIcon *icon;
+  GIcon *icon1 = g_themed_icon_new ("go-previous-symbolic");
+  GIcon *icon2 = g_themed_icon_new ("go-next-symbolic");
+  gchar *icon_str;
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
   g_assert_nonnull (view);
@@ -161,15 +165,21 @@ test_hdy_tab_view_default_icon (void)
   g_object_set (view, "default-icon", icon2, NULL);
   g_assert_true (hdy_tab_view_get_default_icon (view) == icon2);
   g_assert_cmpint (notified, ==, 2);
+
+  g_free (icon_str);
+  g_object_unref (icon);
+  g_object_unref (icon2);
+  g_object_unref (icon1);
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_menu_model (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   GMenuModel *model = NULL;
-  g_autoptr (GMenuModel) model1 = G_MENU_MODEL (g_menu_new ());
-  g_autoptr (GMenuModel) model2 = G_MENU_MODEL (g_menu_new ());
+  GMenuModel *model1 = G_MENU_MODEL (g_menu_new ());
+  GMenuModel *model2 = G_MENU_MODEL (g_menu_new ());
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
   g_assert_nonnull (view);
@@ -188,15 +198,19 @@ test_hdy_tab_view_menu_model (void)
   g_object_set (view, "menu-model", model2, NULL);
   g_assert_true (hdy_tab_view_get_menu_model (view) == model2);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
+  g_object_unref (model2);
+  g_object_unref (model1);
 }
 
 static void
 test_hdy_tab_view_shortcut_widget (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   GtkWidget *widget = NULL;
-  g_autoptr (GtkWidget) widget1 = g_object_ref_sink (gtk_button_new ());
-  g_autoptr (GtkWidget) widget2 = g_object_ref_sink (gtk_button_new ());
+  GtkWidget *widget1 = g_object_ref_sink (gtk_button_new ());
+  GtkWidget *widget2 = g_object_ref_sink (gtk_button_new ());
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
   g_assert_nonnull (view);
@@ -215,12 +229,16 @@ test_hdy_tab_view_shortcut_widget (void)
   g_object_set (view, "shortcut-widget", widget2, NULL);
   g_assert_true (hdy_tab_view_get_shortcut_widget (view) == widget2);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
+  g_object_unref (widget2);
+  g_object_unref (widget1);
 }
 
 static void
 test_hdy_tab_view_pages (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   GtkWidget *child1, *child2, *child3;
   HdyTabPage *page1, *page2, *page3;
 
@@ -250,12 +268,14 @@ test_hdy_tab_view_pages (void)
   g_assert_true (hdy_tab_page_get_child (page1) == child1);
   g_assert_true (hdy_tab_page_get_child (page2) == child2);
   g_assert_true (hdy_tab_page_get_child (page3) == child3);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_select (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page1, *page2, *selected_page;
   gboolean ret;
 
@@ -306,12 +326,14 @@ test_hdy_tab_view_select (void)
   g_assert_true (hdy_tab_view_get_selected_page (view) == page1);
   g_assert_true (ret);
   g_assert_cmpint (notified, ==, 5);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_add_basic (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[6];
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
@@ -340,12 +362,14 @@ test_hdy_tab_view_add_basic (void)
   pages[5] = hdy_tab_view_insert_pinned (view, gtk_button_new (), 1);
   assert_page_positions (view, pages, 6, 3,
                          3, 5, 4, 1, 2, 0);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_add_auto (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[17];
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
@@ -432,12 +456,14 @@ test_hdy_tab_view_add_auto (void)
   g_assert_true (hdy_tab_page_get_parent (pages[16]) == pages[5]);
   assert_page_positions (view, pages, 17, 3,
                          0, 1, 2, 15, 14, 11, 12, 13, 3, 4, 6, 8, 9, 7, 10, 5, 16);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_reorder (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[6];
   gboolean ret;
 
@@ -478,12 +504,14 @@ test_hdy_tab_view_reorder (void)
   g_assert_true (ret);
   assert_page_positions (view, pages, 6, 3,
                          0, 1, 2, 3, 4, 5);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_reorder_first_last (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[6];
   gboolean ret;
 
@@ -534,12 +562,14 @@ test_hdy_tab_view_reorder_first_last (void)
   g_assert_true (ret);
   assert_page_positions (view, pages, 6, 3,
                          0, 1, 2, 3, 4, 5);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_reorder_forward_backward (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[6];
   gboolean ret;
 
@@ -590,12 +620,14 @@ test_hdy_tab_view_reorder_forward_backward (void)
   g_assert_true (ret);
   assert_page_positions (view, pages, 6, 3,
                          1, 2, 0, 4, 5, 3);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_pin (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[4];
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
@@ -638,12 +670,14 @@ test_hdy_tab_view_pin (void)
   hdy_tab_view_set_page_pinned (view, pages[1], FALSE);
   assert_page_positions (view, pages, 4, 2,
                          2, 0, 1, 3);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_close (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[3];
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
@@ -669,12 +703,14 @@ test_hdy_tab_view_close (void)
   hdy_tab_view_close_page (view, pages[0]);
   assert_page_positions (view, pages, 0, 0);
   g_assert_null (hdy_tab_view_get_selected_page (view));
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_close_other (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[6];
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
@@ -691,12 +727,14 @@ test_hdy_tab_view_close_other (void)
   hdy_tab_view_close_other_pages (view, pages[2]);
   assert_page_positions (view, pages, 3, 3,
                          0, 1, 2);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_close_before_after (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[10];
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
@@ -721,6 +759,8 @@ test_hdy_tab_view_close_before_after (void)
   hdy_tab_view_close_pages_after (view, pages[0]);
   assert_page_positions (view, pages, 3, 3,
                          0, 1, 2);
+
+  g_object_unref (view);
 }
 
 static gboolean
@@ -737,7 +777,7 @@ close_page_position_cb (HdyTabView *view,
 static void
 test_hdy_tab_view_close_signal (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[10];
   gulong handler;
 
@@ -778,12 +818,14 @@ test_hdy_tab_view_close_signal (void)
                          2, 4, 5, 6, 8);
 
   g_signal_handler_disconnect (view, handler);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_close_select (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *pages[14];
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
@@ -850,13 +892,15 @@ test_hdy_tab_view_close_select (void)
 
   hdy_tab_view_close_page (view, pages[12]);
   g_assert_true (hdy_tab_view_get_selected_page (view) == pages[1]);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_view_transfer (void)
 {
-  g_autoptr (HdyTabView) view1 = NULL;
-  g_autoptr (HdyTabView) view2 = NULL;
+  HdyTabView *view1;
+  HdyTabView *view2;
   HdyTabPage *pages1[4], *pages2[4];
 
   view1 = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
@@ -886,12 +930,15 @@ test_hdy_tab_view_transfer (void)
   assert_page_positions (view2, pages2, 4, 3,
                          0, -1, 1, 2);
   g_assert_true (hdy_tab_view_get_nth_page (view1, 2) == pages2[3]);
+
+  g_object_unref (view2);
+  g_object_unref (view1);
 }
 
 static void
 test_hdy_tab_page_title (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page;
   const gchar *title;
 
@@ -915,12 +962,14 @@ test_hdy_tab_page_title (void)
   g_object_set (page, "title", "Some other title", NULL);
   g_assert_cmpstr (hdy_tab_page_get_title (page), ==, "Some other title");
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_page_tooltip (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page;
   const gchar *tooltip;
 
@@ -944,16 +993,18 @@ test_hdy_tab_page_tooltip (void)
   g_object_set (page, "tooltip", "Some other tooltip", NULL);
   g_assert_cmpstr (hdy_tab_page_get_tooltip (page), ==, "Some other tooltip");
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_page_icon (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page;
   GIcon *icon = NULL;
-  g_autoptr (GIcon) icon1 = g_themed_icon_new ("go-previous-symbolic");
-  g_autoptr (GIcon) icon2 = g_themed_icon_new ("go-next-symbolic");
+  GIcon *icon1 = g_themed_icon_new ("go-previous-symbolic");
+  GIcon *icon2 = g_themed_icon_new ("go-next-symbolic");
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
   g_assert_nonnull (view);
@@ -975,12 +1026,16 @@ test_hdy_tab_page_icon (void)
   g_object_set (page, "icon", icon2, NULL);
   g_assert_true (hdy_tab_page_get_icon (page) == icon2);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
+  g_object_unref (icon2);
+  g_object_unref (icon1);
 }
 
 static void
 test_hdy_tab_page_loading (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page;
   gboolean loading;
 
@@ -1005,16 +1060,18 @@ test_hdy_tab_page_loading (void)
   g_object_set (page, "loading", FALSE, NULL);
   g_assert_false (hdy_tab_page_get_loading (page));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_page_indicator_icon (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page;
   GIcon *icon = NULL;
-  g_autoptr (GIcon) icon1 = g_themed_icon_new ("go-previous-symbolic");
-  g_autoptr (GIcon) icon2 = g_themed_icon_new ("go-next-symbolic");
+  GIcon *icon1 = g_themed_icon_new ("go-previous-symbolic");
+  GIcon *icon2 = g_themed_icon_new ("go-next-symbolic");
 
   view = g_object_ref_sink (HDY_TAB_VIEW (hdy_tab_view_new ()));
   g_assert_nonnull (view);
@@ -1036,12 +1093,16 @@ test_hdy_tab_page_indicator_icon (void)
   g_object_set (page, "indicator-icon", icon2, NULL);
   g_assert_true (hdy_tab_page_get_indicator_icon (page) == icon2);
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
+  g_object_unref (icon2);
+  g_object_unref (icon1);
 }
 
 static void
 test_hdy_tab_page_indicator_activatable (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page;
   gboolean activatable;
 
@@ -1066,12 +1127,14 @@ test_hdy_tab_page_indicator_activatable (void)
   g_object_set (page, "indicator-activatable", FALSE, NULL);
   g_assert_false (hdy_tab_page_get_indicator_activatable (page));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
 }
 
 static void
 test_hdy_tab_page_needs_attention (void)
 {
-  g_autoptr (HdyTabView) view = NULL;
+  HdyTabView *view;
   HdyTabPage *page;
   gboolean needs_attention;
 
@@ -1096,6 +1159,8 @@ test_hdy_tab_page_needs_attention (void)
   g_object_set (page, "needs-attention", FALSE, NULL);
   g_assert_false (hdy_tab_page_get_needs_attention (page));
   g_assert_cmpint (notified, ==, 2);
+
+  g_object_unref (view);
 }
 
 gint

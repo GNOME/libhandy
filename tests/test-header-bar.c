@@ -10,7 +10,7 @@
 static void
 test_hdy_header_bar_pack (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
   GtkWidget *widget;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
@@ -25,13 +25,15 @@ test_hdy_header_bar_pack (void)
   g_assert_nonnull (widget);
 
   hdy_header_bar_pack_end (bar, widget);
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_header_bar_title (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
   g_assert_nonnull (bar);
@@ -43,13 +45,15 @@ test_hdy_header_bar_title (void)
 
   hdy_header_bar_set_title (bar, NULL);
   g_assert_null (hdy_header_bar_get_title (bar));
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_header_bar_subtitle (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
   g_assert_nonnull (bar);
@@ -61,13 +65,15 @@ test_hdy_header_bar_subtitle (void)
 
   hdy_header_bar_set_subtitle (bar, NULL);
   g_assert_null (hdy_header_bar_get_subtitle (bar));
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_header_bar_custom_title (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
   GtkWidget *widget;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
@@ -82,13 +88,15 @@ test_hdy_header_bar_custom_title (void)
 
   hdy_header_bar_set_custom_title (bar, NULL);
   g_assert_null (hdy_header_bar_get_custom_title (bar));
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_header_bar_show_close_button (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
   g_assert_nonnull (bar);
@@ -100,13 +108,15 @@ test_hdy_header_bar_show_close_button (void)
 
   hdy_header_bar_set_show_close_button (bar, FALSE);
   g_assert_false (hdy_header_bar_get_show_close_button (bar));
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_header_bar_has_subtitle (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
   g_assert_nonnull (bar);
@@ -118,13 +128,15 @@ test_hdy_header_bar_has_subtitle (void)
 
   hdy_header_bar_set_has_subtitle (bar, TRUE);
   g_assert_true (hdy_header_bar_get_has_subtitle (bar));
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_header_bar_decoration_layout (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
   g_assert_nonnull (bar);
@@ -136,13 +148,15 @@ test_hdy_header_bar_decoration_layout (void)
 
   hdy_header_bar_set_decoration_layout (bar, NULL);
   g_assert_null (hdy_header_bar_get_decoration_layout (bar));
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_header_bar_centering_policy (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
   g_assert_nonnull (bar);
@@ -154,13 +168,15 @@ test_hdy_header_bar_centering_policy (void)
 
   hdy_header_bar_set_centering_policy (bar, HDY_CENTERING_POLICY_LOOSE);
   g_assert_cmpint (hdy_header_bar_get_centering_policy (bar), ==, HDY_CENTERING_POLICY_LOOSE);
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_header_bar_transition_duration (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
   g_assert_nonnull (bar);
@@ -172,13 +188,15 @@ test_hdy_header_bar_transition_duration (void)
 
   hdy_header_bar_set_transition_duration (bar, 1000);
   g_assert_cmpuint (hdy_header_bar_get_transition_duration (bar), ==, 1000);
+
+  g_object_unref (bar);
 }
 
 
 static void
 test_hdy_header_bar_interpolate_size (void)
 {
-  g_autoptr (HdyHeaderBar) bar = NULL;
+  HdyHeaderBar *bar;
 
   bar = g_object_ref_sink (HDY_HEADER_BAR (hdy_header_bar_new ()));
   g_assert_nonnull (bar);
@@ -190,6 +208,8 @@ test_hdy_header_bar_interpolate_size (void)
 
   hdy_header_bar_set_interpolate_size (bar, FALSE);
   g_assert_false (hdy_header_bar_get_interpolate_size (bar));
+
+  g_object_unref (bar);
 }
 
 
