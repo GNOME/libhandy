@@ -284,10 +284,12 @@ static void
 carousel_return_clicked_cb (GtkButton     *btn,
                             HdyDemoWindow *self)
 {
-  g_autoptr (GList) children =
+  GList *children =
     gtk_container_get_children (GTK_CONTAINER (self->carousel));
 
   hdy_carousel_scroll_to (self->carousel, GTK_WIDGET (children->data));
+
+  g_list_free (children);
 }
 
 HdyDemoWindow *
@@ -299,7 +301,7 @@ hdy_demo_window_new (GtkApplication *application)
 static void
 avatar_file_remove_cb (HdyDemoWindow *self)
 {
-  g_autofree gchar *file = NULL;
+  gchar *file;
 
   g_assert (HDY_IS_DEMO_WINDOW (self));
 
@@ -308,20 +310,25 @@ avatar_file_remove_cb (HdyDemoWindow *self)
   if (file)
     gtk_file_chooser_unselect_filename (GTK_FILE_CHOOSER (self->avatar_filechooser), file);
 
+  g_free (file);
+
   hdy_avatar_set_loadable_icon (self->avatar, NULL);
 }
 
 static void
 avatar_file_set_cb (HdyDemoWindow *self)
 {
-  g_autoptr (GFile) file = NULL;
-  g_autoptr (GIcon) icon = NULL;
+  GFile *file;
+  GIcon *icon;
 
   g_assert (HDY_IS_DEMO_WINDOW (self));
 
   file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (self->avatar_filechooser));
   icon = g_file_icon_new (file);
   hdy_avatar_set_loadable_icon (self->avatar, G_LOADABLE_ICON (icon));
+
+  g_object_unref (icon);
+  g_object_unref (file);
 }
 
 static void
@@ -330,14 +337,18 @@ file_chooser_response_cb (HdyDemoWindow  *self,
                           GtkFileChooser *chooser)
 {
   if (response_id == GTK_RESPONSE_ACCEPT) {
-    g_autofree gchar *filename = gtk_file_chooser_get_filename (chooser);
-    g_autoptr (GdkPixbuf) pixbuf =
+    gchar *filename = gtk_file_chooser_get_filename (chooser);
+    GdkPixbuf *pixbuf =
       hdy_avatar_draw_to_pixbuf (self->avatar,
                                  hdy_avatar_get_size (self->avatar),
                                  gtk_widget_get_scale_factor (GTK_WIDGET (self)));
 
-    if (pixbuf != NULL)
+    if (pixbuf != NULL) {
       gdk_pixbuf_save (pixbuf, filename, "png", NULL, NULL);
+      g_object_unref (pixbuf);
+    }
+
+    g_free (filename);
   }
 
   g_object_unref (chooser);
@@ -415,13 +426,13 @@ avatar_new_random_name (void)
 static void
 avatar_update_contacts (HdyDemoWindow *self)
 {
-  g_autoptr (GList) children = gtk_container_get_children (GTK_CONTAINER (self->avatar_contacts));
+  GList *children = gtk_container_get_children (GTK_CONTAINER (self->avatar_contacts));
 
   for (GList *child = children; child; child = child->next)
     gtk_container_remove (GTK_CONTAINER (self->avatar_contacts), child->data);
 
   for (int i = 0; i < 30; i++) {
-    g_autofree gchar *name = avatar_new_random_name ();
+    gchar *name = avatar_new_random_name ();
     GtkWidget *contact = hdy_action_row_new ();
     GtkWidget *avatar = hdy_avatar_new (40, name, TRUE);
 
@@ -434,7 +445,11 @@ avatar_update_contacts (HdyDemoWindow *self)
     hdy_preferences_row_set_title (HDY_PREFERENCES_ROW (contact), name);
     hdy_action_row_add_prefix (HDY_ACTION_ROW (contact), avatar);
     gtk_container_add (GTK_CONTAINER (self->avatar_contacts), contact);
+
+    g_free (name);
   }
+
+  g_list_free (children);
 }
 
 static void
@@ -582,11 +597,13 @@ carousel_page_init (HdyDemoWindow *self)
 static void
 avatar_page_init (HdyDemoWindow *self)
 {
-  g_autofree gchar *name = avatar_new_random_name ();
+  gchar *name = avatar_new_random_name ();
 
   gtk_entry_set_text (self->avatar_text, name);
 
   avatar_update_contacts (self);
+
+  g_free (name);
 }
 
 static void

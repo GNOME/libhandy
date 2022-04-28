@@ -98,7 +98,7 @@ tab_new (GSimpleAction *action,
          gpointer       user_data)
 {
   HdyTabViewDemoWindow *self = HDY_TAB_VIEW_DEMO_WINDOW (user_data);
-  g_autofree gchar *title = NULL;
+  gchar *title;
   HdyTabPage *page;
   GtkWidget *content;
   GIcon *icon;
@@ -115,6 +115,8 @@ tab_new (GSimpleAction *action,
   gtk_widget_grab_focus (content);
 
   next_page++;
+
+  g_free (title);
 }
 
 static HdyTabPage *
@@ -248,13 +250,16 @@ tab_change_indicator (GSimpleAction *action,
 {
   HdyTabViewDemoWindow *self = HDY_TAB_VIEW_DEMO_WINDOW (user_data);
   gboolean indicator = g_variant_get_boolean (parameter);
-  g_autoptr (GIcon) icon = NULL;
+  GIcon *icon = NULL;
 
   if (indicator)
     icon = get_indicator_icon (get_current_page (self));
 
   hdy_tab_page_set_indicator_icon (get_current_page (self), icon);
   g_simple_action_set_state (action, g_variant_new_boolean (indicator));
+
+  if (icon != NULL)
+    g_object_unref (icon);
 }
 
 static void
@@ -266,9 +271,11 @@ tab_change_icon (GSimpleAction *action,
   gboolean enable_icon = g_variant_get_boolean (parameter);
 
   if (enable_icon) {
-    g_autoptr (GIcon) icon = get_random_icon ();
+    GIcon *icon = get_random_icon ();
 
     hdy_tab_page_set_icon (get_current_page (self), icon);
+
+    g_object_unref (icon);
   } else {
     hdy_tab_page_set_icon (get_current_page (self), NULL);
   }
@@ -282,9 +289,11 @@ tab_refresh_icon (GSimpleAction *action,
                   gpointer       user_data)
 {
   HdyTabViewDemoWindow *self = HDY_TAB_VIEW_DEMO_WINDOW (user_data);
-  g_autoptr (GIcon) icon = get_random_icon ();
+  GIcon *icon = get_random_icon ();
 
   hdy_tab_page_set_icon (get_current_page (self), icon);
+
+  g_object_unref (icon);
 }
 
 static void
@@ -429,7 +438,7 @@ static void
 indicator_activated_cb (HdyTabViewDemoWindow *self,
                         HdyTabPage           *page)
 {
-  g_autoptr (GIcon) icon = NULL;
+  GIcon *icon;
   gboolean muted;
 
   muted = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (page),
@@ -442,6 +451,8 @@ indicator_activated_cb (HdyTabViewDemoWindow *self,
   icon = get_indicator_icon (page);
 
   hdy_tab_page_set_indicator_icon (page, icon);
+
+  g_object_unref (icon);
 }
 
 static void
@@ -452,7 +463,7 @@ extra_drag_data_received_cb (HdyTabViewDemoWindow *self,
                              guint                 info,
                              guint                 time)
 {
-  g_autofree gchar *text = NULL;
+  gchar *text;
 
   if (gtk_selection_data_get_length (selection_data) < 0)
     return;
@@ -460,6 +471,8 @@ extra_drag_data_received_cb (HdyTabViewDemoWindow *self,
   text = (gchar *) gtk_selection_data_get_text (selection_data);
 
   hdy_tab_page_set_title (page, text);
+
+  g_free (text);
 }
 
 static void
