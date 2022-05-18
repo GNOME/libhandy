@@ -32,7 +32,16 @@ struct _HdySettings
 
   gboolean has_high_contrast;
   gboolean has_color_scheme;
-  gboolean color_scheme_use_fdo_setting;
+
+  enum {
+    COLOR_SCHEME_STATE_FDO,
+    COLOR_SCHEME_STATE_GNOME,
+    COLOR_SCHEME_STATE_NONE
+  } color_scheme_portal_state;
+  enum {
+    HIGH_CONTRAST_STATE_GNOME,
+    HIGH_CONTRAST_STATE_NONE
+  } high_contrast_portal_state;
 };
 
 G_DEFINE_TYPE (HdySettings, hdy_settings, G_TYPE_OBJECT);
@@ -70,6 +79,39 @@ set_high_contrast (HdySettings *self,
   self->high_contrast = high_contrast;
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_HIGH_CONTRAST]);
+}
+
+static void
+init_debug (HdySettings *self)
+{
+  const gchar *env = g_getenv ("HDY_DEBUG_HIGH_CONTRAST");
+  if (env && *env) {
+    if (!g_strcmp0 (env, "1")) {
+      self->has_high_contrast = TRUE;
+      self->high_contrast = TRUE;
+    } else if (!g_strcmp0 (env, "0")) {
+      self->has_high_contrast = TRUE;
+      self->high_contrast = FALSE;
+    } else {
+      g_warning ("Invalid value for HDY_DEBUG_HIGH_CONTRAST: %s (Expected 0 or 1)", env);
+    }
+  }
+
+  env = g_getenv ("HDY_DEBUG_COLOR_SCHEME");
+  if (env) {
+    if (!g_strcmp0 (env, "default")) {
+      self->has_color_scheme = TRUE;
+      self->color_scheme = HDY_SYSTEM_COLOR_SCHEME_DEFAULT;
+    } else if (!g_strcmp0 (env, "prefer-dark")) {
+      self->has_color_scheme = TRUE;
+      self->color_scheme = HDY_SYSTEM_COLOR_SCHEME_PREFER_DARK;
+    } else if (!g_strcmp0 (env, "prefer-light")) {
+      self->has_color_scheme = TRUE;
+      self->color_scheme = HDY_SYSTEM_COLOR_SCHEME_PREFER_LIGHT;
+    } else {
+      g_warning ("Invalid color scheme %s (Expected one of: default, prefer-dark, prefer-light)", env);
+    }
+  }
 }
 
 /* Settings portal */
@@ -199,7 +241,7 @@ settings_portal_changed_cb (GDBusProxy  *proxy,
 
   if (!g_strcmp0 (namespace, "org.freedesktop.appearance") &&
       !g_strcmp0 (name, "color-scheme") &&
-      self->color_scheme_use_fdo_setting) {
+      self->color_scheme_portal_state == COLOR_SCHEME_STATE_FDO) {
     set_color_scheme (self, get_fdo_color_scheme (value));
 
     return;
@@ -207,14 +249,15 @@ settings_portal_changed_cb (GDBusProxy  *proxy,
 
   if (!g_strcmp0 (namespace, "org.gnome.desktop.interface") &&
       !g_strcmp0 (name, "color-scheme") &&
-      !self->color_scheme_use_fdo_setting) {
+      self->color_scheme_portal_state == COLOR_SCHEME_STATE_GNOME) {
     set_color_scheme (self, get_gnome_color_scheme (value));
 
     return;
   }
 
   if (!g_strcmp0 (namespace, "org.gnome.desktop.a11y.interface") &&
-      !g_strcmp0 (name, "high-contrast")) {
+      !g_strcmp0 (name, "high-contrast") &&
+      self->high_contrast_portal_state == HIGH_CONTRAST_STATE_GNOME) {
     set_high_contrast (self, g_variant_get_boolean (value));
 
     return;
@@ -245,10 +288,11 @@ init_portal (HdySettings *self)
     return;
   }
 
-  if (read_portal_setting (self, "org.freedesktop.appearance",
+  if (!self->has_color_scheme &&
+      read_portal_setting (self, "org.freedesktop.appearance",
                            "color-scheme", "u", &color_scheme_variant)) {
     self->has_color_scheme = TRUE;
-    self->color_scheme_use_fdo_setting = TRUE;
+    self->color_scheme_portal_state = COLOR_SCHEME_STATE_FDO;
     self->color_scheme = get_fdo_color_scheme (color_scheme_variant);
   }
 
@@ -256,12 +300,15 @@ init_portal (HdySettings *self)
       read_portal_setting (self, "org.gnome.desktop.interface",
                            "color-scheme", "s", &color_scheme_variant)) {
     self->has_color_scheme = TRUE;
+    self->color_scheme_portal_state = COLOR_SCHEME_STATE_GNOME;
     self->color_scheme = get_gnome_color_scheme (color_scheme_variant);
   }
 
-  if (read_portal_setting (self, "org.gnome.desktop.a11y.interface",
+  if (!self->has_high_contrast &&
+      read_portal_setting (self, "org.gnome.desktop.a11y.interface",
                            "high-contrast", "b", &high_contrast_variant)) {
     self->has_high_contrast = TRUE;
+    self->high_contrast_portal_state = HIGH_CONTRAST_STATE_GNOME;
     self->high_contrast = g_variant_get_boolean (high_contrast_variant);
   }
 
@@ -388,7 +435,10 @@ hdy_settings_constructed (GObject *object)
 
   G_OBJECT_CLASS (hdy_settings_parent_class)->constructed (object);
 
-  init_portal (self);
+  init_debug (self);
+
+  if (!self->has_color_scheme || !self->has_high_contrast)
+    init_portal (self);
 
   if (!self->has_color_scheme || !self->has_high_contrast)
     init_gsettings (self);
@@ -461,6 +511,8 @@ hdy_settings_class_init (HdySettingsClass *klass)
 static void
 hdy_settings_init (HdySettings *self)
 {
+  self->high_contrast_portal_state = HIGH_CONTRAST_STATE_NONE;
+  self->color_scheme_portal_state = COLOR_SCHEME_STATE_NONE;
 }
 
 HdySettings *
