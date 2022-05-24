@@ -388,8 +388,6 @@ hdy_settings_constructed (GObject *object)
 
   G_OBJECT_CLASS (hdy_settings_parent_class)->constructed (object);
 
-  g_debug ("Trying to initialize portal");
-
   init_portal (self);
 
   if (!self->has_color_scheme || !self->has_high_contrast)
