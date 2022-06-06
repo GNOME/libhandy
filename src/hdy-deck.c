@@ -33,12 +33,6 @@
  * by using [class@Window] or [class@ApplicationWindow] as they will crop
  * anything drawn beyond the rounded corners.
  *
- * The child property `navigatable` can be set on `HdyDeck` children to
- * determine whether they can be navigated to when folded. If `FALSE`, the child
- * will be ignored by [method@Deck.get_adjacent_child], [method@Deck.navigate],
- * and swipe gestures. This can be used used to prevent switching to widgets
- * like separators.
- *
  * ## CSS nodes
  *
  * `HdyDeck` has a single CSS node with name `deck`.
