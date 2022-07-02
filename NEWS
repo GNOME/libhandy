@@ -1,4 +1,14 @@
 =============
+Version 1.6.3
+=============
+
+- Remove a non-existent property mention from HdyDeck docs
+- Remove a leftover debug message from HdySettings
+- Translation updates:
+  - Chinese (China)
+  - Turkish
+
+=============
 Version 1.6.2
 =============
 
