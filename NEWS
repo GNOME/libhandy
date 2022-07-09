@@ -1,4 +1,25 @@
 =============
+Version 1.7.0
+=============
+
+- HdyDeck
+  - Remove a non-existent property mention
+- HdyStyleManager
+  - Correctly reset the theme if we're not overriding it.
+    Fixes switching away from HighContrast.
+  - Fix a typo in docs
+  - Remove a leftover debug message
+  - Add environment variables to control styles from Builder
+- Fix license in docs
+- Fix a Meson error when using as a subproject
+- Translation updates:
+  - Chinese (China)
+  - Dutch
+  - Indonesian
+  - Persian
+  - Turkish
+
+=============
 Version 1.6.0
 =============
 
