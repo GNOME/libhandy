@@ -202,7 +202,7 @@ hdy_preferences_group_destroy (GtkWidget *widget)
    * Since we overload forall(), the inherited destroy() won't work as normal.
    * Remove internal widgets ourselves.
    */
-  g_clear_pointer ((GtkWidget **) &priv->box, gtk_widget_destroy);
+  g_clear_pointer (&priv->box, gtk_widget_destroy);
   priv->description = NULL;
   priv->listbox = NULL;
   priv->listbox_box = NULL;
