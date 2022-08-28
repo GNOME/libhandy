@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: libhandy main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
 "POT-Creation-Date: 2022-08-05 15:28+0000\n"
-"PO-Revision-Date: 2022-08-28 00:45+0200\n"
+"PO-Revision-Date: 2022-08-28 17:57+0200\n"
 "Last-Translator: \n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -158,147 +158,135 @@ msgstr "Trajanje animacije"
 
 #: src/hdy-carousel.c:669
 msgid "Default animation duration"
-msgstr ""
+msgstr "Zadano trajanje animacije"
 
 #: src/hdy-carousel.c:684 src/hdy-swipe-tracker.c:1113
 msgid "Allow mouse drag"
-msgstr ""
+msgstr "Dopusti povlačenje mišem"
 
 #: src/hdy-carousel.c:685 src/hdy-swipe-tracker.c:1114
 msgid "Whether to allow dragging with mouse pointer"
-msgstr ""
+msgstr "Treba li dopustiti povlačenje pokazivačem miša"
 
 #: src/hdy-carousel.c:700
 msgid "Allow scroll wheel"
-msgstr ""
+msgstr "Dopusti pomicanje kotačićem miša"
 
 #: src/hdy-carousel.c:701
 msgid "Whether the widget will respond to scroll wheel events"
-msgstr ""
+msgstr "Treba li widget reagirati na pomicanje kotačića miša"
 
 #: src/hdy-carousel.c:716 src/hdy-swipe-tracker.c:1130
 msgid "Allow long swipes"
-msgstr ""
+msgstr "Dopusti duga povlačenja"
 
 #: src/hdy-carousel.c:717
 msgid "Whether to allow swiping for more than one page at a time"
-msgstr ""
+msgstr "Treba li dopustiti povlačenje više od jedne stranice odjednom"
 
 #: src/hdy-carousel-indicator-dots.c:410 src/hdy-carousel-indicator-dots.c:411
 #: src/hdy-carousel-indicator-lines.c:408
 #: src/hdy-carousel-indicator-lines.c:409
 msgid "Carousel"
-msgstr ""
+msgstr "Vrtuljak"
 
 #: src/hdy-clamp.c:436
 msgid "Maximum size"
-msgstr ""
+msgstr "Najveća veličina"
 
 #: src/hdy-clamp.c:437
 msgid "The maximum size allocated to the child"
-msgstr ""
+msgstr "Najveća veličina dodijeljena sadržanom"
 
 #: src/hdy-clamp.c:463
 msgid "Tightening threshold"
-msgstr ""
+msgstr "Prag stezanja"
 
 #: src/hdy-clamp.c:464
 msgid "The size from which the clamp will tighten its grip on the child"
-msgstr ""
+msgstr "Veličina do koje će stezaljka stegnuti svoj stisak na sadržanom"
 
 #: src/hdy-combo-row.c:420
 msgid "Selected index"
-msgstr ""
+msgstr "Odabrano kazalo"
 
 #: src/hdy-combo-row.c:421
 msgid "The index of the selected item"
-msgstr ""
+msgstr "Kazalo odabrane stavke"
 
 #: src/hdy-combo-row.c:439
 msgid "Use subtitle"
-msgstr ""
+msgstr "Koristi podnaslov"
 
 #: src/hdy-combo-row.c:440
 msgid "Set the current value as the subtitle"
-msgstr ""
+msgstr "Postavi trenutnu vrijednost kao podnaslov"
 
 #: src/hdy-deck.c:947
-#, fuzzy
 msgid "Horizontally homogeneous"
 msgstr "Vodoravno istovrsno"
 
 #: src/hdy-deck.c:948
-#, fuzzy
 msgid "Horizontally homogeneous sizing"
 msgstr "Vodoravno istovrsno dimenzioniranje"
 
 #: src/hdy-deck.c:961
-#, fuzzy
 msgid "Vertically homogeneous"
 msgstr "Okomito istovrsno"
 
 #: src/hdy-deck.c:962
-#, fuzzy
 msgid "Vertically homogeneous sizing"
 msgstr "Okomito istovrsno dimenzioniranje"
 
 #: src/hdy-deck.c:980 src/hdy-leaflet.c:1134 src/hdy-squeezer.c:1136
 #: src/hdy-stackable-box.c:3091
-#, fuzzy
 msgid "Visible child"
 msgstr "Podređana vidljivost"
 
 #: src/hdy-deck.c:981
 msgid "The widget currently visible"
-msgstr ""
+msgstr "Trenutno vidljivi widget"
 
 #: src/hdy-deck.c:994 src/hdy-leaflet.c:1150 src/hdy-stackable-box.c:3098
-#, fuzzy
 msgid "Name of visible child"
 msgstr "Naziv podređane vidljivosti"
 
 #: src/hdy-deck.c:995
 msgid "The name of the widget currently visible"
-msgstr ""
+msgstr "Naziv trenutno vidljivog widgeta"
 
 #: src/hdy-deck.c:1012 src/hdy-leaflet.c:1168 src/hdy-squeezer.c:1170
 #: src/hdy-stackable-box.c:3117
-#, fuzzy
 msgid "Transition type"
 msgstr "Vrsta prijelaza"
 
 #: src/hdy-deck.c:1013
 msgid "The type of animation used to transition between children"
-msgstr ""
+msgstr "Vrsta animacije korištene za prijelaz između sadržanog"
 
 #: src/hdy-deck.c:1026 src/hdy-header-bar.c:2257 src/hdy-squeezer.c:1150
-#, fuzzy
 msgid "Transition duration"
 msgstr "Trajanje prijelaza"
 
 #: src/hdy-deck.c:1027
 msgid "The transition animation duration, in milliseconds"
-msgstr ""
+msgstr "Trajanje prijelaza animacije, u milisekundama"
 
 #: src/hdy-deck.c:1040 src/hdy-header-bar.c:2271 src/hdy-squeezer.c:1185
-#, fuzzy
 msgid "Transition running"
 msgstr "Pokenuti prijelaz"
 
 #: src/hdy-deck.c:1041 src/hdy-header-bar.c:2272 src/hdy-squeezer.c:1186
-#, fuzzy
 msgid "Whether or not the transition is currently running"
 msgstr "Treba li trenutno pokrenuti prijelaz"
 
 #: src/hdy-deck.c:1055 src/hdy-header-bar.c:2290 src/hdy-leaflet.c:1224
 #: src/hdy-squeezer.c:1204 src/hdy-stackable-box.c:3145
-#, fuzzy
 msgid "Interpolate size"
 msgstr "Promjenjiva veličina"
 
 #: src/hdy-deck.c:1056 src/hdy-header-bar.c:2291 src/hdy-leaflet.c:1225
 #: src/hdy-squeezer.c:1205 src/hdy-stackable-box.c:3146
-#, fuzzy
 msgid ""
 "Whether or not the size should smoothly change when changing between "
 "differently sized children"
@@ -309,264 +297,248 @@ msgstr ""
 #: src/hdy-deck.c:1069 src/hdy-leaflet.c:1238 src/hdy-preferences-window.c:561
 #: src/hdy-stackable-box.c:3160
 msgid "Can swipe back"
-msgstr ""
+msgstr "Može povući unatrag"
 
 #: src/hdy-deck.c:1070 src/hdy-leaflet.c:1239 src/hdy-stackable-box.c:3161
 msgid ""
 "Whether or not swipe gesture can be used to switch to the previous child"
 msgstr ""
+"Treba li se gesta povlačenja koristiti za prebacivanje na prijašnji sadržaj"
 
 #: src/hdy-deck.c:1083 src/hdy-leaflet.c:1252 src/hdy-stackable-box.c:3175
 msgid "Can swipe forward"
-msgstr ""
+msgstr "Može povući unaprijed"
 
 #: src/hdy-deck.c:1084 src/hdy-leaflet.c:1253 src/hdy-stackable-box.c:3176
 msgid "Whether or not swipe gesture can be used to switch to the next child"
 msgstr ""
+"Treba li se gesta povlačenja koristiti za prebacivanje na sljedeći sadržaj"
 
 #: src/hdy-deck.c:1092 src/hdy-leaflet.c:1261
 msgid "Name"
-msgstr ""
+msgstr "Naziv "
 
 #: src/hdy-deck.c:1093 src/hdy-leaflet.c:1262
-#, fuzzy
 msgid "The name of the child page"
-msgstr "Naziv podređene stranice"
+msgstr "Naziv stranice sadržanog"
 
 #: src/hdy-expander-row.c:291
 msgid "The subtitle for this row"
-msgstr ""
+msgstr "Podnaslov za ovaj redak"
 
 #: src/hdy-expander-row.c:333
-#, fuzzy
 msgid "Expanded"
 msgstr "Prošireno"
 
 #: src/hdy-expander-row.c:334
 msgid "Whether the row is expanded"
-msgstr ""
+msgstr "Treba li redak proširiti"
 
 #: src/hdy-expander-row.c:347
 msgid "Enable expansion"
-msgstr ""
+msgstr "Omogući proširenje"
 
 #: src/hdy-expander-row.c:348
 msgid "Whether the expansion is enabled"
-msgstr ""
+msgstr "Treba li omogućiti proširenje"
 
 #: src/hdy-expander-row.c:361
 msgid "Show enable switch"
-msgstr ""
+msgstr "Prikaži preklopnik omogućavanja"
 
 #: src/hdy-expander-row.c:362
 msgid "Whether the switch enabling the expansion is visible"
-msgstr ""
+msgstr "Omogućuje li preklopnik vidljivost proširenja"
 
 #: src/hdy-fading-label.c:255 src/hdy-fading-label.c:256
-#, fuzzy
 msgid "Label"
-msgstr "Naziv"
+msgstr "NAslov"
 
 #: src/hdy-fading-label.c:262 src/hdy-fading-label.c:263
-#, fuzzy
 msgid "Align"
 msgstr "Poravnaj"
 
 #: src/hdy-flap.c:1534
-#, fuzzy
 msgid "Content"
 msgstr "Sadržaj"
 
 #: src/hdy-flap.c:1535
 msgid "The content Widget"
-msgstr ""
+msgstr "Widget sadržaja"
 
 #: src/hdy-flap.c:1550
 msgid "Flap"
-msgstr ""
+msgstr "Preklop"
 
 #: src/hdy-flap.c:1551
 msgid "The flap widget"
-msgstr ""
+msgstr "Widget s preklopom"
 
 #: src/hdy-flap.c:1568
-#, fuzzy
 msgid "Separator"
 msgstr "Razdjelnik"
 
 #: src/hdy-flap.c:1569
 msgid "The separator widget"
-msgstr ""
+msgstr "Widget za razdjeljivanje"
 
 #: src/hdy-flap.c:1585
 msgid "Flap Position"
-msgstr ""
+msgstr "Položaj preklopa"
 
 #: src/hdy-flap.c:1586
 msgid "The flap position"
-msgstr ""
+msgstr "Položaj preklopa"
 
 #: src/hdy-flap.c:1600
 msgid "Reveal Flap"
-msgstr ""
+msgstr "Preklop za otkrivanje"
 
 #: src/hdy-flap.c:1601
 msgid "Whether the flap is revealed"
-msgstr ""
+msgstr "Treba li preklop otkiriti"
 
 #: src/hdy-flap.c:1614
 msgid "Reveal Duration"
-msgstr ""
+msgstr "Trajanje otkrivanja"
 
 #: src/hdy-flap.c:1615
 msgid "The reveal transition animation duration, in milliseconds"
-msgstr ""
+msgstr "Trajanje otkrivanja prijelaza animacije, u milisekundama"
 
 #: src/hdy-flap.c:1632
 msgid "Reveal Progress"
-msgstr ""
+msgstr "Napredak otkrivanja"
 
 #: src/hdy-flap.c:1633
 msgid "The current reveal transition progress"
-msgstr ""
+msgstr "Trenutni napredak otkrivanja prijelaza"
 
 #: src/hdy-flap.c:1648
 msgid "Fold Policy"
-msgstr ""
+msgstr "Pravilo savijanja"
 
 #: src/hdy-flap.c:1649
 msgid "The current fold policy"
-msgstr ""
+msgstr "Trenutno pravilo savijanja"
 
 #: src/hdy-flap.c:1663
 msgid "Fold Duration"
-msgstr ""
+msgstr "Trajanje savijanja"
 
 #: src/hdy-flap.c:1664
 msgid "The fold transition animation duration, in milliseconds"
-msgstr ""
+msgstr "Trajanje savijanja prijelaza animacije, u milisekundama"
 
 #: src/hdy-flap.c:1680 src/hdy-leaflet.c:1059 src/hdy-stackable-box.c:3036
 msgid "Folded"
-msgstr ""
+msgstr "Savijeno"
 
 #: src/hdy-flap.c:1681
 msgid "Whether the flap is currently folded"
-msgstr ""
+msgstr "Treba li preklop trenutno saviti"
 
 #: src/hdy-flap.c:1698
-#, fuzzy
 msgid "Locked"
 msgstr "Zaključano"
 
 #: src/hdy-flap.c:1699
 msgid "Whether the flap is locked"
-msgstr ""
+msgstr "Treba li preklop zaključati"
 
 #: src/hdy-flap.c:1716
 msgid "Transition Type"
-msgstr ""
+msgstr "Vrsta prijelaza"
 
 #: src/hdy-flap.c:1717
 msgid "The type of animation used for reveal and fold transitions"
-msgstr ""
+msgstr "Vrsta korištene animacije za prijelaz otkrivanja i preklopa"
 
 #: src/hdy-flap.c:1735
-#, fuzzy
 msgid "Modal"
-msgstr "Modalni"
+msgstr "Prilagodljivi"
 
 #: src/hdy-flap.c:1736
 msgid "Whether the flap is modal"
-msgstr ""
+msgstr "Treba li preklop biti promjenjiv"
 
 #: src/hdy-flap.c:1752
 msgid "Swipe to Open"
-msgstr ""
+msgstr "Povuci za otvaranje"
 
 #: src/hdy-flap.c:1753
 msgid "Whether the flap can be opened with a swipe gesture"
-msgstr ""
+msgstr "Treba li se preklop otvoriti gestom povlačenja"
 
 #: src/hdy-flap.c:1769
 msgid "Swipe to Close"
-msgstr ""
+msgstr "Povuci za zatvaranje"
 
 #: src/hdy-flap.c:1770
 msgid "Whether the flap can be closed with a swipe gesture"
-msgstr ""
+msgstr "Treba li se preklop zatvoriti gestom povlačenja"
 
 #: src/hdy-header-bar.c:490
-#, fuzzy
 msgid "Application menu"
 msgstr "Izbornik aplikacije"
 
 #: src/hdy-header-bar.c:512 src/hdy-window-handle-controller.c:273
-#, fuzzy
 msgid "Minimize"
 msgstr "Smanji"
 
 #: src/hdy-header-bar.c:534 src/hdy-window-handle-controller.c:239
-#, fuzzy
 msgid "Restore"
 msgstr "Prikaži u prozoru"
 
 #: src/hdy-header-bar.c:534 src/hdy-window-handle-controller.c:282
-#, fuzzy
 msgid "Maximize"
 msgstr "Uvećaj"
 
 #: src/hdy-header-bar.c:552 src/hdy-window-handle-controller.c:309
-#, fuzzy
 msgid "Close"
 msgstr "Zatvori"
 
 #: src/hdy-header-bar.c:568
-#, fuzzy
 msgid "Back"
 msgstr "Natrag"
 
 #: src/hdy-header-bar.c:2088
 msgid "Pack type"
-msgstr ""
+msgstr "Vrsta paketa"
 
 #: src/hdy-header-bar.c:2089
 msgid ""
 "A GtkPackType indicating whether the child is packed with reference to the "
 "start or end of the parent"
 msgstr ""
+"Gtk vrsta paketa koja pokazuje je li sadržano pakirano od početka ili kraja "
+"područja nadređenog"
 
 #: src/hdy-header-bar.c:2096
-#, fuzzy
 msgid "The index of the child in the parent"
-msgstr "Sadržaj sadržanog elementa u nadređeneom elementu"
+msgstr "Sadržaj sadržanog u nadređenom"
 
 #: src/hdy-header-bar.c:2109 src/hdy-preferences-group.c:294
 #: src/hdy-preferences-group.c:295 src/hdy-preferences-page.c:187
 #: src/hdy-preferences-page.c:188 src/hdy-preferences-row.c:115
 #: src/hdy-status-page.c:235 src/hdy-tab-view.c:441
 #: src/hdy-view-switcher-title.c:263
-#, fuzzy
 msgid "Title"
-msgstr "Zvanje"
+msgstr "Naslov"
 
 #: src/hdy-header-bar.c:2110 src/hdy-view-switcher-title.c:264
-#, fuzzy
 msgid "The title to display"
 msgstr "Naslov za prikaz"
 
 #: src/hdy-header-bar.c:2124 src/hdy-view-switcher-title.c:280
-#, fuzzy
 msgid "The subtitle to display"
 msgstr "Podnaslov za prikaz"
 
 #: src/hdy-header-bar.c:2137
-#, fuzzy
 msgid "Custom Title"
 msgstr "Prilagođeni naslov"
 
 #: src/hdy-header-bar.c:2138
-#, fuzzy
 msgid "Custom title widget to display"
 msgstr "Prilagođeni naslov widgeta za prikaz"
 
@@ -577,80 +549,72 @@ msgstr "Količina razmaka među sadržanim elementima"
 
 #: src/hdy-header-bar.c:2171
 msgid "Show decorations"
-msgstr ""
+msgstr "Prikaži ukrase"
 
 #: src/hdy-header-bar.c:2172
 msgid "Whether to show window decorations"
-msgstr ""
+msgstr "Treba li prikazati ukrase prozora"
 
 #: src/hdy-header-bar.c:2201
-#, fuzzy
 msgid "Decoration Layout"
 msgstr "Raspored ukrasa"
 
 #: src/hdy-header-bar.c:2202
-#, fuzzy
 msgid "The layout for window decorations"
 msgstr "Raspored ukrasa prozora"
 
 #: src/hdy-header-bar.c:2215
-#, fuzzy
 msgid "Decoration Layout Set"
 msgstr "Postavi raspored ukrasa"
 
 #: src/hdy-header-bar.c:2216
-#, fuzzy
 msgid "Whether the decoration-layout property has been set"
 msgstr "Treba li ispravno postaviti raspored ukrasa"
 
 #: src/hdy-header-bar.c:2229
-#, fuzzy
 msgid "Has Subtitle"
-msgstr "Ima podnaslov"
+msgstr "Sadrži podnaslov"
 
 #: src/hdy-header-bar.c:2230
-#, fuzzy
 msgid "Whether to reserve space for a subtitle"
 msgstr "Treba li imati rezervirani prostor za podnaslov"
 
 #: src/hdy-header-bar.c:2243
 msgid "Centering policy"
-msgstr ""
+msgstr "Pravilo središnjeg poravnanja"
 
 #: src/hdy-header-bar.c:2244
 msgid "The policy to horizontally align the center widget"
-msgstr ""
+msgstr "Pravilo vodoravnog poravnavanja središnjeg widgeta"
 
 #: src/hdy-header-bar.c:2258 src/hdy-squeezer.c:1151
-#, fuzzy
 msgid "The animation duration, in milliseconds"
 msgstr "Trajanje animacije, u milisekundama"
 
 #: src/hdy-header-group.c:852
 msgid "Decorate all"
-msgstr ""
+msgstr "Ukrasi sve"
 
 #: src/hdy-header-group.c:853
 msgid ""
 "Whether the elements of the group should all receive the full decoration"
-msgstr ""
+msgstr "Treba li elemente grupe potpuno ukrasiti"
 
 #: src/hdy-keypad-button.c:225
 msgid "Digit"
-msgstr ""
+msgstr "Broj"
 
 #: src/hdy-keypad-button.c:226
 msgid "The keypad digit of the button"
-msgstr ""
+msgstr "Broj tipke na tipkovnici"
 
 #: src/hdy-keypad-button.c:232
-#, fuzzy
 msgid "Symbols"
 msgstr "Simboli"
 
 #: src/hdy-keypad-button.c:233
 msgid "The keypad symbols of the button. The first symbol is used as the digit"
-msgstr ""
+msgstr "Simbol tipke na tipkovnici. Prvi za prvi simbol se koristi brojka"
 
 #: src/hdy-keypad-button.c:239
 msgid "Show symbols"
@@ -857,7 +821,7 @@ msgstr "Nema pronađenih rezultata"
 #: src/hdy-preferences-window.ui:168
 #, fuzzy
 msgid "Try a different search."
-msgstr "Pokušaj drugačiju pretragu."
+msgstr "Pokušajte drugačiju pretragu."
 
 #: src/hdy-search-bar.c:451
 #, fuzzy
@@ -929,7 +893,7 @@ msgstr "Okomito poravnanje, od 0 (vrh) do 1 (dno)"
 #: src/hdy-squeezer.c:1259 src/hdy-swipe-tracker.c:1080
 #, fuzzy
 msgid "Enabled"
-msgstr "Omogućeno"
+msgstr "Omogućen"
 
 #: src/hdy-squeezer.c:1260
 msgid ""
@@ -1390,7 +1354,7 @@ msgstr "Pomakni"
 #: src/hdy-window-handle-controller.c:265
 #, fuzzy
 msgid "Resize"
-msgstr "Promjena veličine"
+msgstr "Promijeni veličinu"
 
 #: src/hdy-window-handle-controller.c:296
 #, fuzzy
