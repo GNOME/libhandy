@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: libhandy main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
 "POT-Creation-Date: 2022-08-05 15:28+0000\n"
-"PO-Revision-Date: 2022-08-28 21:15+0200\n"
+"PO-Revision-Date: 2022-08-28 21:44+0200\n"
 "Last-Translator: \n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -878,197 +878,190 @@ msgid ""
 "Whether the child can be picked or should be ignored when looking for the "
 "child fitting the available size best"
 msgstr ""
+"Treba li sadržani element odabrati ili zanemariti kada se traži pristajanje "
+"sadržanog elementa najboljoj veličini"
 
 #: src/hdy-stackable-box.c:3049
 msgid "Horizontally homogeneous sizing when the widget is folded"
-msgstr ""
+msgstr "Vodoravno istovrsno dimenzioniranje kada je widget presavijen"
 
 #: src/hdy-stackable-box.c:3061
 msgid "Vertically homogeneous sizing when the widget is folded"
-msgstr ""
+msgstr "Okomito istovrsno dimenzioniranje kada je widget presavijen"
 
 #: src/hdy-stackable-box.c:3073
 msgid "Horizontally homogeneous sizing when the widget is unfolded"
-msgstr ""
+msgstr "Vodoravno istovrsno dimenzioniranje kada je widget rasklopljen"
 
 #: src/hdy-stackable-box.c:3085
 msgid "Vertically homogeneous sizing when the widget is unfolded"
-msgstr ""
+msgstr "Okomito istovrsno dimenzioniranje kada je widget rasklopljen"
 
 #: src/hdy-stackable-box.c:3092
 msgid "The widget currently visible when the widget is folded"
-msgstr ""
+msgstr "Widget je trenutno vidljiv kada je widget presavijen"
 
 #: src/hdy-stackable-box.c:3182 src/hdy-stackable-box.c:3183
-#, fuzzy
 msgid "Orientation"
 msgstr "Orijentacija"
 
 #: src/hdy-status-page.c:222
 msgid "The name of the icon to be used"
-msgstr ""
+msgstr "Naziv ikone koja se koristi"
 
 #: src/hdy-status-page.c:236
 msgid "The title to be displayed below the icon"
-msgstr ""
+msgstr "Prikazani naslov ispod ikone"
 
 #: src/hdy-status-page.c:250
 msgid "The description to be displayed below the title"
-msgstr ""
+msgstr "Prikazani opis ispod naslova"
 
 #: src/hdy-style-manager.c:583
-#, fuzzy
 msgid "Color Scheme"
 msgstr "Shema boja"
 
 #: src/hdy-style-manager.c:584
 msgid "The current color scheme"
-msgstr ""
+msgstr "Trenutna shema boja"
 
 #: src/hdy-style-manager.c:606
 msgid "System supports color schemes"
-msgstr ""
+msgstr "Sustav podržava sheme boja"
 
 #: src/hdy-style-manager.c:607
 msgid "Whether the system supports color schemes"
-msgstr ""
+msgstr "Treba li sustav podržavati sheme boja"
 
 #: src/hdy-style-manager.c:623
-#, fuzzy
 msgid "Dark"
-msgstr "Tamni"
+msgstr "Tamna"
 
 #: src/hdy-style-manager.c:624
 msgid "Whether the application is using dark appearance"
-msgstr ""
+msgstr "Treba li aplikacija koristiti tamni izgled"
 
 #: src/hdy-style-manager.c:639
-#, fuzzy
 msgid "High Contrast"
 msgstr "Visok kontrast"
 
 #: src/hdy-style-manager.c:640
 msgid "Whether the application is using high contrast appearance"
-msgstr ""
+msgstr "Treba li aplikacija koristiti izgled visokog kontrasta"
 
 #: src/hdy-swipe-tracker.c:1063
 msgid "Swipeable"
-msgstr ""
+msgstr "Povlačenje"
 
 #: src/hdy-swipe-tracker.c:1064
 msgid "The swipeable the swipe tracker is attached to"
-msgstr ""
+msgstr "Povlačenje na koje je pratitelj povlačenja priključen"
 
 #: src/hdy-swipe-tracker.c:1081
 msgid "Whether the swipe tracker processes events"
-msgstr ""
+msgstr "Treba li pratitelj povlačenja obrađivati događaje"
 
 #: src/hdy-swipe-tracker.c:1097
 msgid "Reversed"
-msgstr ""
+msgstr "Obrnuto"
 
 #: src/hdy-swipe-tracker.c:1098
 msgid "Whether swipe direction is reversed"
-msgstr ""
+msgstr "Treba li smjer povlačenja obrnuti"
 
 #: src/hdy-swipe-tracker.c:1131
 msgid "Whether to allow swiping for more than one snap point at a time"
-msgstr ""
+msgstr "Treba li dopustiti povlačenje više od jedne točke prianjanja odjednom"
 
 #: src/hdy-tab-bar.c:516 src/hdy-tab-box.c:3509 src/hdy-tab-box.c:3510
 #: src/hdy-tab.c:906 src/hdy-tab.c:907
-#, fuzzy
 msgid "View"
-msgstr "Pogled"
+msgstr "Prikaz"
 
 #: src/hdy-tab-bar.c:517
 msgid "The view the tab bar controls."
-msgstr ""
+msgstr "Prikaži upravljanja trake kartice."
 
 #: src/hdy-tab-bar.c:530
 msgid "Start action widget"
-msgstr ""
+msgstr "Widget za početak radnje"
 
 #: src/hdy-tab-bar.c:531
 msgid "The widget shown before the tabs"
-msgstr ""
+msgstr "Prikazni widget prije kartica"
 
 #: src/hdy-tab-bar.c:544
 msgid "End action widget"
-msgstr ""
+msgstr "Widget za završetak radnje"
 
 #: src/hdy-tab-bar.c:545
 msgid "The widget shown after the tabs"
-msgstr ""
+msgstr "Prikazni widget poslije kartica"
 
 #: src/hdy-tab-bar.c:564
-#, fuzzy
 msgid "Autohide"
 msgstr "Automatsko sakrivanje"
 
 #: src/hdy-tab-bar.c:565
 msgid "Whether the tabs automatically hide"
-msgstr ""
+msgstr "Treba li kartice automatski sakriti"
 
 #: src/hdy-tab-bar.c:580
 msgid "Tabs revealed"
-msgstr ""
+msgstr "Kartice su otkrivene"
 
 #: src/hdy-tab-bar.c:581
 msgid "Whether the tabs are currently revealed"
-msgstr ""
+msgstr "Treba li kartice trenutno otkriti"
 
 #: src/hdy-tab-bar.c:597
 msgid "Expand tabs"
-msgstr ""
+msgstr "Proširi kartice"
 
 #: src/hdy-tab-bar.c:598
 msgid "Whether tabs expand to full width"
-msgstr ""
+msgstr "Treba li kartice proširiti do pune širine"
 
 #: src/hdy-tab-bar.c:614 src/hdy-tab.c:948 src/hdy-tab.c:949
-#, fuzzy
 msgid "Inverted"
 msgstr "Preokrenuto"
 
 #: src/hdy-tab-bar.c:615
 msgid "Whether tabs use inverted layout"
-msgstr ""
+msgstr "Treba ju li kartice koristiti obrnuti raspored"
 
 #: src/hdy-tab-bar.c:637 src/hdy-tab-bar.c:638
 msgid "Extra drag destination targets"
-msgstr ""
+msgstr "Dodatni ciljevi odredišta povlačenja"
 
 #: src/hdy-tab-bar.c:654
 msgid "Is overflowing"
-msgstr ""
+msgstr "Popunjeno"
 
 #: src/hdy-tab-bar.c:655
 msgid "Whether the tab bar is overflowing"
-msgstr ""
+msgstr "Treba li traka kartice biti popunjena"
 
 #: src/hdy-tab-box.c:3495 src/hdy-tab-box.c:3496 src/hdy-tab.c:913
 #: src/hdy-tab.c:914 src/hdy-tab-view.c:424
-#, fuzzy
 msgid "Pinned"
 msgstr "Prikvačeno"
 
 #: src/hdy-tab-box.c:3502 src/hdy-tab-box.c:3503
 msgid "Tab Bar"
-msgstr ""
+msgstr "Traka kartica"
 
 #: src/hdy-tab-box.c:3516 src/hdy-tab-box.c:3517
-#, fuzzy
 msgid "Adjustment"
 msgstr "Prilagodba"
 
 #: src/hdy-tab-box.c:3523 src/hdy-tab-box.c:3524
 msgid "Needs Attention Left"
-msgstr ""
+msgstr "Potrebna je pozornost lijevo"
 
 #: src/hdy-tab-box.c:3530 src/hdy-tab-box.c:3531
 msgid "Needs Attention Right"
-msgstr ""
+msgstr "Potrebna je pozornost desno"
 
 #: src/hdy-tab-box.c:3537 src/hdy-tab-box.c:3538
 msgid "Resize Frozen"
