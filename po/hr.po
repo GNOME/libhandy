@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: libhandy main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
 "POT-Creation-Date: 2022-08-05 15:28+0000\n"
-"PO-Revision-Date: 2022-08-29 00:02+0200\n"
+"PO-Revision-Date: 2022-08-29 00:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -319,7 +319,7 @@ msgstr ""
 
 #: src/hdy-deck.c:1092 src/hdy-leaflet.c:1261
 msgid "Name"
-msgstr "Naziv "
+msgstr "Naziv"
 
 #: src/hdy-deck.c:1093 src/hdy-leaflet.c:1262
 msgid "The name of the child page"
@@ -774,7 +774,7 @@ msgstr "Koristi oznake"
 
 #: src/hdy-preferences-group.c:309
 msgid "Whether to use markup for the title and description"
-msgstr "Treba li koristiti oznake za naslov i opis."
+msgstr "Treba li koristiti oznake za naslov i opis"
 
 #: src/hdy-preferences-row.c:116
 msgid "The title of the preference"
