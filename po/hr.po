@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: libhandy main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
 "POT-Creation-Date: 2022-08-05 15:28+0000\n"
-"PO-Revision-Date: 2022-08-28 17:57+0200\n"
+"PO-Revision-Date: 2022-08-28 21:15+0200\n"
 "Last-Translator: \n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -352,7 +352,7 @@ msgstr "Omogućuje li preklopnik vidljivost proširenja"
 
 #: src/hdy-fading-label.c:255 src/hdy-fading-label.c:256
 msgid "Label"
-msgstr "NAslov"
+msgstr "Naslov"
 
 #: src/hdy-fading-label.c:262 src/hdy-fading-label.c:263
 msgid "Align"
@@ -618,280 +618,258 @@ msgstr "Simbol tipke na tipkovnici. Prvi za prvi simbol se koristi brojka"
 
 #: src/hdy-keypad-button.c:239
 msgid "Show symbols"
-msgstr ""
+msgstr "Prikaži simbole"
 
 #: src/hdy-keypad-button.c:240
 msgid "Whether the second line of symbols should be shown or not"
-msgstr ""
+msgstr "Treba li se drugi redak sa simbolima prikazati"
 
 #: src/hdy-keypad.c:258
-#, fuzzy
 msgid "Row spacing"
 msgstr "Razmak redaka"
 
 #: src/hdy-keypad.c:259
-#, fuzzy
 msgid "The amount of space between two consecutive rows"
 msgstr "Razmak između dva susjedna reda"
 
 #: src/hdy-keypad.c:272
-#, fuzzy
 msgid "Column spacing"
 msgstr "Razmak stupaca"
 
 #: src/hdy-keypad.c:273
-#, fuzzy
 msgid "The amount of space between two consecutive columns"
 msgstr "Razmak između dva susjedna stupca"
 
 #: src/hdy-keypad.c:287
 msgid "Letters visible"
-msgstr ""
+msgstr "Slova vidljiva"
 
 #: src/hdy-keypad.c:288
 msgid "Whether the letters below the digits should be visible"
-msgstr ""
+msgstr "Trebaju li slova ispod znamenki biti vidljiva"
 
 #: src/hdy-keypad.c:304
 msgid "Symbols visible"
-msgstr ""
+msgstr "Simboli vidljivi"
 
 #: src/hdy-keypad.c:305
 msgid "Whether the hash, plus, and asterisk symbols should be visible"
-msgstr ""
+msgstr "Trebaju li simboli ljestve, plus i zvjezdica biti vidljivi"
 
 #: src/hdy-keypad.c:320
-#, fuzzy
 msgid "Entry"
 msgstr "Unos"
 
 #: src/hdy-keypad.c:321
 msgid "The entry widget connected to the keypad"
-msgstr ""
+msgstr "Widget za unos povezan s tipkovnicom"
 
 #: src/hdy-keypad.c:334
 msgid "End action"
-msgstr ""
+msgstr "Završetak radnje"
 
 #: src/hdy-keypad.c:335
 msgid "The end action widget"
-msgstr ""
+msgstr "Widget za završetak radnje"
 
 #: src/hdy-keypad.c:348
 msgid "Start action"
-msgstr ""
+msgstr "Početak radnje"
 
 #: src/hdy-keypad.c:349
 msgid "The start action widget"
-msgstr ""
+msgstr "Widget za početak radnje"
 
 #: src/hdy-leaflet.c:1060 src/hdy-stackable-box.c:3037
 msgid "Whether the widget is folded"
-msgstr ""
+msgstr "Treba li widget preklopiti"
 
 #: src/hdy-leaflet.c:1073 src/hdy-stackable-box.c:3048
 msgid "Horizontally homogeneous folded"
-msgstr ""
+msgstr "Vodoravno istovrsno presavijanje"
 
 #: src/hdy-leaflet.c:1074
 msgid "Horizontally homogeneous sizing when the leaflet is folded"
-msgstr ""
+msgstr "Vodoravno istovrsno dimenzioniranje kada je letak presavijen"
 
 #: src/hdy-leaflet.c:1087 src/hdy-stackable-box.c:3060
 msgid "Vertically homogeneous folded"
-msgstr ""
+msgstr "Okomito istovrsno presavijanje"
 
 #: src/hdy-leaflet.c:1088
 msgid "Vertically homogeneous sizing when the leaflet is folded"
-msgstr ""
+msgstr "Okomito istovrsno dimenzioniranje kada je letak presavijen"
 
 #: src/hdy-leaflet.c:1101 src/hdy-stackable-box.c:3072
 msgid "Box horizontally homogeneous"
-msgstr ""
+msgstr "Vodoravno istovrsna kućica"
 
 #: src/hdy-leaflet.c:1102
 msgid "Horizontally homogeneous sizing when the leaflet is unfolded"
-msgstr ""
+msgstr "Vodoravno istovrsno dimenzioniranje kada je letak rasklopljen"
 
 #: src/hdy-leaflet.c:1115 src/hdy-stackable-box.c:3084
 msgid "Box vertically homogeneous"
-msgstr ""
+msgstr "Okomito istovrsna kućica"
 
 #: src/hdy-leaflet.c:1116
 msgid "Vertically homogeneous sizing when the leaflet is unfolded"
-msgstr ""
+msgstr "Okomito istovrsno dimenzioniranje kada je letak rasklopljen"
 
 #: src/hdy-leaflet.c:1135
 msgid "The widget currently visible when the leaflet is folded"
-msgstr ""
+msgstr "Widget je trenutno vidljiv kada je letak presavijen"
 
 #: src/hdy-leaflet.c:1151 src/hdy-stackable-box.c:3099
 msgid "The name of the widget currently visible when the children are stacked"
-msgstr ""
+msgstr "Naziv trenutno vidljivog widgeta kada je sadržano u spremniku"
 
 #: src/hdy-leaflet.c:1169 src/hdy-stackable-box.c:3118
 msgid "The type of animation used to transition between modes and children"
-msgstr ""
+msgstr "Vrsta animacije korištene za prijelaz između načina i sadržanog"
 
 #: src/hdy-leaflet.c:1182 src/hdy-stackable-box.c:3124
 msgid "Mode transition duration"
-msgstr ""
+msgstr "Trajanje prijelaza načina"
 
 #: src/hdy-leaflet.c:1183 src/hdy-stackable-box.c:3125
 msgid "The mode transition animation duration, in milliseconds"
-msgstr ""
+msgstr "Trajanje načina prijelaza animacije, u milisekundama"
 
 #: src/hdy-leaflet.c:1196 src/hdy-stackable-box.c:3131
 msgid "Child transition duration"
-msgstr ""
+msgstr "Trajanje prijelaza sadržanog"
 
 #: src/hdy-leaflet.c:1197 src/hdy-stackable-box.c:3132
 msgid "The child transition animation duration, in milliseconds"
-msgstr ""
+msgstr "Trajanje sadržanog prijelaza animacije, u milisekundama"
 
 #: src/hdy-leaflet.c:1210 src/hdy-stackable-box.c:3138
 msgid "Child transition running"
-msgstr ""
+msgstr "Pokretanje prijelaza sadržanog"
 
 #: src/hdy-leaflet.c:1211 src/hdy-stackable-box.c:3139
 msgid "Whether or not the child transition is currently running"
-msgstr ""
+msgstr "Treba li trenutno pokrenuti prijelaz sadržanog"
 
 #: src/hdy-leaflet.c:1268
 msgid "Navigatable"
-msgstr ""
+msgstr "Navigacijski"
 
 #: src/hdy-leaflet.c:1269
 msgid "Whether the child can be navigated to"
-msgstr ""
+msgstr "Treba li se navigirati do sadržanog"
 
 #: src/hdy-preferences-group.c:280 src/hdy-preferences-group.c:281
 #: src/hdy-status-page.c:249
-#, fuzzy
 msgid "Description"
 msgstr "Opis"
 
 #: src/hdy-preferences-group.c:308
-#, fuzzy
 msgid "Use markup"
 msgstr "Koristi oznake"
 
 #: src/hdy-preferences-group.c:309
 msgid "Whether to use markup for the title and description"
-msgstr ""
+msgstr "Treba li koristiti oznake za naslov i opis."
 
 #: src/hdy-preferences-row.c:116
 msgid "The title of the preference"
-msgstr ""
+msgstr "Naslov osobitosti"
 
 #: src/hdy-preferences-window.c:197
-#, fuzzy
 msgid "Untitled page"
 msgstr "Bezimena stranica"
 
 #: src/hdy-preferences-window.c:547
 msgid "Search enabled"
-msgstr ""
+msgstr "Pretraga omogućena"
 
 #: src/hdy-preferences-window.c:548
 msgid "Whether search is enabled"
-msgstr ""
+msgstr "Treba li omogućiti pretragu"
 
 #: src/hdy-preferences-window.c:562
 msgid ""
 "Whether or not swipe gesture can be used to switch from a subpage to the "
 "preferences"
 msgstr ""
+"Mogu li se geste povlačenja koristiti za prebacivanje iz podstranice na "
+"osobitosti"
 
 #: src/hdy-preferences-window.ui:9
-#, fuzzy
 msgid "Preferences"
 msgstr "Osobitosti"
 
 #: src/hdy-preferences-window.ui:84
-#, fuzzy
 msgid "Search"
-msgstr "&Traži"
+msgstr "Pretraga"
 
 #: src/hdy-preferences-window.ui:167
-#, fuzzy
 msgid "No Results Found"
 msgstr "Nema pronađenih rezultata"
 
 #: src/hdy-preferences-window.ui:168
-#, fuzzy
 msgid "Try a different search."
 msgstr "Pokušajte drugačiju pretragu."
 
 #: src/hdy-search-bar.c:451
-#, fuzzy
 msgid "Search Mode Enabled"
 msgstr "Način pretrage omogućen"
 
 #: src/hdy-search-bar.c:452
-#, fuzzy
 msgid "Whether the search mode is on and the search bar shown"
 msgstr "Treba li način pretrage biti uključen i traka pretrage prikazana"
 
 #: src/hdy-search-bar.c:465
-#, fuzzy
 msgid "Show Close Button"
 msgstr "Prikaži tipku zatvaranja"
 
 #: src/hdy-search-bar.c:466
-#, fuzzy
 msgid "Whether to show the close button in the toolbar"
 msgstr "Treba li prikazati tipku zatvaranja na alatnoj traci"
 
 #: src/hdy-shadow-helper.c:254
-#, fuzzy
 msgid "Widget"
 msgstr "Widget"
 
 #: src/hdy-shadow-helper.c:255
 msgid "The widget the shadow will be drawn for"
-msgstr ""
+msgstr "Widget za koji će se iscrtati sjena"
 
 #: src/hdy-squeezer.c:1122
-#, fuzzy
 msgid "Homogeneous"
 msgstr "Istovrstno"
 
 #: src/hdy-squeezer.c:1123
-#, fuzzy
 msgid "Homogeneous sizing"
 msgstr "Istovrsna promjena veličine"
 
 #: src/hdy-squeezer.c:1137
 msgid "The widget currently visible in the squeezer"
-msgstr ""
+msgstr "Widget je trenutno vidljiv u stegi"
 
 #: src/hdy-squeezer.c:1171
-#, fuzzy
 msgid "The type of animation used to transition"
 msgstr "Vrsta animacije korištene za prijelaz"
 
 #: src/hdy-squeezer.c:1226
-#, fuzzy
 msgid "X align"
 msgstr "Poravnanje po x osi"
 
 #: src/hdy-squeezer.c:1227
 msgid "The horizontal alignment, from 0 (start) to 1 (end)"
-msgstr ""
+msgstr "Vodoravno poravnanje, od 0 (početak) do 1 (završetak)"
 
 #: src/hdy-squeezer.c:1249
-#, fuzzy
 msgid "Y align"
 msgstr "Poravnanje po y osi"
 
 #: src/hdy-squeezer.c:1250
-#, fuzzy
 msgid "The vertical alignment, from 0 (top) to 1 (bottom)"
 msgstr "Okomito poravnanje, od 0 (vrh) do 1 (dno)"
 
 #: src/hdy-squeezer.c:1259 src/hdy-swipe-tracker.c:1080
-#, fuzzy
 msgid "Enabled"
 msgstr "Omogućen"
 
