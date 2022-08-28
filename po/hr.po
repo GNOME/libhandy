@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: libhandy main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
 "POT-Creation-Date: 2022-08-05 15:28+0000\n"
-"PO-Revision-Date: 2022-08-28 21:44+0200\n"
+"PO-Revision-Date: 2022-08-29 00:02+0200\n"
 "Last-Translator: \n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -196,7 +196,7 @@ msgstr "Najveća veličina"
 
 #: src/hdy-clamp.c:437
 msgid "The maximum size allocated to the child"
-msgstr "Najveća veličina dodijeljena sadržanom"
+msgstr "Najveća veličina dodijeljena podređenog elementa"
 
 #: src/hdy-clamp.c:463
 msgid "Tightening threshold"
@@ -204,7 +204,8 @@ msgstr "Prag stezanja"
 
 #: src/hdy-clamp.c:464
 msgid "The size from which the clamp will tighten its grip on the child"
-msgstr "Veličina do koje će stezaljka stegnuti svoj stisak na sadržanom"
+msgstr ""
+"Veličina do koje će stezaljka stegnuti svoj stisak na podređenom elementu"
 
 #: src/hdy-combo-row.c:420
 msgid "Selected index"
@@ -241,7 +242,7 @@ msgstr "Okomito istovrsno dimenzioniranje"
 #: src/hdy-deck.c:980 src/hdy-leaflet.c:1134 src/hdy-squeezer.c:1136
 #: src/hdy-stackable-box.c:3091
 msgid "Visible child"
-msgstr "Podređana vidljivost"
+msgstr "Vidljivost podređenog elementa"
 
 #: src/hdy-deck.c:981
 msgid "The widget currently visible"
@@ -249,7 +250,7 @@ msgstr "Trenutno vidljivi widget"
 
 #: src/hdy-deck.c:994 src/hdy-leaflet.c:1150 src/hdy-stackable-box.c:3098
 msgid "Name of visible child"
-msgstr "Naziv podređane vidljivosti"
+msgstr "Naziv vidljivog podređenog elementa"
 
 #: src/hdy-deck.c:995
 msgid "The name of the widget currently visible"
@@ -262,7 +263,7 @@ msgstr "Vrsta prijelaza"
 
 #: src/hdy-deck.c:1013
 msgid "The type of animation used to transition between children"
-msgstr "Vrsta animacije korištene za prijelaz između sadržanog"
+msgstr "Vrsta animacije korištene za prijelaz između podređenog elementa"
 
 #: src/hdy-deck.c:1026 src/hdy-header-bar.c:2257 src/hdy-squeezer.c:1150
 msgid "Transition duration"
@@ -291,8 +292,8 @@ msgid ""
 "Whether or not the size should smoothly change when changing between "
 "differently sized children"
 msgstr ""
-"Treba li ili ne glatko promijeniti veličinu kada se mijenja između osnovnih "
-"elemenata drugačije veličine"
+"Treba li ili ne glatko promijeniti veličinu kada se mijenja između "
+"podređenih elemenata drugačije veličine"
 
 #: src/hdy-deck.c:1069 src/hdy-leaflet.c:1238 src/hdy-preferences-window.c:561
 #: src/hdy-stackable-box.c:3160
@@ -303,7 +304,8 @@ msgstr "Može povući unatrag"
 msgid ""
 "Whether or not swipe gesture can be used to switch to the previous child"
 msgstr ""
-"Treba li se gesta povlačenja koristiti za prebacivanje na prijašnji sadržaj"
+"Treba li se gesta povlačenja koristiti za prebacivanje na prijašnji "
+"podređeni element"
 
 #: src/hdy-deck.c:1083 src/hdy-leaflet.c:1252 src/hdy-stackable-box.c:3175
 msgid "Can swipe forward"
@@ -312,7 +314,8 @@ msgstr "Može povući unaprijed"
 #: src/hdy-deck.c:1084 src/hdy-leaflet.c:1253 src/hdy-stackable-box.c:3176
 msgid "Whether or not swipe gesture can be used to switch to the next child"
 msgstr ""
-"Treba li se gesta povlačenja koristiti za prebacivanje na sljedeći sadržaj"
+"Treba li se gesta povlačenja koristiti za prebacivanje na sljedeći podređeni "
+"element"
 
 #: src/hdy-deck.c:1092 src/hdy-leaflet.c:1261
 msgid "Name"
@@ -320,7 +323,7 @@ msgstr "Naziv "
 
 #: src/hdy-deck.c:1093 src/hdy-leaflet.c:1262
 msgid "The name of the child page"
-msgstr "Naziv stranice sadržanog"
+msgstr "Naziv stranice podređenog elementa"
 
 #: src/hdy-expander-row.c:291
 msgid "The subtitle for this row"
@@ -511,12 +514,12 @@ msgid ""
 "A GtkPackType indicating whether the child is packed with reference to the "
 "start or end of the parent"
 msgstr ""
-"Gtk vrsta paketa koja pokazuje je li sadržano pakirano od početka ili kraja "
-"područja nadređenog"
+"Gtk vrsta paketa koja pokazuje je li podređeni element pakiran od početka "
+"ili kraja područja nadređenog elementa"
 
 #: src/hdy-header-bar.c:2096
 msgid "The index of the child in the parent"
-msgstr "Sadržaj sadržanog u nadređenom"
+msgstr "Sadržaj podređenog elementa u nadređenom elementu"
 
 #: src/hdy-header-bar.c:2109 src/hdy-preferences-group.c:294
 #: src/hdy-preferences-group.c:295 src/hdy-preferences-page.c:187
@@ -543,9 +546,8 @@ msgid "Custom title widget to display"
 msgstr "Prilagođeni naslov widgeta za prikaz"
 
 #: src/hdy-header-bar.c:2152
-#, fuzzy
 msgid "The amount of space between children"
-msgstr "Količina razmaka među sadržanim elementima"
+msgstr "Količina razmaka između podređenih elementa"
 
 #: src/hdy-header-bar.c:2171
 msgid "Show decorations"
@@ -722,11 +724,12 @@ msgstr "Widget je trenutno vidljiv kada je letak presavijen"
 
 #: src/hdy-leaflet.c:1151 src/hdy-stackable-box.c:3099
 msgid "The name of the widget currently visible when the children are stacked"
-msgstr "Naziv trenutno vidljivog widgeta kada je sadržano u spremniku"
+msgstr "Naziv trenutno vidljivog widgeta kada je podređeni element u spremniku"
 
 #: src/hdy-leaflet.c:1169 src/hdy-stackable-box.c:3118
 msgid "The type of animation used to transition between modes and children"
-msgstr "Vrsta animacije korištene za prijelaz između načina i sadržanog"
+msgstr ""
+"Vrsta animacije korištene za prijelaz između načina i podređenog elementa"
 
 #: src/hdy-leaflet.c:1182 src/hdy-stackable-box.c:3124
 msgid "Mode transition duration"
@@ -738,19 +741,19 @@ msgstr "Trajanje načina prijelaza animacije, u milisekundama"
 
 #: src/hdy-leaflet.c:1196 src/hdy-stackable-box.c:3131
 msgid "Child transition duration"
-msgstr "Trajanje prijelaza sadržanog"
+msgstr "Trajanje prijelaza podređenog elementa"
 
 #: src/hdy-leaflet.c:1197 src/hdy-stackable-box.c:3132
 msgid "The child transition animation duration, in milliseconds"
-msgstr "Trajanje sadržanog prijelaza animacije, u milisekundama"
+msgstr "Trajanje podređenog elementa prijelaza animacije, u milisekundama"
 
 #: src/hdy-leaflet.c:1210 src/hdy-stackable-box.c:3138
 msgid "Child transition running"
-msgstr "Pokretanje prijelaza sadržanog"
+msgstr "Pokretanje prijelaza podređenog elementa"
 
 #: src/hdy-leaflet.c:1211 src/hdy-stackable-box.c:3139
 msgid "Whether or not the child transition is currently running"
-msgstr "Treba li trenutno pokrenuti prijelaz sadržanog"
+msgstr "Treba li trenutno pokrenuti prijelaz podređenog elementa"
 
 #: src/hdy-leaflet.c:1268
 msgid "Navigatable"
@@ -758,7 +761,7 @@ msgstr "Navigacijski"
 
 #: src/hdy-leaflet.c:1269
 msgid "Whether the child can be navigated to"
-msgstr "Treba li se navigirati do sadržanog"
+msgstr "Treba li se navigirati do podređenog elementa"
 
 #: src/hdy-preferences-group.c:280 src/hdy-preferences-group.c:281
 #: src/hdy-status-page.c:249
@@ -1045,7 +1048,7 @@ msgstr "Treba li traka kartice biti popunjena"
 #: src/hdy-tab-box.c:3495 src/hdy-tab-box.c:3496 src/hdy-tab.c:913
 #: src/hdy-tab.c:914 src/hdy-tab-view.c:424
 msgid "Pinned"
-msgstr "Prikvačeno"
+msgstr "Pričvršćeno"
 
 #: src/hdy-tab-box.c:3502 src/hdy-tab-box.c:3503
 msgid "Tab Bar"
@@ -1065,175 +1068,165 @@ msgstr "Potrebna je pozornost desno"
 
 #: src/hdy-tab-box.c:3537 src/hdy-tab-box.c:3538
 msgid "Resize Frozen"
-msgstr ""
+msgstr "Zamrzni promjenu veličine"
 
 #: src/hdy-tab.c:920 src/hdy-tab.c:921
 msgid "Dragging"
-msgstr ""
+msgstr "Povlaćenje"
 
 #: src/hdy-tab.c:927 src/hdy-tab.c:928
-#, fuzzy
 msgid "Page"
-msgstr "Page"
+msgstr "Stranica"
 
 #: src/hdy-tab.c:934 src/hdy-tab.c:935
 msgid "Display Width"
-msgstr ""
+msgstr "Širina prikaza"
 
 #: src/hdy-tab.c:941 src/hdy-tab.c:942
 msgid "Hovering"
-msgstr ""
+msgstr "Lebdenje"
 
 #: src/hdy-tab-view.c:378
-#, fuzzy
 msgid "Child"
-msgstr "Podređeni sadržaj"
+msgstr "Podređena stranica"
 
 #: src/hdy-tab-view.c:379
-#, fuzzy
 msgid "The child of the page"
-msgstr "Podređeno ovoj stranici"
+msgstr "Podređena stranica ovoj stranici"
 
 #: src/hdy-tab-view.c:394
-#, fuzzy
 msgid "Parent"
-msgstr "Parent"
+msgstr "Nadređena stranica"
 
 #: src/hdy-tab-view.c:395
 msgid "The parent page of the page"
-msgstr ""
+msgstr "Nadređena stranica ove stranice"
 
 #: src/hdy-tab-view.c:408
-#, fuzzy
 msgid "Selected"
-msgstr "Odabirljivo"
+msgstr "Odabrana"
 
 #: src/hdy-tab-view.c:409
 msgid "Whether the page is selected"
-msgstr ""
+msgstr "Treba li stranicu odabrati"
 
 #: src/hdy-tab-view.c:425
 msgid "Whether the page is pinned"
-msgstr ""
+msgstr "Treba li stranicu pričvrstiti"
 
 #: src/hdy-tab-view.c:442
 msgid "The title of the page"
-msgstr ""
+msgstr "Naslov stranice"
 
 #: src/hdy-tab-view.c:460
 msgid "Tooltip"
-msgstr ""
+msgstr "Napomena"
 
 #: src/hdy-tab-view.c:461
 msgid "The tooltip of the page"
-msgstr ""
+msgstr "Napomena stranice"
 
 #: src/hdy-tab-view.c:479
-#, fuzzy
 msgid "Icon"
 msgstr "Ikona"
 
 #: src/hdy-tab-view.c:480
 msgid "The icon of the page"
-msgstr ""
+msgstr "Ikona stranice"
 
 #: src/hdy-tab-view.c:498
-#, fuzzy
 msgid "Loading"
 msgstr "Učitavanje"
 
 #: src/hdy-tab-view.c:499
 msgid "Whether the page is loading"
-msgstr ""
+msgstr "Treba li stranicu učitati"
 
 #: src/hdy-tab-view.c:523
 msgid "Indicator icon"
-msgstr ""
+msgstr "Ikona indikatora"
 
 #: src/hdy-tab-view.c:524
 msgid "An indicator icon for the page"
-msgstr ""
+msgstr "Ikona indikatora stranice"
 
 #: src/hdy-tab-view.c:542
 msgid "Indicator activatable"
-msgstr ""
+msgstr "Indikator se može aktivirati"
 
 #: src/hdy-tab-view.c:543
 msgid "Whether the indicator icon is activatable"
-msgstr ""
+msgstr "Treba li indikator ikone aktivirati"
 
 #: src/hdy-tab-view.c:560 src/hdy-view-switcher-button.c:232
 msgid "Needs attention"
-msgstr ""
+msgstr "Treba pozornost"
 
 #: src/hdy-tab-view.c:561
 msgid "Whether the page needs attention"
-msgstr ""
+msgstr "Treba li stranica pozornost"
 
 #: src/hdy-tab-view.c:1122
 msgid "The number of pages in the tab view"
-msgstr ""
+msgstr "Broj stranica u prikazu kartice"
 
 #: src/hdy-tab-view.c:1137
 msgid "Number of pinned pages"
-msgstr ""
+msgstr "Broj pričvršćenih kartica"
 
 #: src/hdy-tab-view.c:1138
 msgid "The number of pinned pages in the tab view"
-msgstr ""
+msgstr "Broj pričvršćenih kartica u prikazu kartice"
 
 #: src/hdy-tab-view.c:1157
 msgid "Is transferring page"
-msgstr ""
+msgstr "Stranica se prenosi"
 
 #: src/hdy-tab-view.c:1158
 msgid "Whether a page is being transferred"
-msgstr ""
+msgstr "Treba li stranicu prenesti"
 
 #: src/hdy-tab-view.c:1171
 msgid "Selected page"
-msgstr ""
+msgstr "Odabrana stranica"
 
 #: src/hdy-tab-view.c:1172
 msgid "The currently selected page"
-msgstr ""
+msgstr "Trenutno odabrana stranica"
 
 #: src/hdy-tab-view.c:1192
 msgid "Default icon"
-msgstr ""
+msgstr "Zadana ikona"
 
 #: src/hdy-tab-view.c:1193
 msgid "Default page icon"
-msgstr ""
+msgstr "Zadana ikona stranice"
 
 #: src/hdy-tab-view.c:1210
-#, fuzzy
 msgid "Menu model"
 msgstr "Model izbornika"
 
 #: src/hdy-tab-view.c:1211
 msgid "Tab context menu model"
-msgstr ""
+msgstr "Model izbornika sadržaja kartice"
 
 #: src/hdy-tab-view.c:1247
 msgid "Shortcut widget"
-msgstr ""
+msgstr "Widget prečaca"
 
 #: src/hdy-tab-view.c:1248
 msgid "Tab shortcut widget"
-msgstr ""
+msgstr "Widget prečaca kartice"
 
 #: src/hdy-title-bar.c:329
-#, fuzzy
 msgid "Selection mode"
 msgstr "Način odabira"
 
 #: src/hdy-title-bar.c:330
 msgid "Whether or not the title bar is in selection mode"
-msgstr ""
+msgstr "Treba li naslovna traka biti uključena u način odabira"
 
 #: src/hdy-value-object.c:208
-#, fuzzy
 msgctxt "HdyValueObjectClass"
 msgid "Value"
 msgstr "Vrijednost"
@@ -1241,93 +1234,88 @@ msgstr "Vrijednost"
 #: src/hdy-value-object.c:209
 msgctxt "HdyValueObjectClass"
 msgid "The contained value"
-msgstr ""
+msgstr "Sadržana vrijednost"
 
 #: src/hdy-view-switcher-bar.c:179 src/hdy-view-switcher.c:516
 #: src/hdy-view-switcher-title.c:232
 msgid "Policy"
-msgstr ""
+msgstr "Pravilo"
 
 #: src/hdy-view-switcher-bar.c:180 src/hdy-view-switcher.c:517
 #: src/hdy-view-switcher-title.c:233
 msgid "The policy to determine the mode to use"
-msgstr ""
+msgstr "Pravilo za otkrivanje načina korištenja"
 
 #: src/hdy-view-switcher-bar.c:193 src/hdy-view-switcher-bar.c:194
 #: src/hdy-view-switcher.c:552 src/hdy-view-switcher.c:553
 #: src/hdy-view-switcher-title.c:246 src/hdy-view-switcher-title.c:247
-#, fuzzy
 msgid "Stack"
-msgstr "Snop"
+msgstr "Spremnik"
 
 #: src/hdy-view-switcher-bar.c:207
-#, fuzzy
 msgid "Reveal"
-msgstr "Otkrij"
+msgstr "Otkrivanje"
 
 #: src/hdy-view-switcher-bar.c:208
 msgid "Whether the view switcher is revealed"
-msgstr ""
+msgstr "Treba li otkriti izmjenjivač pogleda"
 
 #: src/hdy-view-switcher-button.c:201
-#, fuzzy
 msgid "Icon Name"
 msgstr "Naziv ikone"
 
 #: src/hdy-view-switcher-button.c:202
 msgid "Icon name for image"
-msgstr ""
+msgstr "Naziv ikone slike"
 
 #: src/hdy-view-switcher-button.c:215
-#, fuzzy
 msgid "Icon Size"
 msgstr "Veličina ikone"
 
 #: src/hdy-view-switcher-button.c:216
 msgid "Symbolic size to use for named icon"
-msgstr ""
+msgstr "Simbolična veličina koja se koristi imenovanu ikonu"
 
 #: src/hdy-view-switcher-button.c:233
 msgid "Hint the view needs attention"
-msgstr ""
+msgstr "Naglasi da pogled zahtijeva pozornost"
 
 #: src/hdy-view-switcher.c:537
 msgid "Narrow ellipsize"
-msgstr ""
+msgstr "Skraćivanje suženja"
 
 #: src/hdy-view-switcher.c:538
 msgid ""
 "The preferred place to ellipsize the string, if the narrow mode label does "
 "not have enough room to display the entire string"
 msgstr ""
+"Poželjno mjesto za skraćivanje niza znakova, ako oznaka načina suženja nema "
+"dovoljno mjesta za prikaz cijelog niza znakova"
 
 #: src/hdy-view-switcher-title.c:300
 msgid "View switcher enabled"
-msgstr ""
+msgstr "Izmjenjivač pogleda omogućen"
 
 #: src/hdy-view-switcher-title.c:301
 msgid "Whether the view switcher is enabled"
-msgstr ""
+msgstr "Treba li izmjenjivača pogleda omogućiti"
 
 #: src/hdy-view-switcher-title.c:314
 msgid "Title visible"
-msgstr ""
+msgstr "Naslov vidljiv"
 
 #: src/hdy-view-switcher-title.c:315
 msgid "Whether the title label is visible"
-msgstr ""
+msgstr "Treba li naslov biti vidljiv"
 
 #: src/hdy-window-handle-controller.c:257
-#, fuzzy
 msgid "Move"
-msgstr "Pomakni"
+msgstr "Premjesti"
 
 #: src/hdy-window-handle-controller.c:265
-#, fuzzy
 msgid "Resize"
 msgstr "Promijeni veličinu"
 
 #: src/hdy-window-handle-controller.c:296
-#, fuzzy
 msgid "Always on Top"
 msgstr "Uvijek na vrhu"
