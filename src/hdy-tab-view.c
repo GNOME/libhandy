@@ -1704,7 +1704,7 @@ hdy_tab_page_get_loading (HdyTabPage *self)
  * @self: a tab page
  * @loading: whether @self is loading
  *
- * Sets wether @self is loading.
+ * Sets whether @self is loading.
  *
  * Since: 1.2
  */
