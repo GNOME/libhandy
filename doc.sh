@@ -4,6 +4,7 @@ DOC_DIR=public/doc
 REFS="
 main
 libhandy-1-6
+libhandy-1-8
 "
 
 LEGACY_REFS="
@@ -12,7 +13,7 @@ libhandy-1-2
 libhandy-1-4
 "
 
-LATEST_STABLE_1=1.6
+LATEST_STABLE_1=1.8
 
 IFS='
 '
