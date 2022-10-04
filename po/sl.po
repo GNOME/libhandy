@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2022-09-22 15:42+0000\n"
-"PO-Revision-Date: 2022-09-25 21:17+0200\n"
+"POT-Creation-Date: 2022-09-25 19:18+0000\n"
+"PO-Revision-Date: 2022-10-04 11:34+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -714,16 +714,18 @@ msgid "Whether the widget is folded"
 msgstr "Ali je gradnik zložen"
 
 #: src/hdy-leaflet.c:1073 src/hdy-stackable-box.c:3048
+#, fuzzy
 msgid "Horizontally homogeneous folded"
-msgstr ""
+msgstr "Vodoravno homogeno prepognjeno"
 
 #: src/hdy-leaflet.c:1074
 msgid "Horizontally homogeneous sizing when the leaflet is folded"
 msgstr ""
 
 #: src/hdy-leaflet.c:1087 src/hdy-stackable-box.c:3060
+#, fuzzy
 msgid "Vertically homogeneous folded"
-msgstr ""
+msgstr "Navpično homogeno prepognjeno"
 
 #: src/hdy-leaflet.c:1088
 msgid "Vertically homogeneous sizing when the leaflet is folded"
@@ -746,24 +748,29 @@ msgid "Vertically homogeneous sizing when the leaflet is unfolded"
 msgstr ""
 
 #: src/hdy-leaflet.c:1135
+#, fuzzy
 msgid "The widget currently visible when the leaflet is folded"
-msgstr ""
+msgstr "Ime gradnika, ki je trenutno viden, ko je zloženka zložena"
 
 #: src/hdy-leaflet.c:1151 src/hdy-stackable-box.c:3099
 msgid "The name of the widget currently visible when the children are stacked"
 msgstr ""
+"Ime gradnika, ki je trenutno viden, ko so podrejeni elementi naloženi v "
+"skladu"
 
 #: src/hdy-leaflet.c:1169 src/hdy-stackable-box.c:3118
 msgid "The type of animation used to transition between modes and children"
-msgstr ""
+msgstr "Vrsta animacije, ki se uporablja za prehod med načini in podrejenimi"
 
 #: src/hdy-leaflet.c:1182 src/hdy-stackable-box.c:3124
+#, fuzzy
 msgid "Mode transition duration"
-msgstr ""
+msgstr "Trajanje prehoda med načini"
 
 #: src/hdy-leaflet.c:1183 src/hdy-stackable-box.c:3125
+#, fuzzy
 msgid "The mode transition animation duration, in milliseconds"
-msgstr ""
+msgstr "Trajanje animacije prehoda med načini, v milisekundah"
 
 #: src/hdy-leaflet.c:1196 src/hdy-stackable-box.c:3131
 msgid "Child transition duration"
@@ -784,7 +791,7 @@ msgstr ""
 #: src/hdy-leaflet.c:1268
 #, fuzzy
 msgid "Navigatable"
-msgstr "Krmarljivo"
+msgstr "Krmarjenje pripelje do cilja"
 
 #: src/hdy-leaflet.c:1269
 #, fuzzy
@@ -797,8 +804,9 @@ msgid "Description"
 msgstr "Opis"
 
 #: src/hdy-preferences-group.c:308
+#, fuzzy
 msgid "Use markup"
-msgstr ""
+msgstr "Uporabi označevalno kodo"
 
 #: src/hdy-preferences-group.c:309
 #, fuzzy
@@ -806,7 +814,6 @@ msgid "Whether to use markup for the title and description"
 msgstr "Ali naj bo uporabljen označevalni jezik za naslov in opis"
 
 #: src/hdy-preferences-row.c:116
-#, fuzzy
 msgid "The title of the preference"
 msgstr "Naslov nastavitve"
 
@@ -928,8 +935,9 @@ msgid "Vertically homogeneous sizing when the widget is unfolded"
 msgstr ""
 
 #: src/hdy-stackable-box.c:3092
+#, fuzzy
 msgid "The widget currently visible when the widget is folded"
-msgstr ""
+msgstr "Trenutno viden gradnik, ko je gradnik zložen"
 
 #: src/hdy-stackable-box.c:3182 src/hdy-stackable-box.c:3183
 msgid "Orientation"
@@ -945,7 +953,7 @@ msgstr "Naslov za prikaz pod ikono"
 
 #: src/hdy-status-page.c:250
 msgid "The description to be displayed below the title"
-msgstr ""
+msgstr "Opis, ki bo prikazan pod naslovom"
 
 #: src/hdy-style-manager.c:583
 msgid "Color Scheme"
@@ -985,12 +993,14 @@ msgid "Swipeable"
 msgstr "Podrsljivo"
 
 #: src/hdy-swipe-tracker.c:1064
+#, fuzzy
 msgid "The swipeable the swipe tracker is attached to"
-msgstr ""
+msgstr "Podrsljivi element, na katerega je pripet sledilnik drsenja"
 
 #: src/hdy-swipe-tracker.c:1081
+#, fuzzy
 msgid "Whether the swipe tracker processes events"
-msgstr ""
+msgstr "Ali sledilnik drsenja obdeluje dogodke"
 
 #: src/hdy-swipe-tracker.c:1097
 #, fuzzy
@@ -1006,7 +1016,7 @@ msgstr "Ali je smer podrsa obrnjena"
 #, fuzzy
 msgid "Whether to allow swiping for more than one snap point at a time"
 msgstr ""
-"Ali naj bo dovoljeno potegovanje z več kot eno točko pripenjanja naenkrat"
+"Ali naj bo dovoljeno podrsanje z več kot eno točko pripenjanja naenkrat"
 
 #: src/hdy-tab-bar.c:516 src/hdy-tab-box.c:3509 src/hdy-tab-box.c:3510
 #: src/hdy-tab.c:906 src/hdy-tab.c:907
@@ -1119,8 +1129,9 @@ msgid "Display Width"
 msgstr "Širina zaslona"
 
 #: src/hdy-tab.c:941 src/hdy-tab.c:942
+#, fuzzy
 msgid "Hovering"
-msgstr ""
+msgstr "Zadrževanje nad"
 
 #: src/hdy-tab-view.c:378
 msgid "Child"
@@ -1318,14 +1329,18 @@ msgid "Hint the view needs attention"
 msgstr "Namig, da pogled potrebuje pozornost"
 
 #: src/hdy-view-switcher.c:537
+#, fuzzy
 msgid "Narrow ellipsize"
-msgstr ""
+msgstr "Položaj tripičja za okrajšavo"
 
 #: src/hdy-view-switcher.c:538
+#, fuzzy
 msgid ""
 "The preferred place to ellipsize the string, if the narrow mode label does "
 "not have enough room to display the entire string"
 msgstr ""
+"Priporočeno mesto za okrajšanje niza s tripičjem, če oznaka v ozkem načinu "
+"ne zagotavlja dovolj prostora za prikaz celotnega niza."
 
 #: src/hdy-view-switcher-title.c:300
 msgid "View switcher enabled"
