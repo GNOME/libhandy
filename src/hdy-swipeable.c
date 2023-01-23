@@ -31,8 +31,22 @@ enum {
 static guint signals[SIGNAL_LAST_SIGNAL];
 
 static void
+hdy_swipeable_default_get_swipe_area (HdySwipeable           *self,
+                                      HdyNavigationDirection  navigation_direction,
+                                      gboolean                is_drag,
+                                      GdkRectangle           *rect)
+{
+  rect->x = 0;
+  rect->y = 0;
+  rect->width = gtk_widget_get_allocated_width (GTK_WIDGET (self));
+  rect->height = gtk_widget_get_allocated_height (GTK_WIDGET (self));
+}
+
+static void
 hdy_swipeable_default_init (HdySwipeableInterface *iface)
 {
+  iface->get_swipe_area = hdy_swipeable_default_get_swipe_area;
+
   /**
    * HdySwipeable::child-switched:
    * @self: a swipeable
@@ -266,13 +280,5 @@ hdy_swipeable_get_swipe_area (HdySwipeable           *self,
 
   iface = HDY_SWIPEABLE_GET_IFACE (self);
 
-  if (iface->get_swipe_area) {
-    iface->get_swipe_area (self, navigation_direction, is_drag, rect);
-    return;
-  }
-
-  rect->x = 0;
-  rect->y = 0;
-  rect->width = gtk_widget_get_allocated_width (GTK_WIDGET (self));
-  rect->height = gtk_widget_get_allocated_height (GTK_WIDGET (self));
+  iface->get_swipe_area (self, navigation_direction, is_drag, rect);
 }
