@@ -413,14 +413,8 @@ pressed_cb (GtkGestureMultiPress      *gesture,
 
   switch (button) {
   case GDK_BUTTON_PRIMARY:
-    gdk_window_raise (gtk_widget_get_window (window));
-
-    if (n_press == 2)
-        titlebar_action (self, event, button);
-
-    if (gtk_widget_has_grab (window))
-      gtk_gesture_set_sequence_state (GTK_GESTURE (gesture),
-                                      sequence, GTK_EVENT_SEQUENCE_CLAIMED);
+    gtk_gesture_set_sequence_state (GTK_GESTURE (gesture),
+                                    sequence, GTK_EVENT_SEQUENCE_DENIED);
 
     break;
 
