@@ -1,5 +1,5 @@
 project('libhandy', 'c',
-          version: '1.8.0',
+          version: '1.8.1',
           license: 'LGPL-2.1-or-later',
     meson_version: '>= 0.49.0',
   default_options: [ 'warning_level=1', 'buildtype=debugoptimized', 'c_std=gnu11' ],
@@ -161,4 +161,5 @@ summary = [
 ]
 
 message('\n'.join(summary))
+
 
