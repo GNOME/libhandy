@@ -1,4 +1,14 @@
 =============
+Version 1.6.4
+=============
+
+- Fix double click handling for HdyWindowHandle and HdyHeaderBar
+- Translation updates:
+  - Basque
+  - Croatian
+  - German
+
+=============
 Version 1.6.3
 =============
 
