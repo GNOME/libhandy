@@ -18,7 +18,7 @@ api-visibility:
     - ./.gitlab-ci/api-visibility.sh
 
 doc:
-  image: fedora:34
+  image: fedora:37
   stage: build
   variables:
     MESON_ARGS: >-
@@ -29,7 +29,7 @@ doc:
   before_script:
     - dnf -y update
     - dnf -y install gcc git gobject-introspection-devel gtk3-devel meson pip
-    - pip install Jinja2 pygments toml typogrify
+    - pip install Jinja2 packaging pygments toml typogrify
   script:
     - meson --prefix=/app ${MESON_ARGS} _build
     - ninja -C _build
@@ -58,7 +58,7 @@ build-flatpak-glade:
     BUNDLE: 'sm.puri.Handy.Glade.flatpak'
 
 abi-check:
-  image: fedora:34
+  image: fedora:37
   stage: build
   variables:
     LAST_ABI_BREAK: "b90b5120c5e9e3f5a3b0d228bd7ddb24f053289a"
