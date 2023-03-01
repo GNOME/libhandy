@@ -19,7 +19,8 @@ test_hdy_combo_row_set_for_enum (void)
 {
   g_autoptr (HdyComboRow) row = NULL;
   GListModel *model;
-  HdyEnumValueObject *value;
+  g_autoptr (HdyEnumValueObject) value1 = NULL;
+  g_autoptr (HdyEnumValueObject) value2 = NULL;
 
   row = g_object_ref_sink (HDY_COMBO_ROW (hdy_combo_row_new ()));
   g_assert_nonnull (row);
@@ -32,13 +33,13 @@ test_hdy_combo_row_set_for_enum (void)
 
   g_assert_cmpuint (g_list_model_get_n_items (model), ==, 2);
 
-  value = g_list_model_get_item (model, 0);
-  g_assert_true (HDY_IS_ENUM_VALUE_OBJECT (value));
-  g_assert_cmpstr (hdy_enum_value_object_get_nick (value), ==, "horizontal");
+  value1 = g_list_model_get_item (model, 0);
+  g_assert_true (HDY_IS_ENUM_VALUE_OBJECT (value1));
+  g_assert_cmpstr (hdy_enum_value_object_get_nick (value1), ==, "horizontal");
 
-  value = g_list_model_get_item (model, 1);
-  g_assert_true (HDY_IS_ENUM_VALUE_OBJECT (value));
-  g_assert_cmpstr (hdy_enum_value_object_get_nick (value), ==, "vertical");
+  value2 = g_list_model_get_item (model, 1);
+  g_assert_true (HDY_IS_ENUM_VALUE_OBJECT (value2));
+  g_assert_cmpstr (hdy_enum_value_object_get_nick (value2), ==, "vertical");
 }
 
 static void
