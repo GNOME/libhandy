@@ -528,7 +528,7 @@ hdy_demo_window_class_init (HdyDemoWindowClass *klass)
 static void
 lists_page_init (HdyDemoWindow *self)
 {
-  GListStore *list_store;
+  g_autoptr (GListStore) list_store = NULL;
   HdyValueObject *obj;
 
   list_store = g_list_store_new (HDY_TYPE_VALUE_OBJECT);
@@ -554,6 +554,7 @@ lists_page_init (HdyDemoWindow *self)
 static void
 carousel_page_init (HdyDemoWindow *self)
 {
+  g_autoptr (GListStore) list_store = NULL;
   HdyValueObject *obj;
 
   hdy_combo_row_set_for_enum (self->carousel_orientation_row,
@@ -562,18 +563,19 @@ carousel_page_init (HdyDemoWindow *self)
                               NULL,
                               NULL);
 
-  self->carousel_indicators_model = g_list_store_new (HDY_TYPE_VALUE_OBJECT);
+  list_store = g_list_store_new (HDY_TYPE_VALUE_OBJECT);
 
   obj = hdy_value_object_new_string ("dots");
-  g_list_store_insert (self->carousel_indicators_model, 0, obj);
+  g_list_store_insert (list_store, 0, obj);
   g_clear_object (&obj);
 
   obj = hdy_value_object_new_string ("lines");
-  g_list_store_insert (self->carousel_indicators_model, 1, obj);
+  g_list_store_insert (list_store, 1, obj);
   g_clear_object (&obj);
 
+  self->carousel_indicators_model = list_store;
   hdy_combo_row_bind_name_model (self->carousel_indicators_row,
-                                 G_LIST_MODEL (self->carousel_indicators_model),
+                                 G_LIST_MODEL (list_store),
                                  (HdyComboRowGetNameFunc) carousel_indicators_name,
                                  NULL,
                                  NULL);
