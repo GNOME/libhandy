@@ -99,6 +99,18 @@ hdy_preferences_page_finalize (GObject *object)
 }
 
 static void
+hdy_preferences_page_destroy (GtkWidget *widget)
+{
+  HdyPreferencesPage *self = HDY_PREFERENCES_PAGE (widget);
+  HdyPreferencesPagePrivate *priv = hdy_preferences_page_get_instance_private (self);
+
+  if (priv->scrolled_window)
+    gtk_widget_destroy (GTK_WIDGET (priv->scrolled_window));
+
+  GTK_WIDGET_CLASS (hdy_preferences_page_parent_class)->destroy (widget);
+}
+
+static void
 hdy_preferences_page_add (GtkContainer *container,
                           GtkWidget    *child)
 {
@@ -156,6 +168,8 @@ hdy_preferences_page_class_init (HdyPreferencesPageClass *klass)
   object_class->get_property = hdy_preferences_page_get_property;
   object_class->set_property = hdy_preferences_page_set_property;
   object_class->finalize = hdy_preferences_page_finalize;
+
+  widget_class->destroy = hdy_preferences_page_destroy;
 
   container_class->add = hdy_preferences_page_add;
   container_class->remove = hdy_preferences_page_remove;
