@@ -2472,8 +2472,8 @@ hdy_stackable_box_finalize (GObject *object)
 
   self->visible_child = NULL;
 
-  if (self->shadow_helper)
-    g_clear_object (&self->shadow_helper);
+  g_clear_object (&self->shadow_helper);
+  g_clear_object (&self->tracker);
 
   hdy_stackable_box_unschedule_child_ticks (self);
 
