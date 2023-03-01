@@ -69,7 +69,7 @@ main (int    argc,
     { "preferences", show_preferences, NULL, NULL, NULL },
   };
 
-  app = gtk_application_new ("sm.puri.Handy.Demo", G_APPLICATION_FLAGS_NONE);
+  app = gtk_application_new ("sm.puri.Handy.Demo", 0);
   g_action_map_add_action_entries (G_ACTION_MAP (app),
                                    app_entries, G_N_ELEMENTS (app_entries),
                                    app);
