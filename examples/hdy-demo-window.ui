@@ -38,7 +38,7 @@
                   <object class="GtkRevealer" id="header_revealer">
                     <property name="visible">True</property>
                     <property name="transition-type">slide-down</property>
-                    <property name="reveal-child" bind-source="window_header_revealer_switch" bind-property="state" bind-flags="sync-create | bidirectional"/>
+                    <property name="reveal-child" bind-source="window_header_revealer_switch" bind-property="active" bind-flags="sync-create | bidirectional"/>
                     <child>
                       <object class="HdyHeaderBar" id="header_bar">
                         <property name="visible">True</property>
@@ -392,7 +392,7 @@
                                           <object class="GtkSwitch" id="keypad_letters_visible">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="state">True</property>
+                                            <property name="active">True</property>
                                             <property name="valign">center</property>
                                           </object>
                                         </child>
@@ -407,7 +407,7 @@
                                           <object class="GtkSwitch" id="keypad_symbols_visible">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="state">True</property>
+                                            <property name="active">True</property>
                                             <property name="valign">center</property>
                                           </object>
                                         </child>
@@ -425,8 +425,8 @@
                                     <property name="visible">True</property>
                                     <property name="halign">center</property>
                                     <property name="entry">entry_keypad</property>
-                                    <property name="symbols-visible" bind-source="keypad_symbols_visible" bind-property="state" bind-flags="sync-create | bidirectional"/>
-                                    <property name="letters-visible" bind-source="keypad_letters_visible" bind-property="state" bind-flags="sync-create | bidirectional"/>
+                                    <property name="symbols-visible" bind-source="keypad_symbols_visible" bind-property="active" bind-flags="sync-create | bidirectional"/>
+                                    <property name="letters-visible" bind-source="keypad_letters_visible" bind-property="active" bind-flags="sync-create | bidirectional"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1022,7 +1022,7 @@
                                     <property name="valign">center</property>
                                     <property name="halign">center</property>
                                     <property name="size" bind-source="avatar_size" bind-property="value" bind-flags="sync-create"></property>
-                                    <property name="show-initials" bind-source="avatar_show_initials" bind-property="state" bind-flags="sync-create"/>
+                                    <property name="show-initials" bind-source="avatar_show_initials" bind-property="active" bind-flags="sync-create"/>
                                     <property name="text" bind-source="avatar_text" bind-property="text" bind-flags="sync-create"/>
                                   </object>
                                   <packing>
@@ -1111,7 +1111,7 @@
                                               <object class="GtkSwitch" id="avatar_show_initials">
                                                 <property name="visible">True</property>
                                                 <property name="valign">center</property>
-                                                <property name="state">True</property>
+                                                <property name="active">True</property>
                                               </object>
                                             </child>
                                           </object>
@@ -1241,7 +1241,7 @@
                                         <child>
                                           <object class="GtkSwitch" id="window_header_revealer_switch">
                                             <property name="visible">True</property>
-                                            <property name="state">True</property>
+                                            <property name="active">True</property>
                                             <property name="valign">center</property>
                                           </object>
                                         </child>
