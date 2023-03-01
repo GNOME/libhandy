@@ -268,7 +268,7 @@ notify_carousel_indicators_cb (GObject       *sender,
                                HdyDemoWindow *self)
 {
   HdyComboRow *row = HDY_COMBO_ROW (sender);
-  HdyValueObject *obj;
+  g_autoptr (HdyValueObject) obj = NULL;
 
   g_assert (HDY_IS_COMBO_ROW (row));
   g_assert (HDY_IS_DEMO_WINDOW (self));

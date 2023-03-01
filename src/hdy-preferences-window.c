@@ -204,6 +204,8 @@ new_search_row_for_preference (HdyPreferencesRow    *row,
   g_object_set_data (G_OBJECT (widget), "page", page);
   g_object_set_data (G_OBJECT (widget), "row", row);
 
+  g_object_unref (row);
+
   return GTK_WIDGET (widget);
 }
 
