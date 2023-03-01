@@ -408,7 +408,7 @@ hdy_carousel_remove (GtkContainer *container,
 {
   HdyCarousel *self = HDY_CAROUSEL (container);
 
-  if (self->scrolling_box)
+  if (self->scrolling_box && widget != GTK_WIDGET (self->scrolling_box))
     gtk_container_remove (GTK_CONTAINER (self->scrolling_box), widget);
   else
     GTK_CONTAINER_CLASS (hdy_carousel_parent_class)->remove (container, widget);
