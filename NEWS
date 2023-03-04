@@ -1,4 +1,22 @@
 =============
+Version 1.8.2
+=============
+
+- Demo
+  - Correctly use GtkSwitch
+  - Fix a GLib deprecation
+- Docs
+  - Fix dependency names
+- HdyTabView
+  - Fix set_menu_model() input check
+  - Fix a typo in docs
+- HdySwipeable
+  - Fix get_swipe_area() fallback
+- Memory leak fixes
+- Translation updates
+  - Slovenian
+
+=============
 Version 1.8.1
 =============
 
