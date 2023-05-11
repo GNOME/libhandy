@@ -262,8 +262,6 @@ settings_portal_changed_cb (GDBusProxy  *proxy,
 
     return;
   }
-
-  g_variant_unref (value);
 }
 
 static void
