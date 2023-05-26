@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2022-04-21 18:03+0000\n"
+"POT-Creation-Date: 2023-01-25 21:03+0000\n"
 "PO-Revision-Date: 2022-04-27 20:57+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -219,99 +219,99 @@ msgstr ""
 msgid "Set the current value as the subtitle"
 msgstr ""
 
-#: src/hdy-deck.c:953
+#: src/hdy-deck.c:947
 msgid "Horizontally homogeneous"
 msgstr ""
 
-#: src/hdy-deck.c:954
+#: src/hdy-deck.c:948
 msgid "Horizontally homogeneous sizing"
 msgstr ""
 
-#: src/hdy-deck.c:967
+#: src/hdy-deck.c:961
 msgid "Vertically homogeneous"
 msgstr ""
 
-#: src/hdy-deck.c:968
+#: src/hdy-deck.c:962
 msgid "Vertically homogeneous sizing"
 msgstr ""
 
-#: src/hdy-deck.c:986 src/hdy-leaflet.c:1134 src/hdy-squeezer.c:1136
+#: src/hdy-deck.c:980 src/hdy-leaflet.c:1134 src/hdy-squeezer.c:1136
 #: src/hdy-stackable-box.c:3091
 msgid "Visible child"
 msgstr ""
 
-#: src/hdy-deck.c:987
+#: src/hdy-deck.c:981
 msgid "The widget currently visible"
 msgstr ""
 
-#: src/hdy-deck.c:1000 src/hdy-leaflet.c:1150 src/hdy-stackable-box.c:3098
+#: src/hdy-deck.c:994 src/hdy-leaflet.c:1150 src/hdy-stackable-box.c:3098
 msgid "Name of visible child"
 msgstr ""
 
-#: src/hdy-deck.c:1001
+#: src/hdy-deck.c:995
 msgid "The name of the widget currently visible"
 msgstr ""
 
-#: src/hdy-deck.c:1018 src/hdy-leaflet.c:1168 src/hdy-squeezer.c:1170
+#: src/hdy-deck.c:1012 src/hdy-leaflet.c:1168 src/hdy-squeezer.c:1170
 #: src/hdy-stackable-box.c:3117
 msgid "Transition type"
 msgstr ""
 
-#: src/hdy-deck.c:1019
+#: src/hdy-deck.c:1013
 msgid "The type of animation used to transition between children"
 msgstr ""
 
-#: src/hdy-deck.c:1032 src/hdy-header-bar.c:2257 src/hdy-squeezer.c:1150
+#: src/hdy-deck.c:1026 src/hdy-header-bar.c:2257 src/hdy-squeezer.c:1150
 msgid "Transition duration"
 msgstr ""
 
-#: src/hdy-deck.c:1033
+#: src/hdy-deck.c:1027
 msgid "The transition animation duration, in milliseconds"
 msgstr ""
 
-#: src/hdy-deck.c:1046 src/hdy-header-bar.c:2271 src/hdy-squeezer.c:1185
+#: src/hdy-deck.c:1040 src/hdy-header-bar.c:2271 src/hdy-squeezer.c:1185
 msgid "Transition running"
 msgstr ""
 
-#: src/hdy-deck.c:1047 src/hdy-header-bar.c:2272 src/hdy-squeezer.c:1186
+#: src/hdy-deck.c:1041 src/hdy-header-bar.c:2272 src/hdy-squeezer.c:1186
 msgid "Whether or not the transition is currently running"
 msgstr ""
 
-#: src/hdy-deck.c:1061 src/hdy-header-bar.c:2290 src/hdy-leaflet.c:1224
+#: src/hdy-deck.c:1055 src/hdy-header-bar.c:2290 src/hdy-leaflet.c:1224
 #: src/hdy-squeezer.c:1204 src/hdy-stackable-box.c:3145
 msgid "Interpolate size"
 msgstr ""
 
-#: src/hdy-deck.c:1062 src/hdy-header-bar.c:2291 src/hdy-leaflet.c:1225
+#: src/hdy-deck.c:1056 src/hdy-header-bar.c:2291 src/hdy-leaflet.c:1225
 #: src/hdy-squeezer.c:1205 src/hdy-stackable-box.c:3146
 msgid ""
 "Whether or not the size should smoothly change when changing between "
 "differently sized children"
 msgstr ""
 
-#: src/hdy-deck.c:1075 src/hdy-leaflet.c:1238 src/hdy-preferences-window.c:561
+#: src/hdy-deck.c:1069 src/hdy-leaflet.c:1238 src/hdy-preferences-window.c:561
 #: src/hdy-stackable-box.c:3160
 msgid "Can swipe back"
 msgstr ""
 
-#: src/hdy-deck.c:1076 src/hdy-leaflet.c:1239 src/hdy-stackable-box.c:3161
+#: src/hdy-deck.c:1070 src/hdy-leaflet.c:1239 src/hdy-stackable-box.c:3161
 msgid ""
 "Whether or not swipe gesture can be used to switch to the previous child"
 msgstr ""
 
-#: src/hdy-deck.c:1089 src/hdy-leaflet.c:1252 src/hdy-stackable-box.c:3175
+#: src/hdy-deck.c:1083 src/hdy-leaflet.c:1252 src/hdy-stackable-box.c:3175
 msgid "Can swipe forward"
 msgstr ""
 
-#: src/hdy-deck.c:1090 src/hdy-leaflet.c:1253 src/hdy-stackable-box.c:3176
+#: src/hdy-deck.c:1084 src/hdy-leaflet.c:1253 src/hdy-stackable-box.c:3176
 msgid "Whether or not swipe gesture can be used to switch to the next child"
 msgstr ""
 
-#: src/hdy-deck.c:1098 src/hdy-leaflet.c:1261
+#: src/hdy-deck.c:1092 src/hdy-leaflet.c:1261
 msgid "Name"
 msgstr ""
 
-#: src/hdy-deck.c:1099 src/hdy-leaflet.c:1262
+#: src/hdy-deck.c:1093 src/hdy-leaflet.c:1262
 msgid "The name of the child page"
 msgstr ""
 
@@ -1087,7 +1087,7 @@ msgstr ""
 
 #: src/hdy-tab-view.c:408
 msgid "Selected"
-msgstr "Seçili"
+msgstr "Seçili"
 
 #: src/hdy-tab-view.c:409
 msgid "Whether the page is selected"
