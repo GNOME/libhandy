@@ -1,22 +1,22 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Georgian translation for libhandy
+# Copyright (C) 2023 libhandy's authors.
+# This file is distributed under the same license as the libhandy package.
+# Ekaterine Papava <papava.e@gtu.ge>, 2023.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: libhandy\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2022-07-22 07:50+0000\n"
-"PO-Revision-Date: 2022-07-25 21:35+0200\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2023-03-01 15:25+0000\n"
+"PO-Revision-Date: 2023-09-09 16:37+0200\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
+"Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: glade/glade-hdy-carousel.c:160 glade/glade-hdy-header-bar.c:118
 #: glade/glade-hdy-leaflet.c:184
@@ -63,9 +63,9 @@ msgstr ""
 msgid "Only objects of type %s can be added to objects of type %s."
 msgstr ""
 
-#: src/hdy-action-row.c:371 src/hdy-action-row.c:372 src/hdy-expander-row.c:319
-#: src/hdy-expander-row.c:320 src/hdy-preferences-page.c:173
-#: src/hdy-preferences-page.c:174 src/hdy-status-page.c:221
+#: src/hdy-action-row.c:371 src/hdy-action-row.c:372 src/hdy-expander-row.c:338
+#: src/hdy-expander-row.c:339 src/hdy-preferences-page.c:187
+#: src/hdy-preferences-page.c:188 src/hdy-status-page.c:221
 msgid "Icon name"
 msgstr "ხატულის სახელი"
 
@@ -77,17 +77,17 @@ msgstr ""
 msgid "The widget to be activated when the row is activated"
 msgstr ""
 
-#: src/hdy-action-row.c:406 src/hdy-action-row.c:407 src/hdy-expander-row.c:290
+#: src/hdy-action-row.c:406 src/hdy-action-row.c:407 src/hdy-expander-row.c:309
 #: src/hdy-header-bar.c:2123 src/hdy-view-switcher-title.c:279
 msgid "Subtitle"
 msgstr "სუბტიტრები"
 
-#: src/hdy-action-row.c:423 src/hdy-expander-row.c:305
+#: src/hdy-action-row.c:423 src/hdy-expander-row.c:324
 #: src/hdy-preferences-row.c:129
 msgid "Use underline"
 msgstr ""
 
-#: src/hdy-action-row.c:424 src/hdy-expander-row.c:306
+#: src/hdy-action-row.c:424 src/hdy-expander-row.c:325
 #: src/hdy-preferences-row.c:130
 msgid ""
 "If set, an underline in the text indicates the next character should be used "
@@ -113,7 +113,7 @@ msgstr ""
 #: src/hdy-carousel-box.c:1091 src/hdy-carousel-box.c:1092
 #: src/hdy-carousel.c:601 src/hdy-carousel.c:602 src/hdy-tab-view.c:1121
 msgid "Number of pages"
-msgstr ""
+msgstr "გვერდების რაოდენობა"
 
 #: src/hdy-carousel-box.c:1107 src/hdy-carousel.c:619 src/hdy-header-bar.c:2095
 msgid "Position"
@@ -187,7 +187,7 @@ msgstr ""
 
 #: src/hdy-clamp.c:436
 msgid "Maximum size"
-msgstr ""
+msgstr "მაქსიმალური ზომა"
 
 #: src/hdy-clamp.c:437
 msgid "The maximum size allocated to the child"
@@ -287,7 +287,7 @@ msgid ""
 "differently sized children"
 msgstr ""
 
-#: src/hdy-deck.c:1069 src/hdy-leaflet.c:1238 src/hdy-preferences-window.c:561
+#: src/hdy-deck.c:1069 src/hdy-leaflet.c:1238 src/hdy-preferences-window.c:563
 #: src/hdy-stackable-box.c:3160
 msgid "Can swipe back"
 msgstr ""
@@ -307,37 +307,37 @@ msgstr ""
 
 #: src/hdy-deck.c:1092 src/hdy-leaflet.c:1261
 msgid "Name"
-msgstr ""
+msgstr "სახელი"
 
 #: src/hdy-deck.c:1093 src/hdy-leaflet.c:1262
 msgid "The name of the child page"
 msgstr ""
 
-#: src/hdy-expander-row.c:291
+#: src/hdy-expander-row.c:310
 msgid "The subtitle for this row"
 msgstr ""
 
-#: src/hdy-expander-row.c:333
+#: src/hdy-expander-row.c:352
 msgid "Expanded"
-msgstr ""
+msgstr "გაფართოებული"
 
-#: src/hdy-expander-row.c:334
+#: src/hdy-expander-row.c:353
 msgid "Whether the row is expanded"
 msgstr ""
 
-#: src/hdy-expander-row.c:347
+#: src/hdy-expander-row.c:366
 msgid "Enable expansion"
 msgstr ""
 
-#: src/hdy-expander-row.c:348
+#: src/hdy-expander-row.c:367
 msgid "Whether the expansion is enabled"
 msgstr ""
 
-#: src/hdy-expander-row.c:361
+#: src/hdy-expander-row.c:380
 msgid "Show enable switch"
 msgstr ""
 
-#: src/hdy-expander-row.c:362
+#: src/hdy-expander-row.c:381
 msgid "Whether the switch enabling the expansion is visible"
 msgstr ""
 
@@ -447,7 +447,7 @@ msgstr ""
 
 #: src/hdy-flap.c:1735
 msgid "Modal"
-msgstr ""
+msgstr "მოდალი"
 
 #: src/hdy-flap.c:1736
 msgid "Whether the flap is modal"
@@ -508,8 +508,8 @@ msgid "The index of the child in the parent"
 msgstr ""
 
 #: src/hdy-header-bar.c:2109 src/hdy-preferences-group.c:294
-#: src/hdy-preferences-group.c:295 src/hdy-preferences-page.c:187
-#: src/hdy-preferences-page.c:188 src/hdy-preferences-row.c:115
+#: src/hdy-preferences-group.c:295 src/hdy-preferences-page.c:201
+#: src/hdy-preferences-page.c:202 src/hdy-preferences-row.c:115
 #: src/hdy-status-page.c:235 src/hdy-tab-view.c:441
 #: src/hdy-view-switcher-title.c:263
 msgid "Title"
@@ -537,7 +537,7 @@ msgstr ""
 
 #: src/hdy-header-bar.c:2171
 msgid "Show decorations"
-msgstr ""
+msgstr "დეკორაციების ჩვენება"
 
 #: src/hdy-header-bar.c:2172
 msgid "Whether to show window decorations"
@@ -590,7 +590,7 @@ msgstr ""
 
 #: src/hdy-keypad-button.c:225
 msgid "Digit"
-msgstr ""
+msgstr "ციფრი"
 
 #: src/hdy-keypad-button.c:226
 msgid "The keypad digit of the button"
@@ -769,15 +769,15 @@ msgstr ""
 msgid "Untitled page"
 msgstr "უსახელო გვერდი"
 
-#: src/hdy-preferences-window.c:547
+#: src/hdy-preferences-window.c:549
 msgid "Search enabled"
 msgstr ""
 
-#: src/hdy-preferences-window.c:548
+#: src/hdy-preferences-window.c:550
 msgid "Whether search is enabled"
 msgstr ""
 
-#: src/hdy-preferences-window.c:562
+#: src/hdy-preferences-window.c:564
 msgid ""
 "Whether or not swipe gesture can be used to switch from a subpage to the "
 "preferences"
@@ -789,7 +789,7 @@ msgstr "გამართვა"
 
 #: src/hdy-preferences-window.ui:84
 msgid "Search"
-msgstr ""
+msgstr "ძებნა"
 
 #: src/hdy-preferences-window.ui:167
 msgid "No Results Found"
@@ -809,7 +809,7 @@ msgstr ""
 
 #: src/hdy-search-bar.c:465
 msgid "Show Close Button"
-msgstr ""
+msgstr "დახურვის ღილაკის ჩვენება"
 
 #: src/hdy-search-bar.c:466
 msgid "Whether to show the close button in the toolbar"
@@ -825,7 +825,7 @@ msgstr ""
 
 #: src/hdy-squeezer.c:1122
 msgid "Homogeneous"
-msgstr ""
+msgstr "ჰომოგენური"
 
 #: src/hdy-squeezer.c:1123
 msgid "Homogeneous sizing"
@@ -947,7 +947,7 @@ msgstr ""
 
 #: src/hdy-swipe-tracker.c:1097
 msgid "Reversed"
-msgstr ""
+msgstr "შებრუნებულია"
 
 #: src/hdy-swipe-tracker.c:1098
 msgid "Whether swipe direction is reversed"
@@ -984,7 +984,7 @@ msgstr ""
 
 #: src/hdy-tab-bar.c:564
 msgid "Autohide"
-msgstr ""
+msgstr "ავტომატური დამალვა"
 
 #: src/hdy-tab-bar.c:565
 msgid "Whether the tabs automatically hide"
@@ -1000,7 +1000,7 @@ msgstr ""
 
 #: src/hdy-tab-bar.c:597
 msgid "Expand tabs"
-msgstr ""
+msgstr "ჩანართების გაფართოება"
 
 #: src/hdy-tab-bar.c:598
 msgid "Whether tabs expand to full width"
@@ -1008,7 +1008,7 @@ msgstr ""
 
 #: src/hdy-tab-bar.c:614 src/hdy-tab.c:948 src/hdy-tab.c:949
 msgid "Inverted"
-msgstr ""
+msgstr "შებრუნებულია"
 
 #: src/hdy-tab-bar.c:615
 msgid "Whether tabs use inverted layout"
@@ -1033,7 +1033,7 @@ msgstr "მიჭიკარტებული"
 
 #: src/hdy-tab-box.c:3502 src/hdy-tab-box.c:3503
 msgid "Tab Bar"
-msgstr ""
+msgstr "ჩანართების ზოლი"
 
 #: src/hdy-tab-box.c:3516 src/hdy-tab-box.c:3517
 msgid "Adjustment"
@@ -1243,7 +1243,7 @@ msgstr ""
 
 #: src/hdy-view-switcher-button.c:201
 msgid "Icon Name"
-msgstr ""
+msgstr "ხატულას სახელი"
 
 #: src/hdy-view-switcher-button.c:202
 msgid "Icon name for image"
