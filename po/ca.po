@@ -12,16 +12,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2022-09-15 14:05+0000\n"
-"PO-Revision-Date: 2022-09-15 08:57+0100\n"
+"POT-Creation-Date: 2023-05-26 23:02+0000\n"
+"PO-Revision-Date: 2023-09-02 23:19+0200\n"
 "Last-Translator: Jordi Mas i Herǹandez, <jmas@softcatala.org>\n"
-"Language-Team: Catalan (https://www.transifex.com/softcatala/teams/62837/ca/)\n"
+"Language-Team: Catalan (https://www.transifex.com/softcatala/teams/62837/"
+"ca/)\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: glade/glade-hdy-carousel.c:160 glade/glade-hdy-header-bar.c:118
 #: glade/glade-hdy-leaflet.c:184
@@ -41,8 +42,8 @@ msgstr "Aquesta propietat no s'aplica quan s'estableix un títol personalitzat"
 
 #: glade/glade-hdy-header-bar.c:289
 msgid ""
-"The decoration layout does not apply to header bars which do not show window"
-" controls"
+"The decoration layout does not apply to header bars which do not show window "
+"controls"
 msgstr ""
 "La disposició de decoració no s'aplica a les barres de capçalera que no "
 "mostren controls per la finestra"
@@ -71,10 +72,9 @@ msgid "Only objects of type %s can be added to objects of type %s."
 msgstr ""
 "Només els objectes de tipus %s poden afegir-se als objectes de tipus %s."
 
-#: src/hdy-action-row.c:371 src/hdy-action-row.c:372
-#: src/hdy-expander-row.c:319 src/hdy-expander-row.c:320
-#: src/hdy-preferences-page.c:173 src/hdy-preferences-page.c:174
-#: src/hdy-status-page.c:221
+#: src/hdy-action-row.c:371 src/hdy-action-row.c:372 src/hdy-expander-row.c:338
+#: src/hdy-expander-row.c:339 src/hdy-preferences-page.c:187
+#: src/hdy-preferences-page.c:188 src/hdy-status-page.c:221
 msgid "Icon name"
 msgstr "Nom de la icona"
 
@@ -86,22 +86,21 @@ msgstr "Giny activable"
 msgid "The widget to be activated when the row is activated"
 msgstr "Giny a activar quan s'activa la fila"
 
-#: src/hdy-action-row.c:406 src/hdy-action-row.c:407
-#: src/hdy-expander-row.c:290 src/hdy-header-bar.c:2123
-#: src/hdy-view-switcher-title.c:279
+#: src/hdy-action-row.c:406 src/hdy-action-row.c:407 src/hdy-expander-row.c:309
+#: src/hdy-header-bar.c:2123 src/hdy-view-switcher-title.c:279
 msgid "Subtitle"
 msgstr "Subtítol"
 
-#: src/hdy-action-row.c:423 src/hdy-expander-row.c:305
+#: src/hdy-action-row.c:423 src/hdy-expander-row.c:324
 #: src/hdy-preferences-row.c:129
 msgid "Use underline"
 msgstr "Utilitza el subratllat"
 
-#: src/hdy-action-row.c:424 src/hdy-expander-row.c:306
+#: src/hdy-action-row.c:424 src/hdy-expander-row.c:325
 #: src/hdy-preferences-row.c:130
 msgid ""
-"If set, an underline in the text indicates the next character should be used"
-" for the mnemonic accelerator key"
+"If set, an underline in the text indicates the next character should be used "
+"for the mnemonic accelerator key"
 msgstr ""
 "Quan està actiu, un subratllat al text indica quin és el següent caràcter "
 "que s'hauria d'utilitzar per a la clau acceleradora mnemotècnica"
@@ -127,8 +126,7 @@ msgstr "El nombre desitjat de línies de subtítols"
 msgid "Number of pages"
 msgstr "Nombre de pàgines"
 
-#: src/hdy-carousel-box.c:1107 src/hdy-carousel.c:619
-#: src/hdy-header-bar.c:2095
+#: src/hdy-carousel-box.c:1107 src/hdy-carousel.c:619 src/hdy-header-bar.c:2095
 msgid "Position"
 msgstr "Posició"
 
@@ -136,8 +134,7 @@ msgstr "Posició"
 msgid "Current scrolling position"
 msgstr "Posició actual de la barra de desplaçament"
 
-#: src/hdy-carousel-box.c:1123 src/hdy-carousel.c:652
-#: src/hdy-header-bar.c:2151
+#: src/hdy-carousel-box.c:1123 src/hdy-carousel.c:652 src/hdy-header-bar.c:2151
 msgid "Spacing"
 msgstr "Espaiat"
 
@@ -302,7 +299,7 @@ msgid ""
 msgstr ""
 "Si la mida ha de canviar suaument en canviar entre fills de diferent mida"
 
-#: src/hdy-deck.c:1069 src/hdy-leaflet.c:1238 src/hdy-preferences-window.c:561
+#: src/hdy-deck.c:1069 src/hdy-leaflet.c:1238 src/hdy-preferences-window.c:563
 #: src/hdy-stackable-box.c:3160
 msgid "Can swipe back"
 msgstr "Pot lliscar enrere"
@@ -321,8 +318,7 @@ msgstr "Pot lliscar endavant"
 #: src/hdy-deck.c:1084 src/hdy-leaflet.c:1253 src/hdy-stackable-box.c:3176
 msgid "Whether or not swipe gesture can be used to switch to the next child"
 msgstr ""
-"Si es pot utilitzar o no el gest de lliscar per a canviar cap al fill "
-"següent"
+"Si es pot utilitzar o no el gest de lliscar per a canviar cap al fill següent"
 
 #: src/hdy-deck.c:1092 src/hdy-leaflet.c:1261
 msgid "Name"
@@ -332,31 +328,31 @@ msgstr "Nom"
 msgid "The name of the child page"
 msgstr "Nom de la pàgina fill"
 
-#: src/hdy-expander-row.c:291
+#: src/hdy-expander-row.c:310
 msgid "The subtitle for this row"
 msgstr "Subtítol per a la fila"
 
-#: src/hdy-expander-row.c:333
+#: src/hdy-expander-row.c:352
 msgid "Expanded"
 msgstr "Estesa"
 
-#: src/hdy-expander-row.c:334
+#: src/hdy-expander-row.c:353
 msgid "Whether the row is expanded"
 msgstr "Si la fila està estesa"
 
-#: src/hdy-expander-row.c:347
+#: src/hdy-expander-row.c:366
 msgid "Enable expansion"
 msgstr "Activar l'estesa"
 
-#: src/hdy-expander-row.c:348
+#: src/hdy-expander-row.c:367
 msgid "Whether the expansion is enabled"
 msgstr "Si l'expansió està habilitada"
 
-#: src/hdy-expander-row.c:361
+#: src/hdy-expander-row.c:380
 msgid "Show enable switch"
 msgstr "Mostra activar el commutador"
 
-#: src/hdy-expander-row.c:362
+#: src/hdy-expander-row.c:381
 msgid "Whether the switch enabling the expansion is visible"
 msgstr "Si el commutador que activa l'estesa està visible"
 
@@ -405,26 +401,20 @@ msgid "Reveal Flap"
 msgstr "Mostra la solapa"
 
 #: src/hdy-flap.c:1601
-#, fuzzy
-#| msgid "Whether the view switcher is revealed"
 msgid "Whether the flap is revealed"
-msgstr "Si es mostra l'intercanviador de vistes"
+msgstr "Si es mostra la solapa"
 
 #: src/hdy-flap.c:1614
 msgid "Reveal Duration"
 msgstr "Mostra la durada"
 
 #: src/hdy-flap.c:1615
-#, fuzzy
-#| msgid "The transition animation duration, in milliseconds"
 msgid "The reveal transition animation duration, in milliseconds"
-msgstr "Durada de l'animació de transició, en mil·lisegons"
+msgstr "Durada de l'animació al mostrar la transició, en mil·lisegons"
 
 #: src/hdy-flap.c:1632
-#, fuzzy
-#| msgid "Reveal duration"
 msgid "Reveal Progress"
-msgstr "Mostra la durada"
+msgstr "Mostra el progrés"
 
 #: src/hdy-flap.c:1633
 #, fuzzy
@@ -432,21 +422,16 @@ msgid "The current reveal transition progress"
 msgstr "El progrés de transició revelat actual"
 
 #: src/hdy-flap.c:1648
-#, fuzzy
-#| msgid "Policy"
 msgid "Fold Policy"
-msgstr "Política"
+msgstr "Política de plec"
 
 #: src/hdy-flap.c:1649
-#, fuzzy
 msgid "The current fold policy"
 msgstr "La política de plecs actual"
 
 #: src/hdy-flap.c:1663
-#, fuzzy
-#| msgid "Reveal duration"
 msgid "Fold Duration"
-msgstr "Mostra la durada"
+msgstr "Durada del plec"
 
 #: src/hdy-flap.c:1664
 #, fuzzy
@@ -459,20 +444,16 @@ msgid "Folded"
 msgstr "Plegat"
 
 #: src/hdy-flap.c:1681
-#, fuzzy
-#| msgid "Whether the widget is folded"
 msgid "Whether the flap is currently folded"
-msgstr "Si el giny està plegat"
+msgstr "Si la solapa està plegat actualment"
 
 #: src/hdy-flap.c:1698
 msgid "Locked"
 msgstr "Bloquejat"
 
 #: src/hdy-flap.c:1699
-#, fuzzy
-#| msgid "Whether the widget is folded"
 msgid "Whether the flap is locked"
-msgstr "Si el giny està plegat"
+msgstr "Si la solapa està blocada"
 
 #: src/hdy-flap.c:1716
 msgid "Transition Type"
@@ -485,35 +466,28 @@ msgid "The type of animation used for reveal and fold transitions"
 msgstr "Tipus d'animació utilitzat en la transició"
 
 #: src/hdy-flap.c:1735
-#, fuzzy
 msgid "Modal"
-msgstr "Modalitat"
+msgstr "Modal"
 
 #: src/hdy-flap.c:1736
-#, fuzzy
-#| msgid "Whether the widget is folded"
 msgid "Whether the flap is modal"
-msgstr "Si el giny està plegat"
+msgstr "Si la solapa està plegada"
 
 #: src/hdy-flap.c:1752
 msgid "Swipe to Open"
 msgstr "Llisca per a obrir"
 
 #: src/hdy-flap.c:1753
-#, fuzzy
-#| msgid "Whether the child can be navigated to"
 msgid "Whether the flap can be opened with a swipe gesture"
-msgstr "Si es pot navegar cap al fill"
+msgstr "Si la solapa es pot obrir amb un gest lliscant"
 
 #: src/hdy-flap.c:1769
 msgid "Swipe to Close"
 msgstr "Llisca per a tancar"
 
 #: src/hdy-flap.c:1770
-#, fuzzy
-#| msgid "Whether the widget can be swiped"
 msgid "Whether the flap can be closed with a swipe gesture"
-msgstr "Si es pot lliscar el giny"
+msgstr "Si la solapa es pot tancar amb un gest lliscant"
 
 #: src/hdy-header-bar.c:490
 msgid "Application menu"
@@ -556,8 +530,8 @@ msgid "The index of the child in the parent"
 msgstr "Índex del fill en el pare"
 
 #: src/hdy-header-bar.c:2109 src/hdy-preferences-group.c:294
-#: src/hdy-preferences-group.c:295 src/hdy-preferences-page.c:187
-#: src/hdy-preferences-page.c:188 src/hdy-preferences-row.c:115
+#: src/hdy-preferences-group.c:295 src/hdy-preferences-page.c:201
+#: src/hdy-preferences-page.c:202 src/hdy-preferences-row.c:115
 #: src/hdy-status-page.c:235 src/hdy-tab-view.c:441
 #: src/hdy-view-switcher-title.c:263
 msgid "Title"
@@ -649,8 +623,7 @@ msgid "Symbols"
 msgstr "Símbols"
 
 #: src/hdy-keypad-button.c:233
-msgid ""
-"The keypad symbols of the button. The first symbol is used as the digit"
+msgid "The keypad symbols of the button. The first symbol is used as the digit"
 msgstr ""
 "Els símbols de teclat del botó. El primer símbol s'utilitza com a dígit"
 
@@ -822,15 +795,15 @@ msgstr "El títol de la preferència"
 msgid "Untitled page"
 msgstr "Pàgina sense títol"
 
-#: src/hdy-preferences-window.c:547
+#: src/hdy-preferences-window.c:549
 msgid "Search enabled"
 msgstr "Cerca activa"
 
-#: src/hdy-preferences-window.c:548
+#: src/hdy-preferences-window.c:550
 msgid "Whether search is enabled"
 msgstr "Si la cerca està activa"
 
-#: src/hdy-preferences-window.c:562
+#: src/hdy-preferences-window.c:564
 msgid ""
 "Whether or not swipe gesture can be used to switch from a subpage to the "
 "preferences"
@@ -889,7 +862,7 @@ msgstr "Dimensionat homogeni"
 #: src/hdy-squeezer.c:1137
 #, fuzzy
 msgid "The widget currently visible in the squeezer"
-msgstr "El giny actualment visible en el spker"
+msgstr "El giny visible actualment en el spker"
 
 #: src/hdy-squeezer.c:1171
 msgid "The type of animation used to transition"
@@ -948,18 +921,14 @@ msgid "Orientation"
 msgstr "Orientació"
 
 #: src/hdy-status-page.c:222
-#, fuzzy
 msgid "The name of the icon to be used"
 msgstr "El nom de la icona a usar"
 
 #: src/hdy-status-page.c:236
-#, fuzzy
-#| msgid "The title to display"
 msgid "The title to be displayed below the icon"
-msgstr "El títol a mostrar"
+msgstr "El títol que es mostrarà sota la icona"
 
 #: src/hdy-status-page.c:250
-#, fuzzy
 msgid "The description to be displayed below the title"
 msgstr "La descripció que es mostrarà sota el títol"
 
@@ -984,17 +953,14 @@ msgid "Dark"
 msgstr "Fosc"
 
 #: src/hdy-style-manager.c:624
-#, fuzzy
-#| msgid "Whether the expansion is enabled"
 msgid "Whether the application is using dark appearance"
-msgstr "Si l'expansió està habilitada"
+msgstr "Si l'aplicació utilitza l'aparença fosca"
 
 #: src/hdy-style-manager.c:639
 msgid "High Contrast"
 msgstr "Contrast alt"
 
 #: src/hdy-style-manager.c:640
-#, fuzzy
 msgid "Whether the application is using high contrast appearance"
 msgstr "Si l'aplicació utilitza una aparença d'alt contrast"
 
@@ -1035,24 +1001,18 @@ msgid "The view the tab bar controls."
 msgstr "La vista dels controls de la barra de pestanyes."
 
 #: src/hdy-tab-bar.c:530
-#, fuzzy
-#| msgid "The start action widget"
 msgid "Start action widget"
-msgstr "Giny d'acció d'inici"
+msgstr "Giny d'inici de l'acció"
 
 #: src/hdy-tab-bar.c:531
-#, fuzzy
 msgid "The widget shown before the tabs"
 msgstr "El giny que es mostra abans de les pestanyes"
 
 #: src/hdy-tab-bar.c:544
-#, fuzzy
-#| msgid "The end action widget"
 msgid "End action widget"
 msgstr "Giny d'acció final"
 
 #: src/hdy-tab-bar.c:545
-#, fuzzy
 msgid "The widget shown after the tabs"
 msgstr "El giny que es mostra després de les pestanyes"
 
@@ -1061,39 +1021,30 @@ msgid "Autohide"
 msgstr "Amaga automàticament"
 
 #: src/hdy-tab-bar.c:565
-#, fuzzy
 msgid "Whether the tabs automatically hide"
 msgstr "Si les pestanyes s'amaguen automàticament"
 
 #: src/hdy-tab-bar.c:580
-#, fuzzy
 msgid "Tabs revealed"
-msgstr "Pestanyes revelades"
+msgstr "Pestanyes mostrades"
 
 #: src/hdy-tab-bar.c:581
-#, fuzzy
-#| msgid "Whether the view switcher is revealed"
 msgid "Whether the tabs are currently revealed"
-msgstr "Si es mostra l'intercanviador de vistes"
+msgstr "Si les pestanyes es mostren actualment"
 
 #: src/hdy-tab-bar.c:597
-#, fuzzy
 msgid "Expand tabs"
 msgstr "Expandeix les pestanyes"
 
 #: src/hdy-tab-bar.c:598
-#, fuzzy
-#| msgid "Whether the row is expanded"
 msgid "Whether tabs expand to full width"
-msgstr "Si la fila està estesa"
+msgstr "Si les pestanyes s'eixamplen a tota l'amplada"
 
 #: src/hdy-tab-bar.c:614 src/hdy-tab.c:948 src/hdy-tab.c:949
-#, fuzzy
 msgid "Inverted"
 msgstr "Invertit"
 
 #: src/hdy-tab-bar.c:615
-#, fuzzy
 msgid "Whether tabs use inverted layout"
 msgstr "Si les pestanyes utilitzen una disposició invertida"
 
@@ -1103,19 +1054,15 @@ msgid "Extra drag destination targets"
 msgstr "Objectius de destinació de l'arrossegament extra"
 
 #: src/hdy-tab-bar.c:654
-#, fuzzy
 msgid "Is overflowing"
 msgstr "Està desbordat"
 
 #: src/hdy-tab-bar.c:655
-#, fuzzy
-#| msgid "Whether the row is expanded"
 msgid "Whether the tab bar is overflowing"
-msgstr "Si la fila està estesa"
+msgstr "Si la barra de pestanyes està desbordada"
 
 #: src/hdy-tab-box.c:3495 src/hdy-tab-box.c:3496 src/hdy-tab.c:913
 #: src/hdy-tab.c:914 src/hdy-tab-view.c:424
-#, fuzzy
 msgid "Pinned"
 msgstr "Fixat"
 
@@ -1124,21 +1071,16 @@ msgid "Tab Bar"
 msgstr "Barra de pestanyes"
 
 #: src/hdy-tab-box.c:3516 src/hdy-tab-box.c:3517
-#, fuzzy
 msgid "Adjustment"
 msgstr "Ajust"
 
 #: src/hdy-tab-box.c:3523 src/hdy-tab-box.c:3524
-#, fuzzy
-#| msgid "Needs attention"
 msgid "Needs Attention Left"
-msgstr "Necessita atenció"
+msgstr "Necessita atenció a l'esquerra"
 
 #: src/hdy-tab-box.c:3530 src/hdy-tab-box.c:3531
-#, fuzzy
-#| msgid "Needs attention"
 msgid "Needs Attention Right"
-msgstr "Necessita atenció"
+msgstr "Necessita atenció a la dreta"
 
 #: src/hdy-tab-box.c:3537 src/hdy-tab-box.c:3538
 #, fuzzy
@@ -1159,7 +1101,6 @@ msgid "Display Width"
 msgstr "Amplada de la pantalla"
 
 #: src/hdy-tab.c:941 src/hdy-tab.c:942
-#, fuzzy
 msgid "Hovering"
 msgstr "En passar per sobre"
 
@@ -1174,39 +1115,28 @@ msgid "The child of the page"
 msgstr "Nom de la pàgina fill"
 
 #: src/hdy-tab-view.c:394
-#, fuzzy
 msgid "Parent"
 msgstr "Pare"
 
 #: src/hdy-tab-view.c:395
-#, fuzzy
-#| msgid "The name of the child page"
 msgid "The parent page of the page"
-msgstr "Nom de la pàgina fill"
+msgstr "La pàgina pare de la pàgina"
 
 #: src/hdy-tab-view.c:408
-#, fuzzy
-#| msgid "Selected index"
 msgid "Selected"
-msgstr "Índex seleccionat"
+msgstr "Seleccionat"
 
 #: src/hdy-tab-view.c:409
-#, fuzzy
-#| msgid "Whether the widget is folded"
 msgid "Whether the page is selected"
-msgstr "Si el giny està plegat"
+msgstr "Si la pàgina està seleccionada"
 
 #: src/hdy-tab-view.c:425
-#, fuzzy
-#| msgid "Whether the row is expanded"
 msgid "Whether the page is pinned"
-msgstr "Si la fila està estesa"
+msgstr "Si la pàgina està fixada"
 
 #: src/hdy-tab-view.c:442
-#, fuzzy
-#| msgid "The title of the preference"
 msgid "The title of the page"
-msgstr "El títol de la preferència"
+msgstr "El títol de la pàgina"
 
 #: src/hdy-tab-view.c:460
 #, fuzzy
@@ -1220,41 +1150,31 @@ msgid "The tooltip of the page"
 msgstr "Nom de la pàgina fill"
 
 #: src/hdy-tab-view.c:479
-#, fuzzy
-#| msgid "Icon name"
 msgid "Icon"
-msgstr "Nom de la icona"
+msgstr "Icona"
 
 #: src/hdy-tab-view.c:480
-#, fuzzy
-#| msgid "The name of the child page"
 msgid "The icon of the page"
-msgstr "Nom de la pàgina fill"
+msgstr "La icona de la pàgina"
 
 #: src/hdy-tab-view.c:498
-#, fuzzy
 msgid "Loading"
 msgstr "S'està carregant"
 
 #: src/hdy-tab-view.c:499
-#, fuzzy
-#| msgid "Whether the widget is folded"
 msgid "Whether the page is loading"
-msgstr "Si el giny està plegat"
+msgstr "Si la pàgina s'està carregant"
 
 #: src/hdy-tab-view.c:523
-#, fuzzy
 msgid "Indicator icon"
 msgstr "Icona de l'indicador"
 
 #: src/hdy-tab-view.c:524
-#, fuzzy
 msgid "An indicator icon for the page"
 msgstr "Una icona d'indicador per a la pàgina"
 
 #: src/hdy-tab-view.c:542
 #, fuzzy
-#| msgid "Interactive"
 msgid "Indicator activatable"
 msgstr "Interactiu"
 
@@ -1269,59 +1189,44 @@ msgid "Needs attention"
 msgstr "Necessita atenció"
 
 #: src/hdy-tab-view.c:561
-#, fuzzy
-#| msgid "Hint the view needs attention"
 msgid "Whether the page needs attention"
-msgstr "Suggeriu que la vista necessita atenció"
+msgstr "Si la pàgina necessita atenció"
 
 #: src/hdy-tab-view.c:1122
-#, fuzzy
 msgid "The number of pages in the tab view"
 msgstr "El nombre de pàgines a la vista de pestanyes"
 
 #: src/hdy-tab-view.c:1137
-#, fuzzy
-#| msgid "Number of pages"
 msgid "Number of pinned pages"
-msgstr "Nombre de pàgines"
+msgstr "Nombre de pàgines fixades"
 
 #: src/hdy-tab-view.c:1138
-#, fuzzy
 msgid "The number of pinned pages in the tab view"
 msgstr "El nombre de pàgines fixades a la vista de pestanyes"
 
 #: src/hdy-tab-view.c:1157
-#, fuzzy
 msgid "Is transferring page"
 msgstr "S'està transferint la pàgina"
 
 #: src/hdy-tab-view.c:1158
-#, fuzzy
-#| msgid "Whether search is enabled"
 msgid "Whether a page is being transferred"
-msgstr "Si la cerca està activa"
+msgstr "Si s'està transferint la pàgina"
 
 #: src/hdy-tab-view.c:1171
-#, fuzzy
 msgid "Selected page"
 msgstr "Pàgina seleccionada"
 
 #: src/hdy-tab-view.c:1172
-#, fuzzy
-#| msgid "The widget currently visible"
 msgid "The currently selected page"
-msgstr "El giny actualment visible"
+msgstr "La pàgina seleccionada actualment"
 
 #: src/hdy-tab-view.c:1192
-#, fuzzy
 msgid "Default icon"
 msgstr "Icona predeterminada"
 
 #: src/hdy-tab-view.c:1193
-#, fuzzy
-#| msgid "Default animation duration"
 msgid "Default page icon"
-msgstr "Durada predeterminada de l'animació"
+msgstr "Icona de la pàgina predeterminada"
 
 #: src/hdy-tab-view.c:1210
 msgid "Menu model"
@@ -1336,10 +1241,8 @@ msgid "Shortcut widget"
 msgstr "Giny de drecera"
 
 #: src/hdy-tab-view.c:1248
-#, fuzzy
-#| msgid "The start action widget"
 msgid "Tab shortcut widget"
-msgstr "Giny d'acció d'inici"
+msgstr "Giny de drecera de pestanya"
 
 #: src/hdy-title-bar.c:329
 msgid "Selection mode"
@@ -1414,8 +1317,8 @@ msgid ""
 "The preferred place to ellipsize the string, if the narrow mode label does "
 "not have enough room to display the entire string"
 msgstr ""
-"El lloc preferit per ellipsize la cadena si l'etiqueta del mode estret no té"
-" prou espai per a mostrar tota la cadena"
+"El lloc preferit per ellipsize la cadena si l'etiqueta del mode estret no té "
+"prou espai per a mostrar tota la cadena"
 
 #: src/hdy-view-switcher-title.c:300
 msgid "View switcher enabled"
