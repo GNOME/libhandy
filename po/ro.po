@@ -7,9 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2021-10-10 10:42+0000\n"
-"PO-Revision-Date: 2022-01-07 13:25+0100\n"
-"Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
+"POT-Creation-Date: 2023-01-25 21:03+0000\n"
+"PO-Revision-Date: 2023-10-21 15:51+0300\n"
+"Last-Translator: Florentina Mușat <florentina [dot] musat [dot] 28 [at] "
+"gmail [dot] com>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);;\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.4\n"
 
 #: glade/glade-hdy-carousel.c:160 glade/glade-hdy-header-bar.c:118
 #: glade/glade-hdy-leaflet.c:184
@@ -67,32 +68,32 @@ msgstr "Bara de căutare este plină deja"
 msgid "Only objects of type %s can be added to objects of type %s."
 msgstr "Doar obiectele de tipul %s pot fi adăugate obiectelor de tip %s."
 
-#: src/hdy-action-row.c:370 src/hdy-action-row.c:371 src/hdy-expander-row.c:314
-#: src/hdy-expander-row.c:315 src/hdy-preferences-page.c:173
+#: src/hdy-action-row.c:371 src/hdy-action-row.c:372 src/hdy-expander-row.c:319
+#: src/hdy-expander-row.c:320 src/hdy-preferences-page.c:173
 #: src/hdy-preferences-page.c:174 src/hdy-status-page.c:221
 msgid "Icon name"
 msgstr "Nume iconiță"
 
-#: src/hdy-action-row.c:384
+#: src/hdy-action-row.c:392
 msgid "Activatable widget"
 msgstr "Widget care se poate activa"
 
-#: src/hdy-action-row.c:385
+#: src/hdy-action-row.c:393
 msgid "The widget to be activated when the row is activated"
 msgstr "Widgetul de activat când rândul este activat"
 
-#: src/hdy-action-row.c:398 src/hdy-action-row.c:399 src/hdy-expander-row.c:285
-#: src/hdy-header-bar.c:2104 src/hdy-view-switcher-title.c:272
+#: src/hdy-action-row.c:406 src/hdy-action-row.c:407 src/hdy-expander-row.c:290
+#: src/hdy-header-bar.c:2123 src/hdy-view-switcher-title.c:279
 msgid "Subtitle"
 msgstr "Subitlu"
 
-#: src/hdy-action-row.c:413 src/hdy-expander-row.c:300
-#: src/hdy-preferences-row.c:130
+#: src/hdy-action-row.c:423 src/hdy-expander-row.c:305
+#: src/hdy-preferences-row.c:129
 msgid "Use underline"
 msgstr "Utilizează sublinieri"
 
-#: src/hdy-action-row.c:414 src/hdy-expander-row.c:301
-#: src/hdy-preferences-row.c:131
+#: src/hdy-action-row.c:424 src/hdy-expander-row.c:306
+#: src/hdy-preferences-row.c:130
 msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
@@ -100,194 +101,194 @@ msgstr ""
 "Dacă este stabilit, o linie de subliniere în text indică faptul că următorul "
 "caracter ar trebui să fie utilizat ca tasta de accelerare mnemonic"
 
-#: src/hdy-action-row.c:428
+#: src/hdy-action-row.c:439
 msgid "Number of title lines"
 msgstr "Numărul de linii de titlu"
 
-#: src/hdy-action-row.c:429
+#: src/hdy-action-row.c:440
 msgid "The desired number of title lines"
 msgstr "Numărul dorit de linii de titlu"
 
-#: src/hdy-action-row.c:445
+#: src/hdy-action-row.c:457
 msgid "Number of subtitle lines"
 msgstr "Numărul de linii de subtitlu"
 
-#: src/hdy-action-row.c:446
+#: src/hdy-action-row.c:458
 msgid "The desired number of subtitle lines"
 msgstr "Numărul dorit de linii de subtitlu"
 
-#: src/hdy-carousel-box.c:1093 src/hdy-carousel-box.c:1094
-#: src/hdy-carousel.c:598 src/hdy-carousel.c:599 src/hdy-tab-view.c:1104
+#: src/hdy-carousel-box.c:1091 src/hdy-carousel-box.c:1092
+#: src/hdy-carousel.c:601 src/hdy-carousel.c:602 src/hdy-tab-view.c:1121
 msgid "Number of pages"
 msgstr "Număr de pagini"
 
-#: src/hdy-carousel-box.c:1109 src/hdy-carousel.c:615 src/hdy-header-bar.c:2090
+#: src/hdy-carousel-box.c:1107 src/hdy-carousel.c:619 src/hdy-header-bar.c:2095
 msgid "Position"
 msgstr "Poziționează"
 
-#: src/hdy-carousel-box.c:1110 src/hdy-carousel.c:616
+#: src/hdy-carousel-box.c:1108 src/hdy-carousel.c:620
 msgid "Current scrolling position"
 msgstr "Poziție de derulare curentă"
 
-#: src/hdy-carousel-box.c:1125 src/hdy-carousel.c:646 src/hdy-header-bar.c:2118
+#: src/hdy-carousel-box.c:1123 src/hdy-carousel.c:652 src/hdy-header-bar.c:2151
 msgid "Spacing"
 msgstr "Spațiere"
 
-#: src/hdy-carousel-box.c:1126 src/hdy-carousel.c:647
+#: src/hdy-carousel-box.c:1124 src/hdy-carousel.c:653
 msgid "Spacing between pages"
 msgstr "Spațiere între pagini"
 
-#: src/hdy-carousel-box.c:1142 src/hdy-carousel.c:721
+#: src/hdy-carousel-box.c:1140 src/hdy-carousel.c:730
 msgid "Reveal duration"
 msgstr "Durată de dezvăluire"
 
-#: src/hdy-carousel-box.c:1143 src/hdy-carousel.c:722
+#: src/hdy-carousel-box.c:1141 src/hdy-carousel.c:731
 msgid "Page reveal duration"
 msgstr "Durată de dezvăluire a paginii"
 
-#: src/hdy-carousel.c:632
+#: src/hdy-carousel.c:638
 msgid "Interactive"
 msgstr "Interactiv"
 
-#: src/hdy-carousel.c:633
+#: src/hdy-carousel.c:639
 msgid "Whether the widget can be swiped"
 msgstr "Dacă widgetul poate fi glisat"
 
-#: src/hdy-carousel.c:662
+#: src/hdy-carousel.c:668
 msgid "Animation duration"
 msgstr "Durata animației"
 
-#: src/hdy-carousel.c:663
+#: src/hdy-carousel.c:669
 msgid "Default animation duration"
 msgstr "Durata de animație implicită"
 
-#: src/hdy-carousel.c:677 src/hdy-swipe-tracker.c:1090
+#: src/hdy-carousel.c:684 src/hdy-swipe-tracker.c:1113
 msgid "Allow mouse drag"
 msgstr "Permite tragerea mausului"
 
-#: src/hdy-carousel.c:678 src/hdy-swipe-tracker.c:1091
+#: src/hdy-carousel.c:685 src/hdy-swipe-tracker.c:1114
 msgid "Whether to allow dragging with mouse pointer"
 msgstr "Dacă să se permită tragerea cu indicatorul mausului"
 
-#: src/hdy-carousel.c:692
+#: src/hdy-carousel.c:700
 msgid "Allow scroll wheel"
 msgstr "Permite rotița de derulare"
 
-#: src/hdy-carousel.c:693
+#: src/hdy-carousel.c:701
 msgid "Whether the widget will respond to scroll wheel events"
 msgstr "Dacă widgetul va răspunde la evenimentele rotiței de derulare"
 
-#: src/hdy-carousel.c:707 src/hdy-swipe-tracker.c:1105
+#: src/hdy-carousel.c:716 src/hdy-swipe-tracker.c:1130
 msgid "Allow long swipes"
 msgstr "Permite swipe lung"
 
-#: src/hdy-carousel.c:708
+#: src/hdy-carousel.c:717
 msgid "Whether to allow swiping for more than one page at a time"
 msgstr "Dacă se permite swipe pentru mai mult de o pagină"
 
-#: src/hdy-carousel-indicator-dots.c:392 src/hdy-carousel-indicator-dots.c:393
-#: src/hdy-carousel-indicator-lines.c:391
-#: src/hdy-carousel-indicator-lines.c:392
+#: src/hdy-carousel-indicator-dots.c:410 src/hdy-carousel-indicator-dots.c:411
+#: src/hdy-carousel-indicator-lines.c:408
+#: src/hdy-carousel-indicator-lines.c:409
 msgid "Carousel"
 msgstr "Carusel"
 
-#: src/hdy-clamp.c:412
+#: src/hdy-clamp.c:436
 msgid "Maximum size"
 msgstr "Dimensiunea maximă"
 
-#: src/hdy-clamp.c:413
+#: src/hdy-clamp.c:437
 msgid "The maximum size allocated to the child"
 msgstr "Dimensiunea maximă alocată la copil"
 
-#: src/hdy-clamp.c:437
+#: src/hdy-clamp.c:463
 msgid "Tightening threshold"
 msgstr "Pragul de strângere"
 
-#: src/hdy-clamp.c:438
+#: src/hdy-clamp.c:464
 msgid "The size from which the clamp will tighten its grip on the child"
 msgstr "Dimensiunea de la care clema va strânge strânsoarea asupra copilului"
 
-#: src/hdy-combo-row.c:419
+#: src/hdy-combo-row.c:420
 msgid "Selected index"
 msgstr "Indexul selectat"
 
-#: src/hdy-combo-row.c:420
+#: src/hdy-combo-row.c:421
 msgid "The index of the selected item"
 msgstr "Indexul elementului selectat"
 
-#: src/hdy-combo-row.c:438
+#: src/hdy-combo-row.c:439
 msgid "Use subtitle"
 msgstr "Utilizează subtitrare"
 
-#: src/hdy-combo-row.c:439
+#: src/hdy-combo-row.c:440
 msgid "Set the current value as the subtitle"
 msgstr "Stabilește valoarea curentă ca subtitrare"
 
-#: src/hdy-deck.c:949
+#: src/hdy-deck.c:947
 msgid "Horizontally homogeneous"
 msgstr "Omogenă orizontal"
 
-#: src/hdy-deck.c:950
+#: src/hdy-deck.c:948
 msgid "Horizontally homogeneous sizing"
 msgstr "Dimensionare omogenă orizontală"
 
-#: src/hdy-deck.c:963
+#: src/hdy-deck.c:961
 msgid "Vertically homogeneous"
 msgstr "Omogenă vertical"
 
-#: src/hdy-deck.c:964
+#: src/hdy-deck.c:962
 msgid "Vertically homogeneous sizing"
 msgstr "Dimensionare verticală omogenă"
 
-#: src/hdy-deck.c:977 src/hdy-leaflet.c:1079 src/hdy-squeezer.c:1115
+#: src/hdy-deck.c:980 src/hdy-leaflet.c:1134 src/hdy-squeezer.c:1136
 #: src/hdy-stackable-box.c:3091
 msgid "Visible child"
 msgstr "Copil vizibil"
 
-#: src/hdy-deck.c:978
+#: src/hdy-deck.c:981
 msgid "The widget currently visible"
 msgstr "Widget-ul vizibil curent"
 
-#: src/hdy-deck.c:991 src/hdy-leaflet.c:1086 src/hdy-stackable-box.c:3098
+#: src/hdy-deck.c:994 src/hdy-leaflet.c:1150 src/hdy-stackable-box.c:3098
 msgid "Name of visible child"
 msgstr "Numele copilului vizibil"
 
-#: src/hdy-deck.c:992
+#: src/hdy-deck.c:995
 msgid "The name of the widget currently visible"
 msgstr "Numele widget-ului vizibil curent"
 
-#: src/hdy-deck.c:1010 src/hdy-leaflet.c:1105 src/hdy-squeezer.c:1129
+#: src/hdy-deck.c:1012 src/hdy-leaflet.c:1168 src/hdy-squeezer.c:1170
 #: src/hdy-stackable-box.c:3117
 msgid "Transition type"
 msgstr "Tip de tranziție"
 
-#: src/hdy-deck.c:1011
+#: src/hdy-deck.c:1013
 msgid "The type of animation used to transition between children"
 msgstr "Tipul de animație utilizat pentru tranziția dintre copii"
 
-#: src/hdy-deck.c:1024 src/hdy-header-bar.c:2200 src/hdy-squeezer.c:1122
+#: src/hdy-deck.c:1026 src/hdy-header-bar.c:2257 src/hdy-squeezer.c:1150
 msgid "Transition duration"
 msgstr "Durata tranziției"
 
-#: src/hdy-deck.c:1025
+#: src/hdy-deck.c:1027
 msgid "The transition animation duration, in milliseconds"
 msgstr "Durata animației de tranziție, în milisecunde"
 
-#: src/hdy-deck.c:1038 src/hdy-header-bar.c:2207 src/hdy-squeezer.c:1137
+#: src/hdy-deck.c:1040 src/hdy-header-bar.c:2271 src/hdy-squeezer.c:1185
 msgid "Transition running"
 msgstr "Tranziția rulează"
 
-#: src/hdy-deck.c:1039 src/hdy-header-bar.c:2208 src/hdy-squeezer.c:1138
+#: src/hdy-deck.c:1041 src/hdy-header-bar.c:2272 src/hdy-squeezer.c:1186
 msgid "Whether or not the transition is currently running"
 msgstr "Dacă rulează sau nu tranziția în mod curent"
 
-#: src/hdy-deck.c:1053 src/hdy-header-bar.c:2214 src/hdy-leaflet.c:1133
-#: src/hdy-squeezer.c:1144 src/hdy-stackable-box.c:3145
+#: src/hdy-deck.c:1055 src/hdy-header-bar.c:2290 src/hdy-leaflet.c:1224
+#: src/hdy-squeezer.c:1204 src/hdy-stackable-box.c:3145
 msgid "Interpolate size"
 msgstr "Dimensiune interpolare"
 
-#: src/hdy-deck.c:1054 src/hdy-header-bar.c:2215 src/hdy-leaflet.c:1134
-#: src/hdy-squeezer.c:1145 src/hdy-stackable-box.c:3146
+#: src/hdy-deck.c:1056 src/hdy-header-bar.c:2291 src/hdy-leaflet.c:1225
+#: src/hdy-squeezer.c:1205 src/hdy-stackable-box.c:3146
 msgid ""
 "Whether or not the size should smoothly change when changing between "
 "differently sized children"
@@ -295,61 +296,61 @@ msgstr ""
 "Dacă ar trebui sau nu să se schimbe neted dimensiunea când se comută între "
 "copiii dimensionați diferit"
 
-#: src/hdy-deck.c:1068 src/hdy-leaflet.c:1148 src/hdy-preferences-window.c:561
+#: src/hdy-deck.c:1069 src/hdy-leaflet.c:1238 src/hdy-preferences-window.c:561
 #: src/hdy-stackable-box.c:3160
 msgid "Can swipe back"
 msgstr "Poate să gliseze înapoi"
 
-#: src/hdy-deck.c:1069 src/hdy-leaflet.c:1149 src/hdy-stackable-box.c:3161
+#: src/hdy-deck.c:1070 src/hdy-leaflet.c:1239 src/hdy-stackable-box.c:3161
 msgid ""
 "Whether or not swipe gesture can be used to switch to the previous child"
 msgstr ""
 "Dacă se poate sau nu să se utilizeze un gest de glisare pentru a comuta la "
 "copilul anterior"
 
-#: src/hdy-deck.c:1083 src/hdy-leaflet.c:1163 src/hdy-stackable-box.c:3175
+#: src/hdy-deck.c:1083 src/hdy-leaflet.c:1252 src/hdy-stackable-box.c:3175
 msgid "Can swipe forward"
 msgstr "Poate să gliseze înainte"
 
-#: src/hdy-deck.c:1084 src/hdy-leaflet.c:1164 src/hdy-stackable-box.c:3176
+#: src/hdy-deck.c:1084 src/hdy-leaflet.c:1253 src/hdy-stackable-box.c:3176
 msgid "Whether or not swipe gesture can be used to switch to the next child"
 msgstr ""
 "Dacă se poate sau nu să se utilizeze un gest de glisare pentru a comuta la "
 "copilul următor"
 
-#: src/hdy-deck.c:1092 src/hdy-leaflet.c:1172
+#: src/hdy-deck.c:1092 src/hdy-leaflet.c:1261
 msgid "Name"
 msgstr "Nume"
 
-#: src/hdy-deck.c:1093 src/hdy-leaflet.c:1173
+#: src/hdy-deck.c:1093 src/hdy-leaflet.c:1262
 msgid "The name of the child page"
 msgstr "Numele paginii copilului"
 
-#: src/hdy-expander-row.c:286
+#: src/hdy-expander-row.c:291
 msgid "The subtitle for this row"
 msgstr "Subtitrarea pentru acest rând"
 
-#: src/hdy-expander-row.c:326
+#: src/hdy-expander-row.c:333
 msgid "Expanded"
 msgstr "Extins"
 
-#: src/hdy-expander-row.c:327
+#: src/hdy-expander-row.c:334
 msgid "Whether the row is expanded"
 msgstr "Dacă rândul este extins"
 
-#: src/hdy-expander-row.c:338
+#: src/hdy-expander-row.c:347
 msgid "Enable expansion"
 msgstr "Activează extinderea"
 
-#: src/hdy-expander-row.c:339
+#: src/hdy-expander-row.c:348
 msgid "Whether the expansion is enabled"
 msgstr "Dacă extinderea este activată"
 
-#: src/hdy-expander-row.c:350
+#: src/hdy-expander-row.c:361
 msgid "Show enable switch"
 msgstr "Arată activează comutarea"
 
-#: src/hdy-expander-row.c:351
+#: src/hdy-expander-row.c:362
 msgid "Whether the switch enabling the expansion is visible"
 msgstr "Dacă comutatorul care activează extinderea este vizibil"
 
@@ -361,155 +362,155 @@ msgstr "Etichetă"
 msgid "Align"
 msgstr "Aliniere"
 
-#: src/hdy-flap.c:1527
+#: src/hdy-flap.c:1534
 msgid "Content"
 msgstr "Conținut"
 
-#: src/hdy-flap.c:1528
+#: src/hdy-flap.c:1535
 msgid "The content Widget"
 msgstr "Widget-ul de conținut"
 
-#: src/hdy-flap.c:1542
+#: src/hdy-flap.c:1550
 msgid "Flap"
 msgstr "Flaps"
 
-#: src/hdy-flap.c:1543
+#: src/hdy-flap.c:1551
 msgid "The flap widget"
 msgstr "Widget-ul de flaps"
 
-#: src/hdy-flap.c:1558
+#: src/hdy-flap.c:1568
 msgid "Separator"
 msgstr "Separator"
 
-#: src/hdy-flap.c:1559
+#: src/hdy-flap.c:1569
 msgid "The separator widget"
 msgstr "Widget-ul de separator"
 
-#: src/hdy-flap.c:1573
+#: src/hdy-flap.c:1585
 msgid "Flap Position"
 msgstr "Poziția flaps-ului"
 
-#: src/hdy-flap.c:1574
+#: src/hdy-flap.c:1586
 msgid "The flap position"
 msgstr "Poziția flaps-ului"
 
-#: src/hdy-flap.c:1588
+#: src/hdy-flap.c:1600
 msgid "Reveal Flap"
 msgstr "Dezvăluie flaps-ul"
 
-#: src/hdy-flap.c:1589
+#: src/hdy-flap.c:1601
 msgid "Whether the flap is revealed"
 msgstr "Dacă flaps-ul este dezvăluit"
 
-#: src/hdy-flap.c:1602
+#: src/hdy-flap.c:1614
 msgid "Reveal Duration"
 msgstr "Dezvăluie durata"
 
-#: src/hdy-flap.c:1603
+#: src/hdy-flap.c:1615
 msgid "The reveal transition animation duration, in milliseconds"
 msgstr "Durata animației de tranziție de dezvăluire, în milisecunde"
 
-#: src/hdy-flap.c:1618
+#: src/hdy-flap.c:1632
 msgid "Reveal Progress"
 msgstr "Dezvăluie progresul"
 
-#: src/hdy-flap.c:1619
+#: src/hdy-flap.c:1633
 msgid "The current reveal transition progress"
 msgstr "Progresul curent de dezvăluire a tranziției"
 
-#: src/hdy-flap.c:1633
+#: src/hdy-flap.c:1648
 msgid "Fold Policy"
 msgstr "Politică de pliere"
 
-#: src/hdy-flap.c:1634
+#: src/hdy-flap.c:1649
 msgid "The current fold policy"
 msgstr "Politica de pliere curentă"
 
-#: src/hdy-flap.c:1648
+#: src/hdy-flap.c:1663
 msgid "Fold Duration"
 msgstr "Durată de pliere"
 
-#: src/hdy-flap.c:1649
+#: src/hdy-flap.c:1664
 msgid "The fold transition animation duration, in milliseconds"
 msgstr "Durata animației de tranziție de pliere, în milisecunde"
 
-#: src/hdy-flap.c:1665 src/hdy-leaflet.c:1024 src/hdy-stackable-box.c:3036
+#: src/hdy-flap.c:1680 src/hdy-leaflet.c:1059 src/hdy-stackable-box.c:3036
 msgid "Folded"
 msgstr "Pliat"
 
-#: src/hdy-flap.c:1666
+#: src/hdy-flap.c:1681
 msgid "Whether the flap is currently folded"
 msgstr "Dacă flaps-ul este pliat în mod curent"
 
-#: src/hdy-flap.c:1683
+#: src/hdy-flap.c:1698
 msgid "Locked"
 msgstr "Blocat"
 
-#: src/hdy-flap.c:1684
+#: src/hdy-flap.c:1699
 msgid "Whether the flap is locked"
 msgstr "Dacă flaps-ul este blocat"
 
-#: src/hdy-flap.c:1702
+#: src/hdy-flap.c:1716
 msgid "Transition Type"
 msgstr "Tip de tranziție"
 
-#: src/hdy-flap.c:1703
+#: src/hdy-flap.c:1717
 msgid "The type of animation used for reveal and fold transitions"
 msgstr "Tipul de animație utilizat pentru tranzițiile de dezvăluire și pliere"
 
-#: src/hdy-flap.c:1721
+#: src/hdy-flap.c:1735
 msgid "Modal"
 msgstr "Modal"
 
-#: src/hdy-flap.c:1722
+#: src/hdy-flap.c:1736
 msgid "Whether the flap is modal"
 msgstr "Dacă flaps-ul este modal"
 
-#: src/hdy-flap.c:1737
+#: src/hdy-flap.c:1752
 msgid "Swipe to Open"
 msgstr "Glisați pentru a deschide"
 
-#: src/hdy-flap.c:1738
+#: src/hdy-flap.c:1753
 msgid "Whether the flap can be opened with a swipe gesture"
 msgstr "Dacă flaps-ul poate fi deschis cu un gest de glisare"
 
-#: src/hdy-flap.c:1753
+#: src/hdy-flap.c:1769
 msgid "Swipe to Close"
 msgstr "Glisați pentru a închide"
 
-#: src/hdy-flap.c:1754
+#: src/hdy-flap.c:1770
 msgid "Whether the flap can be closed with a swipe gesture"
 msgstr "Dacă flaps-ul poate fi închis cu un gest de glisare"
 
-#: src/hdy-header-bar.c:485
+#: src/hdy-header-bar.c:490
 msgid "Application menu"
 msgstr "Meniul aplicației"
 
-#: src/hdy-header-bar.c:507 src/hdy-window-handle-controller.c:275
+#: src/hdy-header-bar.c:512 src/hdy-window-handle-controller.c:273
 msgid "Minimize"
 msgstr "Minimizează"
 
-#: src/hdy-header-bar.c:529 src/hdy-window-handle-controller.c:241
+#: src/hdy-header-bar.c:534 src/hdy-window-handle-controller.c:239
 msgid "Restore"
 msgstr "Restaurează"
 
-#: src/hdy-header-bar.c:529 src/hdy-window-handle-controller.c:284
+#: src/hdy-header-bar.c:534 src/hdy-window-handle-controller.c:282
 msgid "Maximize"
 msgstr "Maximizează"
 
-#: src/hdy-header-bar.c:547 src/hdy-window-handle-controller.c:311
+#: src/hdy-header-bar.c:552 src/hdy-window-handle-controller.c:309
 msgid "Close"
 msgstr "Închide"
 
-#: src/hdy-header-bar.c:563
+#: src/hdy-header-bar.c:568
 msgid "Back"
 msgstr "Înapoi"
 
-#: src/hdy-header-bar.c:2083
+#: src/hdy-header-bar.c:2088
 msgid "Pack type"
 msgstr "Tip de pachet"
 
-#: src/hdy-header-bar.c:2084
+#: src/hdy-header-bar.c:2089
 msgid ""
 "A GtkPackType indicating whether the child is packed with reference to the "
 "start or end of the parent"
@@ -517,87 +518,87 @@ msgstr ""
 "Un GtkPackType care indică dacă copilul este împachetat cu referința la "
 "începutul sau sfârșitul părintelui"
 
-#: src/hdy-header-bar.c:2091
+#: src/hdy-header-bar.c:2096
 msgid "The index of the child in the parent"
 msgstr "Indexul copilului în părinte"
 
-#: src/hdy-header-bar.c:2097 src/hdy-preferences-group.c:294
+#: src/hdy-header-bar.c:2109 src/hdy-preferences-group.c:294
 #: src/hdy-preferences-group.c:295 src/hdy-preferences-page.c:187
 #: src/hdy-preferences-page.c:188 src/hdy-preferences-row.c:115
-#: src/hdy-status-page.c:235 src/hdy-tab-view.c:432
-#: src/hdy-view-switcher-title.c:258
+#: src/hdy-status-page.c:235 src/hdy-tab-view.c:441
+#: src/hdy-view-switcher-title.c:263
 msgid "Title"
 msgstr "Titlu"
 
-#: src/hdy-header-bar.c:2098 src/hdy-view-switcher-title.c:259
+#: src/hdy-header-bar.c:2110 src/hdy-view-switcher-title.c:264
 msgid "The title to display"
 msgstr "Titlul de afișat"
 
-#: src/hdy-header-bar.c:2105 src/hdy-view-switcher-title.c:273
+#: src/hdy-header-bar.c:2124 src/hdy-view-switcher-title.c:280
 msgid "The subtitle to display"
 msgstr "Subtitrarea de afișat"
 
-#: src/hdy-header-bar.c:2111
+#: src/hdy-header-bar.c:2137
 msgid "Custom Title"
 msgstr "Titlu personalizat"
 
-#: src/hdy-header-bar.c:2112
+#: src/hdy-header-bar.c:2138
 msgid "Custom title widget to display"
 msgstr "Widget de titlu personalizat de afișat"
 
-#: src/hdy-header-bar.c:2119
+#: src/hdy-header-bar.c:2152
 msgid "The amount of space between children"
 msgstr "Cantitatea de spațiu între copii"
 
-#: src/hdy-header-bar.c:2138
+#: src/hdy-header-bar.c:2171
 msgid "Show decorations"
 msgstr "Arată decorațiile"
 
-#: src/hdy-header-bar.c:2139
+#: src/hdy-header-bar.c:2172
 msgid "Whether to show window decorations"
 msgstr "Dacă să se arate decorațiile ferestrei"
 
-#: src/hdy-header-bar.c:2157
+#: src/hdy-header-bar.c:2201
 msgid "Decoration Layout"
 msgstr "Aspect decorație"
 
-#: src/hdy-header-bar.c:2158
+#: src/hdy-header-bar.c:2202
 msgid "The layout for window decorations"
 msgstr "Aspectul decorațiilor ferestrei"
 
-#: src/hdy-header-bar.c:2171
+#: src/hdy-header-bar.c:2215
 msgid "Decoration Layout Set"
 msgstr "Aranjament de decorație stabilit"
 
-#: src/hdy-header-bar.c:2172
+#: src/hdy-header-bar.c:2216
 msgid "Whether the decoration-layout property has been set"
 msgstr "Dacă proprietatea de aranjament-decorație a fost stabilită"
 
-#: src/hdy-header-bar.c:2186
+#: src/hdy-header-bar.c:2229
 msgid "Has Subtitle"
 msgstr "Are subtitrare"
 
-#: src/hdy-header-bar.c:2187
+#: src/hdy-header-bar.c:2230
 msgid "Whether to reserve space for a subtitle"
 msgstr "Dacă să se rezerve spațiu pentru o subtitrare"
 
-#: src/hdy-header-bar.c:2193
+#: src/hdy-header-bar.c:2243
 msgid "Centering policy"
 msgstr "Politică de centrare"
 
-#: src/hdy-header-bar.c:2194
+#: src/hdy-header-bar.c:2244
 msgid "The policy to horizontally align the center widget"
 msgstr "Politic de aliniere orizontală a widgetului de centru"
 
-#: src/hdy-header-bar.c:2201 src/hdy-squeezer.c:1123
+#: src/hdy-header-bar.c:2258 src/hdy-squeezer.c:1151
 msgid "The animation duration, in milliseconds"
 msgstr "Durata animației, în milisecunde"
 
-#: src/hdy-header-group.c:831
+#: src/hdy-header-group.c:852
 msgid "Decorate all"
 msgstr "Decorează toate"
 
-#: src/hdy-header-group.c:832
+#: src/hdy-header-group.c:853
 msgid ""
 "Whether the elements of the group should all receive the full decoration"
 msgstr ""
@@ -651,116 +652,116 @@ msgstr "Literele vizibile"
 msgid "Whether the letters below the digits should be visible"
 msgstr "Dacă literele sub cifre ar trebui să fie vizibile"
 
-#: src/hdy-keypad.c:302
+#: src/hdy-keypad.c:304
 msgid "Symbols visible"
 msgstr "Simbolurile vizibile"
 
-#: src/hdy-keypad.c:303
+#: src/hdy-keypad.c:305
 msgid "Whether the hash, plus, and asterisk symbols should be visible"
 msgstr "Dacă simbolurile hash, plus și asterisk ar trebui să fie vizibile"
 
-#: src/hdy-keypad.c:317
+#: src/hdy-keypad.c:320
 msgid "Entry"
 msgstr "Intrare"
 
-#: src/hdy-keypad.c:318
+#: src/hdy-keypad.c:321
 msgid "The entry widget connected to the keypad"
 msgstr "Widget-ul de intrare conectat la tastatură"
 
-#: src/hdy-keypad.c:331
+#: src/hdy-keypad.c:334
 msgid "End action"
 msgstr "Termină acțiunea"
 
-#: src/hdy-keypad.c:332
+#: src/hdy-keypad.c:335
 msgid "The end action widget"
 msgstr "Widget-ul de terminarea acțiunii"
 
-#: src/hdy-keypad.c:345
+#: src/hdy-keypad.c:348
 msgid "Start action"
 msgstr "Începe acțiunea"
 
-#: src/hdy-keypad.c:346
+#: src/hdy-keypad.c:349
 msgid "The start action widget"
 msgstr "Widget-ul de începere a acțiunii"
 
-#: src/hdy-leaflet.c:1025 src/hdy-stackable-box.c:3037
+#: src/hdy-leaflet.c:1060 src/hdy-stackable-box.c:3037
 msgid "Whether the widget is folded"
 msgstr "Dacă widget-ul este pliat"
 
-#: src/hdy-leaflet.c:1036 src/hdy-stackable-box.c:3048
+#: src/hdy-leaflet.c:1073 src/hdy-stackable-box.c:3048
 msgid "Horizontally homogeneous folded"
 msgstr "Pliat omogen orizontal"
 
-#: src/hdy-leaflet.c:1037
+#: src/hdy-leaflet.c:1074
 msgid "Horizontally homogeneous sizing when the leaflet is folded"
 msgstr "Dimensionare omogenă orizontală când manifestul este pliat"
 
-#: src/hdy-leaflet.c:1048 src/hdy-stackable-box.c:3060
+#: src/hdy-leaflet.c:1087 src/hdy-stackable-box.c:3060
 msgid "Vertically homogeneous folded"
 msgstr "Pliat omogen vertical"
 
-#: src/hdy-leaflet.c:1049
+#: src/hdy-leaflet.c:1088
 msgid "Vertically homogeneous sizing when the leaflet is folded"
 msgstr "Dimensionare omogenă verticală când manifestul este pliat"
 
-#: src/hdy-leaflet.c:1060 src/hdy-stackable-box.c:3072
+#: src/hdy-leaflet.c:1101 src/hdy-stackable-box.c:3072
 msgid "Box horizontally homogeneous"
 msgstr "Omogen orizontal cutie"
 
-#: src/hdy-leaflet.c:1061
+#: src/hdy-leaflet.c:1102
 msgid "Horizontally homogeneous sizing when the leaflet is unfolded"
 msgstr "Dimensionare omogenă orizontală când manifestul nu este pliat"
 
-#: src/hdy-leaflet.c:1072 src/hdy-stackable-box.c:3084
+#: src/hdy-leaflet.c:1115 src/hdy-stackable-box.c:3084
 msgid "Box vertically homogeneous"
 msgstr "Omogen vertical cutie"
 
-#: src/hdy-leaflet.c:1073
+#: src/hdy-leaflet.c:1116
 msgid "Vertically homogeneous sizing when the leaflet is unfolded"
 msgstr "Dimensionare omogenă verticală când manifestul nu este pliat"
 
-#: src/hdy-leaflet.c:1080
+#: src/hdy-leaflet.c:1135
 msgid "The widget currently visible when the leaflet is folded"
 msgstr "Widget-ul vizibil curent când manifestul este pliat"
 
-#: src/hdy-leaflet.c:1087 src/hdy-stackable-box.c:3099
+#: src/hdy-leaflet.c:1151 src/hdy-stackable-box.c:3099
 msgid "The name of the widget currently visible when the children are stacked"
 msgstr "Numele widget-ului vizibil curent când copiii sunt stivuiți"
 
-#: src/hdy-leaflet.c:1106 src/hdy-stackable-box.c:3118
+#: src/hdy-leaflet.c:1169 src/hdy-stackable-box.c:3118
 msgid "The type of animation used to transition between modes and children"
 msgstr ""
 "Tipul de animație utilizat pentru a face tranziție între moduri și copii"
 
-#: src/hdy-leaflet.c:1112 src/hdy-stackable-box.c:3124
+#: src/hdy-leaflet.c:1182 src/hdy-stackable-box.c:3124
 msgid "Mode transition duration"
 msgstr "Durata tranziției modului"
 
-#: src/hdy-leaflet.c:1113 src/hdy-stackable-box.c:3125
+#: src/hdy-leaflet.c:1183 src/hdy-stackable-box.c:3125
 msgid "The mode transition animation duration, in milliseconds"
 msgstr "Durata animației tranziției modului, în milisecunde"
 
-#: src/hdy-leaflet.c:1119 src/hdy-stackable-box.c:3131
+#: src/hdy-leaflet.c:1196 src/hdy-stackable-box.c:3131
 msgid "Child transition duration"
 msgstr "Durata tranziției copilului"
 
-#: src/hdy-leaflet.c:1120 src/hdy-stackable-box.c:3132
+#: src/hdy-leaflet.c:1197 src/hdy-stackable-box.c:3132
 msgid "The child transition animation duration, in milliseconds"
 msgstr "Durata animației tranziției copilului, în milisecunde"
 
-#: src/hdy-leaflet.c:1126 src/hdy-stackable-box.c:3138
+#: src/hdy-leaflet.c:1210 src/hdy-stackable-box.c:3138
 msgid "Child transition running"
 msgstr "Rularea tranziției copilului"
 
-#: src/hdy-leaflet.c:1127 src/hdy-stackable-box.c:3139
+#: src/hdy-leaflet.c:1211 src/hdy-stackable-box.c:3139
 msgid "Whether or not the child transition is currently running"
 msgstr "Dacă rulează sau nu în mod curent tranziția copilului"
 
-#: src/hdy-leaflet.c:1190
+#: src/hdy-leaflet.c:1268
 msgid "Navigatable"
 msgstr "Navigabil"
 
-#: src/hdy-leaflet.c:1191
+#: src/hdy-leaflet.c:1269
 msgid "Whether the child can be navigated to"
 msgstr "Dacă se poate naviga la inferior"
 
@@ -825,59 +826,59 @@ msgstr "Modul de căutare activat"
 msgid "Whether the search mode is on and the search bar shown"
 msgstr "Dacă modul de căutare este activ și bara de căutare este arătată"
 
-#: src/hdy-search-bar.c:463
+#: src/hdy-search-bar.c:465
 msgid "Show Close Button"
 msgstr "Arată butonul de închidere"
 
-#: src/hdy-search-bar.c:464
+#: src/hdy-search-bar.c:466
 msgid "Whether to show the close button in the toolbar"
 msgstr "Dacă să se afișeze butonul de închidere în bara cu unelte"
 
-#: src/hdy-shadow-helper.c:257
+#: src/hdy-shadow-helper.c:254
 msgid "Widget"
 msgstr "Widget"
 
-#: src/hdy-shadow-helper.c:258
+#: src/hdy-shadow-helper.c:255
 msgid "The widget the shadow will be drawn for"
 msgstr "Widget-ul pentru care va fi desenată umbra"
 
-#: src/hdy-squeezer.c:1108
+#: src/hdy-squeezer.c:1122
 msgid "Homogeneous"
 msgstr "Omogen"
 
-#: src/hdy-squeezer.c:1109
+#: src/hdy-squeezer.c:1123
 msgid "Homogeneous sizing"
 msgstr "Dimensionare omogenă"
 
-#: src/hdy-squeezer.c:1116
+#: src/hdy-squeezer.c:1137
 msgid "The widget currently visible in the squeezer"
 msgstr "Widget-ul vizibil curent în storcător"
 
-#: src/hdy-squeezer.c:1130
+#: src/hdy-squeezer.c:1171
 msgid "The type of animation used to transition"
 msgstr "Tipul de animație folosit la tranziție"
 
-#: src/hdy-squeezer.c:1165
+#: src/hdy-squeezer.c:1226
 msgid "X align"
 msgstr "Aliniere X"
 
-#: src/hdy-squeezer.c:1166
+#: src/hdy-squeezer.c:1227
 msgid "The horizontal alignment, from 0 (start) to 1 (end)"
 msgstr "Aranjarea orizontată, de la 0 (start) la 1 (sfârșit)"
 
-#: src/hdy-squeezer.c:1187
+#: src/hdy-squeezer.c:1249
 msgid "Y align"
 msgstr "Aliniere Y"
 
-#: src/hdy-squeezer.c:1188
+#: src/hdy-squeezer.c:1250
 msgid "The vertical alignment, from 0 (top) to 1 (bottom)"
 msgstr "Alinierea verticală, de la 0 (vârf) la 1 (bază)"
 
-#: src/hdy-squeezer.c:1197 src/hdy-swipe-tracker.c:1060
+#: src/hdy-squeezer.c:1259 src/hdy-swipe-tracker.c:1080
 msgid "Enabled"
 msgstr "Activat"
 
-#: src/hdy-squeezer.c:1198
+#: src/hdy-squeezer.c:1260
 msgid ""
 "Whether the child can be picked or should be ignored when looking for the "
 "child fitting the available size best"
@@ -921,52 +922,84 @@ msgstr "Titlul poate fi afișat sub iconiță"
 msgid "The description to be displayed below the title"
 msgstr "Descrierea de afișat sub titlu"
 
-#: src/hdy-swipe-tracker.c:1045
+#: src/hdy-style-manager.c:583
+msgid "Color Scheme"
+msgstr "Schemă de culori"
+
+#: src/hdy-style-manager.c:584
+msgid "The current color scheme"
+msgstr "Schema de culori curentă"
+
+#: src/hdy-style-manager.c:606
+msgid "System supports color schemes"
+msgstr "Sistemul suportă schemele de culori"
+
+#: src/hdy-style-manager.c:607
+msgid "Whether the system supports color schemes"
+msgstr "Dacă sistemul suportă schemele de culori"
+
+#: src/hdy-style-manager.c:623
+msgid "Dark"
+msgstr "Întunecat"
+
+#: src/hdy-style-manager.c:624
+msgid "Whether the application is using dark appearance"
+msgstr "Dacă aplicația utilizează aspectul întunecat"
+
+#: src/hdy-style-manager.c:639
+msgid "High Contrast"
+msgstr "Contrast ridicat"
+
+#: src/hdy-style-manager.c:640
+msgid "Whether the application is using high contrast appearance"
+msgstr "Dacă aplicația utilizează aspectul contrast ridicat"
+
+#: src/hdy-swipe-tracker.c:1063
 msgid "Swipeable"
 msgstr "Glisabil"
 
-#: src/hdy-swipe-tracker.c:1046
+#: src/hdy-swipe-tracker.c:1064
 msgid "The swipeable the swipe tracker is attached to"
 msgstr "Glisabilul la care este atașat urmăritorul de glisare"
 
-#: src/hdy-swipe-tracker.c:1061
+#: src/hdy-swipe-tracker.c:1081
 msgid "Whether the swipe tracker processes events"
 msgstr "Dacă urmăritorul de glisare procesează evenimente"
 
-#: src/hdy-swipe-tracker.c:1075
+#: src/hdy-swipe-tracker.c:1097
 msgid "Reversed"
 msgstr "Inversat"
 
-#: src/hdy-swipe-tracker.c:1076
+#: src/hdy-swipe-tracker.c:1098
 msgid "Whether swipe direction is reversed"
 msgstr "Dacă direcția de glisare este inversată"
 
-#: src/hdy-swipe-tracker.c:1106
+#: src/hdy-swipe-tracker.c:1131
 msgid "Whether to allow swiping for more than one snap point at a time"
 msgstr "Dacă să se permită swipe pentru mai mult de un snap"
 
-#: src/hdy-tab-bar.c:517 src/hdy-tab-box.c:3508 src/hdy-tab-box.c:3509
+#: src/hdy-tab-bar.c:516 src/hdy-tab-box.c:3509 src/hdy-tab-box.c:3510
 #: src/hdy-tab.c:906 src/hdy-tab.c:907
 msgid "View"
 msgstr "Vizualizare"
 
-#: src/hdy-tab-bar.c:518
+#: src/hdy-tab-bar.c:517
 msgid "The view the tab bar controls."
 msgstr "Vizualizarea controlată de bara taburilor."
 
-#: src/hdy-tab-bar.c:531
+#: src/hdy-tab-bar.c:530
 msgid "Start action widget"
 msgstr "Widget de începere a acțiunii"
 
-#: src/hdy-tab-bar.c:532
+#: src/hdy-tab-bar.c:531
 msgid "The widget shown before the tabs"
 msgstr "Widget-ul afișat înainte de taburi"
 
-#: src/hdy-tab-bar.c:545
+#: src/hdy-tab-bar.c:544
 msgid "End action widget"
 msgstr "Widget de terminare a acțiunii"
 
-#: src/hdy-tab-bar.c:546
+#: src/hdy-tab-bar.c:545
 msgid "The widget shown after the tabs"
 msgstr "Widget-ul afișat după taburi"
 
@@ -1014,28 +1047,28 @@ msgstr "Se supraextinde"
 msgid "Whether the tab bar is overflowing"
 msgstr "Dacă bara de taburi se supraextinde"
 
-#: src/hdy-tab-box.c:3494 src/hdy-tab-box.c:3495 src/hdy-tab.c:913
-#: src/hdy-tab.c:914 src/hdy-tab-view.c:415
+#: src/hdy-tab-box.c:3495 src/hdy-tab-box.c:3496 src/hdy-tab.c:913
+#: src/hdy-tab.c:914 src/hdy-tab-view.c:424
 msgid "Pinned"
 msgstr "Fixat"
 
-#: src/hdy-tab-box.c:3501 src/hdy-tab-box.c:3502
+#: src/hdy-tab-box.c:3502 src/hdy-tab-box.c:3503
 msgid "Tab Bar"
 msgstr "Bară de taburi"
 
-#: src/hdy-tab-box.c:3515 src/hdy-tab-box.c:3516
+#: src/hdy-tab-box.c:3516 src/hdy-tab-box.c:3517
 msgid "Adjustment"
 msgstr "Ajustare"
 
-#: src/hdy-tab-box.c:3522 src/hdy-tab-box.c:3523
+#: src/hdy-tab-box.c:3523 src/hdy-tab-box.c:3524
 msgid "Needs Attention Left"
 msgstr "Are nevoie de atenție la stânga"
 
-#: src/hdy-tab-box.c:3529 src/hdy-tab-box.c:3530
+#: src/hdy-tab-box.c:3530 src/hdy-tab-box.c:3531
 msgid "Needs Attention Right"
 msgstr "Are nevoie de atenție la dreapta"
 
-#: src/hdy-tab-box.c:3536 src/hdy-tab-box.c:3537
+#: src/hdy-tab-box.c:3537 src/hdy-tab-box.c:3538
 msgid "Resize Frozen"
 msgstr "Redimensionează cele înghețate"
 
@@ -1055,205 +1088,205 @@ msgstr "Lățime implicită"
 msgid "Hovering"
 msgstr "Planare"
 
-#: src/hdy-tab-view.c:371
+#: src/hdy-tab-view.c:378
 msgid "Child"
 msgstr "Copil"
 
-#: src/hdy-tab-view.c:372
+#: src/hdy-tab-view.c:379
 msgid "The child of the page"
 msgstr "Copilul paginii"
 
-#: src/hdy-tab-view.c:387
+#: src/hdy-tab-view.c:394
 msgid "Parent"
 msgstr "Părinte"
 
-#: src/hdy-tab-view.c:388
+#: src/hdy-tab-view.c:395
 msgid "The parent page of the page"
 msgstr "Pagina părintele a paginii"
 
-#: src/hdy-tab-view.c:401
+#: src/hdy-tab-view.c:408
 msgid "Selected"
 msgstr "Selectate"
 
-#: src/hdy-tab-view.c:402
+#: src/hdy-tab-view.c:409
 msgid "Whether the page is selected"
 msgstr "Dacă pagina este selectată"
 
-#: src/hdy-tab-view.c:416
+#: src/hdy-tab-view.c:425
 msgid "Whether the page is pinned"
 msgstr "Dacă pagina este fixată"
 
-#: src/hdy-tab-view.c:433
+#: src/hdy-tab-view.c:442
 msgid "The title of the page"
 msgstr "Titlul paginii"
 
-#: src/hdy-tab-view.c:448
+#: src/hdy-tab-view.c:460
 msgid "Tooltip"
 msgstr "Indiciu"
 
-#: src/hdy-tab-view.c:449
+#: src/hdy-tab-view.c:461
 msgid "The tooltip of the page"
 msgstr "Indiciul paginii"
 
-#: src/hdy-tab-view.c:465
+#: src/hdy-tab-view.c:479
 msgid "Icon"
 msgstr "Iconiță"
 
-#: src/hdy-tab-view.c:466
+#: src/hdy-tab-view.c:480
 msgid "The icon of the page"
 msgstr "Iconița paginii"
 
-#: src/hdy-tab-view.c:484
+#: src/hdy-tab-view.c:498
 msgid "Loading"
 msgstr "Se încarcă"
 
-#: src/hdy-tab-view.c:485
+#: src/hdy-tab-view.c:499
 msgid "Whether the page is loading"
 msgstr "Dacă pagina se încarcă"
 
-#: src/hdy-tab-view.c:509
+#: src/hdy-tab-view.c:523
 msgid "Indicator icon"
 msgstr "Iconiță indicator"
 
-#: src/hdy-tab-view.c:510
+#: src/hdy-tab-view.c:524
 msgid "An indicator icon for the page"
 msgstr "O iconiță indicator pentru pagină"
 
-#: src/hdy-tab-view.c:528
+#: src/hdy-tab-view.c:542
 msgid "Indicator activatable"
 msgstr "Indicator activabil"
 
-#: src/hdy-tab-view.c:529
+#: src/hdy-tab-view.c:543
 msgid "Whether the indicator icon is activatable"
 msgstr "Dacă iconița indicator este activabilă"
 
-#: src/hdy-tab-view.c:546 src/hdy-view-switcher-button.c:234
+#: src/hdy-tab-view.c:560 src/hdy-view-switcher-button.c:232
 msgid "Needs attention"
 msgstr "Are nevoie de atenție"
 
-#: src/hdy-tab-view.c:547
+#: src/hdy-tab-view.c:561
 msgid "Whether the page needs attention"
 msgstr "Dacă pagina are nevoie de atenție"
 
-#: src/hdy-tab-view.c:1105
+#: src/hdy-tab-view.c:1122
 msgid "The number of pages in the tab view"
 msgstr "Numărul de pagini în vizualizarea tab"
 
-#: src/hdy-tab-view.c:1120
+#: src/hdy-tab-view.c:1137
 msgid "Number of pinned pages"
 msgstr "Număr de pagini fixate"
 
-#: src/hdy-tab-view.c:1121
+#: src/hdy-tab-view.c:1138
 msgid "The number of pinned pages in the tab view"
 msgstr "Numărul de pagini fixate în vizualizarea taburilor"
 
-#: src/hdy-tab-view.c:1140
+#: src/hdy-tab-view.c:1157
 msgid "Is transferring page"
 msgstr "Transferă pagina"
 
-#: src/hdy-tab-view.c:1141
+#: src/hdy-tab-view.c:1158
 msgid "Whether a page is being transferred"
 msgstr "Dacă o pagină este transferată"
 
-#: src/hdy-tab-view.c:1154
+#: src/hdy-tab-view.c:1171
 msgid "Selected page"
 msgstr "Pagină selectată"
 
-#: src/hdy-tab-view.c:1155
+#: src/hdy-tab-view.c:1172
 msgid "The currently selected page"
 msgstr "Pagina selectată curent"
 
-#: src/hdy-tab-view.c:1175
+#: src/hdy-tab-view.c:1192
 msgid "Default icon"
 msgstr "Iconiță implicită"
 
-#: src/hdy-tab-view.c:1176
+#: src/hdy-tab-view.c:1193
 msgid "Default page icon"
 msgstr "Iconiță implicită a paginii"
 
-#: src/hdy-tab-view.c:1193
+#: src/hdy-tab-view.c:1210
 msgid "Menu model"
 msgstr "Model meniu"
 
-#: src/hdy-tab-view.c:1194
+#: src/hdy-tab-view.c:1211
 msgid "Tab context menu model"
 msgstr "Model de meniu contextual al taburilor"
 
-#: src/hdy-tab-view.c:1222
+#: src/hdy-tab-view.c:1247
 msgid "Shortcut widget"
 msgstr "Widget scurtătură"
 
-#: src/hdy-tab-view.c:1223
+#: src/hdy-tab-view.c:1248
 msgid "Tab shortcut widget"
 msgstr "Widget de scurtătură pentru tab"
 
-#: src/hdy-title-bar.c:321
+#: src/hdy-title-bar.c:329
 msgid "Selection mode"
 msgstr "Mod de selecție"
 
-#: src/hdy-title-bar.c:322
+#: src/hdy-title-bar.c:330
 msgid "Whether or not the title bar is in selection mode"
 msgstr "Dacă bara de titlu se află sau nu în modul de selecție"
 
-#: src/hdy-value-object.c:191
+#: src/hdy-value-object.c:208
 msgctxt "HdyValueObjectClass"
 msgid "Value"
 msgstr "Valoare"
 
-#: src/hdy-value-object.c:192
+#: src/hdy-value-object.c:209
 msgctxt "HdyValueObjectClass"
 msgid "The contained value"
 msgstr "Valoarea conținută"
 
-#: src/hdy-view-switcher-bar.c:178 src/hdy-view-switcher.c:512
-#: src/hdy-view-switcher-title.c:230
+#: src/hdy-view-switcher-bar.c:179 src/hdy-view-switcher.c:516
+#: src/hdy-view-switcher-title.c:232
 msgid "Policy"
 msgstr "Politică"
 
-#: src/hdy-view-switcher-bar.c:179 src/hdy-view-switcher.c:513
-#: src/hdy-view-switcher-title.c:231
+#: src/hdy-view-switcher-bar.c:180 src/hdy-view-switcher.c:517
+#: src/hdy-view-switcher-title.c:233
 msgid "The policy to determine the mode to use"
 msgstr "Politica de determinare a modului de utilizat"
 
-#: src/hdy-view-switcher-bar.c:192 src/hdy-view-switcher-bar.c:193
-#: src/hdy-view-switcher.c:547 src/hdy-view-switcher.c:548
-#: src/hdy-view-switcher-title.c:244 src/hdy-view-switcher-title.c:245
+#: src/hdy-view-switcher-bar.c:193 src/hdy-view-switcher-bar.c:194
+#: src/hdy-view-switcher.c:552 src/hdy-view-switcher.c:553
+#: src/hdy-view-switcher-title.c:246 src/hdy-view-switcher-title.c:247
 msgid "Stack"
 msgstr "Stivă"
 
-#: src/hdy-view-switcher-bar.c:206
+#: src/hdy-view-switcher-bar.c:207
 msgid "Reveal"
 msgstr "Dezvăluie"
 
-#: src/hdy-view-switcher-bar.c:207
+#: src/hdy-view-switcher-bar.c:208
 msgid "Whether the view switcher is revealed"
 msgstr "Dacă comutatorul de vizualizare este dezvăluit"
 
-#: src/hdy-view-switcher-button.c:203
+#: src/hdy-view-switcher-button.c:201
 msgid "Icon Name"
 msgstr "Nume iconiță"
 
-#: src/hdy-view-switcher-button.c:204
+#: src/hdy-view-switcher-button.c:202
 msgid "Icon name for image"
 msgstr "Numele iconiței pentru imagine"
 
-#: src/hdy-view-switcher-button.c:217
+#: src/hdy-view-switcher-button.c:215
 msgid "Icon Size"
 msgstr "Dimensiunea iconiței"
 
-#: src/hdy-view-switcher-button.c:218
+#: src/hdy-view-switcher-button.c:216
 msgid "Symbolic size to use for named icon"
 msgstr "Dimensiunea simbolică de utilizat pentru iconița numită"
 
-#: src/hdy-view-switcher-button.c:235
+#: src/hdy-view-switcher-button.c:233
 msgid "Hint the view needs attention"
 msgstr "Indiciu cum că vizualizarea are nevoie de atenție"
 
-#: src/hdy-view-switcher.c:532
+#: src/hdy-view-switcher.c:537
 msgid "Narrow ellipsize"
 msgstr "Transformare în elipsă îngustă"
 
-#: src/hdy-view-switcher.c:533
+#: src/hdy-view-switcher.c:538
 msgid ""
 "The preferred place to ellipsize the string, if the narrow mode label does "
 "not have enough room to display the entire string"
@@ -1261,31 +1294,31 @@ msgstr ""
 "Locul preferat pentru a transforma în elipsă șirul, dacă eticheta modului "
 "îngust nu are destul spațiu pentru a afișa întregul șir"
 
-#: src/hdy-view-switcher-title.c:286
+#: src/hdy-view-switcher-title.c:300
 msgid "View switcher enabled"
 msgstr "Comutator de vizualizare activat"
 
-#: src/hdy-view-switcher-title.c:287
+#: src/hdy-view-switcher-title.c:301
 msgid "Whether the view switcher is enabled"
 msgstr "Dacă comutatorul de vizualizare este activat"
 
-#: src/hdy-view-switcher-title.c:300
+#: src/hdy-view-switcher-title.c:314
 msgid "Title visible"
 msgstr "Titlu vizibil"
 
-#: src/hdy-view-switcher-title.c:301
+#: src/hdy-view-switcher-title.c:315
 msgid "Whether the title label is visible"
 msgstr "Dacă eticheta titlului este vizibilă"
 
-#: src/hdy-window-handle-controller.c:259
+#: src/hdy-window-handle-controller.c:257
 msgid "Move"
 msgstr "Mută"
 
-#: src/hdy-window-handle-controller.c:267
+#: src/hdy-window-handle-controller.c:265
 msgid "Resize"
 msgstr "Redimensionează"
 
-#: src/hdy-window-handle-controller.c:298
+#: src/hdy-window-handle-controller.c:296
 msgid "Always on Top"
 msgstr "Întotdeauna deasupra"
 
