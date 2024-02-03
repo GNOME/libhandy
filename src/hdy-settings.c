@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2021 Purism SPC
+ * Copyright (C) 2024 GNOME Foundation, Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -39,6 +40,7 @@ struct _HdySettings
     COLOR_SCHEME_STATE_NONE
   } color_scheme_portal_state;
   enum {
+    HIGH_CONTRAST_STATE_FDO,
     HIGH_CONTRAST_STATE_GNOME,
     HIGH_CONTRAST_STATE_NONE
   } high_contrast_portal_state;
@@ -239,12 +241,20 @@ settings_portal_changed_cb (GDBusProxy  *proxy,
 
   g_variant_get (parameters, "(&s&sv)", &namespace, &name, &value);
 
-  if (!g_strcmp0 (namespace, "org.freedesktop.appearance") &&
-      !g_strcmp0 (name, "color-scheme") &&
-      self->color_scheme_portal_state == COLOR_SCHEME_STATE_FDO) {
-    set_color_scheme (self, get_fdo_color_scheme (value));
+  if (!g_strcmp0 (namespace, "org.freedesktop.appearance")) {
+    if (!g_strcmp0 (name, "color-scheme") &&
+        self->color_scheme_portal_state == COLOR_SCHEME_STATE_FDO) {
+      set_color_scheme (self, get_fdo_color_scheme (value));
 
-    return;
+      return;
+    }
+
+    if (!g_strcmp0 (name, "contrast") &&
+        self->high_contrast_portal_state == HIGH_CONTRAST_STATE_FDO) {
+      set_high_contrast (self, g_variant_get_uint32 (value) == 1);
+
+      return;
+    }
   }
 
   if (!g_strcmp0 (namespace, "org.gnome.desktop.interface") &&
@@ -302,6 +312,14 @@ init_portal (HdySettings *self)
     self->has_color_scheme = TRUE;
     self->color_scheme_portal_state = COLOR_SCHEME_STATE_GNOME;
     self->color_scheme = get_gnome_color_scheme (color_scheme_variant);
+  }
+
+  if (!self->has_high_contrast &&
+      read_portal_setting (self, "org.freedesktop.appearance",
+                           "contrast", "u", &high_contrast_variant)) {
+    self->has_high_contrast = TRUE;
+    self->high_contrast_portal_state = HIGH_CONTRAST_STATE_FDO;
+    self->high_contrast = g_variant_get_uint32 (high_contrast_variant) == 1;
   }
 
   if (!self->has_high_contrast &&
