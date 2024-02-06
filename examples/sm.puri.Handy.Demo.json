@@ -15,6 +15,15 @@
       "name": "libhandy",
       "buildsystem": "meson",
       "builddir": true,
+      "run-tests" : true,
+      "build-options" : {
+        "test-args" : [
+          "--device=dri",
+          "--share=ipc",
+          "--socket=wayland",
+          "--socket=fallback-x11"
+        ]
+      },
       "config-opts": [
         "-Dglade_catalog=disabled"
       ],
