@@ -1,4 +1,17 @@
 =============
+Version 1.8.3
+=============
+
+- HdyStyleManager
+  - Support contrast setting in the settings portal
+  - Remove an extra unref
+- Translation updates
+  - Catalan
+  - Georgian
+  - Romanian
+  - Turkish
+
+=============
 Version 1.8.2
 =============
 
