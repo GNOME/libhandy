@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libhandy master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
-"POT-Creation-Date: 2024-03-30 10:10+0000\n"
-"PO-Revision-Date: 2024-04-27 09:29+0200\n"
+"POT-Creation-Date: 2024-04-27 07:30+0000\n"
+"PO-Revision-Date: 2024-04-29 07:39+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -693,7 +693,6 @@ msgid "Horizontally homogeneous folded"
 msgstr "Vodoravno homogeno prepognjeno"
 
 #: src/hdy-leaflet.c:1074
-#, fuzzy
 msgid "Horizontally homogeneous sizing when the leaflet is folded"
 msgstr "Mere vodoravnega homogenega, ko je zloženka prepognjena"
 
@@ -702,27 +701,22 @@ msgid "Vertically homogeneous folded"
 msgstr "Navpično homogeno prepognjeno"
 
 #: src/hdy-leaflet.c:1088
-#, fuzzy
 msgid "Vertically homogeneous sizing when the leaflet is folded"
 msgstr "Mere navpičnega homogenega, ko je zloženka prepognjena"
 
 #: src/hdy-leaflet.c:1101 src/hdy-stackable-box.c:3072
-#, fuzzy
 msgid "Box horizontally homogeneous"
 msgstr "Vodoravno homogeno polje"
 
 #: src/hdy-leaflet.c:1102
-#, fuzzy
 msgid "Horizontally homogeneous sizing when the leaflet is unfolded"
 msgstr "Mere vodoravnega homogenega, ko je zloženka neprepognjena"
 
 #: src/hdy-leaflet.c:1115 src/hdy-stackable-box.c:3084
-#, fuzzy
 msgid "Box vertically homogeneous"
 msgstr "Navpično homogeno polje"
 
 #: src/hdy-leaflet.c:1116
-#, fuzzy
 msgid "Vertically homogeneous sizing when the leaflet is unfolded"
 msgstr "Mere navpičnega homogenega, ko je zloženka neprepognjena"
 
@@ -893,22 +887,18 @@ msgstr ""
 "ustreza razpoložljivi velikosti"
 
 #: src/hdy-stackable-box.c:3049
-#, fuzzy
 msgid "Horizontally homogeneous sizing when the widget is folded"
 msgstr "Mere vodoravnega homogenega, ko je gradnik prepognjen"
 
 #: src/hdy-stackable-box.c:3061
-#, fuzzy
 msgid "Vertically homogeneous sizing when the widget is folded"
 msgstr "Mere navpičnega homogenega, ko je gradnik prepognjen"
 
 #: src/hdy-stackable-box.c:3073
-#, fuzzy
 msgid "Horizontally homogeneous sizing when the widget is unfolded"
 msgstr "Mere vodoravnega homogenega, ko je gradnik neprepognjen"
 
 #: src/hdy-stackable-box.c:3085
-#, fuzzy
 msgid "Vertically homogeneous sizing when the widget is unfolded"
 msgstr "Mere navpičnega homogenega, ko je gradnik neprepognjen"
 
