@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: libhandy\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libhandy/issues\n"
 "POT-Creation-Date: 2023-05-26 23:02+0000\n"
-"PO-Revision-Date: 2023-09-02 23:19+0200\n"
+"PO-Revision-Date: 2025-03-02 23:19+0200\n"
 "Last-Translator: Jordi Mas i Herǹandez, <jmas@softcatala.org>\n"
 "Language-Team: Catalan (https://www.transifex.com/softcatala/teams/62837/"
 "ca/)\n"
@@ -342,7 +342,7 @@ msgstr "Si la fila està estesa"
 
 #: src/hdy-expander-row.c:366
 msgid "Enable expansion"
-msgstr "Activar l'estesa"
+msgstr "Habilita l'expansió"
 
 #: src/hdy-expander-row.c:367
 msgid "Whether the expansion is enabled"
@@ -471,7 +471,7 @@ msgstr "Modal"
 
 #: src/hdy-flap.c:1736
 msgid "Whether the flap is modal"
-msgstr "Si la solapa està plegada"
+msgstr "Si la solapa és modal"
 
 #: src/hdy-flap.c:1752
 msgid "Swipe to Open"
@@ -1002,7 +1002,7 @@ msgstr "La vista dels controls de la barra de pestanyes."
 
 #: src/hdy-tab-bar.c:530
 msgid "Start action widget"
-msgstr "Giny d'inici de l'acció"
+msgstr "Giny d'acció d'inici"
 
 #: src/hdy-tab-bar.c:531
 msgid "The widget shown before the tabs"
