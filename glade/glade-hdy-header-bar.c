@@ -188,7 +188,7 @@ set_size (GObject      *object,
           const GValue *value)
 {
   GList *l, *next;
-  g_autoptr (GList) children = NULL;
+  GList *children = NULL;
   GtkWidget *child;
   guint new_size, old_size, i;
 
@@ -210,7 +210,10 @@ set_size (GObject      *object,
   new_size = g_value_get_int (value);
 
   if (old_size == new_size)
-    return;
+    {
+      g_list_free (children);
+      return;
+    }
 
   for (i = old_size; i < new_size; i++) {
     GtkWidget *placeholder = glade_placeholder_new ();
@@ -225,6 +228,7 @@ set_size (GObject      *object,
     gtk_container_remove (GTK_CONTAINER (object), child);
     old_size--;
   }
+  g_list_free (children);
 }
 
 static void

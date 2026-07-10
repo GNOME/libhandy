@@ -33,7 +33,7 @@ selection_changed_cb (GladeProject *project,
 
     if (GTK_IS_WIDGET (sel_widget) &&
         gtk_widget_is_ancestor (sel_widget, GTK_WIDGET (container))) {
-      g_autoptr (GList) children = gtk_container_get_children (container);
+      GList *children = gtk_container_get_children (container);
       GList *l;
 
       index = 0;
@@ -48,6 +48,7 @@ selection_changed_cb (GladeProject *project,
 
         index++;
       }
+      g_list_free (children);
     }
   }
 }
@@ -133,7 +134,7 @@ static GtkWidget *
 get_child_by_name (GtkContainer *container,
                    const gchar  *name)
 {
-  g_autoptr (GList) children = gtk_container_get_children (container);
+  GList *children = gtk_container_get_children (container);
   GList *l;
 
   for (l = children; l; l = l->next) {
@@ -142,9 +143,13 @@ get_child_by_name (GtkContainer *container,
     gtk_container_child_get (container, l->data, "name", &child_name, NULL);
 
     if (child_name && !strcmp (child_name, name))
-      return l->data;
+      {
+        g_list_free (children);
+        return l->data;
+      }
   }
 
+  g_list_free (children);
   return NULL;
 }
 
@@ -154,11 +159,12 @@ get_unused_name (GtkContainer *container)
   gint i = 0;
 
   while (TRUE) {
-    g_autofree gchar *name = g_strdup_printf ("page%d", i);
+    gchar *name = g_strdup_printf ("page%d", i);
 
     if (get_child_by_name (container, name) == NULL)
-      return g_steal_pointer (&name);
+      return name;
 
+    g_free (name);
     i++;
   }
 
@@ -175,7 +181,7 @@ glade_hdy_leaflet_child_action_activate (GladeWidgetAdaptor *adaptor,
       !strcmp (action_path, "insert_page_before")) {
     GladeWidget *parent = glade_widget_get_from_gobject (container);
     GladeProperty *property;
-    g_autofree gchar *name = NULL;
+    gchar *name = NULL;
     GtkWidget *new_widget;
     gint pages, index;
 
@@ -204,6 +210,7 @@ glade_hdy_leaflet_child_action_activate (GladeWidgetAdaptor *adaptor,
     glade_command_set_property (property, index);
 
     glade_command_pop_group ();
+    g_free (name);
   } else if (strcmp (action_path, "remove_page") == 0) {
     GladeWidget *parent = glade_widget_get_from_gobject (container);
     GladeProperty *property;
@@ -277,9 +284,10 @@ set_n_pages (GObject      *object,
     return;
 
   for (i = old_size; i < new_size; i++) {
-    g_autofree gchar *name = get_unused_name (container);
+    gchar *name = get_unused_name (container);
     child = glade_placeholder_new ();
     add_named (container, child, name);
+    g_free (name);
   }
 
   for (i = old_size; i > 0; i--) {
@@ -453,7 +461,7 @@ glade_hdy_leaflet_add_child (GladeWidgetAdaptor *adaptor,
   gint pages, page;
 
   if (!glade_widget_superuser () && !GLADE_IS_PLACEHOLDER (child)) {
-    g_autoptr (GList) children = gtk_container_get_children (GTK_CONTAINER (object));
+    GList *children = gtk_container_get_children (GTK_CONTAINER (object));
     GList *l;
 
     for (l = g_list_last (children); l; l = l->prev) {
@@ -464,6 +472,7 @@ glade_hdy_leaflet_add_child (GladeWidgetAdaptor *adaptor,
         break;
       }
     }
+    g_list_free (children);
   }
 
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));

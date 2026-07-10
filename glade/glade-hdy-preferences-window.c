@@ -31,7 +31,7 @@ selection_changed_cb (GladeProject *project,
 
     if (GTK_IS_WIDGET (sel_widget) &&
         gtk_widget_is_ancestor (sel_widget, GTK_WIDGET (container))) {
-      g_autoptr (GList) children = gtk_container_get_children (container);
+      GList *children = gtk_container_get_children (container);
       GList *l;
 
       index = 0;
@@ -48,6 +48,7 @@ selection_changed_cb (GladeProject *project,
 
         index++;
       }
+      g_list_free (children);
     }
   }
 }
@@ -79,7 +80,7 @@ static GtkWidget *
 get_child_by_title (GtkContainer *container,
                     const gchar  *title)
 {
-  g_autoptr (GList) children = gtk_container_get_children (container);
+  GList *children = gtk_container_get_children (container);
   GList *l;
 
   for (l = children; l; l = l->next) {
@@ -90,8 +91,13 @@ get_child_by_title (GtkContainer *container,
     child_title = hdy_preferences_page_get_title (HDY_PREFERENCES_PAGE (l->data));
 
     if (child_title && !strcmp (child_title, title))
-      return l->data;
+      {
+        g_list_free (children);
+        return l->data;
+      }
   }
+
+  g_list_free (children);
 
   return NULL;
 }
@@ -102,11 +108,12 @@ get_unused_title (GtkContainer *container)
   gint i = 1;
 
   while (TRUE) {
-    g_autofree gchar *title = g_strdup_printf ("Page %d", i);
+    gchar *title = g_strdup_printf ("Page %d", i);
 
     if (get_child_by_title (container, title) == NULL)
-      return g_steal_pointer (&title);
+      return title;
 
+    g_free (title);
     i++;
   }
 
@@ -120,7 +127,7 @@ add_page (GladeWidgetAdaptor *adaptor,
   GladeWidget *gwidget = glade_widget_get_from_gobject (container);
   GladeWidget *gpage;
   GladeWidgetAdaptor *page_adaptor;
-  g_autofree gchar *title = get_unused_title (GTK_CONTAINER (container));
+  gchar *title = get_unused_title (GTK_CONTAINER (container));
 
   page_adaptor = glade_widget_adaptor_get_by_type (HDY_TYPE_PREFERENCES_PAGE);
 
@@ -132,6 +139,7 @@ add_page (GladeWidgetAdaptor *adaptor,
   glade_widget_property_set (gpage, "title", title);
 
   glade_widget_add_child (gwidget, gpage, FALSE);
+  g_free (title);
 }
 
 void
@@ -222,7 +230,7 @@ glade_hdy_preferences_window_action_activate (GladeWidgetAdaptor *adaptor,
   GladeWidget *parent = glade_widget_get_from_gobject (object);
 
   if (!g_strcmp0 (action_path, "add_page")) {
-    g_autofree gchar *title = get_unused_title (GTK_CONTAINER (object));
+    gchar *title = get_unused_title (GTK_CONTAINER (object));
     GladeWidget *gchild;
 
     glade_command_push_group (_("Add page to %s"),
@@ -236,6 +244,7 @@ glade_hdy_preferences_window_action_activate (GladeWidgetAdaptor *adaptor,
     glade_widget_property_set (gchild, "title", title);
 
     glade_command_pop_group ();
+    g_free (title);
   } else {
     GLADE_WIDGET_ADAPTOR_GET_ADAPTOR_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
                                                          object,

@@ -31,7 +31,7 @@ glade_hdy_init (const gchar *name)
 void
 glade_hdy_sync_child_positions (GtkContainer *container)
 {
-  g_autoptr (GList) children = NULL;
+  GList *children = NULL;
   GList *l;
   gint position;
   static gboolean recursion = FALSE;
@@ -58,15 +58,19 @@ glade_hdy_sync_child_positions (GtkContainer *container)
 
     position++;
   }
+  g_list_free (children);
 }
 
 gint
 glade_hdy_get_child_index (GtkContainer *container,
                            GtkWidget    *child)
 {
-  g_autoptr (GList) children = gtk_container_get_children (container);
+  GList *children = gtk_container_get_children (container);
+  gint result = g_list_index (children, child);
 
-  return g_list_index (children, child);
+  g_list_free (children);
+
+  return result;
 }
 
 void
@@ -76,8 +80,8 @@ glade_hdy_reorder_child (GtkContainer *container,
 {
   gint old_index = glade_hdy_get_child_index (container, child);
   gint i = 0, n;
-  g_autoptr (GList) children = NULL;
-  g_autoptr (GList) removed_children = NULL;
+  GList *children = NULL;
+  GList *removed_children = NULL;
   GList *l;
 
   if (old_index == index)
@@ -109,13 +113,18 @@ glade_hdy_reorder_child (GtkContainer *container,
     gtk_container_add (container, l->data);
     g_object_unref (l->data);
   }
+
+  g_list_free (removed_children);
+  g_list_free (children);
 }
 
 GtkWidget *
 glade_hdy_get_nth_child (GtkContainer *container,
                          gint          n)
 {
-  g_autoptr (GList) children = gtk_container_get_children (container);
+  GList *children = gtk_container_get_children (container);
+  GtkWidget *result = g_list_nth_data (children, n);
 
-  return g_list_nth_data (children, n);
+  g_list_free (children);
+  return result;
 }

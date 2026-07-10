@@ -20,12 +20,16 @@
 static GtkWidget *
 get_child (GtkContainer *container)
 {
-  g_autoptr (GList) children = gtk_container_get_children (container);
+  GList *children = gtk_container_get_children (container);
+  GtkWidget *result;
 
   if (!children)
     return NULL;
 
-  return children->data;
+  result = children->data;
+  g_list_free (children);
+
+  return result;
 }
 
 void
