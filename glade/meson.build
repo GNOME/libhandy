@@ -35,6 +35,7 @@ libglade_hdy = shared_library(
   libglade_hdy_sources,
                c_args: libglade_hdy_args,
          dependencies: libglade_hdy_deps,
+       vs_module_defs: 'glade-hdy.def',
   include_directories: [ root_inc, src_inc ],
               install: true,
           install_dir: module_dir,
