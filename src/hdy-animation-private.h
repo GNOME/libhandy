@@ -23,7 +23,7 @@ typedef void   (*HdyAnimationValueCallback) (gdouble  value,
 typedef void   (*HdyAnimationDoneCallback)  (gpointer user_data);
 typedef double (*HdyAnimationEasingFunc)    (gdouble  t);
 
-GType         hdy_animation_get_type  (void) G_GNUC_CONST;
+GType         hdy_animation_get_type  (void);
 
 HdyAnimation *hdy_animation_new       (GtkWidget                 *widget,
                                        gdouble                    from,
